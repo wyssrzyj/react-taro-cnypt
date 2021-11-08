@@ -10,6 +10,8 @@ interface Response {
 }
 
 interface Dictionary {
+  label: string
+  value: string
   [key: string]: any
 }
 
@@ -19,8 +21,9 @@ export default class CommonStore {
   }
 
   @observable district = []
-  @observable dictionary: Dictionary = {}
+  @observable dictionary: Partial<Dictionary> = {}
   @observable productCategoryList = []
+  @observable productGrade: Partial<Dictionary> = []
 
   @action getDistrict = async () => {
     try {
@@ -70,6 +73,36 @@ export default class CommonStore {
       if (res) {
         runInAction(() => {
           this.productCategoryList = res.data
+          // localStorage.setItem('productCategoryList', JSON.stringify(res.data))
+          Taro.setStorage({
+            key: 'productCategoryList',
+            data: JSON.stringify(res.data)
+          })
+        })
+        return res.data || []
+      } else {
+        Taro.showToast({
+          title: '获取数据失败~',
+          icon: 'none',
+          duration: 1000
+        })
+      }
+    } catch (e) {
+      console.log(e)
+    }
+  }
+
+  // /api/factory/product-grade/list-tree
+  // 产品档次
+  @action getProductGrade = async () => {
+    try {
+      const res: Partial<Response> = await HTTP.get(
+        `/api/factory/product-grade/list-tree`
+      )
+
+      if (res) {
+        runInAction(() => {
+          this.productGrade = res.data
           // localStorage.setItem('productCategoryList', JSON.stringify(res.data))
           Taro.setStorage({
             key: 'productCategoryList',

@@ -10,7 +10,9 @@ export default {
     'pages/login/pwdLogin/index',
     'pages/login/findPwd/index',
     'pages/login/findPwd/verify',
-    'pages/login/findPwd/reset'
+    'pages/login/findPwd/reset',
+    'pages/factoryEntry/index',
+    'pages/test/index'
   ],
   window: {
     backgroundTextStyle: 'light',

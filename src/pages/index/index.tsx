@@ -8,11 +8,13 @@ import Card from './components/card'
 import { cloneDeep, isNil } from 'lodash'
 import { Navbar } from '@/components'
 import classNames from 'classnames'
+import { Button } from '@tarojs/components'
+import Taro from '@tarojs/taro'
 
 const Home = () => {
   const { homeStore, commonStore, loginStore } = useStores()
   const { getNewFactory, getOrderList } = homeStore
-  const { allDictionary, productCategory } = commonStore
+  const { allDictionary, productCategory, getProductGrade } = commonStore
   const { currentUser, userInfo } = loginStore
 
   const containerRef = useRef<HTMLElement>()
@@ -29,6 +31,7 @@ const Home = () => {
       await allDictionary([])
       await userInfo()
       await productCategory()
+      await getProductGrade()
     })()
   }, [])
 
@@ -137,6 +140,18 @@ const Home = () => {
     setPageNum(1)
   }
 
+  const toFactoryEntry = () => {
+    Taro.navigateTo({
+      url: '/pages/factoryEntry/index'
+    })
+  }
+
+  const toTest = () => {
+    Taro.navigateTo({
+      url: '/pages/test/index'
+    })
+  }
+
   return (
     <View className={styles.container} ref={containerRef}>
       <Navbar>
@@ -161,6 +176,10 @@ const Home = () => {
           </Text>
         </View>
       </Navbar>
+
+      <Button onClick={toFactoryEntry}>工厂入驻</Button>
+      <Button onClick={toTest}>test</Button>
+
       <View className={styles.content}>
         <Swiper
           indicatorColor="#999"
