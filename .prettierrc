@@ -1,0 +1,28 @@
+{
+  "singleQuote": true,
+  "trailingComma": "none",
+  "printWidth": 80,
+  "tabWidth": 2,
+  "endOfLine": "auto",
+  "arrowParens": "avoid",
+  "overrides": [
+    {
+      "files": ".less",
+      "options": {
+        "parser": "css"
+      }
+    }
+  ],
+  "useTabs": false,
+  "semi": false,
+  "no-semi": true,
+  "prose-wrap": "preserve",
+  "bracketSpacing": true,
+  "embeddedLanguageFormatting": "auto",
+  "htmlWhitespaceSensitivity": "css",
+  "no-bracket-spacing": false,
+  "jsx-single-quote": true,
+  "formatting ": "auto",
+  "quote-props": "as-needed",
+  "arrow-parens": "always"
+}
