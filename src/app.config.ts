@@ -10,7 +10,10 @@ export default {
     'pages/login/pwdLogin/index',
     'pages/login/findPwd/index',
     'pages/login/findPwd/verify',
-    'pages/login/findPwd/reset'
+    'pages/login/findPwd/reset',
+    'pages/personal/myEexcellentProduct/index',
+    'pages/personal/accountNumber/index',
+    'pages/personal/modifyMobilePhoneNumber/index'
   ],
   window: {
     backgroundTextStyle: 'light',
