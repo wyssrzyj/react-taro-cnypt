@@ -116,7 +116,7 @@ const Home = () => {
   }
 
   const toFactory = () => {
-    Taro.navigateTo({
+    Taro.redirectTo({
       url: '/pages/factory/index'
     })
   }
@@ -181,11 +181,11 @@ const Home = () => {
   }
 
   const toLogin = () => {
-    Taro.navigateTo({ url: '/pages/login/index' })
+    Taro.redirectTo({ url: '/pages/login/index' })
   }
 
   const toFindPwd = () => {
-    Taro.navigateTo({ url: '/pages/login/findPwd/index' })
+    Taro.redirectTo({ url: '/pages/login/findPwd/index' })
   }
 
   return (

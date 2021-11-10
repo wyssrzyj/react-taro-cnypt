@@ -4,25 +4,32 @@ import { AtIcon, AtActionSheet, AtActionSheetItem } from 'taro-ui'
 
 import styles from './index.module.less'
 import Taro from '@tarojs/taro'
+import { useStores } from '@/store/mobx'
+
 function index() {
+  const { userInterface } = useStores()
+  const { signOut } = userInterface
   let type = 0 //加工厂权限判断
   const [modal, setModal] = useState(false)
-  const signOut = () => {
+  const retreat = async () => {
     console.log('退出')
+    // const token = JSON.parse(Taro.getStorageSync('currentUser')).refresh_token
     setModal(true)
   }
   const btn = () => {
     setModal(false)
   }
   const sign = () => {
+    signOut()
     console.log('退出登录')
     setModal(false)
+    Taro.redirectTo({ url: '/pages/login/index' })
   }
   const about = () => {
-    Taro.navigateTo({ url: '/pages/personal/myEexcellentProduct/index' })
+    Taro.redirectTo({ url: '/pages/personal/myEexcellentProduct/index' })
   }
   const accountNumber = () => {
-    Taro.navigateTo({
+    Taro.redirectTo({
       url: '/pages/personal/accountNumber/index?id' + '15054920258'
     })
   }
@@ -71,7 +78,7 @@ function index() {
           <AtIcon value="chevron-right" size="15" color="#999999"></AtIcon>
         </Text>
       </View>
-      <View className={styles.order} onClick={signOut}>
+      <View className={styles.order} onClick={retreat}>
         <AtIcon
           className={styles.icontx}
           value="volume-off"

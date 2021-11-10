@@ -6,7 +6,7 @@ import styles from './index.module.less'
 function index() {
   const btn = e => {
     console.log(e)
-    // Taro.navigateTo({ url: "/pages/index/index" });
+    // Taro.redirectTo({ url: "/pages/index/index" });
   }
   const data = [
     {

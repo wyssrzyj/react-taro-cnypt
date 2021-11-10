@@ -4,7 +4,10 @@ import './index.less'
 import Taro from '@tarojs/taro'
 function Management() {
   const accountNumber = () => {
-    Taro.navigateTo({ url: '/pages/personal/modifyMobilePhoneNumber/index' })
+    Taro.redirectTo({ url: '/pages/personal/modifyMobilePhoneNumber/index' })
+  }
+  const toReset = () => {
+    Taro.redirectTo({ url: '/pages/personal/resetPassword/index' })
   }
   return (
     <View>
@@ -14,7 +17,7 @@ function Management() {
           <AtIcon value="chevron-right" size="15" color="#999999"></AtIcon>
         </Text>
       </View>
-      <View class="order">
+      <View class="order" onClick={toReset}>
         <Text>修改密码</Text>
         <Text class="iconmy">
           <AtIcon value="chevron-right" size="15" color="#999999"></AtIcon>

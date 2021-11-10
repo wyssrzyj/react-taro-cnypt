@@ -49,11 +49,11 @@ const PwdLogin = () => {
   }
 
   const toVerifyLogin = () => {
-    Taro.navigateTo({ url: '/pages/login/phoneLogin/index' })
+    Taro.redirectTo({ url: '/pages/login/phoneLogin/index' })
   }
 
   const toFindPwd = () => {
-    Taro.navigateTo({ url: '/pages/login/findPwd/index' })
+    Taro.redirectTo({ url: '/pages/login/findPwd/index' })
   }
 
   const goBack = () => {
@@ -79,9 +79,9 @@ const PwdLogin = () => {
           // !data.enterpriseType && history.push('/')
         } else {
           // history.push('/')
-          // Taro.navigateTo({ url: '/pages/index/index' })
+          // Taro.redirectTo({ url: '/pages/index/index' })
         }
-        Taro.navigateTo({ url: '/pages/index/index' })
+        Taro.redirectTo({ url: '/pages/index/index' })
       } else {
         setError(true)
       }

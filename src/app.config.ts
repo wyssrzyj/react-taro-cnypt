@@ -13,7 +13,8 @@ export default {
     'pages/login/findPwd/reset',
     'pages/personal/myEexcellentProduct/index',
     'pages/personal/accountNumber/index',
-    'pages/personal/modifyMobilePhoneNumber/index'
+    'pages/personal/modifyMobilePhoneNumber/index',
+    'pages/personal/resetPassword/index'
   ],
   window: {
     backgroundTextStyle: 'light',

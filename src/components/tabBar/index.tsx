@@ -23,7 +23,7 @@ const TabBar = props => {
 
   const changeTab = index => {
     setTab(index)
-    Taro.navigateTo({
+    Taro.redirectTo({
       url: index === 2 ? '/pages/personal/index' : '/pages/index/index'
     })
   }

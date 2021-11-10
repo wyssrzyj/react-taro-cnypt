@@ -1,71 +1,160 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { View, Text } from '@tarojs/components'
-import { AtInput, AtNavBar } from 'taro-ui'
+import Taro from '@tarojs/taro'
+
+import { AtInput, AtNavBar, AtButton } from 'taro-ui'
 import styles from './index.module.less'
+
 import { redirectTo } from '@tarojs/taro'
+import { useStores, observer } from '@/store/mobx'
 const index = () => {
-  const [value, setValue] = useState()
+  const { loginStore, userInterface } = useStores()
+  const { sendVerifyCode } = loginStore
+  const { modifyMobilePhoneNumber } = userInterface
+
+  const sum = Taro.getStorageSync('currentUser')
+  const id = sum.match(/\d+(.\d+)?/g)[0] //用户id
+
+  // const [lastTime, setLastTime] = useState<number>(verifyTime)
+  const [value, setValue] = useState<any>() //手机
   const [verification, setVerification] = useState() //验证
+  const [regularJudge, setRegularJudge] = useState<any>(false) //手机号是否正确
+  const [judge, setJudge] = useState<any>(false) //报错显示
+
+  const intervalRef = useRef<any>(null)
+  const [count, changeCount] = useState(0)
   useEffect(() => {
-    console.log('测试')
+    clearInterval(intervalRef.current)
   }, [])
+  useEffect(() => {
+    if (count === 59) {
+      intervalRef.current = setInterval(() => {
+        changeCount(item => item - 1)
+      }, 1000)
+    } else if (count === 0) {
+      clearInterval(intervalRef.current)
+    }
+  }, [count])
+  const onGetCaptcha = () => {
+    changeCount(59)
+  }
+
+  // 判断是否是手机号
+  useEffect(() => {
+    let judge = /^1[0-9]{10}$/
+    if (judge.test(value)) {
+      console.log('是手机号')
+      setRegularJudge(true)
+    } else {
+      console.log('不是')
+      setRegularJudge(false)
+    }
+  }, [value])
+  // 倒计时
+  //  发送验证码
+  const verificationCode = async () => {
+    if (regularJudge) {
+      console.log(value)
+      const res = await sendVerifyCode(value)
+      console.log(res)
+      onGetCaptcha() //倒计时
+      // 点击验证码之后进入倒计时
+    }
+  }
+
   const handleChange = e => {
     console.log(e)
     setValue(e)
   }
   const handle = e => {
-    console.log(e)
-    setVerification
-    e
+    setVerification(e)
   }
   const handleClick = () => {
-    redirectTo({ url: '/pages/personal/index' })
+    redirectTo({ url: '/pages/personal/accountNumber/index' })
   }
-  // const handleInput = (e) => {
-  //   console.log(e);
-  //   setValue(e);
-  // };
+  const btn = async () => {
+    if (regularJudge) {
+      setJudge(false)
+      let arr = {
+        userId: id,
+        mobile: value,
+        code: verification
+      }
+      const res = await modifyMobilePhoneNumber(arr)
+      if (res) {
+        console.log('成功')
+        Taro.redirectTo({ url: '/pages/personal/index' })
+      } else {
+        console.log('失败')
+        changeCount(0)
+      }
+    } else {
+      setJudge(true)
+    }
+  }
+
   return (
     <View className={styles.subject}>
       <View className={styles.navbar}>
         <AtNavBar
           onClickLeftIcon={handleClick}
           color="#000"
-          title="账号管理"
+          title="修改手机号"
           leftIconType="chevron-left"
         />
       </View>
-      <View>
-        <Text className={styles.topText}>修改新手机号</Text>
-      </View>
-      <View>
-        <Text className={styles.text}>使用未注册手机号</Text>
-      </View>
+      {/* 主体 */}
       <View className={styles.subject}>
-        <AtInput
-          className={styles.phone}
-          name="value6"
-          border={false}
-          type="phone"
-          placeholder="请输入手机号"
-          value={value}
-          onChange={handleChange}
-        />
-        <AtInput
-          className={styles.phone}
-          clear
-          type="text"
-          border={false}
-          maxLength="4"
-          placeholder="验证码"
-          value={verification}
-          onChange={handle}
+        <View>
+          <Text className={styles.topText}>请输入新手机号</Text>
+        </View>
+        <View>
+          <Text className={styles.text}>使用未注册手机号</Text>
+        </View>
+
+        <View className={styles.subject}>
+          <AtInput
+            className={styles.phone}
+            name="value6"
+            border={false}
+            type="phone"
+            placeholder="请输入手机号"
+            value={value}
+            onChange={handleChange}
+          />
+          {judge ? (
+            <Text className={styles.mobile}>请输入正确的手机号</Text>
+          ) : null}
+
+          <AtInput
+            name={'verifyCode'}
+            className={styles.phone}
+            clear
+            type="text"
+            border={false}
+            placeholder="验证码"
+            value={verification}
+            onChange={handle}
+          >
+            <Text
+              onClick={verificationCode}
+              className={!regularJudge ? styles.prohibit : null}
+            >
+              {count ? `${count} s` : '获取验证码'}
+            </Text>
+          </AtInput>
+        </View>
+        <AtButton
+          onClick={btn}
+          className={styles.btn}
+          disabled={verification && value ? false : true}
+          type="primary"
         >
-          <Text>获取验证码</Text>
-        </AtInput>
+          提交
+        </AtButton>
       </View>
     </View>
   )
 }
 
-export default index
+export default observer(index)

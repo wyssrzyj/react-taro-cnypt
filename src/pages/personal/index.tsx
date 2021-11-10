@@ -15,16 +15,19 @@ const Personal = () => {
   let jurisdiction = 0 //新用户=0 发单商=1,加工厂=2
 
   const toLogin = () => {
-    Taro.navigateTo({ url: '/pages/login/index' })
+    Taro.redirectTo({ url: '/pages/login/index' })
   }
 
-  const toReset = () => {
-    Taro.navigateTo({ url: '/pages/login/findPwd/reset' })
-  }
+  // const toReset = () => {
+  //   Taro.redirectTo({ url: '/pages/login/findPwd/reset' })
+  // }
 
   return (
     <View className={styles.container}>
       {/* 头部 */}
+      <Button onClick={toLogin}>登录</Button>
+      {/* <Button onClick={toReset}>设置密码</Button> */}
+
       <Top />
       {/* 主体 */}
       <View className={styles.subject}>
@@ -36,11 +39,6 @@ const Personal = () => {
 
         {/* 底部 */}
         <Careful />
-        {/* <Navbar>
-          <View>我的</View>
-        </Navbar> */}
-        {/* <Button onClick={toLogin}>登录</Button> */}
-        {/* <Button onClick={toReset}>设置密码</Button> */}
       </View>
 
       <TabBar activeTab={2}></TabBar>

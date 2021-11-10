@@ -4,11 +4,11 @@ import styles from './index.module.less'
 import { AtIcon } from 'taro-ui'
 import Taro from '@tarojs/taro'
 function index() {
-  let sum = 0 //判断用户权限 新用户=0 发单商=1,加工厂=2
-  let login = 0 //判断登录权限 1
+  let sum = 1 //判断用户权限 新用户=0 发单商=1,加工厂=2
+  let login = 1 //判断登录权限 1
 
   const toLogin = () => {
-    Taro.navigateTo({ url: '/pages/login/index' })
+    Taro.redirectTo({ url: '/pages/login/index' })
   }
   return (
     <View className={styles.top}>

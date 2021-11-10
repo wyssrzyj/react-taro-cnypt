@@ -21,7 +21,7 @@ function index() {
       <View className={styles.imgFather}>
         <Image
           className={styles.img}
-          src="https://img0.baidu.com/it/u=3659397173,2392445967&fm=26&fmt=auto"
+          src="https://capacity-platform.oss-cn-hangzhou.aliyuncs.com/capacity-platform/mobile/index/logo.png"
         />
         <Text className={styles.text}>优产云平台</Text>
       </View>

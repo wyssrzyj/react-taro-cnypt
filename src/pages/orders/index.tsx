@@ -10,7 +10,7 @@ const Orders = () => {
   console.log('🚀 ~ file: index.tsx ~ line 10 ~ Orders ~ district', district)
 
   const toHome = () => {
-    Taro.navigateTo({ url: '/pages/index/index' })
+    Taro.redirectTo({ url: '/pages/index/index' })
   }
 
   return (
