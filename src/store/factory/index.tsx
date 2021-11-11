@@ -38,6 +38,28 @@ export default class FactoryStore {
       console.log(e)
     }
   }
+
+  // '/api/factory/enterprise/get-enterprise-info'
+  // 工厂入驻
+  @action getEnterpriseInfo = async () => {
+    try {
+      const res: Partial<Response> = await HTTP.get(
+        `/api/factory/enterprise/get-enterprise-info`
+      )
+
+      if (res) {
+        return res.data || []
+      } else {
+        Taro.showToast({
+          title: '获取数据失败~',
+          icon: 'none',
+          duration: 1000
+        })
+      }
+    } catch (e) {
+      console.log(e)
+    }
+  }
 }
 
 export const factoryStore = new FactoryStore()

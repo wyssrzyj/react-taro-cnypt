@@ -1,4 +1,11 @@
-import { View, Image, Picker, Text } from '@tarojs/components'
+import {
+  View,
+  Image,
+  Picker,
+  Text,
+  Radio,
+  RadioGroup
+} from '@tarojs/components'
 import styles from './index.module.less'
 import Taro from '@tarojs/taro'
 import {
@@ -42,6 +49,11 @@ const typeOptions: Partial<OptionsType>[] = [
   {}
 ]
 
+const initParams = {
+  isContactPublic: 1,
+  isEnterpriseInfoPublic: 1
+}
+
 const FactoryEntry = () => {
   console.log(Taro.getEnv())
 
@@ -55,7 +67,13 @@ const FactoryEntry = () => {
     productGrade,
     district
   } = commonStore
-  const { plusMaterialType } = dictionary
+  const {
+    plusMaterialType = [],
+    purchaserRole = [],
+    goodsNum = [],
+    productType = [],
+    effectiveLocation = []
+  } = dictionary
   const { getEnterpriseInfo } = factoryStore
 
   const clothOptions = productGrade.reduce((prev, item) => {
@@ -64,59 +82,29 @@ const FactoryEntry = () => {
     return prev
   }, [])
 
-  const [params, setParams] = useState<any>({})
+  const [params, setParams] = useState<any>(initParams)
   const [errText, setErrText] = useState('')
   const [isOpened, setIsOpened] = useState(false)
 
   const [provinceData, setProvinceData] = useState<any[]>([])
   const [cityData, setCityData] = useState<any[]>([])
   const [areaData, setAreaData] = useState<any[]>([])
-  const [areaValue, setAreaValue] = useState<any[]>([0, 0, 0])
+  const [location, setAreaValue] = useState<any[]>([0, 0, 0])
 
   const [productFlag, setProductFlag] = useState<boolean>(false)
   const [materialFlag, setMaterialFlag] = useState<boolean>(false)
   const [clothesGradeFlag, setClothesGradeFlag] = useState<boolean>(false)
+  const [processTypeFlag, setProcessTypeFlag] = useState<boolean>(false)
   const [productTypeFlag, setProductTypeFlag] = useState<boolean>(false)
-
-  const photoConfigs = [
-    {
-      label: '平缝机',
-      field: 'sewingMachineImage'
-    },
-    {
-      label: '包缝机',
-      field: 'overlockMachineImage'
-    },
-    {
-      label: '绷缝机',
-      field: 'flatSeamingMachineImage'
-    },
-    {
-      label: '裁床',
-      field: 'cuttingBedImage'
-    },
-    {
-      label: '铺布机',
-      field: 'spreaderImage'
-    },
-    {
-      label: '吊挂',
-      field: 'hangImage'
-    },
-    {
-      label: '验布机',
-      field: 'clothInspectingMachineImage'
-    }
-  ]
+  const [rolesFlag, setRolesFlag] = useState<boolean>(false)
+  const [goodsNumFlag, setGoodsNumFlag] = useState<boolean>(false)
+  const [effectiveFlag, setEffectiveFlag] = useState<boolean>(false)
 
   const photoConfigs2 = [
     {
-      label: '外景照片',
-      field: 'outsizeImageList'
-    },
-    {
-      label: '车间照片',
-      field: 'workshopImageList'
+      label: '宣传照片',
+      field: 'publicityImagesList',
+      count: 3
     }
   ]
   useEffect(() => {
@@ -129,40 +117,6 @@ const FactoryEntry = () => {
       setAreaData(aData)
     })()
   }, [])
-
-  useEffect(() => {
-    ;(async () => {
-      if (!provinceData.length) return
-      const info = await getEnterpriseInfo()
-      info.establishedTime = info.establishedTime
-        ? moment(info.establishedTime)
-        : null
-
-      const provinceIdx = provinceData.findIndex(
-        (item: any) => +item.value === +info.provinceId
-      )
-
-      const citys = provinceIdx > -1 ? provinceData[provinceIdx].children : []
-      citys.unshift({ label: '不限', value: 0 })
-      const cityIdx =
-        provinceIdx > -1 && isArray(citys)
-          ? citys.findIndex((item: any) => +item.value === +info.cityId)
-          : -1
-      setCityData(citys)
-
-      const districts = cityIdx > -1 ? citys[cityIdx].children : []
-      districts.unshift({ label: '不限', value: 0 })
-      const districtIdx =
-        cityIdx > -1 && isArray(districts)
-          ? districts.findIndex((item: any) => +item.value === +info.districtId)
-          : -1
-      setAreaData(districts)
-      info.areaValue = [provinceIdx, cityIdx, districtIdx]
-
-      // setParams(info)
-      console.log('🚀 ~ file: index.tsx ~ line 78 ~ info', info)
-    })()
-  }, [provinceData])
 
   const goBack = () => {
     Taro.navigateBack()
@@ -272,12 +226,12 @@ const FactoryEntry = () => {
           ? [{ label: '不限', value: 0 }, ...target.children]
           : [{ label: '不限', value: 0 }]
       )
-      setAreaValue([areaValue[0], value, 0])
+      setAreaValue([location[0], value, 0])
     }
   }
 
   const getAreaInfo = useMemo(() => {
-    const target = params['areaValue']
+    const target = params['location']
     return isArray(target) && target.length
       ? target.reduce((prev, item, idx) => {
           if (idx === 0) {
@@ -311,14 +265,28 @@ const FactoryEntry = () => {
     setClothesGradeFlag(f => !f)
   }
 
+  const processTypeModalShow = () => {
+    setProcessTypeFlag(f => !f)
+  }
+
+  const rolesModalShow = () => {
+    setRolesFlag(f => !f)
+  }
+
+  const goodsNumModalShow = () => {
+    setGoodsNumFlag(f => !f)
+  }
+
   const productTypeModalShow = () => {
     setProductTypeFlag(f => !f)
   }
 
-  // setProductTypeModalShow
+  const effectiveeModalShow = () => {
+    setEffectiveFlag(f => !f)
+  }
 
   const getProducts = useMemo(() => {
-    const target = params['mainCategoriesList'] || []
+    const target = params['categoryId'] || []
     const matches = target.reduce((prev, item, idx) => {
       const product = matchTreeData(productCategoryList, item) || {}
       return (
@@ -327,31 +295,18 @@ const FactoryEntry = () => {
     }, '')
 
     return matches
-  }, [params.mainCategoriesList])
+  }, [params.categoryId])
 
   const getMaterial = useMemo(() => {
-    if (isArray(params.materialTypeValues)) {
-      return params.materialTypeValues.reduce((prev, item, idx) => {
+    if (isArray(params.materialTypeList)) {
+      return params.materialTypeList.reduce((prev, item, idx) => {
         const target = plusMaterialType.find(i => i.value === item) || {}
         return (
           prev + (target.label ? `${idx !== 0 ? '、' : ''}${target.label}` : '')
         )
       }, '')
     }
-  }, [params.materialTypeValues])
-
-  // typeOptions
-  // getProductType factoryProcessTypeList
-  const getProductType = useMemo(() => {
-    if (isArray(params.factoryProcessTypeList)) {
-      return params.factoryProcessTypeList.reduce((prev, item, idx) => {
-        const target = typeOptions.find(i => i.value === item) || {}
-        return (
-          prev + (target.label ? `${idx !== 0 ? '、' : ''}${target.label}` : '')
-        )
-      }, '')
-    }
-  }, [params.factoryProcessTypeList])
+  }, [params.materialTypeList])
 
   const getLabels = (options, field) => {
     if (isArray(params[field])) {
@@ -364,6 +319,10 @@ const FactoryEntry = () => {
     }
   }
 
+  useEffect(() => {
+    console.log(params, 'params')
+  }, [params])
+
   return (
     <View>
       <View className={styles.navBar} style={{ paddingTop: `${top}px` }}>
@@ -373,7 +332,7 @@ const FactoryEntry = () => {
             className={styles.back}
             onClick={goBack}
           ></Image>
-          <View>工厂入驻</View>
+          <View>发单商入驻</View>
         </View>
       </View>
 
@@ -401,78 +360,109 @@ const FactoryEntry = () => {
             value={params['mobilePhone']}
             onChange={event => handleChange(event, 'mobilePhone')}
           />
+
+          <View className={styles.cusItem}>
+            <View className={classNames(styles.cusLabel, styles.required)}>
+              联系信息
+            </View>
+            <RadioGroup
+              onChange={event =>
+                handleChange(event.detail.value, 'isContactPublic')
+              }
+            >
+              <Radio
+                value={1}
+                checked={params['isContactPublic'] === 1}
+                className={styles.radioText}
+                style={{ transform: 'scale(0.8)' }}
+              >
+                公开
+              </Radio>
+              <Radio
+                value={3}
+                checked={params['isContactPublic'] === 3}
+                className={styles.radioText}
+                style={{ transform: 'scale(0.8)', marginLeft: '20rpx' }}
+              >
+                不公开
+              </Radio>
+            </RadioGroup>
+          </View>
+
+          <View className={styles.cusItem}>
+            <View className={classNames(styles.cusLabel, styles.required)}>
+              企业信息
+            </View>
+            <RadioGroup
+              onChange={event =>
+                handleChange(event.detail.value, 'isEnterpriseInfoPublic')
+              }
+            >
+              <Radio
+                value={1}
+                checked={params['isEnterpriseInfoPublic'] === 1}
+                className={styles.radioText}
+                style={{ transform: 'scale(0.8)' }}
+              >
+                公开
+              </Radio>
+              <Radio
+                value={0}
+                checked={params['isEnterpriseInfoPublic'] === 0}
+                className={styles.radioText}
+                style={{ transform: 'scale(0.8)', marginLeft: '20rpx' }}
+              >
+                不公开
+              </Radio>
+            </RadioGroup>
+          </View>
         </View>
 
         <View className={styles.factoryInfo}>
-          <AtInput
-            required
-            className={styles.cusInput}
-            name="enterpriseName"
-            title="工厂名称"
-            type="text"
-            placeholder="请填写工厂名称"
-            value={params['enterpriseName']}
-            onChange={event => handleChange(event, 'enterpriseName')}
-          />
+          <View className={styles.cusFormTextArea2}>
+            <Text className={classNames(styles.cusLabel, styles.required)}>
+              订单标题
+            </Text>
+            <AtTextarea
+              className={styles.cusTextarea}
+              placeholder="请填写订单标题"
+              value={params['name']}
+              maxLength={99}
+              onChange={event => handleChange(event, 'name')}
+            />
+          </View>
 
-          <Picker
-            mode="date"
-            onChange={event =>
-              handleChange(event.detail.value, 'establishedTime')
-            }
-          >
-            <AtList>
-              <AtListItem
-                title="成立时间"
-                className={classNames(
-                  styles.timeListItem,
-                  !params['establishedTime'] ? styles.placeholder : ''
-                )}
-                extraText={
-                  params['establishedTime']
-                    ? moment(params['establishedTime']).format('YYYY-MM-DD')
-                    : '请选择时间'
-                }
-              />
-            </AtList>
-          </Picker>
-
-          <Picker
-            mode="multiSelector"
-            value={params['areaValue']}
-            rangeKey={'label'}
-            range={[provinceData, cityData, areaData]}
-            onChange={event => handleChange(event.detail.value, 'areaValue')}
-            onColumnChange={throttle(onAreaColumnChange, 50)}
-          >
-            <AtList>
-              <AtListItem
-                className={classNames(
-                  styles.timeListItem,
-                  !params['areaValue'] ? styles.placeholder : ''
-                )}
-                title="请选择地区"
-                extraText={getAreaInfo}
-              />
-            </AtList>
-          </Picker>
+          <View onClick={goodsNumModalShow} className={styles.cusFormItem}>
+            <Text className={classNames(styles.cusLabel, styles.required)}>
+              发单量
+            </Text>
+            <Text
+              className={classNames(
+                styles.cusValue,
+                !getLabels(goodsNum, 'goodsNum') ? styles.cusPlaceholder : ''
+              )}
+            >
+              {getLabels(goodsNum, 'goodsNum')
+                ? getLabels(goodsNum, 'goodsNum')
+                : '请选择发单量'}
+            </Text>
+          </View>
 
           <AtInput
-            required
-            className={styles.cusInput}
-            name="address"
-            title="工厂地址"
-            type="text"
-            placeholder="请填写工厂地址"
-            value={params['address']}
-            onChange={event => handleChange(event, 'address')}
-          />
-        </View>
+            className={classNames(styles.unRequiredCusinput, styles.cusInput)}
+            name="goodsPrice"
+            title="目标单价"
+            type="number"
+            placeholder="请填写目标单价"
+            value={params['goodsPrice']}
+            onChange={event => handleChange(event, 'goodsPrice')}
+          >
+            <View className={styles.addon}>元</View>
+          </AtInput>
 
-        <View className={styles.processingInfo}>
           <View onClick={productModalShow} className={styles.cusFormItem}>
             <Text className={classNames(styles.cusLabel, styles.required)}>
-              主营类别
+              产品品类
             </Text>
             <Text
               className={classNames(
@@ -480,23 +470,8 @@ const FactoryEntry = () => {
                 !getProducts ? styles.cusPlaceholder : ''
               )}
             >
-              {getProducts ? getProducts : '请选择主营类别'}
+              {getProducts ? getProducts : '请选择产品品类'}
             </Text>
-          </View>
-
-          <View className={styles.cusFormTextArea}>
-            <Text className={classNames(styles.cusLabel, styles.unRequired)}>
-              类别说明
-            </Text>
-            <AtTextarea
-              className={styles.cusTextarea}
-              placeholder="请填写类别说明"
-              value={params['mainProductCategoriesDesc'] || ''}
-              maxLength={999}
-              onChange={event =>
-                handleChange(event, 'mainProductCategoriesDesc')
-              }
-            />
           </View>
 
           <View onClick={materialModalShow} className={styles.cusFormItem}>
@@ -512,183 +487,171 @@ const FactoryEntry = () => {
               {getMaterial ? getMaterial : '请选择面料类型'}
             </Text>
           </View>
+        </View>
 
-          <View onClick={clothesGradeModalShow} className={styles.cusFormItem}>
-            <Text className={classNames(styles.cusLabel, styles.required)}>
-              产品档次
-            </Text>
-            <Text
-              className={classNames(
-                styles.cusValue,
-                !getLabels(clothOptions, 'clothesGrade')
-                  ? styles.cusPlaceholder
-                  : ''
-              )}
-            >
-              {getLabels(clothOptions, 'clothesGrade')
-                ? getLabels(clothOptions, 'clothesGrade')
-                : '请选择产品档次'}
-            </Text>
-          </View>
-
-          <View onClick={productTypeModalShow} className={styles.cusFormItem}>
+        <View className={styles.photoInfo}>
+          <View onClick={processTypeModalShow} className={styles.cusFormItem}>
             <Text className={classNames(styles.cusLabel, styles.required)}>
               加工类型
             </Text>
             <Text
               className={classNames(
                 styles.cusValue,
-                !getLabels(typeOptions, 'factoryProcessTypeList')
+                !getLabels(typeOptions, 'processTypeList')
                   ? styles.cusPlaceholder
                   : ''
               )}
             >
-              {getLabels(typeOptions, 'factoryProcessTypeList')
-                ? getLabels(typeOptions, 'factoryProcessTypeList')
+              {getLabels(typeOptions, 'processTypeList')
+                ? getLabels(typeOptions, 'processTypeList')
                 : '请选择加工类型'}
             </Text>
           </View>
 
-          <AtInput
-            required
-            className={styles.cusInput}
-            name="moq"
-            title="起订量"
-            type="number"
-            placeholder="请填写起订量"
-            value={params['moq']}
-            onChange={event => handleChange(event, 'moq')}
-          >
-            <View className={styles.addon}>件</View>
-          </AtInput>
-        </View>
+          <View onClick={productTypeModalShow} className={styles.cusFormItem}>
+            <Text className={classNames(styles.cusLabel, styles.required)}>
+              生产方式
+            </Text>
+            <Text
+              className={classNames(
+                styles.cusValue,
+                !getLabels(productType, 'productTypeList')
+                  ? styles.cusPlaceholder
+                  : ''
+              )}
+            >
+              {getLabels(productType, 'productTypeList')
+                ? getLabels(productType, 'productTypeList')
+                : '请选择生产方式'}
+            </Text>
+          </View>
 
-        <View className={styles.processingInfo}>
-          <AtInput
-            required
-            className={styles.cusInput}
-            name="factoryArea"
-            title="厂房面积"
-            type="number"
-            placeholder="请填写厂房面积"
-            value={params['factoryArea']}
-            onChange={event => handleChange(event, 'factoryArea')}
+          <Picker
+            mode="multiSelector"
+            value={params['location']}
+            rangeKey={'label'}
+            range={[provinceData, cityData, areaData]}
+            onChange={event => handleChange(event.detail.value, 'location')}
+            onColumnChange={throttle(onAreaColumnChange, 50)}
           >
-            <View className={styles.addon}>平方</View>
-          </AtInput>
+            <AtList>
+              <AtListItem
+                className={classNames(
+                  styles.timeListItem,
+                  !params['location'] ? styles.placeholder : ''
+                )}
+                title="地区要求"
+                extraText={getAreaInfo}
+              />
+            </AtList>
+          </Picker>
+
+          <Picker
+            mode="date"
+            onChange={event => handleChange(event.detail.value, 'deliveryDate')}
+          >
+            <AtList>
+              <AtListItem
+                title="交货日期"
+                className={classNames(
+                  styles.timeListItem,
+                  !params['deliveryDate'] ? styles.placeholder : ''
+                )}
+                extraText={
+                  params['deliveryDate']
+                    ? moment(params['deliveryDate']).format('YYYY-MM-DD')
+                    : '请选择交货日期'
+                }
+              />
+            </AtList>
+          </Picker>
+
+          <View onClick={effectiveeModalShow} className={styles.cusFormItem}>
+            <Text className={classNames(styles.cusLabel, styles.required)}>
+              车位要求
+            </Text>
+            <Text
+              className={classNames(
+                styles.cusValue,
+                !getLabels(effectiveLocation, 'effectiveLocation')
+                  ? styles.cusPlaceholder
+                  : ''
+              )}
+            >
+              {getLabels(effectiveLocation, 'effectiveLocation')
+                ? getLabels(effectiveLocation, 'effectiveLocation')
+                : '请选择车位要求'}
+            </Text>
+          </View>
 
           <AtInput
             required
             className={styles.cusInput}
-            name="effectiveLocation"
-            title="有效车位"
-            type="number"
-            placeholder="请填写人数"
-            value={params['effectiveLocation']}
-            onChange={event => handleChange(event, 'effectiveLocation')}
-          >
-            <View className={styles.addon}>人</View>
-          </AtInput>
+            name="payDetails"
+            title="付款方式"
+            type="text"
+            placeholder="请填写付款方式"
+            value={params['payDetails']}
+            onChange={event => handleChange(event, 'payDetails')}
+          />
 
-          <AtInput
-            required
-            className={styles.cusInput}
-            name="staffNumber"
-            title="员工总数"
-            type="number"
-            placeholder="请填写人数"
-            value={params['staffNumber']}
-            onChange={event => handleChange(event, 'staffNumber')}
+          <Picker
+            mode="date"
+            onChange={event =>
+              handleChange(event.detail.value, 'inquiryEffectiveDate')
+            }
           >
-            <View className={styles.addon}>人</View>
-          </AtInput>
-
-          <AtInput
-            required
-            className={styles.cusInput}
-            name="productLineNum"
-            title="生产线"
-            type="number"
-            placeholder="请填写数量"
-            value={params['productLineNum']}
-            onChange={event => handleChange(event, 'productLineNum')}
-          >
-            <View className={styles.addon}>条</View>
-          </AtInput>
+            <AtList>
+              <AtListItem
+                title="订单有效期"
+                className={classNames(
+                  styles.timeListItem,
+                  !params['inquiryEffectiveDate'] ? styles.placeholder : ''
+                )}
+                extraText={
+                  params['inquiryEffectiveDate']
+                    ? moment(params['inquiryEffectiveDate']).format(
+                        'YYYY-MM-DD'
+                      )
+                    : '请选择订单有效期'
+                }
+              />
+            </AtList>
+          </Picker>
         </View>
 
         <View className={styles.photoInfo}>
-          <View className={styles.cusFormTextArea2}>
-            <Text className={classNames(styles.cusLabel, styles.required)}>
-              企业简介
+          <View className={styles.cusFormTextArea}>
+            <Text className={classNames(styles.cusLabel, styles.unRequired)}>
+              备注说明
             </Text>
             <AtTextarea
               className={styles.cusTextarea}
-              placeholder="请填写企业简介"
-              value={params['enterpriseDesc']}
-              maxLength={700}
-              onChange={event => handleChange(event, 'enterpriseDesc')}
+              placeholder="请填写备注说明"
+              value={params['goodsRemark'] || ''}
+              maxLength={999}
+              onChange={event => handleChange(event, 'goodsRemark')}
             />
           </View>
 
-          <View>
-            <View className={styles.photoTitle}>logo</View>
-            <View className={styles.logoPhotoBox}>
-              <ImagePicker
-                addTitle={'logo'}
-                files={params['enterpriseLogoUrl']}
-                callback={event => imgsChange(event, 'enterpriseLogoUrl')}
-                count={1}
-                showAddBtn={
-                  params['enterpriseLogoUrl'] &&
-                  params['enterpriseLogoUrl'].length >= 1
-                    ? false
-                    : true
-                }
-              ></ImagePicker>
-            </View>
-          </View>
-
-          {photoConfigs2.map(item => (
-            <View key={item.field} className={styles.imgs}>
-              <View className={styles.photoTitle}>{item.label}</View>
-              <View className={styles.photoBox}>
-                <AtImagePicker
-                  files={params[item.field]}
-                  onChange={event => imgsChange(event, item.field)}
-                  count={3}
-                  sizeType={['70']}
-                  showAddBtn={
-                    params[item.field] && params[item.field].length >= 3
-                      ? false
-                      : true
-                  }
-                />
-              </View>
-            </View>
-          ))}
-
-          <View className={styles.photoTitle}>设备照片</View>
-          <View className={styles.photos}>
-            {photoConfigs.map(item => (
-              <ImagePicker
-                key={item.field}
-                addTitle={item.label}
-                files={params[item.field]}
-                callback={event => imgsChange(event, item.field)}
-                count={1}
-                showAddBtn={
-                  params[item.field] && params[item.field].length >= 1
-                    ? false
-                    : true
-                }
-              ></ImagePicker>
-            ))}
+          <View className={styles.photoTitle}>款图(最多可上传10张)</View>
+          <View className={styles.photoBox}>
+            <AtImagePicker
+              files={params['stylePicture']}
+              onChange={event => imgsChange(event, 'stylePicture')}
+              count={10}
+              sizeType={['70']}
+              showAddBtn={
+                params['stylePicture'] && params['stylePicture'].length >= 10
+                  ? false
+                  : true
+              }
+            />
           </View>
         </View>
 
         <AtButton onClick={onSubmit} type={'primary'} className={styles.btn}>
-          立即入驻
+          立即发布
         </AtButton>
       </AtForm>
 
@@ -698,16 +661,16 @@ const FactoryEntry = () => {
         <CusProductModal
           visible={productFlag}
           onCancel={productModalShow}
-          callback={event => handleChange(event, 'mainCategoriesList')}
-          value={params['mainCategoriesList'] || []}
+          callback={event => handleChange(event, 'categoryId')}
+          value={params['categoryId'] || []}
         />
       )}
       {materialFlag && (
         <CusMaterialModal
           visible={materialFlag}
           onCancel={materialModalShow}
-          callback={event => handleChange(event, 'materialTypeValues')}
-          value={params['materialTypeValues'] || []}
+          callback={event => handleChange(event, 'materialTypeList')}
+          value={params['materialTypeList'] || []}
         />
       )}
       {clothesGradeFlag && (
@@ -718,15 +681,59 @@ const FactoryEntry = () => {
           value={params['clothesGrade'] || []}
         />
       )}
+      {processTypeFlag && (
+        <CusModal
+          options={typeOptions}
+          visible={processTypeFlag}
+          onCancel={processTypeModalShow}
+          title={'加工类型'}
+          callback={event => handleChange(event, 'processTypeList')}
+          value={params['processTypeList'] || []}
+        />
+      )}
+      {rolesFlag && (
+        <CusModal
+          options={purchaserRole}
+          visible={rolesFlag}
+          onCancel={rolesModalShow}
+          title={'企业角色'}
+          callback={event => handleChange(event, 'roleCodes')}
+          value={params['roleCodes'] || []}
+        />
+      )}
+
+      {goodsNumFlag && (
+        <CusModal
+          options={goodsNum}
+          visible={goodsNumFlag}
+          onCancel={goodsNumModalShow}
+          title={'发单量'}
+          callback={event => handleChange(event, 'goodsNum')}
+          value={params['goodsNum'] || []}
+          type={'single'}
+        />
+      )}
 
       {productTypeFlag && (
         <CusModal
-          options={typeOptions}
+          options={productType}
           visible={productTypeFlag}
           onCancel={productTypeModalShow}
-          title={'加工类型'}
-          callback={event => handleChange(event, 'factoryProcessTypeList')}
-          value={params['factoryProcessTypeList'] || []}
+          title={'生产方式'}
+          callback={event => handleChange(event, 'productTypeList')}
+          value={params['productTypeList'] || []}
+        />
+      )}
+
+      {effectiveFlag && (
+        <CusModal
+          options={effectiveLocation}
+          visible={effectiveFlag}
+          onCancel={effectiveeModalShow}
+          title={'车位要求'}
+          callback={event => handleChange(event, 'effectiveLocation')}
+          value={params['effectiveLocation'] || []}
+          type={'single'}
         />
       )}
     </View>

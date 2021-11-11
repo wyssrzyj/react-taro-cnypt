@@ -52,7 +52,7 @@
 .concatInfo {
   position: relative;
   z-index: 2;
-  height: 200px;
+  // height: 200px;
   border-radius: 20px;
   overflow: hidden;
   background: #ffffff;
@@ -62,6 +62,22 @@
 
 .cusInput {
   text-align: right;
+}
+
+.unRequiredCusinput {
+  :global {
+    label {
+      &::before {
+        display: inline-block;
+        margin-right: 16px;
+        color: transparent;
+        font-size: 28rpx;
+        font-family: SimSun, sans-serif;
+        line-height: 1;
+        content: '*';
+      }
+    }
+  }
 }
 
 .factoryInfo {
@@ -121,6 +137,33 @@
   overflow: hidden;
   margin-top: 24px;
   height: fit-content;
+}
+
+.cusItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 96px;
+}
+
+.radioText {
+  font-size: 38px;
+  color: #333333;
+  padding-right: 18px;
+
+  &::after {
+    content: '';
+    position: absolute;
+    transform-origin: center;
+    box-sizing: border-box;
+    pointer-events: none;
+    top: auto;
+    left: 24rpx;
+    right: 0;
+    bottom: 0;
+    transform: scaleY(0.5);
+    border-bottom: 2px solid #d6e4ef;
+  }
 }
 
 .cusFormItem {

@@ -1,4 +1,4 @@
-import { View, Button } from '@tarojs/components'
+import { View, Button, Image, Text } from '@tarojs/components'
 import styles from './index.module.less'
 import { AtFloatLayout, AtTabs, AtTabsPane } from 'taro-ui'
 import { useEffect, useState } from 'react'
@@ -7,13 +7,13 @@ import classNames from 'classnames'
 import { useStores, observer } from '@/store/mobx'
 
 const CusProductModal = props => {
-  const { onCancel, visible, callback } = props
+  const { onCancel, visible, callback, value } = props
   const { commonStore } = useStores()
   const { productCategoryList } = commonStore
 
   const [productList, setProductList] = useState<any[]>([])
   const [activeTab, setActiveTab] = useState<number>(0)
-  const [selectValues, setSelectValues] = useState<string[]>([])
+  const [selectValues, setSelectValues] = useState<string[]>(value)
 
   useEffect(() => {
     setProductList(
@@ -48,7 +48,12 @@ const CusProductModal = props => {
   }
 
   return (
-    <AtFloatLayout isOpened={visible} title="主营类别" onClose={onClose}>
+    <AtFloatLayout
+      className={styles.box}
+      isOpened={visible}
+      title="主营类别"
+      onClose={onClose}
+    >
       <AtTabs
         current={activeTab}
         scroll
@@ -76,7 +81,14 @@ const CusProductModal = props => {
                       )}
                       onClick={() => tagClick(i.id)}
                     >
-                      {i.name}
+                      <Image
+                        src={''}
+                        className={classNames(
+                          styles.img,
+                          selectValues.includes(i.id) ? styles.activeImg : ''
+                        )}
+                      ></Image>
+                      <Text className={styles.tagText}>{i.name}</Text>
                     </View>
                   )
                 })}

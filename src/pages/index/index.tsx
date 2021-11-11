@@ -146,6 +146,18 @@ const Home = () => {
     })
   }
 
+  const toOrderEntry = () => {
+    Taro.navigateTo({
+      url: '/pages/orderIssueEntry/index'
+    })
+  }
+
+  const toPublish = () => {
+    Taro.navigateTo({
+      url: '/pages/publish/index'
+    })
+  }
+
   const toTest = () => {
     Taro.navigateTo({
       url: '/pages/test/index'
@@ -178,6 +190,8 @@ const Home = () => {
       </Navbar>
 
       <Button onClick={toFactoryEntry}>工厂入驻</Button>
+      <Button onClick={toOrderEntry}>发单商入驻</Button>
+      <Button onClick={toPublish}>发布订单</Button>
       <Button onClick={toTest}>test</Button>
 
       <View className={styles.content}>

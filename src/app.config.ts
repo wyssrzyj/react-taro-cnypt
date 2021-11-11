@@ -12,6 +12,8 @@ export default {
     'pages/login/findPwd/verify',
     'pages/login/findPwd/reset',
     'pages/factoryEntry/index',
+    'pages/orderIssueEntry/index',
+    'pages/publish/index',
     'pages/test/index'
   ],
   window: {

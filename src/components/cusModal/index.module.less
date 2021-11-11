@@ -1,3 +1,8 @@
+.container {
+  :global {
+  }
+}
+
 .box {
   :global {
     .at-float-layout__container {
@@ -22,52 +27,40 @@
 
 .cusItems {
   display: grid;
-  grid-template-columns: repeat(auto-fill, 25%);
+  grid-template-columns: repeat(auto-fill, 33%);
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 30px;
+  margin-bottom: 80px;
 }
 
 .cusItem {
-  display: flex;
-  flex-direction: column;
+  margin: 0 6px 30px;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
   font-size: 28px;
-  color: #333;
-  border-bottom: 1px splid #efefef;
-  margin: 0 32px;
-  padding: 8px 0;
-}
-
-.img {
-  display: flex;
-  box-sizing: border-box;
-  width: 100px;
-  height: 100px;
-  margin-bottom: 10px;
-  border-radius: 50%;
-  box-sizing: border-box;
-  border: 2px solid #efefef;
+  color: #333333;
+  border: 2px solid #e7e7e7;
+  padding: 16px 0;
+  border-radius: 10px;
 }
 
 .activeCusItem {
-  color: #3b80ff;
-}
-
-.activeImg {
+  color: #ffffff;
+  background: #3b80ff;
   border: 2px solid #3b80ff;
 }
 
+.hidden {
+  border: none;
+  visibility: hidden;
+}
+
 .btn {
-  margin: 24px auto 32px;
   background: #3b80ff !important;
   border-radius: 8px;
   font-size: 30px !important;
   height: 80px !important;
-}
-
-.tagText {
-  text-align: center;
-  overflow: hidden;
-  width: 100%;
-  text-overflow: ellipsis;
-  white-space: nowrap;
 }

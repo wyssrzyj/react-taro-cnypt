@@ -1,4 +1,4 @@
-import { View, Button } from '@tarojs/components'
+import { View, Button, Image, Text } from '@tarojs/components'
 import styles from './index.module.less'
 import { AtFloatLayout } from 'taro-ui'
 import { useState } from 'react'
@@ -7,12 +7,12 @@ import classNames from 'classnames'
 import { useStores, observer } from '@/store/mobx'
 
 const CusMaterialModal = props => {
-  const { onCancel, visible, callback } = props
+  const { onCancel, visible, callback, value = [] } = props
   const { commonStore } = useStores()
   const { dictionary } = commonStore
   const { plusMaterialType = [] } = dictionary
 
-  const [selectValues, setSelectValues] = useState<string[]>([])
+  const [selectValues, setSelectValues] = useState<string[]>(value)
 
   const onClose = () => {
     onCancel && onCancel()
@@ -35,20 +35,34 @@ const CusMaterialModal = props => {
   }
 
   return (
-    <AtFloatLayout isOpened={visible} title="主营类别" onClose={onClose}>
-      {plusMaterialType.map(item => {
-        return (
-          <View
-            className={classNames(
-              styles.cusItem,
-              selectValues.includes(item.value) ? styles.activeCusItem : ''
-            )}
-            onClick={() => materialClick(item.value)}
-          >
-            {item.label}
-          </View>
-        )
-      })}
+    <AtFloatLayout
+      className={styles.box}
+      isOpened={visible}
+      title="面料类型"
+      onClose={onClose}
+    >
+      <View className={styles.cusItems}>
+        {plusMaterialType.map(item => {
+          return (
+            <View
+              className={classNames(
+                styles.cusItem,
+                selectValues.includes(item.value) ? styles.activeCusItem : ''
+              )}
+              onClick={() => materialClick(item.value)}
+            >
+              <Image
+                src={''}
+                className={classNames(
+                  styles.img,
+                  selectValues.includes(item.value) ? styles.activeImg : ''
+                )}
+              ></Image>
+              <Text className={styles.tagText}>{item.label}</Text>
+            </View>
+          )
+        })}
+      </View>
       <View>
         <Button type={'primary'} onClick={submit} className={styles.btn}>
           确定

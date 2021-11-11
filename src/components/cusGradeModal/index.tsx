@@ -7,11 +7,11 @@ import classNames from 'classnames'
 import { useStores, observer } from '@/store/mobx'
 
 const CusGradeModal = props => {
-  const { onCancel, visible, callback } = props
+  const { onCancel, visible, callback, value = [] } = props
   const { commonStore } = useStores()
   const { productGrade = [] } = commonStore
 
-  const [selectValues, setSelectValues] = useState<string[]>([])
+  const [selectValues, setSelectValues] = useState<string[]>(value)
 
   const onClose = () => {
     onCancel && onCancel()
@@ -23,7 +23,6 @@ const CusGradeModal = props => {
   }
 
   const materialClick = val => {
-    console.log('🚀 ~ file: index.tsx ~ line 27 ~ val', val)
     let selectCopyValues = cloneDeep(selectValues)
     if (selectCopyValues.includes(val)) {
       selectCopyValues = selectCopyValues.filter(item => item !== val)
@@ -34,13 +33,18 @@ const CusGradeModal = props => {
   }
 
   return (
-    <AtFloatLayout isOpened={visible} title="主营类别" onClose={onClose}>
+    <AtFloatLayout
+      isOpened={visible}
+      title="产品档次"
+      onClose={onClose}
+      className={styles.box}
+    >
       {productGrade.map(item => {
         return (
           <View key={item.value}>
             <View className={styles.title}>{item.label}</View>
 
-            <View>
+            <View className={styles.cusItems}>
               {isArray(item.children) &&
                 item.children.map(i => {
                   return (
@@ -63,7 +67,7 @@ const CusGradeModal = props => {
         )
       })}
       <View>
-        <Button type={'primary'} onClick={submit}>
+        <Button type={'primary'} onClick={submit} className={styles.btn}>
           确定
         </Button>
       </View>

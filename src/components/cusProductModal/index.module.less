@@ -1,20 +1,67 @@
+.box {
+  :global {
+    .at-float-layout__container {
+      border-top-left-radius: 40px;
+      border-top-right-radius: 40px;
+      overflow: hidden;
+      box-sizing: border-box;
+      padding: 12px 32px;
+    }
+
+    .layout-header__title {
+      font-weight: bold;
+    }
+
+    .layout-header {
+      background: #ffffff !important;
+      padding-bottom: 28px;
+      border-bottom: 2px solid #e9e9e9;
+    }
+  }
+}
+
 .tag {
-  display: inline-block;
+  display: inline-flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
   padding: 8px 12px;
   box-sizing: border-box;
-  border: 2px solid #efefef;
+  font-size: 28px;
+  // border: 2px solid #efefef;
   margin: 0 16px 16px 0;
 }
 
 .activeTag {
   padding: 8px 12px;
   box-sizing: border-box;
-  border: 2px solid #6190e8;
+  // border: 2px solid #6190e8;
   color: #6190e8;
+}
+
+.img {
+  display: flex;
+  box-sizing: border-box;
+  width: 100px;
+  height: 100px;
+  margin-bottom: 10px;
+  border-radius: 50%;
+  box-sizing: border-box;
+  border: 2px solid #efefef;
+}
+
+.activeCusItem {
+  color: #3b80ff;
+}
+
+.activeImg {
+  border: 2px solid #3b80ff;
 }
 
 .tabContent {
   margin-bottom: 32px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, 33.3%);
 }
 
 .tabsPane {
@@ -24,4 +71,12 @@
 .btn {
   color: #ffffff;
   background: #3b80ff !important;
+}
+
+.tagText {
+  text-align: center;
+  overflow: hidden;
+  width: 100%;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
