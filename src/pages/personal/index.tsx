@@ -1,42 +1,70 @@
+import { useEffect, useState } from 'react'
 import styles from './index.module.less'
-import { View, Button } from '@tarojs/components'
+import { View, Text } from '@tarojs/components'
 import Taro from '@tarojs/taro'
 import Top from './components/top'
 import Order from './components/order'
+import Machining from './components/machining'
 import Settled from './components/settled'
 import Management from './components/management'
 import Careful from './components/careful'
+import { useStores } from '@/store/mobx'
 
-import { Navbar, TabBar } from '@/components'
+import { TabBar } from '@/components'
 // import My from './my/index'
 // import Im from './im/index'
 
 const Personal = () => {
-  let jurisdiction = 0 //新用户=0 发单商=1,加工厂=2
+  const { userInterface } = useStores()
+  const { userInformation } = userInterface
+  const [list, setList] = useState({})
+  // 根据企业id 获取信息
+  useEffect(() => {
+    if (Taro.getStorageSync('currentUser')) {
+      let information = JSON.parse(Taro.getStorageSync('currentUser')).userId
+      pickUpInformation({ userId: information })
+    }
+  }, [])
+  // 用户信息
+  const pickUpInformation = async e => {
+    let res = await userInformation(e)
+    if (res) {
+      setList(res)
+    }
 
-  const toLogin = () => {
-    Taro.redirectTo({ url: '/pages/login/index' })
+    return res
   }
+  let jurisdiction = ''
+  if (Taro.getStorageSync('userInfo')) {
+    jurisdiction = JSON.parse(Taro.getStorageSync('userInfo')).enterpriseType
+  } else {
+    jurisdiction = 'notLogged'
+    console.log('未登录')
+  }
+  // 用户信息
 
-  // const toReset = () => {
-  //   Taro.redirectTo({ url: '/pages/login/findPwd/reset' })
-  // }
+  // currentUser
 
   return (
     <View className={styles.container}>
+      <View className={styles.navbar}>
+        <Text>我的</Text>
+      </View>
       {/* 头部 */}
-      <Button onClick={toLogin}>登录</Button>
       {/* <Button onClick={toReset}>设置密码</Button> */}
 
-      <Top />
+      <Top list={list} userInfo={jurisdiction} />
       {/* 主体 */}
       <View className={styles.subject}>
-        {jurisdiction === 1 ? <Order /> : null}
-        {jurisdiction === 0 ? <Settled /> : null}
+        {jurisdiction === '1' ? <Order /> : null}
+        {jurisdiction === 'notLogged' || jurisdiction === null ? (
+          <Settled />
+        ) : null}
+        {jurisdiction === '0' ? <Machining /> : null}
+
         {/* <Receiving /> */}
-
-        <Management />
-
+        <Management userInfo={jurisdiction} />
+        {/* <Button onClick={toLogin}>登录</Button> */}
         {/* 底部 */}
         <Careful />
       </View>

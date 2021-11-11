@@ -91,6 +91,37 @@ export default class UserInterface {
     }
   }
 
+  // 订单列表数据展示
+  @action listData = async params => {
+    try {
+      const res: Partial<Response> = await HTTP.post(
+        '/api/oms/inquiry-purchase/inquiry-list',
+        params
+      )
+      console.log('成功', res)
+      Taro.showToast({
+        title: res.msg as string,
+        icon: 'none',
+        duration: 1500
+      })
+      if (res.code === 200) {
+        return res.data
+      }
+      return res.data
+    } catch (e) {
+      Taro.showToast({
+        title: e.msg as string,
+        icon: 'none',
+        duration: 1500
+      })
+      console.log('失败', e)
+      if (e.code === 200) {
+        return e
+      }
+      return e
+    }
+  }
+
   // 用户登出
   @action signOut = async () => {
     try {
@@ -154,6 +185,21 @@ export default class UserInterface {
         `/api/sms/verification-code`,
         params
       )
+
+      return res.data
+    } catch (e) {
+      console.log(e)
+    }
+  }
+
+  // 用户信息
+  @action userInformation = async params => {
+    try {
+      const res: Partial<Response> = await HTTP.get(
+        `/api/user/get-account-info`,
+        params
+      )
+      console.log(res)
 
       return res.data
     } catch (e) {

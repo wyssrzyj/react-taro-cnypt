@@ -6,10 +6,12 @@ import styles from './index.module.less'
 import Taro from '@tarojs/taro'
 import { useStores } from '@/store/mobx'
 
-function index() {
+function index({ userInfo }) {
+  console.log('身体', userInfo)
   const { userInterface } = useStores()
   const { signOut } = userInterface
-  let type = 0 //加工厂权限判断
+  let type = userInfo //判断用户权限  // 企业类型 0 加工厂 1 发单商
+  // let type = 2 //判断用户权限  // 企业类型 0 加工厂 1 发单商
   const [modal, setModal] = useState(false)
   const retreat = async () => {
     console.log('退出')
@@ -37,7 +39,7 @@ function index() {
   return (
     <View>
       <View className={styles.division}></View>
-      {type === 1 ? (
+      {type === '0' ? (
         <>
           <View className={styles.order}>
             <AtIcon
@@ -47,6 +49,22 @@ function index() {
               color="#080808"
             ></AtIcon>
             <Text>工厂管理</Text>
+            <Text className={styles.iconmy}>
+              <AtIcon value="chevron-right" size="15" color="#999999"></AtIcon>
+            </Text>
+          </View>
+        </>
+      ) : null}
+      {type === '1' ? (
+        <>
+          <View className={styles.order}>
+            <AtIcon
+              className={styles.icontx}
+              value="volume-off"
+              size="30"
+              color="#080808"
+            ></AtIcon>
+            <Text>企业管理</Text>
             <Text className={styles.iconmy}>
               <AtIcon value="chevron-right" size="15" color="#999999"></AtIcon>
             </Text>
@@ -66,6 +84,7 @@ function index() {
           <AtIcon value="chevron-right" size="15" color="#999999"></AtIcon>
         </Text>
       </View>
+
       <View className={styles.order} onClick={about}>
         <AtIcon
           className={styles.icontx}
@@ -78,6 +97,7 @@ function index() {
           <AtIcon value="chevron-right" size="15" color="#999999"></AtIcon>
         </Text>
       </View>
+
       <View className={styles.order} onClick={retreat}>
         <AtIcon
           className={styles.icontx}

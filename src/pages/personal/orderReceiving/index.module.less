@@ -1,0 +1,222 @@
+.loginHeader {
+  padding: 76px 0 96px 0;
+}
+.navbar {
+  margin-top: 40px;
+  margin-bottom: 135rpx;
+  :global {
+    .at-nav-bar {
+      position: fixed;
+      top: 5rpx;
+      left: 0;
+      right: 0;
+      z-index: 800;
+      height: 138rpx;
+    }
+  }
+}
+.content {
+  padding: 0 76px;
+
+  :global {
+    .at-input {
+      margin-left: 0 !important;
+    }
+  }
+}
+.search {
+  margin-top: 20px;
+  :global {
+    .input-cnt {
+      border-radius: 6px;
+    }
+    .at-search-bar__input-cnt {
+      margin-bottom: 2px;
+    }
+  }
+}
+.subject {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: #f4f7fd;
+}
+
+.new {
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+.top {
+  margin-top: 30px;
+}
+.mobile {
+  margin-left: 10px;
+  color: red;
+}
+.loginTitle {
+  font-size: 48px;
+  font-weight: bold;
+  color: #333333;
+  padding-bottom: 10px;
+}
+
+.loginMsg {
+  font-size: 24px;
+  color: #999999;
+}
+
+.phoneLogin {
+  min-height: 100vh;
+  min-width: 100vw;
+  box-sizing: border-box;
+}
+
+.back {
+  width: 16px;
+  height: 28px;
+}
+
+.container {
+  min-height: 100%;
+  min-width: 100%;
+}
+
+.tips {
+  font-size: 24px;
+  color: #d3d3d3;
+}
+
+.input {
+  display: flex;
+  font-size: 32px;
+  border-bottom: 2px solid #666666;
+  padding-bottom: 16px;
+}
+
+.input2 {
+  display: flex;
+  font-size: 32px;
+  border-bottom: 2px solid #666666;
+  margin-bottom: 44px;
+  margin-top: 76px;
+  padding-bottom: 16px;
+}
+
+.verifyCodeBtn {
+  width: 180px;
+  height: 56px;
+  font-size: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #3b80ff;
+  border-left: 2px solid #666666;
+}
+
+.loginBtn {
+  margin-top: 64px;
+  font-size: 32px;
+}
+
+.toPwdLogin {
+  padding-top: 24px;
+  font-size: 28px;
+  color: #3b80ff;
+}
+
+.verifyCounts {
+  margin-bottom: 24px;
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  height: 80px;
+}
+
+.verifyInput {
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  border: none;
+  opacity: 0;
+  z-index: 2;
+  color: transparent;
+}
+
+.verifyCount {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 48px;
+  font-weight: bold;
+  margin: 0 8px;
+  border-bottom: 2px solid #333;
+  position: relative;
+}
+
+.line {
+  position: absolute;
+  width: 4rpx;
+  height: 70%;
+  background: rgb(0, 0, 0);
+  transform: translateX(-50%);
+  left: 50%;
+  z-index: -1;
+  animation: play 1s linear infinite;
+}
+
+@keyframes play {
+  0% {
+    opacity: 1;
+  }
+  80% {
+    opacity: 0;
+  }
+}
+
+.countdown {
+  padding-top: 16px;
+  font-size: 28px;
+}
+
+.countdownCount {
+  color: #3b80ff;
+}
+
+.countdownText {
+  color: #999999;
+}
+
+.loginBtn {
+  margin: 100px auto 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 600px;
+  height: 80px;
+  background: #3b80ff;
+  color: #ffffff;
+  font-size: 30px;
+  border-radius: 10px;
+}
+
+.loginDisabledBtn {
+  cursor: not-allowed;
+  background: #cfcfcf;
+  color: #ffffff;
+  margin: 100px auto 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 600px;
+  height: 80px;
+  font-size: 30px;
+  border-radius: 10px;
+}
+
+.resend {
+  color: #3b80ff;
+  cursor: pointer;
+  position: relative;
+  z-index: 3;
+}
