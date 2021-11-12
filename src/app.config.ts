@@ -1,5 +1,4 @@
 export default {
-<<<<<<< HEAD
   pages: ['pages/index/index'],
   subpackages: [
     {
@@ -20,7 +19,14 @@ export default {
     },
     {
       root: 'pages/orders', // 找订单
-      pages: ['index']
+      pages: [
+        'index',
+        '/myEexcellentProduct/index',
+        '/accountNumber/index',
+        '/modifyMobilePhoneNumber/index',
+        '/resetPassword/index',
+        '/orderReceiving/index'
+      ]
     },
     {
       root: 'pages/personal', // 我的
@@ -54,25 +60,6 @@ export default {
       root: 'pages/test',
       pages: ['index']
     }
-=======
-  pages: [
-    'pages/index/index',
-    'pages/factory/index',
-    'pages/orders/index',
-    'pages/personal/index',
-    'pages/login/index',
-    'pages/login/phoneLogin/index',
-    'pages/login/phoneLogin/setPwd',
-    'pages/login/pwdLogin/index',
-    'pages/login/findPwd/index',
-    'pages/login/findPwd/verify',
-    'pages/login/findPwd/reset',
-    'pages/personal/myEexcellentProduct/index',
-    'pages/personal/accountNumber/index',
-    'pages/personal/modifyMobilePhoneNumber/index',
-    'pages/personal/resetPassword/index',
-    'pages/personal/orderReceiving/index'
->>>>>>> dev_lyj
   ],
   window: {
     backgroundTextStyle: 'light',
