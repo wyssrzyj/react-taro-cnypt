@@ -50,7 +50,7 @@ const Personal = () => {
   }
   // 用户信息
 
-  // currentUser
+  // currentUser.
 
   return (
     <View className={styles.container}>

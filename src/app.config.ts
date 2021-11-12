@@ -19,18 +19,18 @@ export default {
     },
     {
       root: 'pages/orders', // 找订单
-      pages: [
-        'index',
-        '/myEexcellentProduct/index',
-        '/accountNumber/index',
-        '/modifyMobilePhoneNumber/index',
-        '/resetPassword/index',
-        '/orderReceiving/index'
-      ]
+      pages: ['index']
     },
     {
       root: 'pages/personal', // 我的
-      pages: ['index']
+      pages: [
+        'index',
+        'myEexcellentProduct/index',
+        'accountNumber/index',
+        'modifyMobilePhoneNumber/index',
+        'resetPassword/index',
+        'orderReceiving/index'
+      ]
     },
     {
       root: 'pages/factoryEntry', // 工厂入驻
