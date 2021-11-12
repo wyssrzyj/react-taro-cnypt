@@ -15,16 +15,23 @@ import { TabBar } from '@/components'
 // import Im from './im/index'
 
 const Personal = () => {
-  const { userInterface } = useStores()
+  const { userInterface, commonStore } = useStores()
+
+  const { getDistrict } = commonStore
   const { userInformation } = userInterface
   const [list, setList] = useState({})
   // 根据企业id 获取信息
   useEffect(() => {
+    getDisr()
     if (Taro.getStorageSync('currentUser')) {
       let information = JSON.parse(Taro.getStorageSync('currentUser')).userId
       pickUpInformation({ userId: information })
     }
   }, [])
+  // 地区接口数据
+  const getDisr = async () => {
+    await getDistrict()
+  }
   // 用户信息
   const pickUpInformation = async e => {
     let res = await userInformation(e)

@@ -21,7 +21,7 @@
   margin-bottom: 30px;
 }
 .remarks {
-  width: 410px;
+  max-width: 410px;
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
@@ -182,4 +182,13 @@
   font-weight: 400;
   font-weight: 400;
   color: black;
+}
+.popup {
+  :global {
+    .at-modal__content {
+      padding: 32rpx 24rpx;
+      text-align: center;
+      min-height: 10rpx;
+    }
+  }
 }

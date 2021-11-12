@@ -1,0 +1,342 @@
+.navBar {
+  position: relative;
+  height: 276px;
+  width: 100%;
+  background: url(https://capacity-platform.oss-cn-hangzhou.aliyuncs.com/capacity-platform/mobile/factoryEntry/headerBg.png)
+    no-repeat center center;
+  background-size: cover;
+}
+
+.back {
+  position: absolute;
+  left: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 30px;
+  height: 32px;
+}
+
+.navContent {
+  position: relative;
+  height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+}
+
+.form {
+  position: relative;
+  padding: 0 32px;
+  background: linear-gradient(180deg, #f4f7fd 0%, #f4f4f4 100%);
+
+  :global {
+    .at-input__title {
+      font-size: 30rpx !important;
+      font-weight: bold;
+    }
+
+    .item-content__info-title {
+      font-size: 30rpx !important;
+      font-weight: bold;
+    }
+
+    .at-input__input,
+    .item-extra__info,
+    .at-textarea__textarea {
+      font-size: 30rpx !important;
+    }
+  }
+}
+
+.concatInfo {
+  position: relative;
+  z-index: 2;
+  // height: 200px;
+  border-radius: 20px;
+  overflow: hidden;
+  background: #ffffff;
+  transform: translateY(-80px);
+  margin-bottom: -54px;
+}
+
+.cusInput {
+  text-align: right;
+}
+
+.unRequiredCusinput {
+  :global {
+    label {
+      &::before {
+        display: inline-block;
+        margin-right: 16px;
+        color: transparent;
+        font-size: 28rpx;
+        font-family: SimSun, sans-serif;
+        line-height: 1;
+        content: '*';
+      }
+    }
+  }
+}
+
+.factoryInfo {
+  background: #ffffff;
+  border-radius: 20px;
+  overflow: hidden;
+}
+
+.timeListItem {
+  display: flex;
+  align-items: center;
+  padding-right: 16px !important;
+
+  :global {
+    .at-list__item-content {
+      min-width: 164px;
+      flex: none !important;
+    }
+
+    .at-list__item-container {
+      justify-content: space-between;
+      width: 100%;
+    }
+
+    .item-extra__info {
+      padding-right: 0 !important;
+    }
+
+    .at-list__item-extra {
+      width: 400px !important;
+      max-width: 400px !important;
+    }
+  }
+
+  &::before {
+    display: inline-block;
+    margin-right: 16px;
+    color: #ff4949;
+    font-size: 28rpx;
+    font-family: SimSun, sans-serif;
+    line-height: 1;
+    content: '*';
+  }
+}
+
+.placeholder {
+  :global {
+    .item-extra__info {
+      color: #cccccc;
+    }
+  }
+}
+
+.processingInfo {
+  background: #ffffff;
+  border-radius: 20px;
+  overflow: hidden;
+  margin-top: 24px;
+  height: fit-content;
+}
+
+.cusItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 96px;
+}
+
+.radioText {
+  font-size: 38px;
+  color: #333333;
+  padding-right: 18px;
+
+  &::after {
+    content: '';
+    position: absolute;
+    transform-origin: center;
+    box-sizing: border-box;
+    pointer-events: none;
+    top: auto;
+    left: 24rpx;
+    right: 0;
+    bottom: 0;
+    transform: scaleY(0.5);
+    border-bottom: 2px solid #d6e4ef;
+  }
+}
+
+.cusFormItem {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 96px;
+  box-sizing: border-box;
+  padding-right: 24px;
+
+  &::after {
+    content: '';
+    position: absolute;
+    transform-origin: center;
+    box-sizing: border-box;
+    pointer-events: none;
+    top: auto;
+    left: 24rpx;
+    right: 0;
+    bottom: 0;
+    transform: scaleY(0.5);
+    border-bottom: 2px solid #d6e4ef;
+  }
+}
+
+.cusFormTextArea {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-start;
+  box-sizing: border-box;
+  padding: 24px 24px 40px 0;
+
+  &::after {
+    content: '';
+    position: absolute;
+    transform-origin: center;
+    box-sizing: border-box;
+    pointer-events: none;
+    top: auto;
+    left: 24rpx;
+    right: 0;
+    bottom: 0;
+    transform: scaleY(0.5);
+    border-bottom: 2px solid #d6e4ef;
+  }
+}
+
+.cusFormTextArea2 {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-start;
+  box-sizing: border-box;
+  padding: 24px 24px 40px 0;
+}
+
+.cusLabel {
+  margin-left: 32px;
+  min-width: 164px;
+  margin-right: 16px;
+  font-size: 30px;
+  font-weight: bold;
+  color: #333333;
+}
+
+.required {
+  &::before {
+    display: inline-block;
+    margin-right: 16px;
+    color: #ff4949;
+    font-size: 28rpx;
+    font-family: SimSun, sans-serif;
+    line-height: 1;
+    content: '*';
+  }
+}
+
+.unRequired {
+  &::before {
+    display: inline-block;
+    margin-right: 16px;
+    color: transparent;
+    font-size: 28rpx;
+    font-family: SimSun, sans-serif;
+    line-height: 1;
+    content: '*';
+  }
+}
+
+.cusValue {
+  max-width: 400px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 30px;
+}
+
+.cusPlaceholder {
+  color: #cccccc;
+  font-size: 30px;
+}
+
+.cusTextarea {
+  // text-align: right;
+  margin: 24px 0 0 56px;
+  width: -webkit-fill-available;
+}
+
+.btn {
+  margin: 32px 32px 64px;
+  background: #3b80ff !important;
+}
+
+.addon {
+  color: #333333 !important;
+  font-weight: bold;
+  font-size: 30px !important;
+}
+
+.photos {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, 25%);
+  padding: 0 24px;
+}
+
+.photoTitle {
+  font-size: 24px;
+  color: #999999;
+  padding-left: 32px;
+  padding-bottom: 10px;
+}
+
+.photoInfo {
+  background: #ffffff;
+  border-radius: 20px;
+  overflow: hidden;
+  margin-top: 24px;
+  height: fit-content;
+
+  :global {
+    .at-image-picker__flex-box {
+      padding: 0 !important;
+      flex-direction: column;
+      overflow: hidden;
+      width: 140px;
+      height: 140px;
+    }
+
+    .at-image-picker__flex-item {
+      margin-left: 0 !important;
+      box-sizing: border-box;
+      border: 2px solid #e9e9e9;
+      border-radius: 8px;
+    }
+
+    .at-image-picker__choose-btn {
+      border: 1px solid #e9e9e9 !important;
+    }
+  }
+}
+
+.photoBox {
+  padding-left: 32px;
+}
+
+.logoPhotoBox {
+  padding-left: 24px;
+}
+
+.imgs {
+  margin-bottom: 28px;
+}

@@ -4,12 +4,14 @@ import { isArray } from 'lodash'
 import { useStores, observer, toJS } from '@/store/mobx'
 import { useEffect, useState } from 'react'
 import { matchTreeData } from '@/utils/tool'
+import moment from 'moment'
 
 const LOCATION_ICON =
   'https://capacity-platform.oss-cn-hangzhou.aliyuncs.com/capacity-platform/mobile/icon/diqu_bai.png'
 
 const Card = props => {
   const { data, type } = props
+  // type 0 订单 1 工厂
   const img = type === 0 ? data.stylePicture : data.pictureUrl
   const title = type === 0 ? data.name : data.factoryName
   const area = type === 0 ? data.enterpriseAreaName : data.factoryDistrict
@@ -50,7 +52,9 @@ const Card = props => {
             return target.label
           })) ||
         []
-      setProcessTypes([].concat(arr, data.factoryCategoryList))
+
+      const factoryCategoryList = data.factoryCategoryList || []
+      setProcessTypes([].concat(arr, factoryCategoryList))
     }
   }, [processType, type, data, productCategoryList])
 
@@ -60,9 +64,27 @@ const Card = props => {
       <View className={styles.cardInfo}>
         <View className={styles.titleBox}>
           <Text className={styles.cardTitle}>{title}</Text>
-
-          {/* <Text className={styles.rightText}>200人</Text> */}
         </View>
+        {type === 1 ? (
+          <View>
+            <Text className={styles.label}>有效车位</Text>
+            <Text className={styles.effective}>
+              {data.effectiveLocation || '--'}人
+            </Text>
+          </View>
+        ) : (
+          <View>
+            <Text className={styles.cusTag1}>
+              {data.goodsNum ? data.goodsNum.replace(',', '~') : '--'}&nbsp;件
+            </Text>
+            <Text className={styles.cusTag2}>
+              {data.inquiryEffectiveDate
+                ? moment(data.inquiryEffectiveDate).format('YYYY-MM-DD')
+                : ''}
+            </Text>
+          </View>
+        )}
+
         <View className={styles.cardTags}>
           {isArray(processTypes) &&
             processTypes.slice(0, 3).map((item, idx) => (
@@ -80,10 +102,6 @@ const Card = props => {
               {area ? area.replace(/,/g, ' ') : ''}
             </Text>
           </View>
-
-          {/* <Text className={styles.rightText}>
-            {+type === 0 ? '长久有效' : ''}
-          </Text> */}
         </View>
       </View>
     </View>

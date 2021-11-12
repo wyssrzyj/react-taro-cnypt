@@ -91,11 +91,11 @@ export default class UserInterface {
     }
   }
 
-  // 订单列表数据展示
+  // 申请列表数据展示
   @action listData = async params => {
     try {
       const res: Partial<Response> = await HTTP.post(
-        '/api/oms/inquiry-purchase/inquiry-list',
+        '/api/oms/inquiry-purchase/inquiry-application-list',
         params
       )
       console.log('成功', res)
@@ -149,7 +149,105 @@ export default class UserInterface {
       return false
     }
   }
+  // 删除发单商需求单记录
+  @action deleteIssuer = async params => {
+    try {
+      const res: Partial<Response> = await HTTP.get(
+        `/api/oms/inquiry-purchase/delete-purchaser-record`,
+        params
+      )
+      const { data = {}, msg = '' } = res
 
+      if (data) {
+        runInAction(() => {
+          this.currentUser = data
+        })
+        Taro.setStorage({
+          key: 'userInfo',
+          data: JSON.stringify(data)
+        })
+      }
+      if (res.code !== 200) {
+        Taro.atMessage({
+          message: msg,
+          type: 'error'
+        })
+      }
+      return res
+    } catch (e) {
+      console.log(e)
+    }
+  }
+  // 取消合作
+  @action cancelCooperation = async params => {
+    try {
+      const res: Partial<Response> = await HTTP.post(
+        `/api/oms/inquiry-purchase/cancel-cooperation`,
+        params
+      )
+      Taro.showToast({
+        title: res.msg as string,
+        icon: 'none',
+        duration: 1500
+      })
+
+      return res
+    } catch (e) {
+      Taro.showToast({
+        title: e.msg as string,
+        icon: 'none',
+        duration: 1500
+      })
+      return e
+    }
+  }
+
+  // 确认合作
+
+  @action confirmCooperation = async params => {
+    try {
+      const res: Partial<Response> = await HTTP.post(
+        `/api/oms/inquiry-purchase/confirm-cooperation`,
+        params
+      )
+      Taro.showToast({
+        title: res.msg as string,
+        icon: 'none',
+        duration: 1500
+      })
+      return res
+    } catch (e) {
+      Taro.showToast({
+        title: e.msg as string,
+        icon: 'none',
+        duration: 1500
+      })
+      return e
+    }
+  }
+  // 谢绝
+
+  @action declineRequisition = async params => {
+    try {
+      const res: Partial<Response> = await HTTP.post(
+        `/api/oms/inquiry-purchase/decline-inquiry-application`,
+        params
+      )
+      Taro.showToast({
+        title: res.msg as string,
+        icon: 'none',
+        duration: 1500
+      })
+      return res
+    } catch (e) {
+      Taro.showToast({
+        title: e.msg as string,
+        icon: 'none',
+        duration: 1500
+      })
+      return e
+    }
+  }
   @action userInfo = async () => {
     try {
       const res: Partial<Response> = await HTTP.get(

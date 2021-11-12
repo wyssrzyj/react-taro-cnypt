@@ -5,7 +5,7 @@ export const findTarget = (val, data, key = 'id', name = 'name') => {
   // data 数据
   for (let i = 0; i < data.length; i++) {
     const item = data[i] //获取循环所有原始的数据
-    if (item[key] === val) {
+    if (item[key] === val.toString()) {
       //原始数据==没有被勾选的数据
       //当前数据的id===传递来的数据
       return item[name]
