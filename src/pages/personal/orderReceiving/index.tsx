@@ -17,23 +17,18 @@ const Verify = () => {
     deleteIssuer
   } = userInterface
   const { params } = useRouter()
-  console.log(params)
-
   // 跳转的数据
   const [value, setValue] = useState('')
   const [current, setCurrent] = useState(0)
   const [rallyists, setReallyLists] = useState([]) //数据
-  const [state, setstate] = useState(params.tid) //数据
   // 2 3 -2
   // 接口数据
   const [list, setList] = useState<any>({
     pageNum: 1,
     pageSize: defaultPageSize,
-    status: state //状态
+    status: params.tid //状态
   })
-  useEffect(() => {
-    console.log(params)
-  }, [params, state])
+
   // 路由状态
   useEffect(() => {
     if (Number(params.tid)) {
@@ -69,19 +64,26 @@ const Verify = () => {
   }
   // tabs
   const AtTabsbind = e => {
-    console.log(e)
+    let sum = '0'
     if (e === 0) {
-      setstate('')
+      sum = ''
     }
     if (e === 1) {
-      setstate('2')
+      sum = '2'
     }
     if (e === 2) {
-      setstate('3')
+      sum = '3'
     }
     if (e === 3) {
-      setstate('-2')
+      sum = '-2'
     }
+    console.log(sum)
+    setList({
+      pageNum: 1,
+      pageSize: defaultPageSize,
+      status: sum, //状态,
+      supplierName: value
+    })
 
     setCurrent(e)
   }
@@ -127,6 +129,12 @@ const Verify = () => {
       api()
     }
   }
+  const searchConfirmation = () => {
+    console.log(value)
+    let res = { ...list, supplierName: value }
+    setList(res)
+    console.log('确认')
+  }
 
   return (
     <View className={styles.phoneLogin}>
@@ -142,7 +150,11 @@ const Verify = () => {
       </View>
       {/* 搜索 */}
       <View className={styles.search}>
-        <AtSearchBar value={value} onChange={bind} />
+        <AtSearchBar
+          value={value}
+          onActionClick={searchConfirmation}
+          onChange={bind}
+        />
       </View>
       {/* Tobs标签 */}
       <AtTabs current={current} tabList={tabList} onClick={AtTabsbind} />
