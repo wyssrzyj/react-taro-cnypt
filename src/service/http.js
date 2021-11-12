@@ -9,7 +9,6 @@ class httpRequest {
     try {
       var authorization = await Taro.getStorageSync('token')
       var refresh_token = await Taro.getStorageSync('refresh')
-
       if (value) {
         // Do something with return value
       }

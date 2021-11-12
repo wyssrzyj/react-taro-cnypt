@@ -60,9 +60,11 @@ const Verify = () => {
   }
 
   const timerRun = () => {
-    const t = setInterval(() => {
-      setLastTime(n => n - 1)
-    }, 1000)
+    const t =
+      (() => {
+        setLastTime(n => n - 1)
+      },
+      1000)
     setTimer(t)
   }
 
@@ -88,7 +90,7 @@ const Verify = () => {
         })
 
         res &&
-          Taro.navigateTo({
+          Taro.redirectTo({
             url: `/pages/login/findPwd/reset?phone=${params.phone}&code=${verify}`
           })
       }

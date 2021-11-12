@@ -1,6 +1,6 @@
 import { useEffect, useState, useRef } from 'react'
 import { View, Image, Swiper, SwiperItem, Text } from '@tarojs/components'
-import { useStores, observer } from '@/store/mobx'
+import { useStores, observer, toJS } from '@/store/mobx'
 import styles from './index.module.less'
 import { usePullDownRefresh, useReachBottom } from '@tarojs/taro'
 import TabBar from '@/components/tabBar'
@@ -124,7 +124,10 @@ const Home = () => {
       setLoading(true)
       const nData = cloneDeep(dataSource)
       const fn = activeTab === 0 ? getOrderList : getNewFactory
+      console.log(pageNum)
       const res = (await fn(pageNum)) || {}
+      console.log(res)
+
       const { records = [], current = 1, total = 0 } = res
       const target = current === 1 ? records : [...nData, ...records]
       setDataSource(target)
@@ -231,7 +234,6 @@ const Home = () => {
             </SwiperItem>
           ))}
         </Swiper>
-
         {isNil(currentUser.enterpriseType) ? (
           <View className={styles.unImgs}>
             {isNilConfigs.map((item, idx) => (
@@ -267,15 +269,12 @@ const Home = () => {
             ))}
           </View>
         )}
-
         <View className={styles.title}>
           {activeTab === 0 ? '最新订单' : '最新工厂'}
         </View>
-
         {dataSource.map((data, idx) => {
           return <Card key={idx} data={data} type={activeTab}></Card>
         })}
-
         {dataSource.length >= total && init && (
           <View className={styles.noMoreText}>没有更多了</View>
         )}

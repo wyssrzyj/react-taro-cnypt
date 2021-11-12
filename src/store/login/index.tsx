@@ -60,6 +60,8 @@ export default class LoginStore {
         '/api/user/account/login',
         params
       )
+      console.log(res)
+
       const { data = {}, msg = '' } = res
       if (data) {
         Taro.setStorage({

@@ -21,7 +21,7 @@ const Factory = () => {
   ]
 
   const changePage = url => {
-    Taro.navigateTo({ url })
+    Taro.redirectTo({ url })
   }
 
   return (

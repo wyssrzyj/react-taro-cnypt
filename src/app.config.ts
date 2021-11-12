@@ -1,4 +1,5 @@
 export default {
+<<<<<<< HEAD
   pages: ['pages/index/index'],
   subpackages: [
     {
@@ -53,6 +54,25 @@ export default {
       root: 'pages/test',
       pages: ['index']
     }
+=======
+  pages: [
+    'pages/index/index',
+    'pages/factory/index',
+    'pages/orders/index',
+    'pages/personal/index',
+    'pages/login/index',
+    'pages/login/phoneLogin/index',
+    'pages/login/phoneLogin/setPwd',
+    'pages/login/pwdLogin/index',
+    'pages/login/findPwd/index',
+    'pages/login/findPwd/verify',
+    'pages/login/findPwd/reset',
+    'pages/personal/myEexcellentProduct/index',
+    'pages/personal/accountNumber/index',
+    'pages/personal/modifyMobilePhoneNumber/index',
+    'pages/personal/resetPassword/index',
+    'pages/personal/orderReceiving/index'
+>>>>>>> dev_lyj
   ],
   window: {
     backgroundTextStyle: 'light',

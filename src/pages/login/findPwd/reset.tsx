@@ -46,12 +46,15 @@ const Verify = () => {
       code: params.code,
       password: base64Js.fromByteArray(Buffer.from(pwd))
     }
-    const res = await resetPwd(param)
-    res &&
-      Taro.navigateTo({
-        url: '/pages/login/pwdLogin/index'
-      })
     console.log(param)
+    const res = await resetPwd(param)
+    console.log('8888', res)
+
+    // res &&
+    //   Taro.redirectTo({
+    //     url: '/pages/login/pwdLogin/index'
+    //   })
+    // console.log(param)
   }
 
   return (

@@ -20,7 +20,7 @@ const CusTabs = () => {
 
   const changePage = url => {
     if (router?.path !== url) {
-      Taro.navigateTo({
+      Taro.redirectTo({
         url
       })
     }

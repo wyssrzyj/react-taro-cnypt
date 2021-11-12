@@ -2,6 +2,7 @@ import styles from './index.module.less'
 import { View, Image, Text, Button } from '@tarojs/components'
 import Taro from '@tarojs/taro'
 import { Icon } from '@/components/index'
+import { AtNavBar } from 'taro-ui'
 
 const Login = () => {
   const getPhoneNumber = event => {
@@ -23,14 +24,33 @@ const Login = () => {
   }
 
   const toPhoneLogin = () => {
-    Taro.navigateTo({ url: '/pages/login/phoneLogin/index' })
+    Taro.redirectTo({ url: '/pages/login/phoneLogin/index' })
   }
 
   return (
     <View>
-      <Image src={''} className={styles.img}></Image>
-      <View className={styles.loginTip}>你还没有登录账号</View>
-      <View className={styles.loginTip}>请使用微信或账号登录</View>
+      {/* top */}
+      <View className={styles.navbar}>
+        <AtNavBar color="#000" title="登录" />
+      </View>
+      {/* img  */}
+      <View className={styles.imgFather}>
+        <Image
+          className={styles.img}
+          src="https://capacity-platform.oss-cn-hangzhou.aliyuncs.com/capacity-platform/mobile/index/logo.png"
+        />
+        <Text className={styles.text}>优产云平台</Text>
+      </View>
+      {/* 内容 */}
+      <View className={styles.content}>
+        <Image
+          src={
+            'https://capacity-platform.oss-cn-hangzhou.aliyuncs.com/capacity-platform/mobile/index/dlxz.png'
+          }
+          className={styles.contentImg}
+        ></Image>
+      </View>
+      {/* 按钮 */}
       <Button
         type={'primary'}
         className={styles.wechatBtn}
