@@ -164,6 +164,24 @@ const Home = () => {
     })
   }
 
+  const toFactoryDetail = () => {
+    Taro.navigateTo({
+      url: '/pages/factoryDetail/index'
+    })
+  }
+
+  const toOrderDetail = () => {
+    Taro.navigateTo({
+      url: '/pages/orderDetail/index'
+    })
+  }
+
+  const toOrderIssueDetail = () => {
+    Taro.navigateTo({
+      url: '/pages/orderIssueDetail/index'
+    })
+  }
+
   return (
     <View className={styles.container} ref={containerRef}>
       <Navbar>
@@ -192,6 +210,9 @@ const Home = () => {
       <Button onClick={toFactoryEntry}>工厂入驻</Button>
       <Button onClick={toOrderEntry}>发单商入驻</Button>
       <Button onClick={toPublish}>发布订单</Button>
+      <Button onClick={toFactoryDetail}>工厂详情</Button>
+      <Button onClick={toOrderDetail}>订单详情</Button>
+      <Button onClick={toOrderIssueDetail}>发单商详情</Button>
       <Button onClick={toTest}>test</Button>
 
       <View className={styles.content}>

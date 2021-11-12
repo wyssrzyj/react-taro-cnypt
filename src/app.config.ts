@@ -1,20 +1,58 @@
 export default {
-  pages: [
-    'pages/index/index',
-    'pages/factory/index',
-    'pages/orders/index',
-    'pages/personal/index',
-    'pages/login/index',
-    'pages/login/phoneLogin/index',
-    'pages/login/phoneLogin/setPwd',
-    'pages/login/pwdLogin/index',
-    'pages/login/findPwd/index',
-    'pages/login/findPwd/verify',
-    'pages/login/findPwd/reset',
-    'pages/factoryEntry/index',
-    'pages/orderIssueEntry/index',
-    'pages/publish/index',
-    'pages/test/index'
+  pages: ['pages/index/index'],
+  subpackages: [
+    {
+      root: 'pages/login', //登录页面
+      pages: [
+        'index',
+        'phoneLogin/index',
+        'phoneLogin/setPwd',
+        'pwdLogin/index',
+        'findPwd/index',
+        'findPwd/verify',
+        'findPwd/reset'
+      ]
+    },
+    {
+      root: 'pages/factory', //
+      pages: ['index']
+    },
+    {
+      root: 'pages/orders', // 找订单
+      pages: ['index']
+    },
+    {
+      root: 'pages/personal', // 我的
+      pages: ['index']
+    },
+    {
+      root: 'pages/factoryEntry', // 工厂入驻
+      pages: ['index']
+    },
+    {
+      root: 'pages/orderIssueEntry', // 发单商入驻
+      pages: ['index']
+    },
+    {
+      root: 'pages/publish', // 发布订单
+      pages: ['index']
+    },
+    {
+      root: 'pages/factoryDetail', // 工厂详情
+      pages: ['index']
+    },
+    {
+      root: 'pages/orderDetail', // 订单详情
+      pages: ['index']
+    },
+    {
+      root: 'pages/orderIssueDetail', // 发单商详情
+      pages: ['index']
+    },
+    {
+      root: 'pages/test',
+      pages: ['index']
+    }
   ],
   window: {
     backgroundTextStyle: 'light',

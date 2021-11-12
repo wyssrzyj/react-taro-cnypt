@@ -25,6 +25,7 @@ import {
 } from '@/components'
 import { matchTreeData } from '@/utils/tool'
 import OSS from '@/utils/oss'
+import { upload } from '@/utils/upload'
 
 const BACK_ICON =
   'https://capacity-platform.oss-cn-hangzhou.aliyuncs.com/capacity-platform/mobile/icon/back.png'
@@ -175,64 +176,23 @@ const FactoryEntry = () => {
     setParams(nParams)
   }
 
-  const imgsChange = (value, field) => {
+  const imgsChange = async (value, field) => {
     const nParams = cloneDeep(params)
-
-    const file = customRequest(value[0])
-
-    // nParams[field] = value
-    // setParams(nParams)
+    const allImgs: any = []
+    value.forEach(item => {
+      allImgs.push(customRequest(item))
+    })
+    await Promise.all(allImgs).then(res => {
+      nParams[field] = res
+      setParams(nParams)
+    })
   }
 
-  const customRequest = async ({ file }) => {
-    console.log(window, 'window~~~~~~~~~~~~~~~~~~~~')
-    console.log(File, 'File~~~~~~~~~~~~~~~~~~~~')
-    const img = await imgToBase64(file)
-    // const res = await OSS.put(`/capacity-platform/platform/`, img)
-    // if (res) {
-    //   const { url, name } = res
-    //   return { name: name, url }
-    // }
-  }
-
-  const imgToBase64 = async ({ path }) => {
-    let res
-    try {
-      // const base64 = Taro.getFileSystemManager().readFileSync(path, 'base64')
-      const base64 = Taro.getFileSystemManager().readFileSync(path, 'base64')
-      const buffer = Taro.base64ToArrayBuffer(base64 as string)
-
-      console.log(
-        '🚀 ~ file: index.tsx ~ line 207 ~ imgToBase64 ~ buffer',
-        buffer
-      )
-
-      // const data = Taro.base64ToArrayBuffer(base64 as string)
-      if (base64) {
-        // res = 'data:image/jpeg;base64,' + base64
-        res = base64
-        const r = dataURLtoFile(res, 'img')
-        console.log('🚀 ~ file: index.tsx ~ line 214 ~ imgToBase64 ~ r', r)
-      }
-    } catch (error) {
-      console.warn('=> utilssearch.ts error imgToBase64', error)
-      throw error
-    } finally {
-      return res
+  const customRequest = async ({ url }) => {
+    const imgUrl = await upload(url)
+    return {
+      url: imgUrl
     }
-  }
-
-  const dataURLtoFile = (dataurl, filename) => {
-    var arr = dataurl.split(','),
-      mime = arr[0].match(/:(.*?);/)[1],
-      bstr = atob(arr[1]),
-      n = bstr.length,
-      u8arr = new Uint8Array(n)
-    while (n--) {
-      u8arr[n] = bstr.charCodeAt(n)
-    }
-
-    return new File([u8arr], filename, { type: mime })
   }
 
   const onSubmit = () => {
@@ -340,19 +300,6 @@ const FactoryEntry = () => {
     }
   }, [params.materialTypeValues])
 
-  // typeOptions
-  // getProductType factoryProcessTypeList
-  const getProductType = useMemo(() => {
-    if (isArray(params.factoryProcessTypeList)) {
-      return params.factoryProcessTypeList.reduce((prev, item, idx) => {
-        const target = typeOptions.find(i => i.value === item) || {}
-        return (
-          prev + (target.label ? `${idx !== 0 ? '、' : ''}${target.label}` : '')
-        )
-      }, '')
-    }
-  }, [params.factoryProcessTypeList])
-
   const getLabels = (options, field) => {
     if (isArray(params[field])) {
       return params[field].reduce((prev, item, idx) => {
@@ -363,6 +310,8 @@ const FactoryEntry = () => {
       }, '')
     }
   }
+
+  console.log(params, 'params')
 
   return (
     <View>
@@ -658,6 +607,7 @@ const FactoryEntry = () => {
                   onChange={event => imgsChange(event, item.field)}
                   count={3}
                   sizeType={['70']}
+                  multiple={false}
                   showAddBtn={
                     params[item.field] && params[item.field].length >= 3
                       ? false

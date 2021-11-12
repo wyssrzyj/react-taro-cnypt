@@ -18,6 +18,7 @@ import classNames from 'classnames'
 import { useStores, observer } from '@/store/mobx'
 import { CusProductModal, CusModal, ImagePicker } from '@/components'
 import { matchTreeData } from '@/utils/tool'
+import { upload } from '@/utils/upload'
 
 const BACK_ICON =
   'https://capacity-platform.oss-cn-hangzhou.aliyuncs.com/capacity-platform/mobile/icon/back.png'
@@ -105,12 +106,23 @@ const FactoryEntry = () => {
     setParams(nParams)
   }
 
-  const imgsChange = (value, field) => {
-    console.log('🚀 ~ file: index.tsx ~ line 109 ~ imgsChange ~ value', value)
+  const imgsChange = async (value, field) => {
     const nParams = cloneDeep(params)
-    // const file = customRequest(value[0])
-    nParams[field] = value
-    setParams(nParams)
+    const allImgs: any = []
+    value.forEach(item => {
+      allImgs.push(customRequest(item))
+    })
+    await Promise.all(allImgs).then(res => {
+      nParams[field] = res
+      setParams(nParams)
+    })
+  }
+
+  const customRequest = async ({ url }) => {
+    const imgUrl = await upload(url)
+    return {
+      url: imgUrl
+    }
   }
 
   const onSubmit = () => {

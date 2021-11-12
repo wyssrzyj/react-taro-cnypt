@@ -1,12 +1,5 @@
 import styles from './index.module.less'
-import {
-  View,
-  Swiper,
-  SwiperItem,
-  Image,
-  Text,
-  Button
-} from '@tarojs/components'
+import { View, Image, Text, Button } from '@tarojs/components'
 import Taro from '@tarojs/taro'
 import { Icon } from '@/components/index'
 

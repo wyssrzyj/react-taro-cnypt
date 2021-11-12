@@ -41,21 +41,6 @@ const Card = props => {
         []
       setProcessTypes([].concat(types, products))
     }
-
-    if (type === 1) {
-      const arr =
-        (isArray(data.processTypeList) &&
-          data.processTypeList.map(item => {
-            const target =
-              processType.find(i => +i.value === +item.processType) || {}
-
-            return target.label
-          })) ||
-        []
-
-      const factoryCategoryList = data.factoryCategoryList || []
-      setProcessTypes([].concat(arr, factoryCategoryList))
-    }
   }, [processType, type, data, productCategoryList])
 
   return (
