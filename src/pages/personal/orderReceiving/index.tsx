@@ -4,11 +4,14 @@ import { View } from '@tarojs/components'
 import { AtNavBar, AtSearchBar, AtTabs } from 'taro-ui'
 import { useReachBottom, useRouter, redirectTo } from '@tarojs/taro'
 import StyleStructure from './styleStructure/index'
-import { useStores } from '@/store/mobx'
+import { useStores, toJS, observer } from '@/store/mobx'
 
 const Verify = () => {
   const defaultPageSize = 10
-  const { userInterface } = useStores()
+  const { userInterface, commonStore } = useStores()
+  const { dictionary } = commonStore
+  const { processType, effectiveLocation } = dictionary
+
   const { listData } = userInterface
   const { params } = useRouter()
   // 跳转的数据
@@ -23,11 +26,18 @@ const Verify = () => {
   })
   useEffect(() => {
     console.log(123)
+    console.log('multipleSelect加工类型', toJS(processType))
+    console.log('effectiveLocation车位', toJS(effectiveLocation))
+
     api()
   }, [list])
   const api = async () => {
     let res = await listData(list)
-    console.log('列表数据', res.records)
+    if (Array.isArray(res.records)) {
+      res.records.forEach(item => {
+        console.log('列表数据', item)
+      })
+    }
   }
   // 搜索
   const bind = e => {
@@ -82,4 +92,4 @@ const Verify = () => {
   )
 }
 
-export default Verify
+export default observer(Verify)
