@@ -4,7 +4,7 @@ import { isArray } from 'lodash'
 import { useStores, observer } from '@/store/mobx'
 import { useEffect, useState } from 'react'
 import { matchTreeData } from '@/utils/tool'
-import moment from '_moment@2.29.1@moment'
+import moment from 'moment'
 
 const LOCATION_ICON =
   'https://capacity-platform.oss-cn-hangzhou.aliyuncs.com/capacity-platform/mobile/icon/diqu_bai.png'

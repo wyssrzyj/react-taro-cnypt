@@ -2,6 +2,7 @@ import { View, Text } from '@tarojs/components'
 import { AtGrid } from 'taro-ui'
 import styles from './index.module.less'
 import Taro from '@tarojs/taro'
+
 function index() {
   const btn = e => {
     console.log(e)
@@ -60,7 +61,7 @@ function index() {
   ]
   return (
     <View>
-      <View className={styles.order}>
+      {/* <View className={styles.order}>
         <Text className={styles.text}>我的订单</Text>
       </View>
       <View className={styles.orders}>
@@ -75,7 +76,7 @@ function index() {
       </View>
       <View className={styles.orders}>
         <AtGrid onClick={btn} hasBorder={false} data={data} />
-      </View>
+      </View> */}
     </View>
   )
 }
