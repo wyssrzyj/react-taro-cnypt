@@ -15,6 +15,7 @@ export default {
     'pages/personal/accountNumber/index',
     'pages/personal/modifyMobilePhoneNumber/index',
     'pages/personal/resetPassword/index',
+    'pages/personal/orderManagement/index',
     'pages/personal/orderReceiving/index'
   ],
   window: {

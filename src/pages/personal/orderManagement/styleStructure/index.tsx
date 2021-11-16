@@ -8,27 +8,51 @@ import {
   AtModalAction
 } from 'taro-ui'
 import { View, Text, Image, Button } from '@tarojs/components'
-import Taro from '@tarojs/taro'
+import Taro, { login } from '@tarojs/taro'
 
 import { useStores, toJS, observer } from '@/store/mobx'
 import { getTrees } from '../method'
-// import { isArray, isEmpty } from 'lodash'
-function index({ data, deleteMethod, reOrder, InitiateOrder, earlyEnd }) {
+import { cloneDeep } from 'lodash'
+let Simg = 'http://dev.uchat.com.cn:8002/images/b140ef.png'
+
+function index({ data, deleteMethod, earlyEnd }) {
   const { commonStore } = useStores()
-  const { dictionary } = commonStore
-  const { processType } = dictionary
-  const [category, setCategory] = useState<any>([])
+  const { dictionary, district = [] } = commonStore
+  const { processType, goodsNum = [] } = dictionary
+
+  const [category, setCategory] = useState<any>(
+    getTrees(data.processTypeList, toJS(processType), 'value', 'label')
+  )
   const [windowType, setWindowType] = useState<any>({}) //弹窗类型
   const [popup, setPopup] = useState(false) //弹窗类型
+  const [region, setRegion] = useState('不限') //地区
 
+  // 订单量
+  const dingdong = v => {
+    return goodsNum.filter(item => item.value === v)[0].label
+  }
   useEffect(() => {
-    if (data.processTypeValues) {
+    if (data) {
       // 加工类型
       setCategory(
-        getTrees(data.processTypeValues, toJS(processType), 'value', 'label')
+        getTrees(data.processTypeList, toJS(processType), 'value', 'label')
       )
     }
+    // 地区
+    if (data.regionalIdList) {
+      setRegion(
+        getTrees(data.regionalIdList, toJS(district), 'value', 'label').join(
+          '、'
+        )
+      )
+    } else {
+      setRegion('不限')
+    }
   }, [])
+  {
+    /* -1 草稿箱 1 提交需求单 -2审核失败 -3已结束 */
+  }
+  //  data.status
   const sortColor = new Map()
   sortColor.set(2, styles.red)
   sortColor.set(3, styles.green)
@@ -36,7 +60,7 @@ function index({ data, deleteMethod, reOrder, InitiateOrder, earlyEnd }) {
   sortColor.set(-2, styles.black)
   sortColor.set(-1, styles.blue)
   let map = new Map()
-  map.set(1, '') //设置
+  map.set(1, '等待回复') //设置
   map.set(2, '待反馈') //设置
   map.set(3, '已确认') //设置
   map.set(-2, '已谢绝') //设置
@@ -48,81 +72,69 @@ function index({ data, deleteMethod, reOrder, InitiateOrder, earlyEnd }) {
     setPopup(true)
     setWindowType({ type: 'mov' })
   }
-  // 取消确认
-  const CancelConfirmation = () => {
-    setPopup(true)
-    setWindowType({ type: 'CancelConfirmation' })
-  }
-  // 确认合作
-  const confirmCooperation = () => {
-    setPopup(true)
-    setWindowType({ type: 'confirmCooperation' })
-  }
-  // 谢绝
+  // 提前结束
   const decline = () => {
     setPopup(true)
-    setWindowType({ type: 'decline' })
+    setWindowType({ type: 'end' })
   }
   const cancel = () => {
     setPopup(false)
   }
   const confirmButton = async () => {
     if (windowType.type === 'mov') {
+      console.log('删除订单', data.id)
       // 删除订单
       deleteMethod(data.id)
     }
-    if (windowType.type === 'CancelConfirmation') {
-      // 取消确认
-
-      reOrder(data.id)
-    }
-    if (windowType.type === 'confirmCooperation') {
-      // 确认合作
-
-      InitiateOrder(data.id)
-    }
-    if (windowType.type === 'decline') {
-      // 谢绝
+    if (windowType.type === 'end') {
+      // 提前结束
       earlyEnd(data.id)
     }
     setPopup(false)
   }
-  // 电话
-  const call = () => {
-    Taro.makePhoneCall({
-      phoneNumber: '10086' //仅为示例，并非真实的电话号码
-    }).then()
+  // 再来一单
+  const oneMoreOrder = () => {
+    console.log('再来一单')
+  }
+  //查看原因
+  const viewReason = () => {
+    console.log('查看原因')
   }
 
   return (
     //   主体
     <View className={styles.external}>
-      <View className={styles.line}></View>
-
       <View className={styles.major}>
-        {/* 头部 */}
-        <View className={styles.top}>
-          <View className={styles.content}>
-            <View className={styles.factorys}>{data.name}</View>
-            <AtIcon value="chevron-right" size="15" color="#999999"></AtIcon>
-          </View>
-          <View className={sortColor.get(data.status)}>
-            {map.get(data.status)}
-          </View>
-        </View>
-        <View className={styles.line}></View>
         {/* 主体 */}
         <View className={styles.subject}>
           {/* img */}
-          <Image className={styles.img} src={data.pictureUrl} alt="" />
+
           <View>
-            <Text className={styles.factory}>{data.enterpriseName}</Text>
+            {+data.status === 1 ? (
+              <View className={styles.state}>生效中</View>
+            ) : null}
+            {+data.status === -3 ? (
+              <View className={styles.ended}>已结束</View>
+            ) : null}
+            {+data.status === -2 ? (
+              <View className={styles.fail}>审核失败</View>
+            ) : null}
+
+            <Image
+              className={styles.img}
+              src={data.pictureUrl ? data.pictureUrl : Simg}
+              alt=""
+            />
+          </View>
+          <View>
+            <Text className={styles.factory}>{data.name}</Text>
             <View>
               <Text>
-                <Text className={styles.parking}>有效车位:</Text>
-                <Text className={styles.quantity}>
-                  　{data.effectiveLocation} 人
+                <Text className={styles.parking}>
+                  {dingdong(data.goodsNum)}
                 </Text>
+                <Text className={styles.parking}> | </Text>
+                <Text className={styles.quantity}>长期有效</Text>
               </Text>
             </View>
             <View className={styles.machining}>
@@ -132,69 +144,85 @@ function index({ data, deleteMethod, reOrder, InitiateOrder, earlyEnd }) {
             </View>
             <View className={styles.addressExternal}>
               <AtIcon value="map-pin" size="15" color="#999999"></AtIcon>
-              <Text className={styles.region}>
-                {data.factoryDistrict ? data.factoryDistrict : '暂无'}
-              </Text>
+              <Text className={styles.region}>{region}</Text>
             </View>
           </View>
         </View>
         <View className={styles.line}></View>
         {/* 信息 */}
         <View className={styles.informationFather}>
-          <View className={styles.flex}>
-            <View className={styles.information}>报价信息</View>
-            <View>{data.quoteInfo ? data.quoteInfo : '暂无'}</View>
+          <View className={styles.feedback}>
+            <Text>
+              待处理
+              <Text className={styles.quantity}>
+                　{data.enterprisePendingNum ? data.enterprisePendingNum : '0'}
+                　
+              </Text>
+              家
+            </Text>
           </View>
-          <View className={styles.flex}>
-            <View className={styles.information}>收款信息</View>
-            <View>{data.payDetails ? data.payDetails : '暂无'}</View>
+          <View className={styles.feedback}>
+            <Text>
+              已确认
+              <Text className={styles.quantity}>
+                　
+                {data.enterpriseConfirmeNum ? data.enterpriseConfirmeNum : '0'}
+                　
+              </Text>
+              家
+            </Text>
           </View>
-          <View className={styles.flex}>
-            <View className={styles.information}>可接产品数</View>
-            <View>{data.receiveGoodsNum ? data.receiveGoodsNum : '暂无'}</View>
-          </View>
-          <View className={styles.flex}>
-            <View className={styles.information}>备注</View>
-            <View className={styles.remarks}>
-              {data.remark ? data.remark : '暂无'}
-            </View>
+          <View className={styles.feedback}>
+            <Text>
+              已谢绝
+              <Text className={styles.quantity}>
+                　
+                {data.enterpriseRefuseTotalNum
+                  ? data.enterpriseRefuseTotalNum
+                  : '0'}
+                　
+              </Text>
+              家
+            </Text>
           </View>
         </View>
         <View className={styles.line}></View>
         {/* 操作 */}
         <View className={styles.operation}>
-          {/* 待处理 */}
-          {data.status === 2 ? (
+          {/* data.status */}
+          {/* 生效中 */}
+          {data.status === 1 ? (
             <View>
               <View className={styles.telephone}>
-                <AtIcon value="phone" size="15" color="#333333"></AtIcon>
-                <Text onClick={call}>电话联系</Text>
+                <Text onClick={oneMoreOrder}>再来一单</Text>
               </View>
-              <View onClick={confirmCooperation} className={styles.determine}>
-                确认合作
-              </View>
-              <View onClick={decline} className={styles.refuse}>
-                谢绝
+              <View onClick={decline} className={styles.cancel}>
+                提前结束
               </View>
             </View>
           ) : null}
-          {/* 已确认 */}
-          {data.status === 3 ? (
+          {/* 已结束 */}
+          {data.status === -3 ? (
             <View>
               <View className={styles.telephone}>
-                <AtIcon value="phone" size="15" color="#333333"></AtIcon>
-                <Text>电话联系</Text>
+                <Text>再来一单</Text>
               </View>
-              <View onClick={CancelConfirmation} className={styles.cancel}>
-                取消确认
-              </View>
-            </View>
-          ) : null}
-          {/* 已谢绝 */}
-          {data.status === -2 ? (
-            <View>
               <View onClick={showModal} className={styles.cancel}>
                 删除记录
+              </View>
+            </View>
+          ) : null}
+          {/* 审核失败 */}
+          {data.status === -2 ? (
+            <View>
+              <View className={styles.telephone}>
+                <Text>再来一单</Text>
+              </View>
+              <View onClick={showModal} className={styles.cancel}>
+                删除记录
+              </View>
+              <View onClick={viewReason} className={styles.cancel}>
+                查看原因
               </View>
             </View>
           ) : null}
@@ -208,7 +236,7 @@ function index({ data, deleteMethod, reOrder, InitiateOrder, earlyEnd }) {
             {windowType.type === 'mov' ? '删除订单' : null}
             {windowType.type === 'CancelConfirmation' ? '取消确认' : null}
             {windowType.type === 'confirmCooperation' ? '确定合作' : null}
-            {windowType.type === 'decline' ? '是否谢绝' : null}
+            {windowType.type === 'end' ? '提前结束' : null}
           </AtModalHeader>
           <AtModalContent>
             {windowType.type === 'mov' ? (
@@ -226,9 +254,9 @@ function index({ data, deleteMethod, reOrder, InitiateOrder, earlyEnd }) {
                 <View className={styles.delText}>是否确定合作？</View>
               </View>
             ) : null}
-            {windowType.type === 'decline' ? (
+            {windowType.type === 'end' ? (
               <View className={styles.delContent}>
-                <View className={styles.delText}>是否确定谢绝？</View>
+                <View className={styles.delText}>提前结束</View>
               </View>
             ) : null}
           </AtModalContent>

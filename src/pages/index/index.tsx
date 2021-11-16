@@ -114,7 +114,11 @@ const Home = () => {
   })
 
   useReachBottom(() => {
+    console.log('下拉')
+
     if (loading) return
+    console.log(loading)
+
     if (dataSource.length >= total) return
     setPageNum(n => n + 1)
   })
@@ -124,12 +128,15 @@ const Home = () => {
       setLoading(true)
       const nData = cloneDeep(dataSource)
       const fn = activeTab === 0 ? getOrderList : getNewFactory
-      console.log(pageNum)
       const res = (await fn(pageNum)) || {}
-      console.log(res)
-
+      console.log('页码', pageNum)
+      console.log('数据', res)
       const { records = [], current = 1, total = 0 } = res
+
       const target = current === 1 ? records : [...nData, ...records]
+      console.log(nData)
+      console.log(records)
+      console.log('合并的数据', [...nData, ...records])
       setDataSource(target)
       setLoading(false)
       setTotal(total)

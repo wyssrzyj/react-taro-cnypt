@@ -10,12 +10,26 @@ function index() {
     })
     // Taro.redirectTo({ url: "/pages/index/index" });
   }
+  const order = e => {
+    console.log(e)
+    Taro.redirectTo({
+      url: '/pages/personal/orderManagement/index?tid=' + e.id
+    })
+    // Taro.redirectTo({ url: "/pages/index/index" });
+  }
   const whole = () => {
     console.log('跳转至接单')
     Taro.redirectTo({
       url: '/pages/personal/orderReceiving/index?tid='
     })
   }
+  const myOrder = () => {
+    console.log('我的订单')
+    Taro.redirectTo({
+      url: '/pages/personal/orderManagement/index?tid='
+    })
+  }
+
   const data = [
     {
       id: 2,
@@ -46,13 +60,13 @@ function index() {
       url: ''
     },
     {
-      id: 2,
+      id: -3,
       image:
         'https://img14.360buyimg.com/jdphoto/s72x72_jfs/t17251/336/1311038817/3177/72595a07/5ac44618Na1db7b09.png',
       value: '已结束'
     },
     {
-      id: 3,
+      id: -2,
       image:
         'https://img30.360buyimg.com/jdphoto/s72x72_jfs/t5770/97/5184449507/2423/294d5f95/595c3b4dNbc6bc95d.png',
       value: '审核失败'
@@ -61,10 +75,12 @@ function index() {
   return (
     <View>
       <View className={styles.order}>
-        <Text className={styles.text}>我的订单</Text>
+        <Text className={styles.text} onClick={myOrder}>
+          我的订单
+        </Text>
       </View>
       <View className={styles.orders}>
-        <AtGrid onClick={btn} hasBorder={false} data={data1} />
+        <AtGrid onClick={order} hasBorder={false} data={data1} />
       </View>
       <View className={styles.division}></View>
 
