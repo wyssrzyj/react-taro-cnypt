@@ -1,13 +1,17 @@
 import styles from './index.module.less'
 import { View, Button, Image } from '@tarojs/components'
-import Taro from '@tarojs/taro'
-import { EnterpriseCard, Line, Navbar, PhoneCard, TabBar } from '@/components'
+import Taro, { useRouter } from '@tarojs/taro'
+import { EnterpriseCard, Line, Navbar, PhoneCard } from '@/components'
 import Title from '@/components/title'
 
 const BACK_ICON =
   'https://capacity-platform.oss-cn-hangzhou.aliyuncs.com/capacity-platform/mobile/icon/black_back.png'
 
 const FactoryDetail = () => {
+  const router = useRouter()
+  const { params } = router
+  console.log('🚀 ~ file: index.tsx ~ line 13 ~ FactoryDetail ~ params', params)
+
   const goBack = () => {
     Taro.navigateBack()
   }

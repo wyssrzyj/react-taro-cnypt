@@ -116,7 +116,7 @@ const PhoneLogin = () => {
   }, [lastTime])
 
   const toPwdLogin = () => {
-    Taro.navigateTo({ url: '/pages/login/pwdLogin/index' })
+    Taro.redirectTo({ url: '/pages/login/pwdLogin/index' })
   }
 
   const submit = async () => {
@@ -138,9 +138,9 @@ const PhoneLogin = () => {
           // !data.enterpriseType && history.push('/')
         } else {
           // history.push('/')
-          // Taro.navigateTo({ url: '/pages/index/index' })
+          // Taro.redirectTo({ url: '/pages/index/index' })
         }
-        Taro.navigateTo({ url: '/pages/index/index' })
+        Taro.redirectTo({ url: '/pages/index/index' })
       } else {
         setError(true)
       }

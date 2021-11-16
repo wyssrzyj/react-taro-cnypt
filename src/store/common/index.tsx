@@ -1,26 +1,23 @@
 import { observable, action, makeAutoObservable, runInAction } from 'mobx'
 import HTTP from '@/service/http'
 import Taro from '@tarojs/taro'
-
 interface Response {
   code: number
   data: any
   msg: string
   success: boolean
 }
-
 interface Dictionary {
   label: string
   value: string
   [key: string]: any
 }
-
 export default class CommonStore {
   constructor() {
-    makeAutoObservable(this) // 指定要暴露出去的属性
+    makeAutoObservable(this)
   }
 
-  @observable district = []
+  @observable district: any[] = []
   @observable dictionary: Partial<Dictionary> = {}
   @observable productCategoryList = []
   @observable productGrade: Partial<Dictionary> = []
@@ -30,7 +27,6 @@ export default class CommonStore {
       const res: Partial<Response> = await HTTP.get(
         '/api/factory/district/list-tree'
       )
-
       if (res.code === 200) {
         runInAction(() => {
           this.district = res.data
@@ -41,8 +37,6 @@ export default class CommonStore {
       console.log(err)
     }
   }
-
-  // /api/admin/manage/dict-item/list/dict-code
 
   @action allDictionary = async (params?) => {
     try {
@@ -56,24 +50,20 @@ export default class CommonStore {
         })
         return res.data || []
       } else {
-        // Toast.error('获取数据失败~')
       }
     } catch (e) {
       console.log(e)
     }
   }
 
-  // 获取产品类别
   @action productCategory = async () => {
     try {
       const res: Partial<Response> = await HTTP.get(
         `/api/factory/api/product/catalog/list-category-tree`
       )
-
       if (res) {
         runInAction(() => {
           this.productCategoryList = res.data
-          // localStorage.setItem('productCategoryList', JSON.stringify(res.data))
           Taro.setStorage({
             key: 'productCategoryList',
             data: JSON.stringify(res.data)
@@ -92,18 +82,14 @@ export default class CommonStore {
     }
   }
 
-  // /api/factory/product-grade/list-tree
-  // 产品档次
   @action getProductGrade = async () => {
     try {
       const res: Partial<Response> = await HTTP.get(
         `/api/factory/product-grade/list-tree`
       )
-
       if (res) {
         runInAction(() => {
           this.productGrade = res.data
-          // localStorage.setItem('productCategoryList', JSON.stringify(res.data))
           Taro.setStorage({
             key: 'productCategoryList',
             data: JSON.stringify(res.data)
@@ -122,5 +108,4 @@ export default class CommonStore {
     }
   }
 }
-
 export const commonStore = new CommonStore()

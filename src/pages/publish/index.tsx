@@ -30,9 +30,10 @@ import {
   CusModal,
   ImagePicker
 } from '@/components'
-import { matchTreeData } from '@/utils/tool'
+import { findTarget, matchTreeData } from '@/utils/tool'
 import OSS from '@/utils/oss'
 import { upload } from '@/utils/upload'
+import AreaModal from '@/components/areaModal'
 
 const BACK_ICON =
   'https://capacity-platform.oss-cn-hangzhou.aliyuncs.com/capacity-platform/mobile/icon/back.png'
@@ -100,6 +101,7 @@ const FactoryEntry = () => {
   const [rolesFlag, setRolesFlag] = useState<boolean>(false)
   const [goodsNumFlag, setGoodsNumFlag] = useState<boolean>(false)
   const [effectiveFlag, setEffectiveFlag] = useState<boolean>(false)
+  const [areaFlag, setAreaFlag] = useState<boolean>(false)
 
   const photoConfigs2 = [
     {
@@ -190,28 +192,28 @@ const FactoryEntry = () => {
     }
   }
 
-  const getAreaInfo = useMemo(() => {
-    const target = params['location']
-    return isArray(target) && target.length
-      ? target.reduce((prev, item, idx) => {
-          if (idx === 0) {
-            prev = provinceData[item].label
-          }
-          if (idx === 1) {
-            if (cityData[item].label !== '不限') {
-              prev += '-' + cityData[item].label
-            }
-          }
+  // const getAreaInfo = useMemo(() => {
+  //   const target = params['location']
+  //   return isArray(target) && target.length
+  //     ? target.reduce((prev, item, idx) => {
+  //         if (idx === 0) {
+  //           prev = provinceData[item].label
+  //         }
+  //         if (idx === 1) {
+  //           if (cityData[item].label !== '不限') {
+  //             prev += '-' + cityData[item].label
+  //           }
+  //         }
 
-          if (idx === 2) {
-            if (areaData[item].label !== '不限') {
-              prev += '-' + areaData[item].label
-            }
-          }
-          return prev
-        }, '')
-      : '请选择地区'
-  }, [params])
+  //         if (idx === 2) {
+  //           if (areaData[item].label !== '不限') {
+  //             prev += '-' + areaData[item].label
+  //           }
+  //         }
+  //         return prev
+  //       }, '')
+  //     : '请选择地区'
+  // }, [params])
 
   const productModalShow = () => {
     setProductFlag(f => !f)
@@ -243,6 +245,10 @@ const FactoryEntry = () => {
 
   const effectiveeModalShow = () => {
     setEffectiveFlag(f => !f)
+  }
+
+  const areaModalShow = () => {
+    setAreaFlag(f => !f)
   }
 
   const getProducts = useMemo(() => {
@@ -486,7 +492,7 @@ const FactoryEntry = () => {
             </Text>
           </View>
 
-          <Picker
+          {/* <Picker
             mode="multiSelector"
             value={params['location']}
             rangeKey={'label'}
@@ -504,7 +510,34 @@ const FactoryEntry = () => {
                 extraText={getAreaInfo}
               />
             </AtList>
-          </Picker>
+          </Picker> */}
+
+          <View onClick={areaModalShow} className={styles.cusFormItem}>
+            <Text className={classNames(styles.cusLabel, styles.required)}>
+              地区要求
+            </Text>
+            <Text
+              className={classNames(
+                styles.cusValue,
+                isArray(params['location']) && params['location'].length
+                  ? ''
+                  : styles.cusPlaceholder
+              )}
+            >
+              {isArray(params['location']) && params['location'].length
+                ? params['location'].map((item, idx) => {
+                    const target = findTarget(item, district, 'value') || {}
+                    console.log(
+                      "🚀 ~ file: index.tsx ~ line 530 ~ ?params['location'].map ~ target",
+                      target
+                    )
+                    return idx === params['location'].length - 1
+                      ? target.label
+                      : `${target.label}、`
+                  })
+                : '请选择地区'}
+            </Text>
+          </View>
 
           <Picker
             mode="date"
@@ -694,6 +727,16 @@ const FactoryEntry = () => {
           callback={event => handleChange(event, 'effectiveLocation')}
           value={params['effectiveLocation'] || []}
           type={'single'}
+        />
+      )}
+
+      {areaFlag && (
+        <AreaModal
+          visible={areaFlag}
+          onCancel={areaModalShow}
+          title={'地区要求'}
+          callback={event => handleChange(event, 'location')}
+          value={params['location'] || []}
         />
       )}
     </View>

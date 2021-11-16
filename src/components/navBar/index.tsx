@@ -13,6 +13,7 @@ const Navbar = props => {
 
   return (
     <View
+      id={'navbar'}
       style={{
         padding: `${top + 'px'} 0 ${top - Taro['$navBarMarginTop'] + 'px'}`,
         background: background

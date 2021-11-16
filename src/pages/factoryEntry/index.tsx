@@ -44,8 +44,6 @@ const typeOptions: Partial<OptionsType>[] = [
 ]
 
 const FactoryEntry = () => {
-  console.log(Taro.getEnv())
-
   const { top } = Taro.getMenuButtonBoundingClientRect()
 
   const { commonStore, factoryStore } = useStores()
@@ -56,7 +54,7 @@ const FactoryEntry = () => {
     productGrade,
     district
   } = commonStore
-  const { plusMaterialType } = dictionary
+  const { plusMaterialType = [], processType = [] } = dictionary
   const { getEnterpriseInfo } = factoryStore
 
   const clothOptions = productGrade.reduce((prev, item) => {
@@ -135,8 +133,9 @@ const FactoryEntry = () => {
     ;(async () => {
       if (!provinceData.length) return
       const info = await getEnterpriseInfo()
+
       info.establishedTime = info.establishedTime
-        ? moment(info.establishedTime)
+        ? moment(info.establishedTime).format('YYYY-MM-DD')
         : null
 
       const provinceIdx = provinceData.findIndex(
@@ -159,9 +158,7 @@ const FactoryEntry = () => {
           : -1
       setAreaData(districts)
       info.areaValue = [provinceIdx, cityIdx, districtIdx]
-
-      // setParams(info)
-      console.log('🚀 ~ file: index.tsx ~ line 78 ~ info', info)
+      setParams(info)
     })()
   }, [provinceData])
 
@@ -248,7 +245,6 @@ const FactoryEntry = () => {
               prev += '-' + cityData[item].label
             }
           }
-
           if (idx === 2) {
             if (areaData[item].label !== '不限') {
               prev += '-' + areaData[item].label
@@ -257,7 +253,7 @@ const FactoryEntry = () => {
           return prev
         }, '')
       : '请选择地区'
-  }, [params])
+  }, [params.areaValue])
 
   const productModalShow = () => {
     setProductFlag(f => !f)
@@ -279,15 +275,16 @@ const FactoryEntry = () => {
 
   const getProducts = useMemo(() => {
     const target = params['mainCategoriesList'] || []
+
     const matches = target.reduce((prev, item, idx) => {
-      const product = matchTreeData(productCategoryList, item) || {}
+      const product = matchTreeData(productCategoryList, item, 'code') || {}
       return (
         prev + (product.name ? `${idx !== 0 ? '、' : ''}${product.name}` : '')
       )
     }, '')
 
     return matches
-  }, [params.mainCategoriesList])
+  }, [params.mainCategoriesList, productCategoryList])
 
   const getMaterial = useMemo(() => {
     if (isArray(params.materialTypeValues)) {
@@ -298,9 +295,15 @@ const FactoryEntry = () => {
         )
       }, '')
     }
-  }, [params.materialTypeValues])
+  }, [params.materialTypeValues, plusMaterialType])
 
   const getLabels = (options, field) => {
+    console.log('🚀 ~ file: index.tsx ~ line 301 ~ getLabels ~ field', field)
+    console.log(
+      '🚀 ~ file: index.tsx ~ line 301 ~ getLabels ~ options',
+      options
+    )
+    console.log(params[field], 'params[field]')
     if (isArray(params[field])) {
       return params[field].reduce((prev, item, idx) => {
         const target = options.find(i => i.value === item) || {}
@@ -369,6 +372,7 @@ const FactoryEntry = () => {
             onChange={event =>
               handleChange(event.detail.value, 'establishedTime')
             }
+            value={params['establishedTime']}
           >
             <AtList>
               <AtListItem
@@ -469,13 +473,13 @@ const FactoryEntry = () => {
             <Text
               className={classNames(
                 styles.cusValue,
-                !getLabels(clothOptions, 'clothesGrade')
+                !getLabels(clothOptions, 'productGradeValues')
                   ? styles.cusPlaceholder
                   : ''
               )}
             >
-              {getLabels(clothOptions, 'clothesGrade')
-                ? getLabels(clothOptions, 'clothesGrade')
+              {getLabels(clothOptions, 'productGradeValues')
+                ? getLabels(clothOptions, 'productGradeValues')
                 : '请选择产品档次'}
             </Text>
           </View>
@@ -580,7 +584,7 @@ const FactoryEntry = () => {
             />
           </View>
 
-          <View>
+          {/* <View>
             <View className={styles.photoTitle}>logo</View>
             <View className={styles.logoPhotoBox}>
               <ImagePicker
@@ -634,7 +638,7 @@ const FactoryEntry = () => {
                 }
               ></ImagePicker>
             ))}
-          </View>
+          </View> */}
         </View>
 
         <AtButton onClick={onSubmit} type={'primary'} className={styles.btn}>
@@ -650,6 +654,7 @@ const FactoryEntry = () => {
           onCancel={productModalShow}
           callback={event => handleChange(event, 'mainCategoriesList')}
           value={params['mainCategoriesList'] || []}
+          key={'code'}
         />
       )}
       {materialFlag && (
@@ -664,14 +669,14 @@ const FactoryEntry = () => {
         <CusGradeModal
           visible={clothesGradeFlag}
           onCancel={clothesGradeModalShow}
-          callback={event => handleChange(event, 'clothesGrade')}
-          value={params['clothesGrade'] || []}
+          callback={event => handleChange(event, 'productGradeValues')}
+          value={params['productGradeValues'] || []}
         />
       )}
 
       {productTypeFlag && (
         <CusModal
-          options={typeOptions}
+          options={processType}
           visible={productTypeFlag}
           onCancel={productTypeModalShow}
           title={'加工类型'}

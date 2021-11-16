@@ -1,0 +1,170 @@
+import { View, Button, Image } from '@tarojs/components'
+import styles from './index.module.less'
+import { useEffect, useRef, useState } from 'react'
+import { cloneDeep } from 'lodash'
+import classNames from 'classnames'
+import { useStores, observer } from '@/store/mobx'
+import Navbar from '../navbar'
+import Taro from '@tarojs/taro'
+import { findTarget, selectorQueryClientRect } from '@/utils/tool'
+import { AtToast } from 'taro-ui'
+
+const BASE_URL =
+  'https://capacity-platform.oss-cn-hangzhou.aliyuncs.com/capacity-platform/mobile'
+const BACK_ICON = BASE_URL + '/icon/black_back.png'
+const REMOVE_ICON = BASE_URL + '/icon/remove.png'
+
+const AreaModal = props => {
+  const { onCancel, callback, value = [] } = props
+
+  const { commonStore } = useStores()
+  const { getDistrict, district = [] } = commonStore
+  const contentRef = useRef<any>(null)
+
+  const [isOpened, setIsOpened] = useState(false)
+  const [errText, setErrText] = useState('')
+  const [provinceData, setProvinceData] = useState<any[]>([])
+  const [cityData, setCityData] = useState<any[]>([])
+  const [selectedValues, setSelectedValues] = useState<string[]>(value)
+
+  useEffect(() => {
+    Taro.nextTick(async () => {
+      const query = await selectorQueryClientRect('#navbar')
+      contentRef.current.style.height = `calc(100vh - ${query.height}px)`
+    })
+  }, [])
+
+  useEffect(() => {
+    ;(async () => {
+      await getDistrict()
+    })()
+  }, [])
+
+  useEffect(() => {
+    setProvinceData(district)
+    const cData = [...district[0].children]
+    setCityData(cData)
+  }, [district])
+
+  const onClose = () => {
+    onCancel && onCancel()
+  }
+
+  const submit = () => {
+    callback && callback(selectedValues)
+    onClose()
+  }
+
+  const provinceChange = id => {
+    const target = district.find(item => item.value === id)
+    target.children = target.children || []
+    const cData = [...target.children]
+    setCityData(cData)
+  }
+
+  const cityChange = id => {
+    let nSelectValues = cloneDeep(selectedValues)
+    if (nSelectValues.includes(id)) {
+      nSelectValues = nSelectValues.filter(item => item !== id)
+    } else {
+      if (nSelectValues.length >= 8) {
+        setErrText('最多可选8个地区')
+        setIsOpened(true)
+        return
+      } else {
+        setIsOpened(false)
+      }
+      nSelectValues.push(id)
+    }
+    setSelectedValues(nSelectValues)
+  }
+
+  const clear = () => {
+    setSelectedValues([])
+  }
+
+  const removeTag = id => {
+    let nValues = cloneDeep(selectedValues)
+    nValues = nValues.filter(i => i !== id)
+    setSelectedValues(nValues)
+  }
+
+  return (
+    <View className={styles.container}>
+      <Navbar>
+        <View className={styles.navbar}>
+          <Image
+            src={BACK_ICON}
+            className={styles.back}
+            onClick={onClose}
+          ></Image>
+          <View>选择地区</View>
+        </View>
+      </Navbar>
+
+      <View className={styles.content} ref={contentRef}>
+        <View className={styles.province}>
+          {provinceData.map(item => (
+            <View
+              className={styles.provinceItem}
+              onClick={() => provinceChange(item.value)}
+            >
+              {item.label}
+            </View>
+          ))}
+        </View>
+        <View className={styles.city}>
+          {cityData.map(item => (
+            <View
+              className={classNames(
+                styles.cityItem,
+                selectedValues.includes(item.value) ? styles.selectedItem : ''
+              )}
+              onClick={() => cityChange(item.value)}
+            >
+              {item.label}
+            </View>
+          ))}
+        </View>
+        <View className={styles.footer} id={'areaModalFooter'}>
+          <View className={styles.footerItems}>
+            {selectedValues.map(item => {
+              const target = findTarget(item, district, 'value')
+              return (
+                <View key={item} className={styles.footerItem}>
+                  {target.label}
+
+                  <Image
+                    className={styles.removeIcon}
+                    src={REMOVE_ICON}
+                    onClick={() => removeTag(item)}
+                  ></Image>
+                </View>
+              )
+            })}
+          </View>
+          <View className={styles.btns}>
+            <Button className={styles.clearBtn} onClick={clear}>
+              清除
+            </Button>
+            <Button
+              type={'primary'}
+              className={styles.submitBtn}
+              onClick={submit}
+            >
+              确定
+            </Button>
+          </View>
+        </View>
+      </View>
+
+      <AtToast
+        isOpened={isOpened}
+        text={errText}
+        onClose={() => setIsOpened(false)}
+      ></AtToast>
+    </View>
+  )
+}
+
+export default observer(AreaModal)

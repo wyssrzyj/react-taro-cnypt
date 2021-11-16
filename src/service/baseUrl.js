@@ -8,7 +8,8 @@ const getBaseUrl = url => {
     BASE_URL = 'http://8.136.225.110:8888'
   } else {
     // 生产环境
-    BASE_URL = 'http://47.97.217.13:8888'
+    BASE_URL = 'http://192.168.69.130:8888'
+    // BASE_URL = 'http://47.97.217.13:8888'
   }
   return BASE_URL
 }

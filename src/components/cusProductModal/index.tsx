@@ -7,13 +7,23 @@ import classNames from 'classnames'
 import { useStores, observer } from '@/store/mobx'
 
 const CusProductModal = props => {
-  const { onCancel, visible, callback, value } = props
+  const {
+    onCancel,
+    visible,
+    callback,
+    value,
+    type = 'multiple',
+    key = 'id'
+  } = props
   const { commonStore } = useStores()
   const { productCategoryList } = commonStore
 
   const [productList, setProductList] = useState<any[]>([])
   const [activeTab, setActiveTab] = useState<number>(0)
   const [selectValues, setSelectValues] = useState<string[]>(value)
+  const [childValue, setChildValue] = useState<string>(
+    value.mainCategoryChildId
+  )
 
   useEffect(() => {
     setProductList(
@@ -34,16 +44,33 @@ const CusProductModal = props => {
 
   const tagClick = cur => {
     let selectCopyValues = cloneDeep(selectValues)
-    if (selectCopyValues.includes(cur)) {
-      selectCopyValues = selectCopyValues.filter(item => item !== cur)
-    } else {
-      selectCopyValues.push(cur)
+
+    if (type === 'single') {
+      setChildValue(childValue === cur ? null : cur)
     }
-    setSelectValues(selectCopyValues)
+    if (type === 'multiple') {
+      if (selectCopyValues.includes(cur)) {
+        selectCopyValues = selectCopyValues.filter(item => item !== cur)
+      } else {
+        selectCopyValues.push(cur)
+      }
+      setSelectValues(selectCopyValues)
+    }
   }
 
   const submit = () => {
-    callback && callback(selectValues)
+    callback && type === 'multiple' && callback(selectValues)
+
+    if (callback && type === 'single') {
+      const target = productList[activeTab]
+      const mainCategoryParentId = childValue ? target[key] : ''
+      const mainCategoryChildId = childValue
+      callback({
+        mainCategoryParentId,
+        mainCategoryChildId
+      })
+    }
+
     onClose()
   }
 
@@ -77,15 +104,25 @@ const CusProductModal = props => {
                       key={t}
                       className={classNames(
                         styles.tag,
-                        selectValues.includes(i.id) ? styles.activeTag : ''
+                        type === 'multiple' && selectValues.includes(i[key])
+                          ? styles.activeTag
+                          : '',
+                        type === 'single' && childValue === i[key]
+                          ? styles.activeTag
+                          : ''
                       )}
-                      onClick={() => tagClick(i.id)}
+                      onClick={() => tagClick(i[key])}
                     >
                       <Image
                         src={''}
                         className={classNames(
                           styles.img,
-                          selectValues.includes(i.id) ? styles.activeImg : ''
+                          type === 'multiple' && selectValues.includes(i[key])
+                            ? styles.activeImg
+                            : '',
+                          type === 'single' && childValue === i[key]
+                            ? styles.activeImg
+                            : ''
                         )}
                       ></Image>
                       <Text className={styles.tagText}>{i.name}</Text>
