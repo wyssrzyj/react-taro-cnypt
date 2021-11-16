@@ -5,7 +5,7 @@ import { AtNavBar, AtSearchBar, AtTabs } from 'taro-ui'
 import { useReachBottom, useRouter, redirectTo } from '@tarojs/taro'
 import StyleStructure from './styleStructure/index'
 import { useStores, observer } from '@/store/mobx'
-import Taro from '@tarojs/taro'
+// import Taro from '@tarojs/taro'
 import { cloneDeep } from 'lodash'
 export const ORDER_EMPTY =
   'https://capacity-platform.oss-cn-hangzhou.aliyuncs.com/capacity-platform/platform/order_empty.png'
@@ -90,7 +90,6 @@ const Verify = () => {
   }
   // 搜索
   const bind = e => {
-    console.log('搜索的值', e)
     setValue(e)
   }
   // tabs
@@ -136,7 +135,6 @@ const Verify = () => {
   ]
   const deleteMethod = async value => {
     // 删除
-    console.log('删除', value)
     const res = await deleteDemandDoc(value)
     if (res.code === 200) {
       api()
@@ -151,10 +149,8 @@ const Verify = () => {
   }
 
   const searchConfirmation = () => {
-    console.log(value)
     let res = { ...list, name: value }
     setList(res)
-    console.log('确认')
   }
 
   return (
@@ -180,7 +176,6 @@ const Verify = () => {
       {/* Tobs标签 */}
       <AtTabs current={current} tabList={tabList} onClick={AtTabsbind} />
       {/* 主体 */}
-      {console.log(rallyists.length)}
       {rallyists.length > 0 ? (
         <View>
           <View className={styles.subject}>

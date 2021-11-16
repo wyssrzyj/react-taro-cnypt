@@ -14,8 +14,9 @@ import Taro from '@tarojs/taro'
 const Home = () => {
   const { homeStore, commonStore, loginStore } = useStores()
   const { getNewFactory, getOrderList } = homeStore
-  const { allDictionary, productCategory, getProductGrade } = commonStore
-  const { currentUser, userInfo } = loginStore
+  const { allDictionary, productCategory, getProductGrade, getDistrict } =
+    commonStore
+  const { userInfomation, userInfo } = loginStore
 
   const containerRef = useRef<HTMLElement>()
 
@@ -32,6 +33,7 @@ const Home = () => {
       await userInfo()
       await productCategory()
       await getProductGrade()
+      await getDistrict()
     })()
   }, [])
 
@@ -39,13 +41,17 @@ const Home = () => {
     {
       img: 'https://capacity-platform.oss-cn-hangzhou.aliyuncs.com/capacity-platform/mobile/index/un_order.png',
       onClick: () => {
-        console.log(1)
+        Taro.navigateTo({
+          url: '/pages/search/index'
+        })
       }
     },
     {
       img: 'https://capacity-platform.oss-cn-hangzhou.aliyuncs.com/capacity-platform/mobile/index/un_factory.png',
       onClick: () => {
-        console.log(2)
+        Taro.navigateTo({
+          url: '/pages/search/index'
+        })
       }
     },
     {
@@ -81,13 +87,17 @@ const Home = () => {
     {
       img: 'https://capacity-platform.oss-cn-hangzhou.aliyuncs.com/capacity-platform/mobile/index/order_factory.png',
       onClick: () => {
-        console.log(7)
+        Taro.navigateTo({
+          url: '/pages/search/index'
+        })
       }
     },
     {
       img: 'https://capacity-platform.oss-cn-hangzhou.aliyuncs.com/capacity-platform/mobile/index/order_order.png',
       onClick: () => {
-        console.log(8)
+        Taro.navigateTo({
+          url: '/pages/search/index'
+        })
       }
     },
     {
@@ -174,6 +184,24 @@ const Home = () => {
     })
   }
 
+  const toFactoryDetail = () => {
+    Taro.navigateTo({
+      url: `/pages/factoryDetail/index?id=64`
+    })
+  }
+
+  const toOrderDetail = () => {
+    Taro.navigateTo({
+      url: '/pages/orderDetail/index'
+    })
+  }
+
+  const toOrderIssueDetail = () => {
+    Taro.navigateTo({
+      url: '/pages/orderIssueDetail/index'
+    })
+  }
+
   return (
     <View className={styles.container} ref={containerRef}>
       <Navbar>
@@ -202,6 +230,9 @@ const Home = () => {
       <Button onClick={toFactoryEntry}>工厂入驻</Button>
       <Button onClick={toOrderEntry}>发单商入驻</Button>
       <Button onClick={toPublish}>发布订单</Button>
+      <Button onClick={toFactoryDetail}>工厂详情</Button>
+      <Button onClick={toOrderDetail}>订单详情</Button>
+      <Button onClick={toOrderIssueDetail}>发单商详情</Button>
       <Button onClick={toTest}>test</Button>
 
       <View className={styles.content}>
@@ -220,7 +251,7 @@ const Home = () => {
             </SwiperItem>
           ))}
         </Swiper>
-        {isNil(currentUser.enterpriseType) ? (
+        {isNil(userInfomation.enterpriseType) ? (
           <View className={styles.unImgs}>
             {isNilConfigs.map((item, idx) => (
               <Image
@@ -231,7 +262,7 @@ const Home = () => {
               ></Image>
             ))}
           </View>
-        ) : +currentUser.enterpriseType === 0 ? ( // 加工厂
+        ) : +userInfomation.enterpriseType === 0 ? ( // 加工厂
           <View className={styles.unImgs}>
             {factoryConfigs.map((item, idx) => (
               <Image

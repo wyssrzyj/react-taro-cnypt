@@ -93,8 +93,11 @@ function index({ data, deleteMethod, earlyEnd }) {
     setPopup(false)
   }
   // 再来一单
-  const oneMoreOrder = () => {
+  const oneMoreOrder = id => {
     console.log('再来一单')
+    Taro.redirectTo({
+      url: `/pages/publish/index?id=${id}`
+    })
   }
   //查看原因
   const viewReason = () => {
@@ -207,7 +210,13 @@ function index({ data, deleteMethod, earlyEnd }) {
           {data.status === 1 ? (
             <View>
               <View className={styles.telephone}>
-                <Text onClick={oneMoreOrder}>再来一单</Text>
+                <Text
+                  onClick={() => {
+                    oneMoreOrder(data.id)
+                  }}
+                >
+                  再来一单
+                </Text>
               </View>
               <View onClick={decline} className={styles.cancel}>
                 提前结束

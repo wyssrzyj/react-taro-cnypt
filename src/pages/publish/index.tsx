@@ -30,8 +30,10 @@ import {
   CusModal,
   ImagePicker
 } from '@/components'
-import { matchTreeData } from '@/utils/tool'
+import { findTarget, matchTreeData } from '@/utils/tool'
 import OSS from '@/utils/oss'
+import { upload } from '@/utils/upload'
+import AreaModal from '@/components/areaModal'
 
 const BACK_ICON =
   'https://capacity-platform.oss-cn-hangzhou.aliyuncs.com/capacity-platform/mobile/icon/back.png'
@@ -99,6 +101,7 @@ const FactoryEntry = () => {
   const [rolesFlag, setRolesFlag] = useState<boolean>(false)
   const [goodsNumFlag, setGoodsNumFlag] = useState<boolean>(false)
   const [effectiveFlag, setEffectiveFlag] = useState<boolean>(false)
+  const [areaFlag, setAreaFlag] = useState<boolean>(false)
 
   const photoConfigs2 = [
     {
@@ -129,64 +132,23 @@ const FactoryEntry = () => {
     setParams(nParams)
   }
 
-  const imgsChange = (value, field) => {
+  const imgsChange = async (value, field, max) => {
     const nParams = cloneDeep(params)
-
-    const file = customRequest(value[0])
-
-    // nParams[field] = value
-    // setParams(nParams)
+    const allImgs: any = []
+    value.slice(0, max).forEach(item => {
+      allImgs.push(customRequest(item))
+    })
+    await Promise.all(allImgs).then(res => {
+      nParams[field] = res
+      setParams(nParams)
+    })
   }
 
-  const customRequest = async ({ file }) => {
-    console.log(window, 'window~~~~~~~~~~~~~~~~~~~~')
-    console.log(File, 'File~~~~~~~~~~~~~~~~~~~~')
-    const img = await imgToBase64(file)
-    // const res = await OSS.put(`/capacity-platform/platform/`, img)
-    // if (res) {
-    //   const { url, name } = res
-    //   return { name: name, url }
-    // }
-  }
-
-  const imgToBase64 = async ({ path }) => {
-    let res
-    try {
-      // const base64 = Taro.getFileSystemManager().readFileSync(path, 'base64')
-      const base64 = Taro.getFileSystemManager().readFileSync(path, 'base64')
-      const buffer = Taro.base64ToArrayBuffer(base64 as string)
-
-      console.log(
-        '🚀 ~ file: index.tsx ~ line 207 ~ imgToBase64 ~ buffer',
-        buffer
-      )
-
-      // const data = Taro.base64ToArrayBuffer(base64 as string)
-      if (base64) {
-        // res = 'data:image/jpeg;base64,' + base64
-        res = base64
-        const r = dataURLtoFile(res, 'img')
-        console.log('🚀 ~ file: index.tsx ~ line 214 ~ imgToBase64 ~ r', r)
-      }
-    } catch (error) {
-      console.warn('=> utilssearch.ts error imgToBase64', error)
-      throw error
-    } finally {
-      return res
+  const customRequest = async ({ url }) => {
+    const imgUrl = await upload(url)
+    return {
+      url: imgUrl
     }
-  }
-
-  const dataURLtoFile = (dataurl, filename) => {
-    var arr = dataurl.split(','),
-      mime = arr[0].match(/:(.*?);/)[1],
-      bstr = atob(arr[1]),
-      n = bstr.length,
-      u8arr = new Uint8Array(n)
-    while (n--) {
-      u8arr[n] = bstr.charCodeAt(n)
-    }
-
-    return new File([u8arr], filename, { type: mime })
   }
 
   const onSubmit = () => {
@@ -230,28 +192,28 @@ const FactoryEntry = () => {
     }
   }
 
-  const getAreaInfo = useMemo(() => {
-    const target = params['location']
-    return isArray(target) && target.length
-      ? target.reduce((prev, item, idx) => {
-          if (idx === 0) {
-            prev = provinceData[item].label
-          }
-          if (idx === 1) {
-            if (cityData[item].label !== '不限') {
-              prev += '-' + cityData[item].label
-            }
-          }
+  // const getAreaInfo = useMemo(() => {
+  //   const target = params['location']
+  //   return isArray(target) && target.length
+  //     ? target.reduce((prev, item, idx) => {
+  //         if (idx === 0) {
+  //           prev = provinceData[item].label
+  //         }
+  //         if (idx === 1) {
+  //           if (cityData[item].label !== '不限') {
+  //             prev += '-' + cityData[item].label
+  //           }
+  //         }
 
-          if (idx === 2) {
-            if (areaData[item].label !== '不限') {
-              prev += '-' + areaData[item].label
-            }
-          }
-          return prev
-        }, '')
-      : '请选择地区'
-  }, [params])
+  //         if (idx === 2) {
+  //           if (areaData[item].label !== '不限') {
+  //             prev += '-' + areaData[item].label
+  //           }
+  //         }
+  //         return prev
+  //       }, '')
+  //     : '请选择地区'
+  // }, [params])
 
   const productModalShow = () => {
     setProductFlag(f => !f)
@@ -283,6 +245,10 @@ const FactoryEntry = () => {
 
   const effectiveeModalShow = () => {
     setEffectiveFlag(f => !f)
+  }
+
+  const areaModalShow = () => {
+    setAreaFlag(f => !f)
   }
 
   const getProducts = useMemo(() => {
@@ -332,7 +298,7 @@ const FactoryEntry = () => {
             className={styles.back}
             onClick={goBack}
           ></Image>
-          <View>发单商入驻</View>
+          <View>发布订单</View>
         </View>
       </View>
 
@@ -372,7 +338,7 @@ const FactoryEntry = () => {
             >
               <Radio
                 value={1}
-                checked={params['isContactPublic'] === 1}
+                checked={+params['isContactPublic'] === 1}
                 className={styles.radioText}
                 style={{ transform: 'scale(0.8)' }}
               >
@@ -380,7 +346,7 @@ const FactoryEntry = () => {
               </Radio>
               <Radio
                 value={3}
-                checked={params['isContactPublic'] === 3}
+                checked={+params['isContactPublic'] === 3}
                 className={styles.radioText}
                 style={{ transform: 'scale(0.8)', marginLeft: '20rpx' }}
               >
@@ -400,7 +366,7 @@ const FactoryEntry = () => {
             >
               <Radio
                 value={1}
-                checked={params['isEnterpriseInfoPublic'] === 1}
+                checked={+params['isEnterpriseInfoPublic'] === 1}
                 className={styles.radioText}
                 style={{ transform: 'scale(0.8)' }}
               >
@@ -408,7 +374,7 @@ const FactoryEntry = () => {
               </Radio>
               <Radio
                 value={0}
-                checked={params['isEnterpriseInfoPublic'] === 0}
+                checked={+params['isEnterpriseInfoPublic'] === 0}
                 className={styles.radioText}
                 style={{ transform: 'scale(0.8)', marginLeft: '20rpx' }}
               >
@@ -526,7 +492,7 @@ const FactoryEntry = () => {
             </Text>
           </View>
 
-          <Picker
+          {/* <Picker
             mode="multiSelector"
             value={params['location']}
             rangeKey={'label'}
@@ -544,7 +510,34 @@ const FactoryEntry = () => {
                 extraText={getAreaInfo}
               />
             </AtList>
-          </Picker>
+          </Picker> */}
+
+          <View onClick={areaModalShow} className={styles.cusFormItem}>
+            <Text className={classNames(styles.cusLabel, styles.required)}>
+              地区要求
+            </Text>
+            <Text
+              className={classNames(
+                styles.cusValue,
+                isArray(params['location']) && params['location'].length
+                  ? ''
+                  : styles.cusPlaceholder
+              )}
+            >
+              {isArray(params['location']) && params['location'].length
+                ? params['location'].map((item, idx) => {
+                    const target = findTarget(item, district, 'value') || {}
+                    console.log(
+                      "🚀 ~ file: index.tsx ~ line 530 ~ ?params['location'].map ~ target",
+                      target
+                    )
+                    return idx === params['location'].length - 1
+                      ? target.label
+                      : `${target.label}、`
+                  })
+                : '请选择地区'}
+            </Text>
+          </View>
 
           <Picker
             mode="date"
@@ -638,7 +631,7 @@ const FactoryEntry = () => {
           <View className={styles.photoBox}>
             <AtImagePicker
               files={params['stylePicture']}
-              onChange={event => imgsChange(event, 'stylePicture')}
+              onChange={event => imgsChange(event, 'stylePicture', 10)}
               count={10}
               sizeType={['70']}
               showAddBtn={
@@ -734,6 +727,16 @@ const FactoryEntry = () => {
           callback={event => handleChange(event, 'effectiveLocation')}
           value={params['effectiveLocation'] || []}
           type={'single'}
+        />
+      )}
+
+      {areaFlag && (
+        <AreaModal
+          visible={areaFlag}
+          onCancel={areaModalShow}
+          title={'地区要求'}
+          callback={event => handleChange(event, 'location')}
+          value={params['location'] || []}
         />
       )}
     </View>

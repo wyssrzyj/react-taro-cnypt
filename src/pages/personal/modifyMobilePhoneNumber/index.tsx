@@ -43,10 +43,8 @@ const index = () => {
   useEffect(() => {
     let judge = /^1[0-9]{10}$/
     if (judge.test(value)) {
-      console.log('是手机号')
       setRegularJudge(true)
     } else {
-      console.log('不是')
       setRegularJudge(false)
     }
   }, [value])
@@ -54,7 +52,6 @@ const index = () => {
   //  发送验证码
   const verificationCode = async () => {
     if (regularJudge) {
-      console.log(value)
       const res = await sendVerifyCode(value)
       console.log(res)
       onGetCaptcha() //倒计时
@@ -63,7 +60,6 @@ const index = () => {
   }
 
   const handleChange = e => {
-    console.log(e)
     setValue(e)
   }
   const handle = e => {
@@ -82,10 +78,8 @@ const index = () => {
       }
       const res = await modifyMobilePhoneNumber(arr)
       if (res) {
-        console.log('成功')
         Taro.redirectTo({ url: '/pages/personal/index' })
       } else {
-        console.log('失败')
         changeCount(0)
       }
     } else {

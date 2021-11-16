@@ -217,13 +217,8 @@ export default class UserInterface {
         `/api/oms/inquiry-quote/get`,
         params
       )
-      const { data = {}, msg = '' } = res
-      if (data) {
-        Taro.setStorage({
-          key: 'userInfo',
-          data: JSON.stringify(data)
-        })
-      }
+      const { msg = '' } = res
+
       if (res.code !== 200) {
         Taro.atMessage({
           message: msg,

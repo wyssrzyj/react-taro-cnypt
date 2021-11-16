@@ -1,32 +1,42 @@
 import styles from './index.module.less'
-import {
-  View,
-  Swiper,
-  SwiperItem,
-  Image,
-  Text,
-  Button
-} from '@tarojs/components'
+import { View, Image, Text, Button } from '@tarojs/components'
 import Taro from '@tarojs/taro'
-import { Icon } from '@/components/index'
-import { AtNavBar } from 'taro-ui'
+import { Icon, Navbar } from '@/components/index'
+import { useEffect } from 'react'
+import { useStores, observer } from '@/store/mobx'
+
+const BACK_ICON =
+  'https://capacity-platform.oss-cn-hangzhou.aliyuncs.com/capacity-platform/mobile/icon/black_back.png'
 
 const Login = () => {
-  const getPhoneNumber = event => {
-    const { detail } = event
-    console.log('🚀 ~ file: index.tsx ~ line 14 ~ detail', detail)
+  const { loginStore } = useStores()
+  const { getSessionId, wxLogin, setWxInfo } = loginStore
+
+  useEffect(() => {
     Taro.login({
-      success: () => {
-        console.log('success')
+      success: async function (res) {
+        if (res.code) {
+          //发起网络请求
+          await getSessionId({ code: res.code })
+        } else {
+          console.log('登录失败！' + res.errMsg)
+        }
       }
     })
+  }, [])
+
+  const getPhoneNumber = async event => {
+    const { detail } = event
+    setWxInfo('iv', detail['iv'])
+    setWxInfo('encryptedData', detail['encryptedData'])
 
     if (detail.errMsg.includes('getPhoneNumber:fail')) {
       //用户点击拒绝
       console.log('拒绝授权')
     } else {
       //允许授权执行跳转
-      console.log('允许授权')
+      const code = await wxLogin()
+      code === 200 && Taro.redirectTo({ url: '/pages/index/index' })
     }
   }
 
@@ -34,12 +44,23 @@ const Login = () => {
     Taro.redirectTo({ url: '/pages/login/phoneLogin/index' })
   }
 
+  const goBack = () => {
+    Taro.redirectTo({ url: '/pages/personal/index' })
+  }
+
   return (
     <View>
       {/* top */}
-      <View className={styles.navbar}>
-        <AtNavBar color="#000" title="登录" />
-      </View>
+      <Navbar>
+        <View className={styles.navbar}>
+          <Image
+            src={BACK_ICON}
+            className={styles.back}
+            onClick={goBack}
+          ></Image>
+          <View className={styles.navTitle}>登录</View>
+        </View>
+      </Navbar>
       {/* img  */}
       <View className={styles.imgFather}>
         <Image
@@ -74,4 +95,4 @@ const Login = () => {
   )
 }
 
-export default Login
+export default observer(Login)

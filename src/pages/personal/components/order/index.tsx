@@ -2,29 +2,26 @@ import { View, Text } from '@tarojs/components'
 import { AtGrid } from 'taro-ui'
 import styles from './index.module.less'
 import Taro from '@tarojs/taro'
+
 function index() {
   const btn = e => {
-    console.log(e)
     Taro.redirectTo({
       url: '/pages/personal/orderReceiving/index?tid=' + e.id
     })
     // Taro.redirectTo({ url: "/pages/index/index" });
   }
   const order = e => {
-    console.log(e)
     Taro.redirectTo({
       url: '/pages/personal/orderManagement/index?tid=' + e.id
     })
     // Taro.redirectTo({ url: "/pages/index/index" });
   }
   const whole = () => {
-    console.log('跳转至接单')
     Taro.redirectTo({
       url: '/pages/personal/orderReceiving/index?tid='
     })
   }
   const myOrder = () => {
-    console.log('我的订单')
     Taro.redirectTo({
       url: '/pages/personal/orderManagement/index?tid='
     })

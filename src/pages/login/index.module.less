@@ -40,7 +40,7 @@
   height: 332px;
 }
 .navbar {
-  margin-top: 40px;
+  // margin-top: 40px;
 }
 
 .text {
@@ -49,4 +49,28 @@
   font-weight: 400;
   color: #666666;
   font-size: 24px;
+}
+
+.navbar {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.back {
+  position: absolute;
+  top: 50%;
+  left: 16px;
+  transform: translateY(-50%);
+  width: 16px;
+  height: 28px;
+}
+
+.navTitle {
+  flex: 1;
+  font-size: 34px;
+  font-weight: bold;
+  color: #1a1003;
+  text-align: center;
 }

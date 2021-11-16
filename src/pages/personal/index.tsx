@@ -20,6 +20,7 @@ const Personal = () => {
   const { getDistrict } = commonStore
   const { userInformation } = userInterface
   const [list, setList] = useState({})
+  const [jurisdiction, setJurisdiction] = useState({})
   // 根据企业id 获取信息
   useEffect(() => {
     getDisr()
@@ -27,6 +28,14 @@ const Personal = () => {
       let information = JSON.parse(Taro.getStorageSync('currentUser')).userId
       pickUpInformation({ userId: information })
     }
+    if (Taro.getStorageSync('userInfo')) {
+      setJurisdiction(
+        JSON.parse(Taro.getStorageSync('userInfo')).enterpriseType
+      )
+    } else {
+      setJurisdiction('notLogged')
+    }
+    console.log('初始化完毕')
   }, [])
   // 地区接口数据
   const getDisr = async () => {
@@ -38,20 +47,9 @@ const Personal = () => {
     if (res) {
       setList(res)
     }
-
     return res
   }
-  let jurisdiction = ''
-  if (Taro.getStorageSync('userInfo')) {
-    jurisdiction = JSON.parse(Taro.getStorageSync('userInfo')).enterpriseType
-  } else {
-    jurisdiction = 'notLogged'
-    console.log('未登录')
-  }
-  // 用户信息
-
-  // currentUser
-
+  console.log('用户角色判断', jurisdiction)
   return (
     <View className={styles.container}>
       <View className={styles.navbar}>

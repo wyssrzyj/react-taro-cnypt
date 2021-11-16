@@ -42,7 +42,6 @@ const Verify = () => {
   // 路由状态
   useEffect(() => {
     if (Number(params.tid)) {
-      console.log('跳转数据', params.ids)
       // purchaserInquiryId: params.ids
       const tid = Number(params.tid)
       if (tid === null) {
@@ -83,10 +82,8 @@ const Verify = () => {
   // 下拉加载更多
   useEffect(() => {
     // 防止初始化之后重复掉接口
-    console.log(dropDown)
     if (dropDown) {
       drop()
-      console.log('准备掉接口')
     }
   }, [pageNum, dropDown])
 
@@ -120,7 +117,6 @@ const Verify = () => {
   })
   // 搜索
   const bind = e => {
-    console.log('搜索的值', e)
     setValue(e)
   }
   // tabs
@@ -189,10 +185,8 @@ const Verify = () => {
     }
   }
   const searchConfirmation = () => {
-    console.log(value)
     let res = { ...list, supplierName: value }
     setList(res)
-    console.log('确认')
   }
 
   return (

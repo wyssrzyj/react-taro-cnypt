@@ -1,7 +1,7 @@
 import { View, Text, Image } from '@tarojs/components'
 import styles from './card.module.less'
 import { isArray } from 'lodash'
-import { useStores, observer, toJS } from '@/store/mobx'
+import { useStores, observer } from '@/store/mobx'
 import { useEffect, useState } from 'react'
 import { matchTreeData } from '@/utils/tool'
 import moment from 'moment'
@@ -10,7 +10,7 @@ const LOCATION_ICON =
   'https://capacity-platform.oss-cn-hangzhou.aliyuncs.com/capacity-platform/mobile/icon/diqu_bai.png'
 
 const Card = props => {
-  const { data, type } = props
+  const { data, type = 0 } = props
   // type 0 订单 1 工厂
   const img = type === 0 ? data.stylePicture : data.pictureUrl
   const title = type === 0 ? data.name : data.factoryName

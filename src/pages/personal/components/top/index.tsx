@@ -1,9 +1,9 @@
-import React from 'react'
 import { View, Image, Text } from '@tarojs/components'
 import styles from './index.module.less'
 import { AtIcon } from 'taro-ui'
 import Taro from '@tarojs/taro'
-function index({ userInfo, list }) {
+
+const Top = ({ userInfo, list }) => {
   console.log(list)
   const { enterpriseName, userFaceUrl, userName } = list
 
@@ -18,6 +18,7 @@ function index({ userInfo, list }) {
   const toLogin = () => {
     Taro.redirectTo({ url: '/pages/login/index' })
   }
+
   return (
     <View className={styles.top}>
       <View className={styles.tops}>
@@ -53,14 +54,14 @@ function index({ userInfo, list }) {
               </View>
             </>
           ) : (
-            <>
-              <View onClick={toLogin} className={styles.txts}>
-                <Text className={styles.txt}>登录 / 注册</Text>
+            <View onClick={toLogin}>
+              <View className={styles.txts}>
+                <View className={styles.txt}>登录 / 注册</View>
               </View>
               <View className={styles.bottom}>
                 <Text className={styles.login}>请登录或者注册查看更多</Text>
               </View>
-            </>
+            </View>
           )}
         </View>
       </View>
@@ -68,4 +69,4 @@ function index({ userInfo, list }) {
   )
 }
 
-export default index
+export default Top

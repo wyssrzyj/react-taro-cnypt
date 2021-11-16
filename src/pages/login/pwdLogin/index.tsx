@@ -103,11 +103,9 @@ const PwdLogin = () => {
           <AtInput
             className={styles.input}
             name="phone"
-            type="number"
             placeholder="请输入用户名"
             value={phone}
             onChange={phoneChange}
-            maxlength={11}
             placeholderStyle={'fontSize: 30px; color: #999'}
           ></AtInput>
         </View>

@@ -44,7 +44,7 @@ const Home = () => {
       //       title: res.code
       //     })
       //   }
-      // })
+      //、 })
       Taro.setStorageSync('userInfo', null)
       Taro.removeStorageSync('userinfo')
       Taro.clearStorage()

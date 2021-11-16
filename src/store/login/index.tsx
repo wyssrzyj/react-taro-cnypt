@@ -24,7 +24,21 @@ export default class LoginStore {
     makeAutoObservable(this) // 指定要暴露出去的属性
   }
 
-  @observable currentUser: Partial<User> = {}
+  @observable userInfomation: Partial<User> = {}
+  @observable token: string = ''
+  @observable refresh: string = ''
+  @observable currentUser: string = ''
+
+  @observable sessionId: string | number = ''
+  @observable openid: string | number = ''
+  @observable encryptedData: string | number = ''
+  @observable iv: string | number = ''
+
+  @action setWxInfo = (field, value) => {
+    runInAction(() => {
+      this[field] = value
+    })
+  }
 
   // 用户注册 /user/register
   @action checkUser = async (queryParam, queryType) => {
@@ -63,7 +77,12 @@ export default class LoginStore {
       console.log(res)
 
       const { data = {}, msg = '' } = res
-      if (data) {
+      if (res.code === 200 && data) {
+        runInAction(() => {
+          this.refresh = data.refresh_token
+          this.token = data.access_token
+          this.currentUser = data
+        })
         Taro.setStorage({
           key: 'token',
           data: data.access_token
@@ -97,7 +116,7 @@ export default class LoginStore {
       const { data = {}, msg = '' } = res
       if (data) {
         runInAction(() => {
-          this.currentUser = data
+          this.userInfomation = data
         })
         Taro.setStorage({
           key: 'userInfo',
@@ -147,6 +166,79 @@ export default class LoginStore {
         // message.success(res.msg)
       }
       return res.data
+    } catch (err) {
+      console.log(err)
+      Taro.showToast({
+        title: err.msg as string,
+        icon: 'none',
+        duration: 1500
+      })
+    }
+  }
+
+  // /api/user/weChat/get-session-open-id
+  @action getSessionId = async params => {
+    try {
+      const res: Partial<Response> = await HTTP.get(
+        `/api/user/weChat/get-session-open-id`,
+        params
+      )
+
+      if (res.code === 200) {
+        runInAction(() => {
+          const { data } = res
+          this.sessionId = data.sessionId
+          this.openid = data.openid
+        })
+      }
+      return res.data
+    } catch (err) {
+      console.log(err)
+      Taro.showToast({
+        title: err.msg as string,
+        icon: 'none',
+        duration: 1500
+      })
+    }
+  }
+
+  // 小程序登录
+  // /api/user/account/applet-login
+  @action wxLogin = async () => {
+    const params = {
+      loginType: 'applet_weChat',
+      iv: this.iv,
+      encryptedData: this.encryptedData,
+      sessionId: this.sessionId,
+      openid: this.openid
+    }
+    try {
+      const res: Partial<Response> = await HTTP.post(
+        `/api/user/account/applet-login`,
+        params
+      )
+
+      if (res.code === 200) {
+        const { data } = res
+        runInAction(() => {
+          this.refresh = data.refresh_token
+          this.token = data.access_token
+          this.currentUser = data
+        })
+        Taro.setStorage({
+          key: 'token',
+          data: data.access_token
+        })
+        Taro.setStorage({
+          key: 'refresh',
+          data: data.refresh_token
+        })
+        Taro.setStorage({
+          key: 'currentUser',
+          data: JSON.stringify(data)
+        })
+      }
+      return res.code
     } catch (err) {
       console.log(err)
       Taro.showToast({
