@@ -10,25 +10,25 @@ import {
 import { View, Text, Image, Button } from '@tarojs/components'
 import Taro from '@tarojs/taro'
 
-import { observer } from '@/store/mobx'
-// import { getTrees } from '../method'
+import { useStores, toJS, observer } from '@/store/mobx'
+import { getTrees } from '../method'
 // import { isArray, isEmpty } from 'lodash'
 function index({ data, deleteMethod, reOrder, InitiateOrder, earlyEnd }) {
-  // const { commonStore } = useStores()
-  // const { dictionary } = commonStore
-  // const { processType } = dictionary
-  // const [category, setCategory] = useState<any>([])
+  const { commonStore } = useStores()
+  const { dictionary } = commonStore
+  const { processType } = dictionary
+  const [category, setCategory] = useState<any>([])
   const [windowType, setWindowType] = useState<any>({}) //弹窗类型
   const [popup, setPopup] = useState(false) //弹窗类型
 
-  // useEffect(() => {
-  //   if (data.processTypeValues) {
-  //     // 加工类型
-  //     setCategory(
-  //       getTrees(data.processTypeValues, toJS(processType), 'value', 'label')
-  //     )
-  //   }
-  // }, [])
+  useEffect(() => {
+    if (data.processTypeValues) {
+      // 加工类型
+      setCategory(
+        getTrees(data.processTypeValues, toJS(processType), 'value', 'label')
+      )
+    }
+  }, [])
   const sortColor = new Map()
   sortColor.set(2, styles.red)
   sortColor.set(3, styles.green)
@@ -93,12 +93,6 @@ function index({ data, deleteMethod, reOrder, InitiateOrder, earlyEnd }) {
       phoneNumber: '10086' //仅为示例，并非真实的电话号码
     }).then()
   }
-  const btn = id => {
-    console.log(id)
-    Taro.redirectTo({
-      url: '/pages/personal/feedback/index?tid=' + id
-    })
-  }
 
   return (
     //   主体
@@ -132,7 +126,7 @@ function index({ data, deleteMethod, reOrder, InitiateOrder, earlyEnd }) {
               </Text>
             </View>
             <View className={styles.machining}>
-              {data.factoryCategoryList.map(item => (
+              {category.map(item => (
                 <Text className={styles.processingType}>{item}</Text>
               ))}
             </View>
@@ -146,12 +140,7 @@ function index({ data, deleteMethod, reOrder, InitiateOrder, earlyEnd }) {
         </View>
         <View className={styles.line}></View>
         {/* 信息 */}
-        <View
-          className={styles.informationFather}
-          onClick={() => {
-            btn(data.id)
-          }}
-        >
+        <View className={styles.informationFather}>
           <View className={styles.flex}>
             <View className={styles.information}>报价信息</View>
             <View>{data.quoteInfo ? data.quoteInfo : '暂无'}</View>

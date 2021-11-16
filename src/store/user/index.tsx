@@ -209,6 +209,32 @@ export default class UserInterface {
       console.log(e)
     }
   }
+
+  // 接单管理反馈信息
+  @action feedbackInformation = async params => {
+    try {
+      const res: Partial<Response> = await HTTP.get(
+        `/api/oms/inquiry-quote/get`,
+        params
+      )
+      const { data = {}, msg = '' } = res
+      if (data) {
+        Taro.setStorage({
+          key: 'userInfo',
+          data: JSON.stringify(data)
+        })
+      }
+      if (res.code !== 200) {
+        Taro.atMessage({
+          message: msg,
+          type: 'error'
+        })
+      }
+      return res
+    } catch (e) {
+      console.log(e)
+    }
+  }
   // 取消合作
   @action cancelCooperation = async params => {
     try {

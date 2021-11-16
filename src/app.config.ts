@@ -16,7 +16,8 @@ export default {
     'pages/personal/modifyMobilePhoneNumber/index',
     'pages/personal/resetPassword/index',
     'pages/personal/orderManagement/index',
-    'pages/personal/orderReceiving/index'
+    'pages/personal/orderReceiving/index',
+    'pages/personal/feedback/index'
   ],
   window: {
     backgroundTextStyle: 'light',

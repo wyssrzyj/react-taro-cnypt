@@ -20,6 +20,7 @@ const Verify = () => {
     deleteIssuer
   } = userInterface
   const { params } = useRouter()
+
   // 跳转的数据
   const [value, setValue] = useState('')
   const [current, setCurrent] = useState(0)
@@ -28,17 +29,21 @@ const Verify = () => {
   const [totalPageNumber, setTotalPageNumber] = useState(2) //总页码
   const [pageNum, setPageNum] = useState(1)
   const [display, setDisplay] = useState(false)
+  const [dropDown, setDropDown] = useState(false)
   // 2 3 -2
   // 接口数据
   const [list, setList] = useState<any>({
     pageNum: 1,
     pageSize: defaultPageSize,
+    purchaserInquiryId: params.ids,
     status: params.tid //状态
   })
 
   // 路由状态
   useEffect(() => {
     if (Number(params.tid)) {
+      console.log('跳转数据', params.ids)
+      // purchaserInquiryId: params.ids
       const tid = Number(params.tid)
       if (tid === null) {
         setCurrent(0)
@@ -75,21 +80,24 @@ const Verify = () => {
       setTotalPageNumber(res.pages)
     }
   }
-
+  // 下拉加载更多
   useEffect(() => {
     // 防止初始化之后重复掉接口
-    if (params.tid) {
-    } else {
+    console.log(dropDown)
+    if (dropDown) {
       drop()
+      console.log('准备掉接口')
     }
-  }, [pageNum])
+  }, [pageNum, dropDown])
 
   let drop = async () => {
     if (totalPageNumber >= pageNum) {
       setDisplay(false)
       let res = await listData({
         pageNum: pageNum,
-        pageSize: defaultPageSize
+        pageSize: defaultPageSize,
+        purchaserInquiryId: params.ids,
+        status: params.tid //状态
       })
       if (res.records.length > 0) {
         const nData = cloneDeep(rallyists)
@@ -98,6 +106,7 @@ const Verify = () => {
         let filterStatus = eliminate(target, -1)
         let final = eliminate(filterStatus, 1)
         setReallyLists(final)
+        setDropDown(false)
       }
     } else {
       setDisplay(true)
@@ -107,6 +116,7 @@ const Verify = () => {
   useReachBottom(async () => {
     // 判断当前页码是否大于最大页码
     setPageNum(n => n + 1)
+    setDropDown(true)
   })
   // 搜索
   const bind = e => {
@@ -128,10 +138,11 @@ const Verify = () => {
     if (e === 3) {
       sum = '-2'
     }
-    console.log(sum)
+    setPageNum(1) //点击tops的时候让下拉需要的数据重新计算
     setList({
       pageNum: 1,
       pageSize: defaultPageSize,
+      purchaserInquiryId: params.ids,
       status: sum, //状态,
       name: value
     })

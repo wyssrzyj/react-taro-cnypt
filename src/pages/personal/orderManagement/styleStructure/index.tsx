@@ -100,6 +100,11 @@ function index({ data, deleteMethod, earlyEnd }) {
   const viewReason = () => {
     console.log('查看原因')
   }
+  const btn = e => {
+    Taro.redirectTo({
+      url: `/pages/personal/orderReceiving/index?ids=${e}`
+    })
+  }
 
   return (
     //   主体
@@ -150,7 +155,12 @@ function index({ data, deleteMethod, earlyEnd }) {
         </View>
         <View className={styles.line}></View>
         {/* 信息 */}
-        <View className={styles.informationFather}>
+        <View
+          className={styles.informationFather}
+          onClick={() => {
+            btn(data.id)
+          }}
+        >
           <View className={styles.feedback}>
             <Text>
               待处理
@@ -184,6 +194,9 @@ function index({ data, deleteMethod, earlyEnd }) {
               </Text>
               家
             </Text>
+          </View>
+          <View className={styles.feedback}>
+            <AtIcon value="chevron-right" size="20" color="#999999"></AtIcon>
           </View>
         </View>
         <View className={styles.line}></View>
