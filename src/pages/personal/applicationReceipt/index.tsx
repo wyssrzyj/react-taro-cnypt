@@ -26,7 +26,7 @@ const Verify = () => {
       api(params.id)
     }
   }, [])
-  // 回显.
+  // 回显
   const api = async e => {
     let res = await applicationReceipt({ supplierInquiryId: e })
     setProducts(res.receiveGoodsNum)
