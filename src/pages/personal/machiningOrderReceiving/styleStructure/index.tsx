@@ -10,10 +10,10 @@ import {
 import { View, Text, Image, Button } from '@tarojs/components'
 import Taro from '@tarojs/taro'
 
-import { observer } from '@/store/mobx'
+import { observer, useStores } from '@/store/mobx'
 function index({ data, deleteMethod, reOrder, InitiateOrder, earlyEnd }) {
-  console.log('加工厂数据', data)
-
+  const { userInterface } = useStores()
+  const { applicationReceiptQuantity } = userInterface
   const [windowType, setWindowType] = useState<any>({}) //弹窗类型
   const [popup, setPopup] = useState(false) //弹窗类型
 
@@ -44,19 +44,24 @@ function index({ data, deleteMethod, reOrder, InitiateOrder, earlyEnd }) {
     setPopup(true)
     setWindowType({ type: 'mov' })
   }
-  // 取消确认
-  const CancelConfirmation = () => {
-    setPopup(true)
-    setWindowType({ type: 'CancelConfirmation' })
-  }
+
   // 拒绝接单
   const confirmCooperation = () => {
     setPopup(true)
     setWindowType({ type: 'confirmCooperation' })
   }
   // 修改回复
-  const decline = () => {
+  const decline = async data => {
+    // let ids = {
+    //   id: data.purchaserInquiryId,
+    //   supplierInquiryId: data.supplierInquiryId
+    // }
     console.log('跳页面')
+    console.log(data)
+    await applicationReceiptQuantity(data.purchaserInquiryId)
+    Taro.redirectTo({
+      url: `/pages/personal/applicationReceipt/index?id=${data.supplierInquiryId}`
+    })
   }
   const cancel = () => {
     setPopup(false)
@@ -182,7 +187,12 @@ function index({ data, deleteMethod, reOrder, InitiateOrder, earlyEnd }) {
               >
                 拒绝接单
               </View>
-              <View onClick={decline} className={styles.reply}>
+              <View
+                onClick={() => {
+                  decline(data)
+                }}
+                className={styles.reply}
+              >
                 修改回复
               </View>
             </View>

@@ -11,29 +11,30 @@ export const ORDER_EMPTY =
 
 const Verify = () => {
   const { userInterface } = useStores()
-  const { feedbackInformation, orderQuantity, submitRequisition } =
+  const { applicationReceipt, orderQuantity, quantityId, submitRequisition } =
     userInterface
-  const [data, setData] = useState<any>({})
   const [offer, setOffer] = useState() //报价信息
   const [paymentMethod, setPaymentMethod] = useState() //收款方式
   const [products, setProducts] = useState() //产品数
-  const [remarks, setRemarks] = useState() //备注
+  const [remarks, setRemarks] = useState('') //备注
   const [toast, setToast] = useState(false)
   const { params } = useRouter()
-  console.log(params.tid)
 
   // 跳转的数据
   useEffect(() => {
     if (params) {
-      api(params.tid)
+      console.log(params)
+      console.log(params.id)
+      api(params.id)
     }
   }, [])
-
+  // 回显
   const api = async e => {
-    let res = await feedbackInformation({ supplierInquiryId: e })
-    if (!isNil(res)) {
-      setData(res.data)
-    }
+    let res = await applicationReceipt({ supplierInquiryId: e })
+    setProducts(res.receiveGoodsNum)
+    setOffer(res.quoteInfo)
+    setPaymentMethod(res.payDetails)
+    setRemarks(res.remark)
   }
   const goBack = () => {
     redirectTo({
@@ -60,11 +61,14 @@ const Verify = () => {
 
   const onSubmit = async () => {
     if (products) {
-      if (params) {
+      console.log('全局id', quantityId)
+
+      if (params && quantityId) {
         let arr = await orderQuantity({
           goodsNum: products,
-          id: params.tid
+          id: quantityId
         })
+
         if (arr.code === 200) {
           let value = {
             quoteInfo: offer,
@@ -72,11 +76,21 @@ const Verify = () => {
             receiveGoodsNum: products,
             remark: remarks
           }
-          const submitRes = await submitRequisition({
+          console.log({
             ...value,
-            purchaserInquiryId: params.tid,
+            purchaserInquiryId: quantityId,
+            supplierInquiryId: params.id,
             status: 2
           })
+
+          const submitRes = await submitRequisition({
+            ...value,
+            purchaserInquiryId: quantityId,
+            supplierInquiryId: params.id,
+            status: 2
+          })
+          console.log(submitRes)
+
           if (submitRes.code === 200) {
             console.log('成功')
             console.log('跳订单管理')

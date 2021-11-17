@@ -26,6 +26,18 @@ export default class UserInterface {
 
   @observable currentUser: Partial<User> = {}
   @observable modi = '' //修改成功
+  @observable quantityId = '' //申请接单的数量数据
+
+  // 申请接单的数量数据
+  @action applicationReceiptQuantity = async params => {
+    console.log(params)
+
+    try {
+      runInAction(() => {
+        this.quantityId = params
+      })
+    } catch (e) {}
+  }
 
   // 账号安全 修改手机号
   @action modifyMobilePhoneNumber = async params => {
@@ -154,16 +166,12 @@ export default class UserInterface {
 
   // 供应商主动申请需求单  formti提交
   @action submitRequisition = async params => {
+    console.log(params)
     try {
       const res: Partial<Response> = await HTTP.post(
-        '/api/oms/inquiry-quote/active-application-inquiry',
+        `/api/oms/inquiry-quote/active-application-inquiry`,
         params
       )
-      Taro.showToast({
-        title: res.msg as string,
-        icon: 'none',
-        duration: 1500
-      })
       if (res.code === 200) {
         return res
       }
@@ -411,6 +419,19 @@ export default class UserInterface {
       return e
     }
   }
+  //  获取表单数据 可接订单数 单个接单详情查询
+  @action applicationReceipt = async params => {
+    try {
+      const res: Partial<Response> = await HTTP.get(
+        '/api/oms/inquiry-quote/get',
+        params
+      )
+      return res.data
+    } catch (e) {
+      console.log(e)
+    }
+  }
+
   @action userInfo = async () => {
     try {
       const res: Partial<Response> = await HTTP.get(
