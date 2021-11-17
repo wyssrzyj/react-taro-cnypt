@@ -228,6 +228,11 @@ const Search = () => {
     setPageStatus(1)
   }
 
+  const clearHistory = () => {
+    Taro.setStorageSync('search', [])
+    setHistorySearch([])
+  }
+
   return (
     <View>
       <Navbar>
@@ -256,7 +261,11 @@ const Search = () => {
         <View className={styles.searchHistory}>
           <View className={styles.historyHeader}>
             <Text className={styles.historyTitle}>搜索历史</Text>
-            <Image src={DELETE_ICON} className={styles.delIcon}></Image>
+            <Image
+              src={DELETE_ICON}
+              className={styles.delIcon}
+              onClick={clearHistory}
+            ></Image>
           </View>
           {isArray(historySearch) &&
             historySearch.map((item, idx) => {
