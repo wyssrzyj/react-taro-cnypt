@@ -32,7 +32,7 @@ function index({ userInfo }) {
   const sign = () => {
     signOut()
     setModal(false)
-    Taro.redirectTo({ url: '/pages/login/index' })
+    Taro.navigateTo({ url: '/pages/login/index' })
   }
   const about = () => {
     Taro.redirectTo({ url: '/pages/personal/myEexcellentProduct/index' })

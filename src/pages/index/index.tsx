@@ -1,14 +1,13 @@
 import { useEffect, useState, useRef } from 'react'
 import { View, Image, Swiper, SwiperItem, Text } from '@tarojs/components'
-import { useStores, observer, toJS } from '@/store/mobx'
+import { useStores, observer } from '@/store/mobx'
 import styles from './index.module.less'
 import { usePullDownRefresh, useReachBottom } from '@tarojs/taro'
 import TabBar from '@/components/tabBar'
 import Card from './components/card'
-import { cloneDeep, isNil } from 'lodash'
+import { cloneDeep, isNil, isEmpty } from 'lodash'
 import { Navbar } from '@/components'
 import classNames from 'classnames'
-import { Button } from '@tarojs/components'
 import Taro from '@tarojs/taro'
 
 const Home = () => {
@@ -16,7 +15,14 @@ const Home = () => {
   const { getNewFactory, getOrderList } = homeStore
   const { allDictionary, productCategory, getProductGrade, getDistrict } =
     commonStore
-  const { userInfomation, userInfo } = loginStore
+  const { userInfo } = loginStore
+
+  const userInfomation = Taro.getStorageSync('userInfo')
+    ? JSON.parse(Taro.getStorageSync('userInfo'))
+    : {}
+  const currentUser = Taro.getStorageSync('currentUser')
+    ? JSON.parse(Taro.getStorageSync('currentUser'))
+    : {}
 
   const containerRef = useRef<HTMLElement>()
 
@@ -30,10 +36,12 @@ const Home = () => {
   useEffect(() => {
     ;(async () => {
       await allDictionary([])
-      await userInfo()
       await productCategory()
       await getProductGrade()
       await getDistrict()
+      if (!isEmpty(currentUser)) {
+        await userInfo()
+      }
     })()
   }, [])
 
@@ -57,13 +65,27 @@ const Home = () => {
     {
       img: 'https://capacity-platform.oss-cn-hangzhou.aliyuncs.com/capacity-platform/mobile/index/un_factory_in.png',
       onClick: () => {
-        console.log(3)
+        if (isEmpty(currentUser)) {
+          Taro.navigateTo({
+            url: '/pages/login/index'
+          })
+        }
+        Taro.navigateTo({
+          url: '/pages/factoryEntry/index'
+        })
       }
     },
     {
       img: 'https://capacity-platform.oss-cn-hangzhou.aliyuncs.com/capacity-platform/mobile/index/un_order_in.png',
       onClick: () => {
-        console.log(4)
+        if (isEmpty(currentUser)) {
+          Taro.navigateTo({
+            url: '/pages/login/index'
+          })
+        }
+        Taro.navigateTo({
+          url: '/pages/orderIssueEntry/index'
+        })
       }
     }
   ]
@@ -72,13 +94,17 @@ const Home = () => {
     {
       img: 'https://capacity-platform.oss-cn-hangzhou.aliyuncs.com/capacity-platform/mobile/index/factory_factory.png',
       onClick: () => {
-        console.log(5)
+        Taro.navigateTo({
+          url: '/pages/search/index'
+        })
       }
     },
     {
       img: 'https://capacity-platform.oss-cn-hangzhou.aliyuncs.com/capacity-platform/mobile/index/factory_order.png',
       onClick: () => {
-        console.log(6)
+        Taro.navigateTo({
+          url: '/pages/search/index'
+        })
       }
     }
   ]
@@ -103,7 +129,9 @@ const Home = () => {
     {
       img: 'https://capacity-platform.oss-cn-hangzhou.aliyuncs.com/capacity-platform/mobile/index/order_push.png',
       onClick: () => {
-        console.log(9)
+        Taro.navigateTo({
+          url: '/pages/publish/index'
+        })
       }
     }
   ]
@@ -155,48 +183,6 @@ const Home = () => {
     setPageNum(1)
   }
 
-  const toFactoryEntry = () => {
-    Taro.navigateTo({
-      url: '/pages/factoryEntry/index'
-    })
-  }
-
-  const toOrderEntry = () => {
-    Taro.navigateTo({
-      url: '/pages/orderIssueEntry/index'
-    })
-  }
-
-  const toPublish = () => {
-    Taro.navigateTo({
-      url: '/pages/publish/index'
-    })
-  }
-
-  const toTest = () => {
-    Taro.navigateTo({
-      url: '/pages/test/index'
-    })
-  }
-
-  const toFactoryDetail = () => {
-    Taro.navigateTo({
-      url: `/pages/factoryDetail/index?id=64`
-    })
-  }
-
-  const toOrderDetail = () => {
-    Taro.navigateTo({
-      url: '/pages/orderDetail/index'
-    })
-  }
-
-  const toOrderIssueDetail = () => {
-    Taro.navigateTo({
-      url: '/pages/orderIssueDetail/index'
-    })
-  }
-
   return (
     <View className={styles.container} ref={containerRef}>
       <Navbar>
@@ -221,14 +207,6 @@ const Home = () => {
           </Text>
         </View>
       </Navbar>
-
-      <Button onClick={toFactoryEntry}>工厂入驻</Button>
-      <Button onClick={toOrderEntry}>发单商入驻</Button>
-      <Button onClick={toPublish}>发布订单</Button>
-      <Button onClick={toFactoryDetail}>工厂详情</Button>
-      <Button onClick={toOrderDetail}>订单详情</Button>
-      <Button onClick={toOrderIssueDetail}>发单商详情</Button>
-      <Button onClick={toTest}>test</Button>
 
       <View className={styles.content}>
         <Swiper
@@ -285,7 +263,14 @@ const Home = () => {
           {activeTab === 0 ? '最新订单' : '最新工厂'}
         </View>
         {dataSource.map((data, idx) => {
-          return <Card key={idx} data={data} type={activeTab}></Card>
+          return (
+            <Card
+              key={idx}
+              data={data}
+              type={activeTab}
+              source={'/pages/index/index'}
+            ></Card>
+          )
         })}
         {dataSource.length >= total && init && (
           <View className={styles.noMoreText}>没有更多了</View>

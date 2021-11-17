@@ -4,7 +4,6 @@ import styles from './index.module.less'
 
 const EnterpriseCard = props => {
   const { data } = props
-  const { title } = data
 
   const configs = [
     {
@@ -15,7 +14,7 @@ const EnterpriseCard = props => {
     },
     {
       label: '所在地区',
-      field: 'area'
+      field: 'areaName'
     },
     {
       label: '工厂地址',
@@ -29,12 +28,16 @@ const EnterpriseCard = props => {
 
   return (
     <View className={styles.card}>
-      {title && <View className={styles.title}>{title}</View>}
+      {data['enterpriseName'] && (
+        <View className={styles.title}>{data['enterpriseName']}</View>
+      )}
 
       {configs.map(item => (
         <View className={styles.item} key={item.field}>
           <View className={styles.label}>{item.label}</View>
-          <View className={styles.value}>{data[item.field]}</View>
+          <View className={styles.value}>
+            {data[item.field] ? data[item.field] : '暂无'}
+          </View>
         </View>
       ))}
 
@@ -42,7 +45,11 @@ const EnterpriseCard = props => {
         {isArray(data.imgs) &&
           data.imgs.map((item, idx) => {
             return (
-              <Image key={idx} src={item.url} className={styles.img}></Image>
+              <Image
+                key={idx}
+                src={item.thumbUrl}
+                className={styles.img}
+              ></Image>
             )
           })}
       </View>

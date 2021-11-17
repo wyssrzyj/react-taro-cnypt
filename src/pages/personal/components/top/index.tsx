@@ -15,7 +15,7 @@ const Top = ({ userInfo, list }) => {
   // let sum = 2 //判断用户权限 新用户=0 发单商=1,加工厂=2
 
   const toLogin = () => {
-    Taro.redirectTo({ url: '/pages/login/index' })
+    Taro.navigateTo({ url: '/pages/login/index' })
   }
 
   return (

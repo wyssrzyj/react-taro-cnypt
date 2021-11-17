@@ -5,6 +5,7 @@ import { useStores, observer } from '@/store/mobx'
 import { useEffect, useState } from 'react'
 import { matchTreeData } from '@/utils/tool'
 import moment from 'moment'
+import Taro from '@tarojs/taro'
 
 const LOCATION_ICON =
   'https://capacity-platform.oss-cn-hangzhou.aliyuncs.com/capacity-platform/mobile/icon/diqu_bai.png'
@@ -43,8 +44,15 @@ const Card = props => {
     }
   }, [processType, type, data, productCategoryList])
 
+  const toOrderDetail = () => {
+    type === 0 &&
+      Taro.redirectTo({
+        url: `/pages/orderDetail/index?id=${data.id}`
+      })
+  }
+
   return (
-    <View className={styles.card}>
+    <View className={styles.card} onClick={toOrderDetail}>
       <Image src={img || ''} className={styles.cardImg}></Image>
       <View className={styles.cardInfo}>
         <View className={styles.titleBox}>

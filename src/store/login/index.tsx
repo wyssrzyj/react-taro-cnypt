@@ -27,7 +27,7 @@ export default class LoginStore {
   @observable userInfomation: Partial<User> = {}
   @observable token: string = ''
   @observable refresh: string = ''
-  @observable currentUser: string = ''
+  @observable currentUser: any = {}
 
   @observable sessionId: string | number = ''
   @observable openid: string | number = ''
@@ -74,7 +74,6 @@ export default class LoginStore {
         '/api/user/account/login',
         params
       )
-      console.log(res)
 
       const { data = {}, msg = '' } = res
       if (res.code === 200 && data) {
@@ -237,6 +236,7 @@ export default class LoginStore {
           key: 'currentUser',
           data: JSON.stringify(data)
         })
+        await this.userInfo()
       }
       return res.code
     } catch (err) {

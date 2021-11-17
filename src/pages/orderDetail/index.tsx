@@ -1,60 +1,56 @@
 import styles from './index.module.less'
 import { View, Button, Image } from '@tarojs/components'
-import Taro from '@tarojs/taro'
-import {
-  EnterpriseCard,
-  Line,
-  Navbar,
-  OrderCard,
-  PhoneCard,
-  TabBar
-} from '@/components'
+import Taro, { useRouter } from '@tarojs/taro'
+import { Line, Navbar, OrderCard, PhoneCard } from '@/components'
 import Title from '@/components/title'
 import { isArray } from 'lodash'
+import { useStores } from '@/store/mobx'
+import { useEffect, useState } from 'react'
+import moment from 'moment'
 
 const BACK_ICON =
   'https://capacity-platform.oss-cn-hangzhou.aliyuncs.com/capacity-platform/mobile/icon/black_back.png'
 
-const FactoryDetail = () => {
+const OrderDetail = () => {
+  const router = useRouter()
+  const { params } = router
+  const { id } = params
+
+  const userInfomation = Taro.getStorageSync('userInfo')
+    ? JSON.parse(Taro.getStorageSync('userInfo'))
+    : {}
+
+  const { factoryStore } = useStores()
+  const { orderDetail } = factoryStore
+
+  const [data, setData] = useState({})
+
+  useEffect(() => {
+    ;(async () => {
+      const orderIssuer = await orderDetail(id)
+      const keys = [
+        'categoryNames',
+        'regionalNameList',
+        'materialTypeList',
+        'processTypeList',
+        'productTypeList'
+      ]
+      keys.forEach(item => {
+        orderIssuer[item] = isArray(orderIssuer[item])
+          ? orderIssuer[item].join('、')
+          : ''
+      })
+
+      orderIssuer.inquiryEffectiveDate = orderIssuer.inquiryEffectiveDate
+        ? moment(orderIssuer.inquiryEffectiveDate).format('YYYY')
+        : null
+      orderIssuer.imgs = orderIssuer.stylePicture
+      setData(orderIssuer)
+    })()
+  }, [id])
+
   const goBack = () => {
     Taro.navigateBack()
-  }
-
-  const data = {
-    title: '广州市神易服饰',
-    goodsNum: '多件',
-    enterpriseName: 'XXX服装进出口股份有限公司',
-    address:
-      '石榴岗路3号5单元asd3333333333333333333333333333333333333333333333333333',
-    imgs: [
-      {
-        url: 'https://capacity-platform.oss-cn-hangzhou.aliyuncs.com/capacity-platform/mobile/index/order_order.png'
-      },
-      {
-        url: 'https://capacity-platform.oss-cn-hangzhou.aliyuncs.com/capacity-platform/mobile/index/order_factory.png'
-      },
-      {
-        url: 'https://capacity-platform.oss-cn-hangzhou.aliyuncs.com/capacity-platform/mobile/index/factory_factory.png'
-      },
-      {
-        url: 'https://capacity-platform.oss-cn-hangzhou.aliyuncs.com/capacity-platform/mobile/index/un_factory_in.png'
-      },
-      {
-        url: 'https://capacity-platform.oss-cn-hangzhou.aliyuncs.com/capacity-platform/mobile/index/un_order.png'
-      }
-    ],
-    name: '沙河南城单 女装双面羊绒外套',
-    goodsPrice: '暂无',
-    categoryCodes: '女装-毛呢大衣',
-    materialTypeList: '呢料',
-    processTypeList: '清加工',
-    deliveryDate: '2021-10-30',
-    payDetails: '线下面议',
-    inquiryEffectiveDate: '2021-10-30',
-    goodsRemark: '暂无',
-    productTypeList: '整件生产线；流水生产线',
-    regionalIdList: '江苏省 嘉兴市',
-    effectiveLocation: '50-100人'
   }
 
   const configs = [
@@ -64,7 +60,7 @@ const FactoryDetail = () => {
     },
     {
       label: '地区要求',
-      field: 'regionalIdList'
+      field: 'regionalNameList'
     },
     {
       label: '车位要求',
@@ -115,6 +111,12 @@ const FactoryDetail = () => {
     }
   ]
 
+  const phoneCall = () => {
+    Taro.makePhoneCall({
+      phoneNumber: data['contactPersonMobile'] //仅为示例，并非真实的电话号码
+    })
+  }
+
   return (
     <View className={styles.container}>
       <Navbar>
@@ -155,19 +157,34 @@ const FactoryDetail = () => {
           </View>
         </View>
 
-        <View className={styles.contact}>
-          <Title title={'联系方式'}></Title>
-          <PhoneCard></PhoneCard>
-        </View>
+        {+userInfomation.enterpriseType !== 1 && (
+          <View className={styles.contact}>
+            <Title title={'联系方式'}></Title>
+            <PhoneCard
+              data={data}
+              person={'contactPerson'}
+              phone={'contactPersonMobile'}
+              type={'order'}
+              personId={'tenantId'}
+              id={id}
+            ></PhoneCard>
+          </View>
+        )}
       </View>
 
-      <View className={styles.phoneBtnBox}>
-        <Button type={'primary'} className={styles.phoneBtn}>
-          申请接单
-        </Button>
-      </View>
+      {+userInfomation.enterpriseType !== 1 && (
+        <View className={styles.phoneBtnBox}>
+          <Button
+            type={'primary'}
+            className={styles.phoneBtn}
+            onClick={phoneCall}
+          >
+            申请接单
+          </Button>
+        </View>
+      )}
     </View>
   )
 }
 
-export default FactoryDetail
+export default OrderDetail

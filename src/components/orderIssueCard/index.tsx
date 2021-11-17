@@ -5,26 +5,39 @@ import styles from './index.module.less'
 const OrderIssueCard = props => {
   const { data } = props
 
+  const configs = [
+    {
+      label: '所在地区',
+      field: 'areaName'
+    },
+    {
+      label: '企业地址',
+      field: 'address'
+    },
+    {
+      label: '企业简介',
+      field: 'enterpriseDesc'
+    }
+  ]
+
   return (
     <View className={styles.orderCard}>
-      <View className={styles.title}>{data.title}</View>
-      <View className={styles.addressBox}>
-        <View className={styles.label}>所在地区</View>
-        <View className={styles.address}>{data.title}</View>
-      </View>
-      <View className={styles.addressBox}>
-        <View className={styles.label}>企业地址</View>
-        <View className={styles.address}>{data.address}</View>
-      </View>
-      <View className={styles.addressBox}>
-        <View className={styles.label}>企业简介</View>
-        <View className={styles.address}>{data.enterpriseDesc}</View>
-      </View>
+      <View className={styles.title}>{data.enterpriseName}</View>
+      {configs.map(item => (
+        <View className={styles.addressBox} key={item.field}>
+          <View className={styles.label}>{item.label}</View>
+          <View className={styles.address}>{data[item.field]}</View>
+        </View>
+      ))}
       <View className={styles.imgs}>
         {isArray(data.imgs) &&
           data.imgs.map((item, idx) => {
             return (
-              <Image key={idx} src={item.url} className={styles.img}></Image>
+              <Image
+                key={idx}
+                src={item.thumbUrl}
+                className={styles.img}
+              ></Image>
             )
           })}
       </View>

@@ -36,7 +36,7 @@ const AreaModal = props => {
 
   useEffect(() => {
     ;(async () => {
-      await getDistrict()
+      // await getDistrict()
     })()
   }, [])
 

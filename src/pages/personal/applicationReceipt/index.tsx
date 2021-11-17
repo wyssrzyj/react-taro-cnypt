@@ -64,10 +64,10 @@ const Verify = () => {
   const onSubmit = () => {
     if (products) {
       let arr = {
-        offer: offer,
-        paymentMethod: paymentMethod,
-        products: products,
-        remarks: remarks
+        quoteInfo: offer,
+        payDetails: paymentMethod,
+        receiveGoodsNum: products,
+        remark: remarks
       }
       setToast(false)
       console.log(arr)

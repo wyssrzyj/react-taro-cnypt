@@ -23,7 +23,7 @@ const Personal = () => {
   const [jurisdiction, setJurisdiction] = useState({})
   // 根据企业id 获取信息
   useEffect(() => {
-    getDisr()
+    // getDisr()
     if (Taro.getStorageSync('currentUser')) {
       let information = JSON.parse(Taro.getStorageSync('currentUser')).userId
       pickUpInformation({ userId: information })
@@ -38,7 +38,7 @@ const Personal = () => {
   }, [])
   // 地区接口数据
   const getDisr = async () => {
-    await getDistrict()
+    // await getDistrict()
   }
   // 用户信息
   const pickUpInformation = async e => {
