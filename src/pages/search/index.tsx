@@ -1,11 +1,20 @@
 import { View, Image, Input, Text } from '@tarojs/components'
 import { AtTabs } from 'taro-ui'
 import styles from './index.module.less'
-import Taro, { usePullDownRefresh, useReachBottom } from '@tarojs/taro'
+import Taro, {
+  usePullDownRefresh,
+  useReachBottom,
+  useRouter
+} from '@tarojs/taro'
 import { useEffect, useState } from 'react'
 import { useStores, observer } from '@/store/mobx'
-import { CusMaterialModal, CusProductModal, Navbar } from '@/components'
-import { cloneDeep, isArray, isEmpty } from 'lodash'
+import {
+  CusMaterialModal,
+  CusModal,
+  CusProductModal,
+  Navbar
+} from '@/components'
+import { cloneDeep, isArray, isEmpty, isNil } from 'lodash'
 import AreaModal from '@/components/areaModal'
 import Card from '../index/components/card'
 
@@ -29,12 +38,19 @@ SORT_MAP.set(1, ASC)
 
 const SORT_TYPE = new Map()
 SORT_TYPE.set(-1, null)
-SORT_TYPE.set(0, 'asc')
-SORT_TYPE.set(1, 'desc')
+SORT_TYPE.set(0, 'desc')
+SORT_TYPE.set(1, 'asc')
 
 const Search = () => {
-  const { orderStore } = useStores()
+  const router = useRouter()
+  const {
+    params: { tab = 0 }
+  } = router
+
+  const { orderStore, commonStore } = useStores()
   const { getNewFactory, getOrderList } = orderStore
+  const { dictionary } = commonStore
+  const { effectiveLocation = [] } = dictionary
 
   const tabList = [
     {
@@ -45,7 +61,7 @@ const Search = () => {
     }
   ]
 
-  const searchConfigs = [
+  const initConfigs = [
     {
       label: '地区',
       selected: false,
@@ -54,15 +70,21 @@ const Search = () => {
     },
     {
       label: '主营类别',
-      field: 'mainCategoriesList',
+      field: 'categoryCodes',
       selected: false,
       onClick: () => productModalShow()
     },
     {
       label: '面料类型',
-      field: 'plusMaterialType',
+      field: 'plusMaterialTypeList',
       selected: false,
       onClick: () => materialModalShow()
+    },
+    {
+      label: '工厂规模',
+      field: 'effectiveLocation',
+      selected: false,
+      onClick: () => effectiveeModalShow()
     }
   ]
 
@@ -72,15 +94,23 @@ const Search = () => {
   })
   const [historySearch, setHistorySearch] = useState<any[]>([])
   const [pageStatus, setPageStatus] = useState<number>(1) // 1 搜索历史 2 搜索列表
-  const [activeTab, setActiveTab] = useState<number>(0) // 0 订单 1 工厂
+  const [activeTab, setActiveTab] = useState<number>(+tab) // 0 订单 1 工厂
   const [areaFlag, setAreaFlag] = useState<boolean>(false)
   const [productFlag, setProductFlag] = useState<boolean>(false)
   const [materialFlag, setMaterialFlag] = useState<boolean>(false)
+  const [effectiveFlag, setEffectiveFlag] = useState<boolean>(false)
   const [dataSource, setDataSource] = useState<any[]>([])
   const [loading, setLoading] = useState<boolean>(false)
   const [total, setTotal] = useState<number>(0)
   const [pageNum, setPageNum] = useState(1)
   const [init, setInit] = useState<boolean>(false)
+  const [searchConfigs, setSearchConfigs] = useState<any[]>(initConfigs)
+
+  useEffect(() => {
+    setSearchConfigs(
+      activeTab === 1 ? initConfigs : initConfigs.filter((_, idx) => idx !== 3)
+    )
+  }, [activeTab])
 
   usePullDownRefresh(async () => {
     await setPageNum(1)
@@ -98,23 +128,32 @@ const Search = () => {
   }, [])
 
   useEffect(() => {
-    console.log(params, 'params')
-  }, [params])
-
-  useEffect(() => {
     ;(async () => {
       if (pageStatus === 1) return
       setLoading(true)
       const nData = cloneDeep(dataSource)
       let nParams = cloneDeep(params)
       nParams.pageNum = pageNum
+      nParams.effectiveLocation = nParams.effectiveLocation
+        ? nParams.effectiveLocation.join('')
+        : null
       nParams = { ...nParams, ...nParams['mainCategoriesList'] }
-
+      if (nParams.sort !== -1) {
+        nParams.sortField = 'inquiryEffectiveDate'
+        nParams.sortType = SORT_TYPE.get(nParams.sort)
+      }
+      !nParams.name && delete nParams.name
       delete nParams.sort
       delete nParams.mainCategoriesList
       const fn = activeTab === 0 ? getOrderList : getNewFactory
+
+      const keys = Reflect.ownKeys(nParams)
+      keys.forEach(item => {
+        if (isNil(nParams[item])) {
+          delete nParams[item]
+        }
+      })
       const res = (await fn(nParams)) || {}
-      console.log(res)
 
       const { records = [], current = 1, total = 0 } = res
       const target = current === 1 ? records : [...nData, ...records]
@@ -137,12 +176,12 @@ const Search = () => {
     setMaterialFlag(f => !f)
   }
 
-  const goBack = () => {
-    Taro.navigateBack()
+  const effectiveeModalShow = () => {
+    setEffectiveFlag(f => !f)
   }
 
-  const searchChange = event => {
-    console.log('🚀 ~ file: index.tsx ~ line 20 ~ searchChange ~ event', event)
+  const goBack = () => {
+    Taro.navigateBack()
   }
 
   const confirm = event => {
@@ -151,7 +190,7 @@ const Search = () => {
     const {
       detail: { value }
     } = event
-    nSearch.push(value)
+    value && nSearch.push(value)
     setHistorySearch(nSearch)
     Taro.setStorageSync('search', nSearch)
     nParams['name'] = value
@@ -160,11 +199,15 @@ const Search = () => {
   }
 
   const searchTarget = target => {
-    console.log('🚀 ~ file: index.tsx ~ line 57 ~ Search ~ target', target)
+    const nParams = cloneDeep(params)
+    nParams['name'] = target
+    setParams(nParams)
+    setPageNum(1)
     setPageStatus(2)
   }
 
   const tabChange = tab => {
+    setPageNum(1)
     setActiveTab(tab)
   }
 
@@ -181,6 +224,10 @@ const Search = () => {
     setParams(nParams)
   }
 
+  const searchFocus = () => {
+    setPageStatus(1)
+  }
+
   return (
     <View>
       <Navbar>
@@ -194,12 +241,12 @@ const Search = () => {
           <View className={styles.searchBox}>
             <Image src={SEARCH_ICON} className={styles.searchIcon}></Image>
             <Input
-              onChange={searchChange}
               className={styles.search}
-              placeholder={pageStatus === 1 ? '搜索订单名称' : '搜索工厂名称'}
+              placeholder={activeTab === 0 ? '搜索订单名称' : '搜索工厂名称'}
               placeholderStyle={'fontSize: 30px; color: #999'}
               confirmType={'search'}
               onConfirm={confirm}
+              onFocus={searchFocus}
             ></Input>
           </View>
         </View>
@@ -248,18 +295,6 @@ const Search = () => {
                     ? styles.unselectedText
                     : styles.selectedText
 
-                if (item.field === 'mainCategoriesList') {
-                  img =
-                    isEmpty(params['mainCategoriesList']) ||
-                    !params['mainCategoriesList']['mainCategoryChildId']
-                      ? UN_SELECTED_ICON
-                      : SELECTED_ICON
-                  name =
-                    isEmpty(params[item.field]) ||
-                    !params['mainCategoriesList']['mainCategoryChildId']
-                      ? styles.unselectedText
-                      : styles.selectedText
-                }
                 return (
                   <View
                     className={styles.searchItem}
@@ -277,21 +312,23 @@ const Search = () => {
                 )
               })}
 
-              <View className={styles.searchItem} onClick={sortClick}>
-                <Text
-                  className={
-                    params['sort'] === -1
-                      ? styles.unselectedText
-                      : styles.selectedText
-                  }
-                >
-                  有效时间
-                </Text>
-                <Image
-                  src={SORT_MAP.get(params['sort'])}
-                  className={styles.sortIcon}
-                />
-              </View>
+              {activeTab === 0 && (
+                <View className={styles.searchItem} onClick={sortClick}>
+                  <Text
+                    className={
+                      params['sort'] === -1
+                        ? styles.unselectedText
+                        : styles.selectedText
+                    }
+                  >
+                    有效时间
+                  </Text>
+                  <Image
+                    src={SORT_MAP.get(params['sort'])}
+                    className={styles.sortIcon}
+                  />
+                </View>
+              )}
             </View>
           </View>
         </View>
@@ -318,17 +355,30 @@ const Search = () => {
         <CusProductModal
           visible={productFlag}
           onCancel={productModalShow}
-          callback={event => handleChange(event, 'mainCategoriesList')}
-          value={params['mainCategoriesList'] || []}
-          type={'single'}
+          callback={event => handleChange(event, 'categoryCodes')}
+          value={params['categoryCodes'] || []}
+          keyName={'code'}
+          // type={'single'}
         />
       )}
       {materialFlag && (
         <CusMaterialModal
           visible={materialFlag}
           onCancel={materialModalShow}
-          callback={event => handleChange(event, 'plusMaterialType')}
-          value={params['plusMaterialType'] || []}
+          callback={event => handleChange(event, 'plusMaterialTypeList')}
+          value={params['plusMaterialTypeList'] || []}
+        />
+      )}
+
+      {effectiveFlag && (
+        <CusModal
+          options={effectiveLocation}
+          visible={effectiveFlag}
+          onCancel={effectiveeModalShow}
+          title={'车位要求'}
+          callback={event => handleChange(event, 'effectiveLocation')}
+          value={params['effectiveLocation'] || []}
+          type={'single'}
         />
       )}
     </View>

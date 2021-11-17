@@ -3,7 +3,7 @@ import { View, Button, Image } from '@tarojs/components'
 import Taro, { useRouter } from '@tarojs/taro'
 import { Line, Navbar, OrderCard, PhoneCard } from '@/components'
 import Title from '@/components/title'
-import { isArray } from 'lodash'
+import { isArray, isEmpty } from 'lodash'
 import { useStores } from '@/store/mobx'
 import { useEffect, useState } from 'react'
 import moment from 'moment'
@@ -18,6 +18,9 @@ const OrderDetail = () => {
 
   const userInfomation = Taro.getStorageSync('userInfo')
     ? JSON.parse(Taro.getStorageSync('userInfo'))
+    : {}
+  const currentUser = Taro.getStorageSync('currentUser')
+    ? JSON.parse(Taro.getStorageSync('currentUser'))
     : {}
 
   const { factoryStore } = useStores()
@@ -112,13 +115,15 @@ const OrderDetail = () => {
   ]
 
   const phoneCall = () => {
-    Taro.redirectTo({
-      url: '/pages/personal/applicationReceipt/index?tid=' + id
-    })
-
-    // Taro.makePhoneCall({
-    //   phoneNumber: data['contactPersonMobile'] //仅为示例，并非真实的电话号码
-    // })
+    if (isEmpty(currentUser)) {
+      Taro.redirectTo({
+        url: '/pages/login/index'
+      })
+    } else {
+      Taro.redirectTo({
+        url: '/pages/personal/applicationReceipt/index?id=' + id
+      })
+    }
   }
 
   return (

@@ -655,7 +655,7 @@ const FactoryEntry = () => {
           onCancel={productModalShow}
           callback={event => handleChange(event, 'mainCategoriesList')}
           value={params['mainCategoriesList'] || []}
-          key={'code'}
+          keyName={'code'}
         />
       )}
       {materialFlag && (

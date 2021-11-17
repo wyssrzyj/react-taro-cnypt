@@ -50,7 +50,7 @@ const Home = () => {
       img: 'https://capacity-platform.oss-cn-hangzhou.aliyuncs.com/capacity-platform/mobile/index/un_order.png',
       onClick: () => {
         Taro.navigateTo({
-          url: '/pages/search/index'
+          url: '/pages/search/index?tab=0'
         })
       }
     },
@@ -58,7 +58,7 @@ const Home = () => {
       img: 'https://capacity-platform.oss-cn-hangzhou.aliyuncs.com/capacity-platform/mobile/index/un_factory.png',
       onClick: () => {
         Taro.navigateTo({
-          url: '/pages/search/index'
+          url: '/pages/search/index?tab=1'
         })
       }
     },
@@ -95,7 +95,7 @@ const Home = () => {
       img: 'https://capacity-platform.oss-cn-hangzhou.aliyuncs.com/capacity-platform/mobile/index/factory_factory.png',
       onClick: () => {
         Taro.navigateTo({
-          url: '/pages/search/index'
+          url: '/pages/search/index?tab=1'
         })
       }
     },
@@ -103,7 +103,7 @@ const Home = () => {
       img: 'https://capacity-platform.oss-cn-hangzhou.aliyuncs.com/capacity-platform/mobile/index/factory_order.png',
       onClick: () => {
         Taro.navigateTo({
-          url: '/pages/search/index'
+          url: '/pages/search/index?tab=0'
         })
       }
     }
@@ -114,7 +114,7 @@ const Home = () => {
       img: 'https://capacity-platform.oss-cn-hangzhou.aliyuncs.com/capacity-platform/mobile/index/order_factory.png',
       onClick: () => {
         Taro.navigateTo({
-          url: '/pages/search/index'
+          url: '/pages/search/index?tab=1'
         })
       }
     },
@@ -122,7 +122,7 @@ const Home = () => {
       img: 'https://capacity-platform.oss-cn-hangzhou.aliyuncs.com/capacity-platform/mobile/index/order_order.png',
       onClick: () => {
         Taro.navigateTo({
-          url: '/pages/search/index'
+          url: '/pages/search/index?tab=0'
         })
       }
     },

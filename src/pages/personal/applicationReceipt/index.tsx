@@ -20,12 +20,12 @@ const Verify = () => {
   const [remarks, setRemarks] = useState() //备注
   const [toast, setToast] = useState(false)
   const { params } = useRouter()
-  console.log(params.tid)
+  console.log(params.id)
 
   // 跳转的数据
   useEffect(() => {
     if (params) {
-      api(params.tid)
+      api(params.id)
     }
   }, [])
 
@@ -37,7 +37,7 @@ const Verify = () => {
   }
   const goBack = () => {
     redirectTo({
-      url: '/pages/personal/orderReceiving/index?tid='
+      url: '/pages/personal/orderReceiving/index?id='
     })
   }
 
@@ -63,7 +63,7 @@ const Verify = () => {
       if (params) {
         let arr = await orderQuantity({
           goodsNum: products,
-          id: params.tid
+          id: params.id
         })
         if (arr.code === 200) {
           let value = {
@@ -74,7 +74,7 @@ const Verify = () => {
           }
           const submitRes = await submitRequisition({
             ...value,
-            purchaserInquiryId: params.tid,
+            purchaserInquiryId: params.id,
             status: 2
           })
           if (submitRes.code === 200) {
@@ -150,7 +150,7 @@ const Verify = () => {
             onChange={orderQuantityMethod}
           />
           {/* {toast ? (
-            
+
           ) : null} */}
         </View>
       </View>

@@ -13,8 +13,9 @@ const CusProductModal = props => {
     callback,
     value,
     type = 'multiple',
-    key = 'id'
+    keyName = 'id'
   } = props
+
   const { commonStore } = useStores()
   const { productCategoryList } = commonStore
 
@@ -63,7 +64,7 @@ const CusProductModal = props => {
 
     if (callback && type === 'single') {
       const target = productList[activeTab]
-      const mainCategoryParentId = childValue ? target[key] : ''
+      const mainCategoryParentId = childValue ? target[keyName] : ''
       const mainCategoryChildId = childValue
       callback({
         mainCategoryParentId,
@@ -104,23 +105,24 @@ const CusProductModal = props => {
                       key={t}
                       className={classNames(
                         styles.tag,
-                        type === 'multiple' && selectValues.includes(i[key])
+                        type === 'multiple' && selectValues.includes(i[keyName])
                           ? styles.activeTag
                           : '',
-                        type === 'single' && childValue === i[key]
+                        type === 'single' && childValue === i[keyName]
                           ? styles.activeTag
                           : ''
                       )}
-                      onClick={() => tagClick(i[key])}
+                      onClick={() => tagClick(i[keyName])}
                     >
                       <Image
                         src={''}
                         className={classNames(
                           styles.img,
-                          type === 'multiple' && selectValues.includes(i[key])
+                          type === 'multiple' &&
+                            selectValues.includes(i[keyName])
                             ? styles.activeImg
                             : '',
-                          type === 'single' && childValue === i[key]
+                          type === 'single' && childValue === i[keyName]
                             ? styles.activeImg
                             : ''
                         )}
