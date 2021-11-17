@@ -14,16 +14,10 @@ export default class OrderStore {
   }
 
   // 搜索页 加工厂列表
-  @action getNewFactory = async pageNum => {
-    const params = {
-      sortField: 'newest',
-      sortType: 'Desc',
-      pageNum: pageNum,
-      pageSize: 10
-    }
+  @action getNewFactory = async params => {
     try {
       const res: Partial<Response> = await HTTP.post(
-        '/api/factory/info/list-factories',
+        '/api/factory/info/list-search-factory-applet',
         params
       )
 
@@ -39,7 +33,7 @@ export default class OrderStore {
   @action getOrderList = async params => {
     try {
       const res: Partial<Response> = await HTTP.post(
-        `/api/oms/inquiry-purchase/list-inquiry-search`,
+        `/api/oms/inquiry-purchase/list-inquiry-search-applet`,
         params
       )
 

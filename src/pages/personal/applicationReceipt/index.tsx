@@ -23,12 +23,10 @@ const Verify = () => {
   // 跳转的数据
   useEffect(() => {
     if (params) {
-      console.log(params)
-      console.log(params.id)
       api(params.id)
     }
   }, [])
-  // 回显
+  // 回显.
   const api = async e => {
     let res = await applicationReceipt({ supplierInquiryId: e })
     setProducts(res.receiveGoodsNum)
@@ -38,7 +36,7 @@ const Verify = () => {
   }
   const goBack = () => {
     redirectTo({
-      url: '/pages/personal/orderReceiving/index?tid='
+      url: '/pages/personal/orderReceiving/index?id='
     })
   }
 
@@ -164,7 +162,7 @@ const Verify = () => {
             onChange={orderQuantityMethod}
           />
           {/* {toast ? (
-            
+
           ) : null} */}
         </View>
       </View>

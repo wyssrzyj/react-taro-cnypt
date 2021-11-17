@@ -34,9 +34,10 @@ const Card = props => {
         []
 
       const products =
-        (isArray(data.factoryCategoryIds) &&
-          data.factoryCategoryIds.map(item => {
-            const target = matchTreeData(productCategoryList, item) || {}
+        (isArray(data.categoryCodes) &&
+          data.categoryCodes.map(item => {
+            const target =
+              matchTreeData(productCategoryList, item, 'code') || {}
             return target.name
           })) ||
         []
@@ -47,14 +48,20 @@ const Card = props => {
       const arr =
         (isArray(data.processTypeList) &&
           data.processTypeList.map(item => {
-            const target =
-              processType.find(i => +i.value === +item.processType) || {}
+            const target = processType.find(i => +i.value === +item) || {}
 
             return target.label
           })) ||
         []
 
-      const factoryCategoryList = data.factoryCategoryList || []
+      const factoryCategoryList =
+        (isArray(data.factoryCategoryList) &&
+          data.factoryCategoryList.map(item => {
+            const target =
+              matchTreeData(productCategoryList, item, 'code') || {}
+            return target.name
+          })) ||
+        []
       setProcessTypes([].concat(arr, factoryCategoryList))
     }
   }, [processType, type, data, productCategoryList])

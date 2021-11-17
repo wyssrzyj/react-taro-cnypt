@@ -40,14 +40,14 @@ export default class HomeStore {
 
   @action getNewFactory = async pageNum => {
     const params = {
-      sortField: 'newest',
+      sortField: 'create_time',
       sortType: 'Desc',
       pageNum: pageNum,
       pageSize: 10
     }
     try {
       const res: Partial<Response> = await HTTP.post(
-        '/api/factory/info/list-factories',
+        '/api/factory/info/list-search-factory-applet',
         params
       )
 
@@ -67,7 +67,7 @@ export default class HomeStore {
     }
     try {
       const res: Partial<Response> = await HTTP.post(
-        `/api/oms/inquiry-purchase/list-inquiry-search`,
+        `/api/oms/inquiry-purchase/list-inquiry-search-applet`,
         params
       )
 

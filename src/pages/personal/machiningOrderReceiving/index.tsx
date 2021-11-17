@@ -22,7 +22,7 @@ const Verify = () => {
   const { params } = useRouter()
   console.log(params)
 
-  // 跳转的数据
+  // 跳转的数据.
   const [value, setValue] = useState('')
   const [current, setCurrent] = useState(0)
   const [rallyists, setReallyLists] = useState<any[]>([]) //数据
