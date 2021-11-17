@@ -13,8 +13,8 @@ export const pageToLogin = () => {
   let path = getCurrentPageUrl()
   Taro.clearStorage()
   if (!path.includes('login')) {
-    Taro.reLaunch({
-      url: '/pages/login/login'
+    Taro.navigateTo({
+      url: '/pages/login/index'
     })
   }
 }

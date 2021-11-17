@@ -63,7 +63,7 @@ const FactoryEntry = () => {
 
   const { commonStore, factoryStore } = useStores()
   const {
-    getDistrict,
+    // getDistrict,
     productCategoryList,
     dictionary,
     productGrade,
@@ -112,14 +112,15 @@ const FactoryEntry = () => {
   ]
   useEffect(() => {
     ;(async () => {
-      const res = await getDistrict()
+      const res = cloneDeep(district)
+      // const res = await getDistrict()
       setProvinceData(res)
       const cData = [{ label: '不限', value: 0 }, ...res[0].children]
       const aData = [{ label: '不限', value: 0 }]
       setCityData(cData)
       setAreaData(aData)
     })()
-  }, [])
+  }, [district])
 
   const goBack = () => {
     Taro.navigateBack()

@@ -25,7 +25,7 @@ function index({ userInfo }) {
     signOut()
     console.log('退出登录')
     setModal(false)
-    Taro.redirectTo({ url: '/pages/login/index' })
+    Taro.navigateTo({ url: '/pages/login/index' })
   }
   const about = () => {
     Taro.redirectTo({ url: '/pages/personal/myEexcellentProduct/index' })

@@ -5,12 +5,12 @@ import { useStores, observer, toJS } from '@/store/mobx'
 import styles from './index.module.less'
 import Taro from '@tarojs/taro'
 import TabBar from '@/components/tabBar'
-import { throttle } from 'lodash'
+import { cloneDeep, throttle } from 'lodash'
 
 const Home = () => {
   const { homeStore, commonStore } = useStores()
   const { count, setCount, name } = homeStore
-  const { getDistrict } = commonStore
+  const { getDistrict, district } = commonStore
 
   const [userInfo, setUserInfo] = useState<any>({})
   const [selectedArea, setSelectedArea] = useState<string>('')
@@ -24,14 +24,15 @@ const Home = () => {
 
   useEffect(() => {
     ;(async () => {
-      const res = await getDistrict()
+      const res = cloneDeep(district)
+      // const res = await getDistrict()
       setProvinceData(res)
       const cData = [{ label: '不限', value: 0 }, ...res[0].children]
       const aData = [{ label: '不限', value: 0 }]
       setCityData(cData)
       setAreaData(aData)
     })()
-  }, [])
+  }, [district])
 
   useEffect(() => {
     ;(async () => {
@@ -181,7 +182,7 @@ const Home = () => {
   }
 
   const toLogin = () => {
-    Taro.redirectTo({ url: '/pages/login/index' })
+    Taro.navigateTo({ url: '/pages/login/index' })
   }
 
   const toFindPwd = () => {

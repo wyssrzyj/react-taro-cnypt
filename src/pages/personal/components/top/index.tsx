@@ -16,7 +16,7 @@ const Top = ({ userInfo, list }) => {
   // let login = 1 //判断登录权限 1
 
   const toLogin = () => {
-    Taro.redirectTo({ url: '/pages/login/index' })
+    Taro.navigateTo({ url: '/pages/login/index' })
   }
 
   return (
