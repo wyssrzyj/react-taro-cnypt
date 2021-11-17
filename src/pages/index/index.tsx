@@ -139,14 +139,9 @@ const Home = () => {
       const nData = cloneDeep(dataSource)
       const fn = activeTab === 0 ? getOrderList : getNewFactory
       const res = (await fn(pageNum)) || {}
-      console.log('页码', pageNum)
-      console.log('数据', res)
       const { records = [], current = 1, total = 0 } = res
-
       const target = current === 1 ? records : [...nData, ...records]
-      console.log(nData)
-      console.log(records)
-      console.log('合并的数据', [...nData, ...records])
+
       setDataSource(target)
       setLoading(false)
       setTotal(total)

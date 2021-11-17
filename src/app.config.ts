@@ -30,6 +30,7 @@ export default {
         'modifyMobilePhoneNumber/index',
         'orderManagement/index', //我的订单
         'feedback/index',
+        'applicationReceipt/index', //申请接单
         'resetPassword/index',
         'orderReceiving/index' //接单管理
       ]

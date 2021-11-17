@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { View, Text } from '@tarojs/components'
+import { View, Text, Image } from '@tarojs/components'
 import { AtIcon, AtActionSheet, AtActionSheetItem } from 'taro-ui'
 
 import styles from './index.module.less'
@@ -7,15 +7,23 @@ import Taro from '@tarojs/taro'
 import { useStores } from '@/store/mobx'
 
 function index({ userInfo }) {
-  console.log('身体', userInfo)
+  let enterprise =
+    'https://capacity-platform.oss-cn-hangzhou.aliyuncs.com/capacity-platform/mobile/icon/enterprise.png'
+  let account =
+    'https://capacity-platform.oss-cn-hangzhou.aliyuncs.com/capacity-platform/mobile/icon/accountNumber.png'
+  let excellentProduction =
+    'https://capacity-platform.oss-cn-hangzhou.aliyuncs.com/capacity-platform/mobile/icon/excellentProduction.png'
+  let signOuts =
+    'https://capacity-platform.oss-cn-hangzhou.aliyuncs.com/capacity-platform/mobile/icon/signOut.png'
+
+  let factory =
+    'https://capacity-platform.oss-cn-hangzhou.aliyuncs.com/capacity-platform/mobile/icon/factory.png'
   const { userInterface } = useStores()
   const { signOut } = userInterface
   let type = userInfo //判断用户权限  // 企业类型 0 加工厂 1 发单商
   // let type = 2 //判断用户权限  // 企业类型 0 加工厂 1 发单商
   const [modal, setModal] = useState(false)
   const retreat = async () => {
-    console.log('退出')
-    // const token = JSON.parse(Taro.getStorageSync('currentUser')).refresh_token
     setModal(true)
   }
   const btn = () => {
@@ -23,7 +31,6 @@ function index({ userInfo }) {
   }
   const sign = () => {
     signOut()
-    console.log('退出登录')
     setModal(false)
     Taro.redirectTo({ url: '/pages/login/index' })
   }
@@ -42,12 +49,9 @@ function index({ userInfo }) {
       {type === '0' ? (
         <>
           <View className={styles.order}>
-            <AtIcon
-              className={styles.icontx}
-              value="volume-off"
-              size="30"
-              color="#080808"
-            ></AtIcon>
+            <View className={styles.remove}>
+              <Image className={styles.removeIcon} src={factory}></Image>
+            </View>
             <Text>工厂管理</Text>
             <Text className={styles.iconmy}>
               <AtIcon value="chevron-right" size="15" color="#999999"></AtIcon>
@@ -58,12 +62,10 @@ function index({ userInfo }) {
       {type === '1' ? (
         <>
           <View className={styles.order}>
-            <AtIcon
-              className={styles.icontx}
-              value="volume-off"
-              size="30"
-              color="#080808"
-            ></AtIcon>
+            <View className={styles.remove}>
+              <Image className={styles.removeIcon} src={enterprise}></Image>
+            </View>
+
             <Text>企业管理</Text>
             <Text className={styles.iconmy}>
               <AtIcon value="chevron-right" size="15" color="#999999"></AtIcon>
@@ -73,12 +75,9 @@ function index({ userInfo }) {
       ) : null}
 
       <View className={styles.order} onClick={accountNumber}>
-        <AtIcon
-          className={styles.icontx}
-          value="volume-off"
-          size="30"
-          color="#080808"
-        ></AtIcon>
+        <View className={styles.remove}>
+          <Image className={styles.removeIcon} src={account}></Image>
+        </View>
         <Text>账号管理</Text>
         <Text className={styles.iconmy}>
           <AtIcon value="chevron-right" size="15" color="#999999"></AtIcon>
@@ -86,12 +85,12 @@ function index({ userInfo }) {
       </View>
 
       <View className={styles.order} onClick={about}>
-        <AtIcon
-          className={styles.icontx}
-          value="volume-off"
-          size="30"
-          color="#080808"
-        ></AtIcon>
+        <View className={styles.remove}>
+          <Image
+            className={styles.removeIcon}
+            src={excellentProduction}
+          ></Image>
+        </View>
         <Text>关于优产云</Text>
         <Text className={styles.iconmy}>
           <AtIcon value="chevron-right" size="15" color="#999999"></AtIcon>
@@ -99,12 +98,9 @@ function index({ userInfo }) {
       </View>
 
       <View className={styles.order} onClick={retreat}>
-        <AtIcon
-          className={styles.icontx}
-          value="volume-off"
-          size="30"
-          color="#080808"
-        ></AtIcon>
+        <View className={styles.remove}>
+          <Image className={styles.removeIcon} src={signOuts}></Image>
+        </View>
         <Text>退出登录</Text>
         <Text className={styles.iconmy}>
           <AtIcon value="chevron-right" size="15" color="#999999"></AtIcon>

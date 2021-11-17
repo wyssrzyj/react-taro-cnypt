@@ -35,7 +35,6 @@ const Personal = () => {
     } else {
       setJurisdiction('notLogged')
     }
-    console.log('初始化完毕')
   }, [])
   // 地区接口数据
   const getDisr = async () => {
@@ -49,7 +48,6 @@ const Personal = () => {
     }
     return res
   }
-  console.log('用户角色判断', jurisdiction)
   return (
     <View className={styles.container}>
       <View className={styles.navbar}>
