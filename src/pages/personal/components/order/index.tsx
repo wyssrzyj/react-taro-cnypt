@@ -4,7 +4,7 @@ import styles from './index.module.less'
 import Taro from '@tarojs/taro'
 
 function index() {
-  const btn = e => {
+  const handleClick = e => {
     Taro.redirectTo({
       url: '/pages/personal/orderReceiving/index?tid=' + e.id
     })
@@ -85,7 +85,7 @@ function index() {
         </Text>
       </View>
       <View className={styles.orders}>
-        <AtGrid onClick={btn} hasBorder={false} data={data} />
+        <AtGrid onClick={handleClick} hasBorder={false} data={data} />
       </View>
     </View>
   )

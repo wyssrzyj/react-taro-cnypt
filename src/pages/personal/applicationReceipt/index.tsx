@@ -11,7 +11,8 @@ export const ORDER_EMPTY =
 
 const Verify = () => {
   const { userInterface } = useStores()
-  const { feedbackInformation } = userInterface
+  const { feedbackInformation, orderQuantity, submitRequisition } =
+    userInterface
   const [data, setData] = useState<any>({})
   const [offer, setOffer] = useState() //报价信息
   const [paymentMethod, setPaymentMethod] = useState() //收款方式
@@ -19,6 +20,7 @@ const Verify = () => {
   const [remarks, setRemarks] = useState() //备注
   const [toast, setToast] = useState(false)
   const { params } = useRouter()
+  console.log(params.tid)
 
   // 跳转的数据
   useEffect(() => {
@@ -39,11 +41,6 @@ const Verify = () => {
     })
   }
 
-  const btn = () => {
-    //./ redirectTo({
-    //   url: '/pages/personal/orderReceiving/index?tid='
-    // })
-  }
   // 报价信息
   const offerMethod = e => {
     setOffer(e)
@@ -61,16 +58,34 @@ const Verify = () => {
     setRemarks(e)
   }
 
-  const onSubmit = () => {
+  const onSubmit = async () => {
     if (products) {
-      let arr = {
-        quoteInfo: offer,
-        payDetails: paymentMethod,
-        receiveGoodsNum: products,
-        remark: remarks
+      if (params) {
+        let arr = await orderQuantity({
+          goodsNum: products,
+          id: params.tid
+        })
+        if (arr.code === 200) {
+          let value = {
+            quoteInfo: offer,
+            payDetails: paymentMethod,
+            receiveGoodsNum: products,
+            remark: remarks
+          }
+          const submitRes = await submitRequisition({
+            ...value,
+            purchaserInquiryId: params.tid,
+            status: 2
+          })
+          if (submitRes.code === 200) {
+            console.log('成功')
+            console.log('跳订单管理')
+          }
+
+          setToast(false)
+          console.log(arr)
+        }
       }
-      setToast(false)
-      console.log(arr)
     } else {
       setToast(true)
     }

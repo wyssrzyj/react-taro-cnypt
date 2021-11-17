@@ -32,6 +32,7 @@ export default {
         'feedback/index',
         'applicationReceipt/index', //申请接单
         'resetPassword/index',
+        'machiningOrderReceiving/index', //加工接单管理
         'orderReceiving/index' //接单管理
       ]
     },
