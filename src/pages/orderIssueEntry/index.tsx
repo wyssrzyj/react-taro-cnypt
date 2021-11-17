@@ -27,7 +27,12 @@ const FactoryEntry = () => {
   const { top } = Taro.getMenuButtonBoundingClientRect()
 
   const { commonStore, factoryStore } = useStores()
-  const { getDistrict, productCategoryList, dictionary } = commonStore
+  const {
+    // getDistrict,
+    productCategoryList,
+    dictionary,
+    district
+  } = commonStore
   const { purchaserRole } = dictionary
   const { getEnterpriseInfo } = factoryStore
 
@@ -52,14 +57,15 @@ const FactoryEntry = () => {
   ]
   useEffect(() => {
     ;(async () => {
-      const res = await getDistrict()
+      const res = cloneDeep(district)
+      // const res = await getDistrict()
       setProvinceData(res)
       const cData = [{ label: '不限', value: 0 }, ...res[0].children]
       const aData = [{ label: '不限', value: 0 }]
       setCityData(cData)
       setAreaData(aData)
     })()
-  }, [])
+  }, [district])
 
   useEffect(() => {
     ;(async () => {

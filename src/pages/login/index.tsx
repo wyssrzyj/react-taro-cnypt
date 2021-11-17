@@ -11,6 +11,9 @@ const BACK_ICON =
 const Login = () => {
   const { loginStore } = useStores()
   const { getSessionId, wxLogin, setWxInfo } = loginStore
+  // const router = useRouter()
+  // const { params } = router
+  // const { source, id } = params
 
   useEffect(() => {
     Taro.login({
@@ -36,7 +39,12 @@ const Login = () => {
     } else {
       //允许授权执行跳转
       const code = await wxLogin()
-      code === 200 && Taro.redirectTo({ url: '/pages/index/index' })
+      if (code === 200) {
+        setTimeout(() => {
+          // Taro.redirectTo({ url: '/pages/index/index' })
+          goBack()
+        })
+      }
     }
   }
 
@@ -45,7 +53,14 @@ const Login = () => {
   }
 
   const goBack = () => {
-    Taro.redirectTo({ url: '/pages/personal/index' })
+    Taro.redirectTo({ url: '/pages/index/index' })
+    // console.log(source, id)
+    // if (source) {
+    //   Taro.redirectTo({ url: '/pages/index/index' })
+    //   // Taro.redirectTo({ url: `${source}?id=${id}` })
+    // } else {
+    //   Taro.navigateBack()
+    // }
   }
 
   return (

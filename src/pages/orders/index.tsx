@@ -2,7 +2,7 @@ import styles from './index.module.less'
 import { View, Button } from '@tarojs/components'
 import CusTabs from '@/components/cusTabs'
 import Taro from '@tarojs/taro'
-import { useStores } from '@/store/mobx'
+import { useStores, observer } from '@/store/mobx'
 
 const Orders = () => {
   const { commonStore } = useStores()
@@ -22,4 +22,4 @@ const Orders = () => {
   )
 }
 
-export default Orders
+export default observer(Orders)

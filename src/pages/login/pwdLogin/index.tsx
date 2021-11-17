@@ -1,5 +1,5 @@
 import styles from './index.module.less'
-import { View, Text, Button, Image } from '@tarojs/components'
+import { View, Text, Image } from '@tarojs/components'
 import { useState, useEffect, useRef } from 'react'
 import { AtInput } from 'taro-ui'
 import Taro from '@tarojs/taro'
@@ -18,8 +18,6 @@ const LoginHeader = () => {
     </View>
   )
 }
-
-const verifyTime = 60
 
 const PwdLogin = () => {
   const contentRef = useRef<any>(null)
