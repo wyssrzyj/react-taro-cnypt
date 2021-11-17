@@ -15,6 +15,7 @@ const OrderDetail = () => {
   const router = useRouter()
   const { params } = router
   const { id } = params
+  console.log('需要的数据', params)
 
   const userInfomation = Taro.getStorageSync('userInfo')
     ? JSON.parse(Taro.getStorageSync('userInfo'))

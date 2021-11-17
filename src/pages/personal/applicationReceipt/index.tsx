@@ -1,42 +1,51 @@
 import { useState, useEffect } from 'react'
 import styles from './index.module.less'
 import { View, Text } from '@tarojs/components'
-import { AtButton, AtNavBar } from 'taro-ui'
+import { AtNavBar } from 'taro-ui'
 import { useRouter, redirectTo } from '@tarojs/taro'
 import { useStores, observer } from '@/store/mobx'
-import { isEmpty, isNil } from 'lodash'
+import Taro from '@tarojs/taro'
+
 import { AtInput } from 'taro-ui'
 export const ORDER_EMPTY =
   'https://capacity-platform.oss-cn-hangzhou.aliyuncs.com/capacity-platform/platform/order_empty.png'
 
 const Verify = () => {
   const { userInterface } = useStores()
-  const { applicationReceipt, orderQuantity, quantityId, submitRequisition } =
-    userInterface
+  const {
+    applicationReceiptQuantity,
+    applicationReceipt,
+    orderQuantity,
+    quantityId,
+    submitRequisition
+  } = userInterface
   const [offer, setOffer] = useState() //报价信息
   const [paymentMethod, setPaymentMethod] = useState() //收款方式
   const [products, setProducts] = useState() //产品数
   const [remarks, setRemarks] = useState('') //备注
   const [toast, setToast] = useState(false)
+
   const { params } = useRouter()
 
   // 跳转的数据
   useEffect(() => {
-    if (params) {
-      api(params.id)
+    if (quantityId) {
+      api(quantityId)
     }
   }, [])
   // 回显.
   const api = async e => {
     let res = await applicationReceipt({ supplierInquiryId: e })
+    console.log(res)
+
     setProducts(res.receiveGoodsNum)
     setOffer(res.quoteInfo)
     setPaymentMethod(res.payDetails)
     setRemarks(res.remark)
   }
   const goBack = () => {
-    redirectTo({
-      url: '/pages/personal/orderReceiving/index?id='
+    Taro.redirectTo({
+      url: '/pages/personal/machiningOrderReceiving/index?tid='
     })
   }
 
@@ -59,12 +68,12 @@ const Verify = () => {
 
   const onSubmit = async () => {
     if (products) {
-      console.log('全局id', quantityId)
+      console.log('传递来的', params.id)
 
-      if (params && quantityId) {
+      if (params) {
         let arr = await orderQuantity({
           goodsNum: products,
-          id: quantityId
+          id: params.id
         })
 
         if (arr.code === 200) {
@@ -74,17 +83,10 @@ const Verify = () => {
             receiveGoodsNum: products,
             remark: remarks
           }
-          console.log({
-            ...value,
-            purchaserInquiryId: quantityId,
-            supplierInquiryId: params.id,
-            status: 2
-          })
-
           const submitRes = await submitRequisition({
             ...value,
-            purchaserInquiryId: quantityId,
-            supplierInquiryId: params.id,
+            purchaserInquiryId: params.id,
+            supplierInquiryId: quantityId,
             status: 2
           })
           console.log(submitRes)
@@ -92,6 +94,11 @@ const Verify = () => {
           if (submitRes.code === 200) {
             console.log('成功')
             console.log('跳订单管理')
+            await applicationReceiptQuantity('')
+
+            Taro.redirectTo({
+              url: '/pages/personal/machiningOrderReceiving/index?tid='
+            })
           }
 
           setToast(false)

@@ -52,15 +52,9 @@ function index({ data, deleteMethod, reOrder, InitiateOrder, earlyEnd }) {
   }
   // 修改回复
   const decline = async data => {
-    // let ids = {
-    //   id: data.purchaserInquiryId,
-    //   supplierInquiryId: data.supplierInquiryId
-    // }
-    console.log('跳页面')
-    console.log(data)
-    await applicationReceiptQuantity(data.purchaserInquiryId)
+    await applicationReceiptQuantity(data.supplierInquiryId)
     Taro.redirectTo({
-      url: `/pages/personal/applicationReceipt/index?id=${data.supplierInquiryId}`
+      url: `/pages/personal/applicationReceipt/index?id=${data.purchaserInquiryId}`
     })
   }
   const cancel = () => {
