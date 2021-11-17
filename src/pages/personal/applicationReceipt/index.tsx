@@ -40,7 +40,7 @@ const Verify = () => {
   }
 
   const btn = () => {
-    // redirectTo({
+    //./ redirectTo({
     //   url: '/pages/personal/orderReceiving/index?tid='
     // })
   }
