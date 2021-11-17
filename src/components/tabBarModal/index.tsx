@@ -1,5 +1,8 @@
 import styles from './index.module.less'
 import { View, Image, Text } from '@tarojs/components'
+import { cloneDeep, isEmpty, isNil } from 'lodash'
+import Taro from '@tarojs/taro'
+import { useEffect, useState } from 'react'
 
 const CANCEL =
   'https://capacity-platform.oss-cn-hangzhou.aliyuncs.com/capacity-platform/mobile/tabBar/cancel.png'
@@ -12,26 +15,83 @@ const FDS =
 
 const TabBarModal = props => {
   const { showModal } = props
-  const configs = [
+
+  const currentUser = Taro.getStorageSync('currentUser')
+    ? JSON.parse(Taro.getStorageSync('currentUser'))
+    : {}
+  const userInformation = Taro.getStorageSync('userInfo')
+    ? JSON.parse(Taro.getStorageSync('userInfo'))
+    : {}
+
+  const initConfigs = [
     {
       title: '发单商入驻',
       msg: '我要下订单',
       image: FDS,
-      background: '#335498'
+      background: '#335498',
+      onClick: () => {
+        if (isEmpty(currentUser)) {
+          Taro.navigateTo({
+            url: '/pages/login/index'
+          })
+        }
+        Taro.navigateTo({
+          url: '/pages/orderIssueEntry/index'
+        })
+      }
     },
     {
       title: '发布订单',
       msg: '我要发布订单',
       image: FBDD,
-      background: '#377383'
+      background: '#377383',
+      onClick: () => {
+        if (isEmpty(currentUser)) {
+          Taro.navigateTo({
+            url: '/pages/login/index'
+          })
+        }
+        Taro.navigateTo({
+          url: '/pages/publish/index'
+        })
+      }
     },
     {
       title: '工厂入驻',
       msg: '我要更多人知道',
       image: GCRZ,
-      background: '#335498'
+      background: '#335498',
+      onClick: () => {
+        if (isEmpty(currentUser)) {
+          Taro.navigateTo({
+            url: '/pages/login/index'
+          })
+        }
+        Taro.navigateTo({
+          url: '/pages/factoryEntry/index'
+        })
+      }
     }
   ]
+
+  const [configs, setConfigs] = useState(initConfigs)
+
+  useEffect(() => {
+    let nConfigs = cloneDeep(configs)
+    if (
+      isEmpty(currentUser) ||
+      isEmpty(userInformation) ||
+      isNil(userInformation.enterpriseType)
+    ) {
+    }
+    if (userInformation && +userInformation.enterpriseType === 0) {
+      nConfigs = []
+    }
+    if (userInformation && +userInformation.enterpriseType === 1) {
+      nConfigs = nConfigs.filter((_, idx) => idx === 1)
+    }
+    setConfigs(nConfigs)
+  }, [])
 
   return (
     <View className={styles.tabBarModal}>
@@ -40,6 +100,7 @@ const TabBarModal = props => {
           key={idx}
           className={styles.config}
           style={{ background: config.background }}
+          onClick={config.onClick}
         >
           <View className={styles.blurBox}></View>
           <Image src={config.image} className={styles.img}></Image>

@@ -109,7 +109,7 @@ const FactoryDetail = () => {
       })
     }
     Taro.makePhoneCall({
-      phoneNumber: '13587760358' //仅为示例，并非真实的电话号码
+      phoneNumber: data['mobilePhone'] //仅为示例，并非真实的电话号码
     })
   }
 

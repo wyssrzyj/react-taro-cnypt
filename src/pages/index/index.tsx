@@ -129,6 +129,11 @@ const Home = () => {
     {
       img: 'https://capacity-platform.oss-cn-hangzhou.aliyuncs.com/capacity-platform/mobile/index/order_push.png',
       onClick: () => {
+        if (isEmpty(currentUser)) {
+          Taro.navigateTo({
+            url: '/pages/login/index'
+          })
+        }
         Taro.navigateTo({
           url: '/pages/publish/index'
         })
