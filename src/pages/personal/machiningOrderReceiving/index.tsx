@@ -13,15 +13,16 @@ const Verify = () => {
   const defaultPageSize = 10
   const { userInterface } = useStores()
   const {
-    listData,
+    supplierGetOrders,
     declineRequisition,
-    confirmCooperation,
+    rejectSubmission,
     cancelCooperation,
-    deleteIssuer
+    factoryDelOrder
   } = userInterface
   const { params } = useRouter()
+  console.log(params)
 
-  // 跳转的数据
+  // 跳转的数据.
   const [value, setValue] = useState('')
   const [current, setCurrent] = useState(0)
   const [rallyists, setReallyLists] = useState<any[]>([]) //数据
@@ -71,11 +72,13 @@ const Verify = () => {
     }
   }
   const api = async () => {
-    let res = await listData(list)
+    let res = await supplierGetOrders(list)
+    console.log(res)
+
     if (Array.isArray(res.records)) {
-      let filterStatus = eliminate(res.records, -1)
-      let final = eliminate(filterStatus, 1)
-      setReallyLists(final)
+      // let filterStatus = eliminate(res.records, -1)
+      // let final = eliminate(filterStatus, 1)
+      setReallyLists(res.records)
       setTotalPageNumber(res.pages)
     }
   }
@@ -90,7 +93,7 @@ const Verify = () => {
   let drop = async () => {
     if (totalPageNumber >= pageNum) {
       setDisplay(false)
-      let res = await listData({
+      let res = await supplierGetOrders({
         pageNum: pageNum,
         pageSize: defaultPageSize,
         purchaserInquiryId: params.ids,
@@ -160,7 +163,7 @@ const Verify = () => {
   ]
   const deleteMethod = async id => {
     // 删除
-    await deleteIssuer({ supplierInquiryId: id })
+    await factoryDelOrder({ supplierInquiryId: id })
     api()
   }
   const reOrder = async id => {
@@ -171,8 +174,8 @@ const Verify = () => {
     }
   }
   const InitiateOrder = async id => {
-    // 确认合作
-    const res = await confirmCooperation({ id: id, status: 3 })
+    // 拒绝接单
+    const res = await rejectSubmission({ supplierInquiryId: id, status: -1 })
     if (res.code === 200) {
       api()
     }
@@ -188,7 +191,6 @@ const Verify = () => {
     let res = { ...list, supplierName: value }
     setList(res)
   }
-
   return (
     <View className={styles.phoneLogin}>
       {/* 导航 */}
@@ -197,7 +199,7 @@ const Verify = () => {
           fixed={true}
           onClickLeftIcon={goBack}
           color="#000"
-          title="加工接单管理"
+          title="接单管理"
           leftIconType="chevron-left"
         />
       </View>

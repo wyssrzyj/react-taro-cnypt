@@ -11,13 +11,9 @@ import { View, Text, Image, Button } from '@tarojs/components'
 import Taro from '@tarojs/taro'
 
 import { observer } from '@/store/mobx'
-// import { getTrees } from '../method'
-// import { isArray, isEmpty } from 'lodash'
 function index({ data, deleteMethod, reOrder, InitiateOrder, earlyEnd }) {
-  // const { commonStore } = useStores()
-  // const { dictionary } = commonStore
-  // const { processType } = dictionary
-  // const [category, setCategory] = useState<any>([])
+  console.log('加工厂数据', data)
+
   const [windowType, setWindowType] = useState<any>({}) //弹窗类型
   const [popup, setPopup] = useState(false) //弹窗类型
 
@@ -53,15 +49,14 @@ function index({ data, deleteMethod, reOrder, InitiateOrder, earlyEnd }) {
     setPopup(true)
     setWindowType({ type: 'CancelConfirmation' })
   }
-  // 确认合作
+  // 拒绝接单
   const confirmCooperation = () => {
     setPopup(true)
     setWindowType({ type: 'confirmCooperation' })
   }
-  // 谢绝
+  // 修改回复
   const decline = () => {
-    setPopup(true)
-    setWindowType({ type: 'decline' })
+    console.log('跳页面')
   }
   const cancel = () => {
     setPopup(false)
@@ -69,17 +64,16 @@ function index({ data, deleteMethod, reOrder, InitiateOrder, earlyEnd }) {
   const confirmButton = async () => {
     if (windowType.type === 'mov') {
       // 删除订单
-      deleteMethod(data.id)
+      deleteMethod(data.supplierInquiryId)
     }
     if (windowType.type === 'CancelConfirmation') {
       // 取消确认
-
       reOrder(data.id)
     }
     if (windowType.type === 'confirmCooperation') {
-      // 确认合作
+      // 拒接接单
 
-      InitiateOrder(data.id)
+      InitiateOrder(data.supplierInquiryId)
     }
     if (windowType.type === 'decline') {
       // 谢绝
@@ -110,7 +104,7 @@ function index({ data, deleteMethod, reOrder, InitiateOrder, earlyEnd }) {
         {/* 头部 */}
         <View className={styles.top}>
           <View className={styles.content}>
-            <View className={styles.factorys}>{data.name}</View>
+            <View className={styles.factorys}>{data.enterpriseName}</View>
             <AtIcon value="chevron-right" size="15" color="#999999"></AtIcon>
           </View>
           <View className={sortColor.get(data.status)}>
@@ -121,9 +115,9 @@ function index({ data, deleteMethod, reOrder, InitiateOrder, earlyEnd }) {
         {/* 主体 */}
         <View className={styles.subject}>
           {/* img */}
-          <Image className={styles.img} src={data.pictureUrl} alt="" />
+          <Image className={styles.img} src={data.stylePicture} alt="" />
           <View>
-            <Text className={styles.factory}>{data.enterpriseName}</Text>
+            <Text className={styles.factory}>{data.inquiryPurchaserName}</Text>
             <View>
               <Text>
                 <Text className={styles.parking}>有效车位:</Text>
@@ -133,9 +127,9 @@ function index({ data, deleteMethod, reOrder, InitiateOrder, earlyEnd }) {
               </Text>
             </View>
             <View className={styles.machining}>
-              {data.factoryCategoryList.map(item => (
+              {/* {data.factoryCategoryList.map(item => (
                 <Text className={styles.processingType}>{item}</Text>
-              ))}
+              ))} */}
             </View>
             <View className={styles.addressExternal}>
               <AtIcon value="map-pin" size="15" color="#999999"></AtIcon>
@@ -177,16 +171,19 @@ function index({ data, deleteMethod, reOrder, InitiateOrder, earlyEnd }) {
         <View className={styles.operation}>
           {/* 待处理 */}
           {data.status === 2 ? (
-            <View>
+            <View className={styles.pending}>
               <View className={styles.telephone}>
                 <AtIcon value="phone" size="15" color="#333333"></AtIcon>
                 <Text onClick={call}>电话联系</Text>
               </View>
-              <View onClick={confirmCooperation} className={styles.determine}>
-                确认合作
+              <View
+                onClick={confirmCooperation}
+                className={styles.refuseToAcceptOrders}
+              >
+                拒绝接单
               </View>
-              <View onClick={decline} className={styles.refuse}>
-                谢绝
+              <View onClick={decline} className={styles.reply}>
+                修改回复
               </View>
             </View>
           ) : null}
@@ -197,8 +194,8 @@ function index({ data, deleteMethod, reOrder, InitiateOrder, earlyEnd }) {
                 <AtIcon value="phone" size="15" color="#333333"></AtIcon>
                 <Text>电话联系</Text>
               </View>
-              <View onClick={CancelConfirmation} className={styles.cancel}>
-                取消确认
+              <View onClick={showModal} className={styles.cancel}>
+                删除记录
               </View>
             </View>
           ) : null}
@@ -219,7 +216,7 @@ function index({ data, deleteMethod, reOrder, InitiateOrder, earlyEnd }) {
           <AtModalHeader>
             {windowType.type === 'mov' ? '删除订单' : null}
             {windowType.type === 'CancelConfirmation' ? '取消确认' : null}
-            {windowType.type === 'confirmCooperation' ? '确定合作' : null}
+            {windowType.type === 'confirmCooperation' ? '拒接接单' : null}
             {windowType.type === 'decline' ? '是否谢绝' : null}
           </AtModalHeader>
           <AtModalContent>
@@ -235,7 +232,7 @@ function index({ data, deleteMethod, reOrder, InitiateOrder, earlyEnd }) {
             ) : null}
             {windowType.type === 'confirmCooperation' ? (
               <View className={styles.delContent}>
-                <View className={styles.delText}>是否确定合作？</View>
+                <View className={styles.delText}>是否拒接接单？</View>
               </View>
             ) : null}
             {windowType.type === 'decline' ? (

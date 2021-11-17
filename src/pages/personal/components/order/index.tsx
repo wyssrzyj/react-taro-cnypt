@@ -4,37 +4,45 @@ import styles from './index.module.less'
 import Taro from '@tarojs/taro'
 
 function index() {
-  const btn = e => {
-    console.log(e)
+  const handleClick = e => {
     Taro.redirectTo({
       url: '/pages/personal/orderReceiving/index?tid=' + e.id
     })
-    // Taro.redirectTo({ url: "/pages/index/index" });
+  }
+  const order = e => {
+    Taro.redirectTo({
+      url: '/pages/personal/orderManagement/index?tid=' + e.id
+    })
   }
   const whole = () => {
-    console.log('跳转至接单')
     Taro.redirectTo({
       url: '/pages/personal/orderReceiving/index?tid='
     })
   }
+  const myOrder = () => {
+    Taro.redirectTo({
+      url: '/pages/personal/orderManagement/index?tid='
+    })
+  }
+
   const data = [
     {
       id: 2,
       image:
-        'https://img12.360buyimg.com/jdphoto/s72x72_jfs/t10660/330/203667368/1672/801735d7/59c85643N31e68303.png',
+        'https://capacity-platform.oss-cn-hangzhou.aliyuncs.com/capacity-platform/mobile/icon/pending.png',
       value: '待处理',
       url: ''
     },
     {
       id: 3,
       image:
-        'https://img14.360buyimg.com/jdphoto/s72x72_jfs/t17251/336/1311038817/3177/72595a07/5ac44618Na1db7b09.png',
+        'https://capacity-platform.oss-cn-hangzhou.aliyuncs.com/capacity-platform/mobile/icon/confirmed.png',
       value: '已确认'
     },
     {
       id: -2,
       image:
-        'https://img30.360buyimg.com/jdphoto/s72x72_jfs/t5770/97/5184449507/2423/294d5f95/595c3b4dNbc6bc95d.png',
+        'https://capacity-platform.oss-cn-hangzhou.aliyuncs.com/capacity-platform/mobile/icon/declined.png',
       value: '已谢绝'
     }
   ]
@@ -42,30 +50,32 @@ function index() {
     {
       id: 1,
       image:
-        'https://img12.360buyimg.com/jdphoto/s72x72_jfs/t10660/330/203667368/1672/801735d7/59c85643N31e68303.png',
+        'https://capacity-platform.oss-cn-hangzhou.aliyuncs.com/capacity-platform/mobile/icon/effect.png',
       value: '生效中',
       url: ''
     },
     {
-      id: 2,
+      id: -3,
       image:
-        'https://img14.360buyimg.com/jdphoto/s72x72_jfs/t17251/336/1311038817/3177/72595a07/5ac44618Na1db7b09.png',
+        'https://capacity-platform.oss-cn-hangzhou.aliyuncs.com/capacity-platform/mobile/icon/hasEnded.png',
       value: '已结束'
     },
     {
-      id: 3,
+      id: -2,
       image:
-        'https://img30.360buyimg.com/jdphoto/s72x72_jfs/t5770/97/5184449507/2423/294d5f95/595c3b4dNbc6bc95d.png',
+        'https://capacity-platform.oss-cn-hangzhou.aliyuncs.com/capacity-platform/mobile/icon/auditFailed.png',
       value: '审核失败'
     }
   ]
   return (
     <View>
-      {/* <View className={styles.order}>
-        <Text className={styles.text}>我的订单</Text>
+      <View className={styles.order}>
+        <Text className={styles.text} onClick={myOrder}>
+          我的订单
+        </Text>
       </View>
       <View className={styles.orders}>
-        <AtGrid onClick={btn} hasBorder={false} data={data1} />
+        <AtGrid onClick={order} hasBorder={false} data={data1} />
       </View>
       <View className={styles.division}></View>
 
@@ -75,8 +85,8 @@ function index() {
         </Text>
       </View>
       <View className={styles.orders}>
-        <AtGrid onClick={btn} hasBorder={false} data={data} />
-      </View> */}
+        <AtGrid onClick={handleClick} hasBorder={false} data={data} />
+      </View>
     </View>
   )
 }

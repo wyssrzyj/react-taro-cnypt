@@ -4,16 +4,15 @@ import { AtIcon } from 'taro-ui'
 import Taro from '@tarojs/taro'
 
 const Top = ({ userInfo, list }) => {
-  console.log(list)
+  let enterprise =
+    'https://capacity-platform.oss-cn-hangzhou.aliyuncs.com/capacity-platform/mobile/icon/enterpriseName.png '
+
   const { enterpriseName, userFaceUrl, userName } = list
 
   // 企业类型 0 加工厂 1 发单商
 
   let sum = userInfo //判断用户权限 新用户=0 发单商=1,加工厂=2
   // let sum = 2 //判断用户权限 新用户=0 发单商=1,加工厂=2
-  console.log(sum)
-
-  // let login = 1 //判断登录权限 1
 
   const toLogin = () => {
     Taro.navigateTo({ url: '/pages/login/index' })
@@ -28,7 +27,7 @@ const Top = ({ userInfo, list }) => {
           ) : (
             <Image
               className={styles.img}
-              src="https://img2.baidu.com/it/u=289538718,2137491427&fm=26&fmt=auto"
+              src="https://capacity-platform.oss-cn-hangzhou.aliyuncs.com/capacity-platform/mobile/icon/NotloggedIn.png"
             />
           )}
         </View>
@@ -45,7 +44,7 @@ const Top = ({ userInfo, list }) => {
                 ) : null}
               </View>
               <View className={styles.bottom}>
-                <AtIcon value="eye" size="20"></AtIcon>
+                <Image src={enterprise} className={styles.enterprise}></Image>
                 <Text className={styles.icon}>
                   {enterpriseName
                     ? enterpriseName

@@ -31,13 +31,10 @@ const Verify = () => {
 
   // 原
   const originalPassword = val => {
-    console.log(val)
-
     setPwd(val)
   }
   // 新
   const newPassword = val => {
-    console.log(val)
     setPassword(val)
   }
 
@@ -57,7 +54,6 @@ const Verify = () => {
       oldPassword: base64Js.fromByteArray(Buffer.from(pwd)),
       newPassword: base64Js.fromByteArray(Buffer.from(password))
     }
-    console.log(param)
     const res = await changePassword(param)
     if (res) {
       Taro.redirectTo({ url: '/pages/index/index' })

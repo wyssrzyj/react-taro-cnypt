@@ -122,6 +122,116 @@ export default class UserInterface {
     }
   }
 
+  // 判断是否超过发单商最大订单
+  @action orderQuantity = async params => {
+    try {
+      const res: Partial<Response> = await HTTP.post(
+        '/api/oms/inquiry-quote/judge-goods-num',
+        params
+      )
+      Taro.showToast({
+        title: res.msg as string,
+        icon: 'none',
+        duration: 1500
+      })
+      if (res.code === 200) {
+        return res
+      }
+      return res
+    } catch (e) {
+      Taro.showToast({
+        title: e.msg as string,
+        icon: 'none',
+        duration: 1500
+      })
+      console.log('失败', e)
+      if (e.code === 200) {
+        return e
+      }
+      return e
+    }
+  }
+
+  // 供应商主动申请需求单  formti提交
+  @action submitRequisition = async params => {
+    try {
+      const res: Partial<Response> = await HTTP.post(
+        '/api/oms/inquiry-quote/active-application-inquiry',
+        params
+      )
+      Taro.showToast({
+        title: res.msg as string,
+        icon: 'none',
+        duration: 1500
+      })
+      if (res.code === 200) {
+        return res
+      }
+      return res
+    } catch (e) {
+      Taro.showToast({
+        title: e.msg as string,
+        icon: 'none',
+        duration: 1500
+      })
+      console.log('失败', e)
+      if (e.code === 200) {
+        return e
+      }
+      return e
+    }
+  }
+
+  // 订单管理数据
+  @action orderListData = async params => {
+    try {
+      const res: Partial<Response> = await HTTP.post(
+        '/api/oms/inquiry-purchase/inquiry-list',
+        params
+      )
+      console.log('成功', res)
+      Taro.showToast({
+        title: res.msg as string,
+        icon: 'none',
+        duration: 1500
+      })
+      if (res.code === 200) {
+        return res.data
+      }
+      return res.data
+    } catch (e) {
+      Taro.showToast({
+        title: e.msg as string,
+        icon: 'none',
+        duration: 1500
+      })
+      console.log('失败', e)
+      if (e.code === 200) {
+        return e
+      }
+      return e
+    }
+  }
+
+  // 供应商需求单查询
+  @action supplierGetOrders = async params => {
+    try {
+      const res: Partial<Response> = await HTTP.post(
+        '/api/oms/inquiry-supplier/list',
+        params
+      )
+      if (res.code === 200) {
+        return res.data
+      }
+      return res.data
+    } catch (e) {
+      if (e.code === 200) {
+        return e
+      }
+      return e
+    }
+  }
+
   // 用户登出
   @action signOut = async () => {
     try {
@@ -156,17 +266,48 @@ export default class UserInterface {
         `/api/oms/inquiry-purchase/delete-purchaser-record`,
         params
       )
-      const { data = {}, msg = '' } = res
-
-      if (data) {
-        runInAction(() => {
-          this.currentUser = data
-        })
-        Taro.setStorage({
-          key: 'userInfo',
-          data: JSON.stringify(data)
+      const { msg = '' } = res
+      if (res.code !== 200) {
+        Taro.atMessage({
+          message: msg,
+          type: 'error'
         })
       }
+      return res
+    } catch (e) {
+      console.log(e)
+    }
+  }
+
+  // 加工厂 订单管理 删除记录
+  @action factoryDelOrder = async params => {
+    try {
+      const res: Partial<Response> = await HTTP.get(
+        `/api/oms/inquiry-supplier/delete-inquiry-record`,
+        params
+      )
+      const { msg = '' } = res
+      if (res.code !== 200) {
+        Taro.atMessage({
+          message: msg,
+          type: 'error'
+        })
+      }
+      return res
+    } catch (e) {
+      console.log(e)
+    }
+  }
+
+  // 接单管理反馈信息
+  @action feedbackInformation = async params => {
+    try {
+      const res: Partial<Response> = await HTTP.get(
+        `/api/oms/inquiry-quote/get`,
+        params
+      )
+      const { msg = '' } = res
+
       if (res.code !== 200) {
         Taro.atMessage({
           message: msg,
@@ -190,7 +331,6 @@ export default class UserInterface {
         icon: 'none',
         duration: 1500
       })
-
       return res
     } catch (e) {
       Taro.showToast({
@@ -208,6 +348,29 @@ export default class UserInterface {
     try {
       const res: Partial<Response> = await HTTP.post(
         `/api/oms/inquiry-purchase/confirm-cooperation`,
+        params
+      )
+      Taro.showToast({
+        title: res.msg as string,
+        icon: 'none',
+        duration: 1500
+      })
+      return res
+    } catch (e) {
+      Taro.showToast({
+        title: e.msg as string,
+        icon: 'none',
+        duration: 1500
+      })
+      return e
+    }
+  }
+
+  //拒绝接单
+  @action rejectSubmission = async params => {
+    try {
+      const res: Partial<Response> = await HTTP.post(
+        `/api/oms/inquiry-quote/refuse-take-inquiry`,
         params
       )
       Taro.showToast({
@@ -304,6 +467,50 @@ export default class UserInterface {
       console.log(e)
     }
   }
+  // 删除需求单
+  @action deleteDemandDoc = async value => {
+    try {
+      const res: Partial<Response> = await HTTP.delete(
+        `/api/oms/inquiry-purchase/delete?id=${value}`
+      )
+      console.log(res)
+      Taro.showToast({
+        title: res.msg as string,
+        icon: 'none',
+        duration: 1500
+      })
+      return res
+    } catch (e) {
+      Taro.showToast({
+        title: e.msg as string,
+        icon: 'none',
+        duration: 1500
+      })
+      return e
+    }
+  }
+  // 提前结束
+  @action endInterfaceInAdvance = async params => {
+    try {
+      const res: Partial<Response> = await HTTP.post(
+        `/api/oms/inquiry-purchase/advance-end`,
+        params
+      )
+      Taro.showToast({
+        title: res.msg as string,
+        icon: 'none',
+        duration: 1500
+      })
+      return res
+    } catch (e) {
+      Taro.showToast({
+        title: e.msg as string,
+        icon: 'none',
+        duration: 1500
+      })
+      return e
+    }
+  }
 
   // 忘记密码
   @action resetPwd = async params => {
@@ -312,7 +519,6 @@ export default class UserInterface {
         `/api/user/forget-password`,
         params
       )
-
       if (res.code === 200) {
         Taro.showToast({
           title: res.msg as string,

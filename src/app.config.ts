@@ -28,8 +28,12 @@ export default {
         'myEexcellentProduct/index',
         'accountNumber/index',
         'modifyMobilePhoneNumber/index',
+        'orderManagement/index', //我的订单
+        'feedback/index',
+        'applicationReceipt/index', //申请接单
         'resetPassword/index',
-        'orderReceiving/index'
+        'machiningOrderReceiving/index', //加工接单管理
+        'orderReceiving/index' //接单管理
       ]
     },
     {

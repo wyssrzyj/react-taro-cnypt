@@ -5,6 +5,7 @@ import { AtNavBar, AtSearchBar, AtTabs } from 'taro-ui'
 import { useReachBottom, useRouter, redirectTo } from '@tarojs/taro'
 import StyleStructure from './styleStructure/index'
 import { useStores, observer } from '@/store/mobx'
+// import Taro from '@tarojs/taro'
 import { cloneDeep } from 'lodash'
 export const ORDER_EMPTY =
   'https://capacity-platform.oss-cn-hangzhou.aliyuncs.com/capacity-platform/platform/order_empty.png'
@@ -12,45 +13,36 @@ export const ORDER_EMPTY =
 const Verify = () => {
   const defaultPageSize = 10
   const { userInterface } = useStores()
-  const {
-    listData,
-    declineRequisition,
-    confirmCooperation,
-    cancelCooperation,
-    deleteIssuer
-  } = userInterface
+  const { orderListData, endInterfaceInAdvance, deleteDemandDoc } =
+    userInterface
   const { params } = useRouter()
-
   // 跳转的数据
   const [value, setValue] = useState('')
   const [current, setCurrent] = useState(0)
   const [rallyists, setReallyLists] = useState<any[]>([]) //数据
-
   const [totalPageNumber, setTotalPageNumber] = useState(2) //总页码
   const [pageNum, setPageNum] = useState(1)
   const [display, setDisplay] = useState(false)
-  const [dropDown, setDropDown] = useState(false)
+
   // 2 3 -2
   // 接口数据
   const [list, setList] = useState<any>({
-    pageNum: 1,
+    pageNum: pageNum,
     pageSize: defaultPageSize,
-    purchaserInquiryId: params.ids,
     status: params.tid //状态
   })
 
   // 路由状态
   useEffect(() => {
     if (Number(params.tid)) {
-      // purchaserInquiryId: params.ids
       const tid = Number(params.tid)
       if (tid === null) {
         setCurrent(0)
       }
-      if (tid === 2) {
+      if (tid === 1) {
         setCurrent(1)
       }
-      if (tid === 3) {
+      if (tid === -3) {
         setCurrent(2)
       }
       if (tid === -2) {
@@ -62,59 +54,40 @@ const Verify = () => {
   useEffect(() => {
     api()
   }, [list])
-
-  //  过滤 被拒绝和等待答复
-  const eliminate = (data, key) => {
-    let arr = data.filter(item => item.status !== key)
-    if (arr) {
-      return arr
-    }
-  }
   const api = async () => {
-    let res = await listData(list)
+    let res = await orderListData(list)
+
     if (Array.isArray(res.records)) {
-      let filterStatus = eliminate(res.records, -1)
-      let final = eliminate(filterStatus, 1)
-      setReallyLists(final)
+      setReallyLists(res.records)
       setTotalPageNumber(res.pages)
     }
   }
-  // 下拉加载更多
+
   useEffect(() => {
     // 防止初始化之后重复掉接口
-    if (dropDown) {
+    if (params.tid) {
+    } else {
       drop()
     }
-  }, [pageNum, dropDown])
+  }, [pageNum])
 
   let drop = async () => {
     if (totalPageNumber >= pageNum) {
       setDisplay(false)
-      let res = await listData({
+      let res = await orderListData({
         pageNum: pageNum,
-        pageSize: defaultPageSize,
-        purchaserInquiryId: params.ids,
-        status: params.tid //状态
+        pageSize: defaultPageSize
       })
       if (res.records.length > 0) {
         const nData = cloneDeep(rallyists)
         const { records = [] } = res
         const target = [...nData, ...records]
-        let filterStatus = eliminate(target, -1)
-        let final = eliminate(filterStatus, 1)
-        setReallyLists(final)
-        setDropDown(false)
+        setReallyLists(target)
       }
     } else {
       setDisplay(true)
     }
   }
-  // 触底更新
-  useReachBottom(async () => {
-    // 判断当前页码是否大于最大页码
-    setPageNum(n => n + 1)
-    setDropDown(true)
-  })
   // 搜索
   const bind = e => {
     setValue(e)
@@ -126,26 +99,28 @@ const Verify = () => {
       sum = ''
     }
     if (e === 1) {
-      sum = '2'
+      sum = '1'
     }
     if (e === 2) {
-      sum = '3'
+      sum = '-3'
     }
     if (e === 3) {
       sum = '-2'
     }
-    setPageNum(1) //点击tops的时候让下拉需要的数据重新计算
     setList({
       pageNum: 1,
       pageSize: defaultPageSize,
-      purchaserInquiryId: params.ids,
       status: sum, //状态,
       name: value
     })
 
     setCurrent(e)
   }
-
+  // 触底更新
+  useReachBottom(async () => {
+    // 判断当前页码是否大于最大页码
+    setPageNum(n => n + 1)
+  })
   const goBack = () => {
     redirectTo({
       url: '/pages/personal/index'
@@ -154,38 +129,27 @@ const Verify = () => {
 
   const tabList = [
     { title: '全部' },
-    { title: '待处理' },
-    { title: '已确认' },
-    { title: '已谢绝' }
+    { title: '生效中' },
+    { title: '已结束' },
+    { title: '审核失败' }
   ]
-  const deleteMethod = async id => {
+  const deleteMethod = async value => {
     // 删除
-    await deleteIssuer({ supplierInquiryId: id })
-    api()
-  }
-  const reOrder = async id => {
-    // 取消确认
-    const res = await cancelCooperation({ id: id, status: 2 })
+    const res = await deleteDemandDoc(value)
     if (res.code === 200) {
       api()
     }
   }
-  const InitiateOrder = async id => {
-    // 确认合作
-    const res = await confirmCooperation({ id: id, status: 3 })
+  //提前结束
+  const earlyEnd = async e => {
+    const res = await endInterfaceInAdvance({ id: e, status: -3 })
     if (res.code === 200) {
       api()
     }
   }
-  const earlyEnd = async id => {
-    // 谢绝
-    const res = await declineRequisition({ id: id, status: -2 })
-    if (res.code === 200) {
-      api()
-    }
-  }
+
   const searchConfirmation = () => {
-    let res = { ...list, supplierName: value }
+    let res = { ...list, name: value }
     setList(res)
   }
 
@@ -197,7 +161,7 @@ const Verify = () => {
           fixed={true}
           onClickLeftIcon={goBack}
           color="#000"
-          title="加工接单管理"
+          title="订单管理"
           leftIconType="chevron-left"
         />
       </View>
@@ -220,8 +184,6 @@ const Verify = () => {
                 data={item}
                 earlyEnd={earlyEnd}
                 deleteMethod={deleteMethod}
-                reOrder={reOrder}
-                InitiateOrder={InitiateOrder}
               />
             ))}
           </View>

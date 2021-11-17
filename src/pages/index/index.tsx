@@ -157,7 +157,11 @@ const Home = () => {
   })
 
   useReachBottom(() => {
+    console.log('下拉')
+
     if (loading) return
+    console.log(loading)
+
     if (dataSource.length >= total) return
     setPageNum(n => n + 1)
   })
@@ -168,9 +172,9 @@ const Home = () => {
       const nData = cloneDeep(dataSource)
       const fn = activeTab === 0 ? getOrderList : getNewFactory
       const res = (await fn(pageNum)) || {}
-
       const { records = [], current = 1, total = 0 } = res
       const target = current === 1 ? records : [...nData, ...records]
+
       setDataSource(target)
       setLoading(false)
       setTotal(total)

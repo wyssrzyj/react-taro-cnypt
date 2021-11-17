@@ -112,9 +112,13 @@ const OrderDetail = () => {
   ]
 
   const phoneCall = () => {
-    Taro.makePhoneCall({
-      phoneNumber: data['contactPersonMobile'] //仅为示例，并非真实的电话号码
+    Taro.redirectTo({
+      url: '/pages/personal/applicationReceipt/index?tid=' + id
     })
+
+    // Taro.makePhoneCall({
+    //   phoneNumber: data['contactPersonMobile'] //仅为示例，并非真实的电话号码
+    // })
   }
 
   return (

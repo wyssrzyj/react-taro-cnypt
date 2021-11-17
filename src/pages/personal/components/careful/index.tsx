@@ -1,18 +1,23 @@
-import { View, Text } from '@tarojs/components'
+import { View, Text, Image } from '@tarojs/components'
 import { AtIcon } from 'taro-ui'
 import styles from './index.module.less'
 
 function index() {
+  let telephone =
+    'https://capacity-platform.oss-cn-hangzhou.aliyuncs.com/capacity-platform/mobile/icon/telephone.png'
+  let time =
+    'https://capacity-platform.oss-cn-hangzhou.aliyuncs.com/capacity-platform/mobile/icon/time.png'
   return (
     <View className={styles.bottoms}>
       <View className={styles.flex}>
         <View>
-          <AtIcon value="clock" size="20" color="#999999"></AtIcon>
+          <Image src={telephone} className={styles.icon}></Image>
           <Text className={styles.margin}>400-82996660</Text>
         </View>
         <View className={styles.kong}></View>
         <View>
-          <AtIcon value="clock" size="20" color="#999999"></AtIcon>
+          <Image src={time} className={styles.icon}></Image>
+
           <Text className={styles.margin}>9:00 - 18:00</Text>
         </View>
       </View>
