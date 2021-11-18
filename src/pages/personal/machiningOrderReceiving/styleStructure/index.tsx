@@ -95,7 +95,7 @@ function index({ data, deleteMethod, reOrder, InitiateOrder, earlyEnd }) {
   // 电话
   const call = () => {
     Taro.makePhoneCall({
-      phoneNumber: '10086' //仅为示例，并非真实的电话号码
+      phoneNumber: data.contactPersonMobile //仅为示例，并非真实的电话号码
     }).then()
   }
 
@@ -108,7 +108,9 @@ function index({ data, deleteMethod, reOrder, InitiateOrder, earlyEnd }) {
         {/* 头部 */}
         <View className={styles.top}>
           <View className={styles.content}>
-            <View className={styles.factorys}>{data.enterpriseName}</View>
+            <View className={styles.factorys}>
+              {data.enterpriseName ? data.enterpriseName : '--'}
+            </View>
             <AtIcon value="chevron-right" size="15" color="#999999"></AtIcon>
           </View>
           <View className={sortColor.get(data.status)}>
@@ -173,10 +175,13 @@ function index({ data, deleteMethod, reOrder, InitiateOrder, earlyEnd }) {
           {/* 待处理 */}
           {data.status === 2 ? (
             <View className={styles.pending}>
-              <View className={styles.telephone}>
-                <AtIcon value="phone" size="15" color="#333333"></AtIcon>
-                <Text onClick={call}>电话联系</Text>
-              </View>
+              {data.isContactPublic !== 3 ? (
+                <View className={styles.telephone}>
+                  <AtIcon value="phone" size="15" color="#333333"></AtIcon>
+                  <Text onClick={call}>电话联系</Text>
+                </View>
+              ) : null}
+
               <View
                 onClick={confirmCooperation}
                 className={styles.refuseToAcceptOrders}
