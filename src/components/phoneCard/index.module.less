@@ -5,13 +5,22 @@
 }
 
 .content {
+  box-sizing: border-box;
   padding: 30px 36px;
   display: flex;
   align-items: center;
   justify-content: space-between;
 }
 
-.left {
+.noToolBox {
+  height: 214px;
+
+  .left {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+  }
 }
 
 .info {

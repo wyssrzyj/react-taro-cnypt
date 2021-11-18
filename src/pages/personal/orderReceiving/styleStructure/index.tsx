@@ -104,13 +104,11 @@ function index({ data, deleteMethod, reOrder, InitiateOrder, earlyEnd }) {
     console.log(id)
     Taro.redirectTo({
       url: '/pages/personal/feedback/index?tid=' + id
-      // url: '/pages/personal/applicationReceipt/index?tid=' + id
     })
   }
   const details = data => {
     Taro.redirectTo({
       url: '/pages/orderDetail/index?id=' + data.purchaserInquiryId
-      // url: '/pages/personal/applicationReceipt/index?tid=' + id
     })
   }
 

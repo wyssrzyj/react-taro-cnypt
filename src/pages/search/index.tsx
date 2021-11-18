@@ -93,7 +93,7 @@ const Search = () => {
     pageSize: 10
   })
   const [historySearch, setHistorySearch] = useState<any[]>([])
-  const [pageStatus, setPageStatus] = useState<number>(1) // 1 搜索历史 2 搜索列表
+  const [pageStatus, setPageStatus] = useState<number>(2) // 1 搜索历史 2 搜索列表
   const [activeTab, setActiveTab] = useState<number>(+tab) // 0 订单 1 工厂
   const [areaFlag, setAreaFlag] = useState<boolean>(false)
   const [productFlag, setProductFlag] = useState<boolean>(false)

@@ -7,7 +7,7 @@ import {
   RadioGroup
 } from '@tarojs/components'
 import styles from './index.module.less'
-import Taro from '@tarojs/taro'
+import Taro, { useRouter } from '@tarojs/taro'
 import {
   AtForm,
   AtInput,
@@ -39,15 +39,15 @@ const initParams = {
 const FactoryEntry = () => {
   const { top } = Taro.getMenuButtonBoundingClientRect()
 
-  const { commonStore, factoryStore } = useStores()
-  const { publishOrder } = factoryStore
+  const router = useRouter()
   const {
-    // getDistrict,
-    productCategoryList,
-    dictionary,
-    // productGrade,
-    district
-  } = commonStore
+    params: { id }
+  } = router
+
+  const { commonStore, factoryStore } = useStores()
+  const { publishOrder, orderDetail } = factoryStore
+  const { productCategoryList, dictionary, district } = commonStore
+
   const {
     plusMaterialType = [],
     goodsNum = [],
@@ -67,6 +67,32 @@ const FactoryEntry = () => {
   const [goodsNumFlag, setGoodsNumFlag] = useState<boolean>(false)
   const [effectiveFlag, setEffectiveFlag] = useState<boolean>(false)
   const [areaFlag, setAreaFlag] = useState<boolean>(false)
+
+  useEffect(() => {
+    ;(async () => {
+      if (id) {
+        const detail = await orderDetail(id)
+        detail.goodsNum = [detail.goodsNumDictionary]
+        detail.effectiveLocation = [detail.effectiveLocationDictionary]
+        detail.inquiryEffectiveDate = detail.inquiryEffectiveDate
+          ? moment(detail.inquiryEffectiveDate).format('YYYY-MM-DD')
+          : null
+        detail.deliveryDate = detail.deliveryDate
+          ? moment(detail.deliveryDate).format('YYYY-MM-DD')
+          : null
+        detail.stylePicture = detail.stylePicture.map(item => ({
+          url: item
+        }))
+        detail.materialTypeList = detail.materialTypeDictionaryList
+        detail.productTypeList = detail.productTypeDictionaryList
+        detail.processTypeList = detail.processTypeDictionaryList
+
+        delete detail.id
+        setParams(detail)
+        // console.log('🚀 ~ file: index.tsx ~ line 75 ~ ; ~ detail', detail)
+      }
+    })()
+  }, [])
 
   const goBack = () => {
     Taro.navigateBack()
@@ -524,7 +550,9 @@ const FactoryEntry = () => {
                 title="交货日期"
                 className={classNames(
                   styles.timeListItem,
-                  !params['deliveryDate'] ? styles.placeholder : ''
+                  !params['deliveryDate']
+                    ? styles.placeholder
+                    : styles.selectDate
                 )}
                 extraText={
                   params['deliveryDate']
@@ -575,7 +603,9 @@ const FactoryEntry = () => {
                 title="订单有效期"
                 className={classNames(
                   styles.timeListItem,
-                  !params['inquiryEffectiveDate'] ? styles.placeholder : ''
+                  !params['inquiryEffectiveDate']
+                    ? styles.placeholder
+                    : styles.selectDate
                 )}
                 extraText={
                   params['inquiryEffectiveDate']

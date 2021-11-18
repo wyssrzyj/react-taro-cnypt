@@ -137,6 +137,10 @@ const FactoryEntry = () => {
       setIsOpened(true)
       setErrText('请输入联系人')
     }
+
+    // Taro.redirectTo({
+    //   url: '/pages/index/index'
+    // })
   }
 
   const onReset = () => {}
