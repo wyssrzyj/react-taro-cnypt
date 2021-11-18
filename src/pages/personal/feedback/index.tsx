@@ -1,10 +1,13 @@
 import { useState, useEffect } from 'react'
 import styles from './index.module.less'
-import { View, Text } from '@tarojs/components'
+import { View, Image } from '@tarojs/components'
 import { AtNavBar } from 'taro-ui'
 import { useRouter, redirectTo } from '@tarojs/taro'
 import { useStores, observer } from '@/store/mobx'
 import { isEmpty, isNil } from 'lodash'
+import { Navbar } from '@/components'
+const BACK_ICON =
+  'https://capacity-platform.oss-cn-hangzhou.aliyuncs.com/capacity-platform/mobile/icon/black_back.png'
 export const ORDER_EMPTY =
   'https://capacity-platform.oss-cn-hangzhou.aliyuncs.com/capacity-platform/platform/order_empty.png'
 
@@ -40,15 +43,17 @@ const Verify = () => {
   return (
     <View className={styles.phoneLogin}>
       {/* 导航 */}
-      <View className={styles.navbar}>
-        <AtNavBar
-          fixed={true}
-          onClickLeftIcon={goBack}
-          color="#000"
-          title="反馈信息"
-          leftIconType="chevron-left"
-        />
-      </View>
+      <Navbar>
+        <View className={styles.navbars}>
+          <Image
+            src={BACK_ICON}
+            className={styles.backs}
+            onClick={goBack}
+          ></Image>
+          <View className={styles.navTitles}>反馈信息</View>
+        </View>
+      </Navbar>
+
       <View className={styles.container}>
         <View className={styles.title}>报价信息</View>
         <View className={styles.txt}>

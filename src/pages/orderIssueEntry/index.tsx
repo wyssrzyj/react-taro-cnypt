@@ -1,6 +1,6 @@
 import { View, Image, Picker, Text } from '@tarojs/components'
 import styles from './index.module.less'
-import Taro from '@tarojs/taro'
+import Taro, { useRouter } from '@tarojs/taro'
 import {
   AtForm,
   AtInput,
@@ -25,6 +25,10 @@ const BACK_ICON =
 
 const FactoryEntry = () => {
   const { top } = Taro.getMenuButtonBoundingClientRect()
+  const router = useRouter()
+  const {
+    params: { modify }
+  } = router
 
   const { commonStore, factoryStore } = useStores()
   const {
@@ -241,7 +245,7 @@ const FactoryEntry = () => {
             className={styles.back}
             onClick={goBack}
           ></Image>
-          <View>发单商入驻</View>
+          <View>{modify ? '企业管理' : '发单商入驻'}</View>
         </View>
       </View>
 

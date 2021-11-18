@@ -43,9 +43,13 @@ function index({ userInfo }) {
     })
   }
   const factoryManagement = () => {
-    console.log(123)
     Taro.redirectTo({
-      url: '/pages/factoryEntry/index'
+      url: '/pages/factoryEntry/index?modify=1'
+    })
+  }
+  const enterpriseManagement = () => {
+    Taro.redirectTo({
+      url: '/pages/orderIssueEntry/index?modify=1'
     })
   }
 
@@ -75,7 +79,7 @@ function index({ userInfo }) {
           <View
             className={styles.order}
             onClick={() => {
-              factoryManagement()
+              enterpriseManagement()
             }}
           >
             <View className={styles.remove}>

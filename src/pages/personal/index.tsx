@@ -10,10 +10,6 @@ import Management from './components/management'
 import Careful from './components/careful'
 import { useStores } from '@/store/mobx'
 import { Navbar, TabBar } from '@/components'
-
-// import My from './my/index'
-// import Im from './im/index'
-
 const Personal = () => {
   const { userInterface, commonStore } = useStores()
 
@@ -36,10 +32,7 @@ const Personal = () => {
       setJurisdiction('notLogged')
     }
   }, [])
-  // 地区接口数据
-  const getDisr = async () => {
-    // await getDistrict()
-  }
+
   // 用户信息
   const pickUpInformation = async e => {
     let res = await userInformation(e)
