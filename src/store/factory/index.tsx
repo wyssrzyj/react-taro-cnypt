@@ -246,6 +246,29 @@ export default class FactoryStore {
       console.log(e)
     }
   }
+
+  // /api/oms/inquiry-purchase/save
+  // 更新或新增需求单 post
+  @action publishOrder = async params => {
+    try {
+      const res: Partial<Response> = await HTTP.post(
+        `/api/oms/inquiry-purchase/save`,
+        params
+      )
+
+      if (res.code === 200) {
+      } else {
+        Taro.showToast({
+          title: '获取数据失败~',
+          icon: 'none',
+          duration: 1000
+        })
+      }
+      return res.data
+    } catch (e) {
+      console.log(e)
+    }
+  }
 }
 
 export const factoryStore = new FactoryStore()

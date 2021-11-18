@@ -14,7 +14,7 @@ import {
   CusProductModal,
   Navbar
 } from '@/components'
-import { cloneDeep, isArray, isEmpty, isNil } from 'lodash'
+import { cloneDeep, isArray, isNil } from 'lodash'
 import AreaModal from '@/components/areaModal'
 import Card from '../index/components/card'
 
@@ -142,7 +142,15 @@ const Search = () => {
         nParams.sortField = 'inquiryEffectiveDate'
         nParams.sortType = SORT_TYPE.get(nParams.sort)
       }
-      !nParams.name && delete nParams.name
+      if (activeTab === 0) {
+        !nParams['name'] && delete nParams['name']
+      }
+      if (activeTab === 1) {
+        nParams['factoryName'] = nParams['name']
+        !nParams['factoryName'] && delete nParams['factoryName']
+        delete nParams['name']
+      }
+
       delete nParams.sort
       delete nParams.mainCategoriesList
       const fn = activeTab === 0 ? getOrderList : getNewFactory
@@ -252,6 +260,7 @@ const Search = () => {
               confirmType={'search'}
               onConfirm={confirm}
               onFocus={searchFocus}
+              focus={pageStatus === 1}
             ></Input>
           </View>
         </View>
