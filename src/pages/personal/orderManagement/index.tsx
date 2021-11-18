@@ -7,6 +7,10 @@ import StyleStructure from './styleStructure/index'
 import { useStores, observer } from '@/store/mobx'
 // import Taro from '@tarojs/taro'
 import { cloneDeep } from 'lodash'
+import { Navbar } from '@/components'
+const BACK_ICON =
+  'https://capacity-platform.oss-cn-hangzhou.aliyuncs.com/capacity-platform/mobile/icon/black_back.png'
+
 export const ORDER_EMPTY =
   'https://capacity-platform.oss-cn-hangzhou.aliyuncs.com/capacity-platform/platform/order_empty.png'
 
@@ -156,15 +160,16 @@ const Verify = () => {
   return (
     <View className={styles.phoneLogin}>
       {/* 导航 */}
-      <View className={styles.navbar}>
-        <AtNavBar
-          fixed={true}
-          onClickLeftIcon={goBack}
-          color="#000"
-          title="订单管理"
-          leftIconType="chevron-left"
-        />
-      </View>
+      <Navbar>
+        <View className={styles.navbars}>
+          <Image
+            src={BACK_ICON}
+            className={styles.backs}
+            onClick={goBack}
+          ></Image>
+          <View className={styles.navTitles}>订单管理</View>
+        </View>
+      </Navbar>
       {/* 搜索 */}
       <View className={styles.search}>
         <AtSearchBar

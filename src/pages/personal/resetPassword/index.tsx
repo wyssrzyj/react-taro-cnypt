@@ -1,12 +1,15 @@
 import styles from './index.module.less'
-import { View, Text } from '@tarojs/components'
+import { View, Text, Image } from '@tarojs/components'
 import { useState } from 'react'
-import { AtInput, AtNavBar, AtToast } from 'taro-ui'
+import { AtInput } from 'taro-ui'
 import base64Js from 'base64-js'
 
 // import { Navbar } from '@/components'
 import { useStores } from '@/store/mobx'
 import Taro, { redirectTo } from '@tarojs/taro'
+import { Navbar } from '@/components'
+const BACK_ICON =
+  'https://capacity-platform.oss-cn-hangzhou.aliyuncs.com/capacity-platform/mobile/icon/black_back.png'
 // 且至少带字母、数字、符号中的两种。
 let reg = new RegExp(/(?![\d]+$)(?![a-zA-Z]+$)(?![\da-zA-Z]+$).{6,20}$/) //6-20位，至少带字母数字符号中的两种的正则
 
@@ -63,22 +66,24 @@ const Verify = () => {
 
   return (
     <View className={styles.phoneLogin}>
-      <View className={styles.navbar}>
-        <AtNavBar
-          onClickLeftIcon={goBack}
-          color="#000"
-          title="修改密码"
-          leftIconType="chevron-left"
-        />
-      </View>
+      <Navbar>
+        <View className={styles.navbars}>
+          <Image
+            src={BACK_ICON}
+            className={styles.backs}
+            onClick={goBack}
+          ></Image>
+          <View className={styles.navTitles}>修改密码</View>
+        </View>
+      </Navbar>
 
       <View className={styles.content}>
         <LoginHeader></LoginHeader>
         <View>
           <AtInput
             className={styles.input}
-            type="phone"
-            name="passwords"
+            name="password"
+            type="password"
             placeholder="请输入原密码"
             value={pwd}
             onChange={originalPassword}

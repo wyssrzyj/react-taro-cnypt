@@ -6,6 +6,11 @@ import { useReachBottom, useRouter, redirectTo } from '@tarojs/taro'
 import StyleStructure from './styleStructure/index'
 import { useStores, observer } from '@/store/mobx'
 import { cloneDeep } from 'lodash'
+import { Navbar } from '@/components'
+
+const BACK_ICON =
+  'https://capacity-platform.oss-cn-hangzhou.aliyuncs.com/capacity-platform/mobile/icon/black_back.png'
+
 export const ORDER_EMPTY =
   'https://capacity-platform.oss-cn-hangzhou.aliyuncs.com/capacity-platform/platform/order_empty.png'
 
@@ -154,7 +159,7 @@ const Verify = () => {
 
   const tabList = [
     { title: '全部' },
-    { title: '待处理' },
+    { title: '待反馈' },
     { title: '已确认' },
     { title: '已谢绝' }
   ]
@@ -192,15 +197,17 @@ const Verify = () => {
   return (
     <View className={styles.phoneLogin}>
       {/* 导航 */}
-      <View className={styles.navbar}>
-        <AtNavBar
-          fixed={true}
-          onClickLeftIcon={goBack}
-          color="#000"
-          title="加工接单管理"
-          leftIconType="chevron-left"
-        />
-      </View>
+      <Navbar>
+        <View className={styles.navbars}>
+          <Image
+            src={BACK_ICON}
+            className={styles.backs}
+            onClick={goBack}
+          ></Image>
+          <View className={styles.navTitles}>接单管理</View>
+        </View>
+      </Navbar>
+
       {/* 搜索 */}
       <View className={styles.search}>
         <AtSearchBar
@@ -210,7 +217,12 @@ const Verify = () => {
         />
       </View>
       {/* Tobs标签 */}
-      <AtTabs current={current} tabList={tabList} onClick={AtTabsbind} />
+      <AtTabs
+        className={styles.tabs}
+        current={current}
+        tabList={tabList}
+        onClick={AtTabsbind}
+      />
       {/* 主体 */}
       {rallyists.length > 0 ? (
         <View>
