@@ -20,7 +20,6 @@ const Verify = () => {
     factoryDelOrder
   } = userInterface
   const { params } = useRouter()
-  console.log(params)
 
   // 跳转的数据.
   const [value, setValue] = useState('')
@@ -76,9 +75,9 @@ const Verify = () => {
     console.log(res)
 
     if (Array.isArray(res.records)) {
-      // let filterStatus = eliminate(res.records, -1)
-      // let final = eliminate(filterStatus, 1)
-      setReallyLists(res.records)
+      let filterStatus = eliminate(res.records, -1)
+      let final = eliminate(filterStatus, 1)
+      setReallyLists(final)
       setTotalPageNumber(res.pages)
     }
   }
@@ -188,7 +187,7 @@ const Verify = () => {
     }
   }
   const searchConfirmation = () => {
-    let res = { ...list, supplierName: value }
+    let res = { ...list, name: value }
     setList(res)
   }
   return (

@@ -30,8 +30,6 @@ export default class UserInterface {
 
   // 申请接单的数量数据
   @action applicationReceiptQuantity = async params => {
-    console.log(params)
-
     try {
       runInAction(() => {
         this.quantityId = params
@@ -39,7 +37,7 @@ export default class UserInterface {
     } catch (e) {}
   }
 
-  // 账号安全 修改手机号
+  // 账号安全 修改手机号.
   @action modifyMobilePhoneNumber = async params => {
     try {
       const res: Partial<Response> = await HTTP.post(
@@ -166,7 +164,6 @@ export default class UserInterface {
 
   // 供应商主动申请需求单  formti提交
   @action submitRequisition = async params => {
-    console.log(params)
     try {
       const res: Partial<Response> = await HTTP.post(
         `/api/oms/inquiry-quote/active-application-inquiry`,

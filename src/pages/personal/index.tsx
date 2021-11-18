@@ -64,10 +64,7 @@ const Personal = () => {
           <Settled />
         ) : null}
         {jurisdiction === '0' ? <Machining /> : null}
-
-        {/* <Receiving /> */}
         <Management userInfo={jurisdiction} />
-        {/* <Button onClick={toLogin}>登录</Button> */}
         {/* 底部 */}
         <Careful />
       </View>
