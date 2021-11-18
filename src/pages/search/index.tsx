@@ -14,7 +14,7 @@ import {
   CusProductModal,
   Navbar
 } from '@/components'
-import { cloneDeep, isArray, isEmpty, isNil } from 'lodash'
+import { cloneDeep, isArray, isNil } from 'lodash'
 import AreaModal from '@/components/areaModal'
 import Card from '../index/components/card'
 
@@ -93,7 +93,7 @@ const Search = () => {
     pageSize: 10
   })
   const [historySearch, setHistorySearch] = useState<any[]>([])
-  const [pageStatus, setPageStatus] = useState<number>(1) // 1 搜索历史 2 搜索列表
+  const [pageStatus, setPageStatus] = useState<number>(2) // 1 搜索历史 2 搜索列表
   const [activeTab, setActiveTab] = useState<number>(+tab) // 0 订单 1 工厂
   const [areaFlag, setAreaFlag] = useState<boolean>(false)
   const [productFlag, setProductFlag] = useState<boolean>(false)
@@ -142,7 +142,15 @@ const Search = () => {
         nParams.sortField = 'inquiryEffectiveDate'
         nParams.sortType = SORT_TYPE.get(nParams.sort)
       }
-      !nParams.name && delete nParams.name
+      if (activeTab === 0) {
+        !nParams['name'] && delete nParams['name']
+      }
+      if (activeTab === 1) {
+        nParams['factoryName'] = nParams['name']
+        !nParams['factoryName'] && delete nParams['factoryName']
+        delete nParams['name']
+      }
+
       delete nParams.sort
       delete nParams.mainCategoriesList
       const fn = activeTab === 0 ? getOrderList : getNewFactory
@@ -228,6 +236,11 @@ const Search = () => {
     setPageStatus(1)
   }
 
+  const clearHistory = () => {
+    Taro.setStorageSync('search', [])
+    setHistorySearch([])
+  }
+
   return (
     <View>
       <Navbar>
@@ -247,6 +260,7 @@ const Search = () => {
               confirmType={'search'}
               onConfirm={confirm}
               onFocus={searchFocus}
+              focus={pageStatus === 1}
             ></Input>
           </View>
         </View>
@@ -256,7 +270,11 @@ const Search = () => {
         <View className={styles.searchHistory}>
           <View className={styles.historyHeader}>
             <Text className={styles.historyTitle}>搜索历史</Text>
-            <Image src={DELETE_ICON} className={styles.delIcon}></Image>
+            <Image
+              src={DELETE_ICON}
+              className={styles.delIcon}
+              onClick={clearHistory}
+            ></Image>
           </View>
           {isArray(historySearch) &&
             historySearch.map((item, idx) => {

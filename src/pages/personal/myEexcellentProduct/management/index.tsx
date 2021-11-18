@@ -10,6 +10,8 @@ function Management() {
   const privacy = () => {
     Taro.redirectTo({ url: '/pages/personal/privacyAgreement/index' })
   }
+  console.log(1)
+
   return (
     <View>
       <View class="order">

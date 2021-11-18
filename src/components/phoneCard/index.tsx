@@ -94,7 +94,7 @@ const PhoneCard = props => {
     if (+userInfomation.enterpriseType === 1) {
       const res = await checkOrderIssuer(userInfomation.enterpriseId)
       if (!res) {
-        Taro.redirectTo({
+        Taro.navigateTo({
           url: '/pages/publish/index'
         })
       } else {
@@ -117,7 +117,7 @@ const PhoneCard = props => {
       })
     }
     if (isEmpty(userInfomation) || +userInfomation.enterpriseType !== 0) {
-      Taro.redirectTo({
+      Taro.navigateTo({
         url: '/pages/factoryEntry/index'
       })
     }
@@ -143,7 +143,12 @@ const PhoneCard = props => {
 
   return (
     <View className={styles.phoneCard}>
-      <View className={styles.content}>
+      <View
+        className={classNames(
+          styles.content,
+          !toolTips ? styles.noToolBox : ''
+        )}
+      >
         <View className={styles.left}>
           <View className={styles.info}>
             <Text className={styles.label}>联系人</Text>

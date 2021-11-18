@@ -194,11 +194,14 @@ const FactoryEntry = () => {
   }
 
   const onSubmit = () => {
-    console.log(params, 'params')
     if (!params['contactsName']) {
       setIsOpened(true)
       setErrText('请输入联系人')
     }
+
+    // Taro.redirectTo({
+    //   url: '/pages/index/index'
+    // })
   }
 
   const onReset = () => {}

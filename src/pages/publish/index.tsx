@@ -7,7 +7,7 @@ import {
   RadioGroup
 } from '@tarojs/components'
 import styles from './index.module.less'
-import Taro from '@tarojs/taro'
+import Taro, { useRouter } from '@tarojs/taro'
 import {
   AtForm,
   AtInput,
@@ -19,37 +19,17 @@ import {
   AtImagePicker
 } from 'taro-ui'
 import { useEffect, useState, useMemo } from 'react'
-import { cloneDeep, isArray, isNil, throttle } from 'lodash'
+import { cloneDeep, isArray, isNil } from 'lodash'
 import moment from 'moment'
 import classNames from 'classnames'
-import { useStores, observer, toJS } from '@/store/mobx'
-import {
-  CusProductModal,
-  CusMaterialModal,
-  CusGradeModal,
-  CusModal,
-  ImagePicker
-} from '@/components'
-import { findTarget, matchTreeData } from '@/utils/tool'
-import OSS from '@/utils/oss'
+import { useStores, observer } from '@/store/mobx'
+import { CusProductModal, CusMaterialModal, CusModal } from '@/components'
+import { findTarget, matchTreeData, phoneReg } from '@/utils/tool'
 import { upload } from '@/utils/upload'
 import AreaModal from '@/components/areaModal'
 
 const BACK_ICON =
   'https://capacity-platform.oss-cn-hangzhou.aliyuncs.com/capacity-platform/mobile/icon/back.png'
-
-interface OptionsType {
-  label: string
-  value: string
-}
-const typeOptions: Partial<OptionsType>[] = [
-  { label: '清加工单', value: 'QJG' },
-  { label: 'OEM', value: 'OEM' },
-  { label: 'ODM', value: 'ODM' },
-  { label: '经销单', value: 'JXD' },
-  { label: '自营进出口单', value: 'ZCK' },
-  {}
-]
 
 const initParams = {
   isContactPublic: 1,
@@ -57,77 +37,68 @@ const initParams = {
 }
 
 const FactoryEntry = () => {
-  console.log(Taro.getEnv())
-
   const { top } = Taro.getMenuButtonBoundingClientRect()
 
-  const { commonStore, factoryStore } = useStores()
+  const router = useRouter()
   const {
-    // getDistrict,
-    productCategoryList,
-    dictionary,
-    productGrade,
-    district
-  } = commonStore
+    params: { id }
+  } = router
+
+  const { commonStore, factoryStore } = useStores()
+  const { publishOrder, orderDetail } = factoryStore
+  const { productCategoryList, dictionary, district } = commonStore
+
   const {
     plusMaterialType = [],
-    purchaserRole = [],
     goodsNum = [],
     productType = [],
-    effectiveLocation = []
+    effectiveLocation = [],
+    processType = []
   } = dictionary
-  const { getEnterpriseInfo } = factoryStore
-
-  const clothOptions = productGrade.reduce((prev, item) => {
-    prev.push(...item.children)
-    prev.push(item)
-    return prev
-  }, [])
 
   const [params, setParams] = useState<any>(initParams)
   const [errText, setErrText] = useState('')
   const [isOpened, setIsOpened] = useState(false)
 
-  const [provinceData, setProvinceData] = useState<any[]>([])
-  const [cityData, setCityData] = useState<any[]>([])
-  const [areaData, setAreaData] = useState<any[]>([])
-  const [location, setAreaValue] = useState<any[]>([0, 0, 0])
-
   const [productFlag, setProductFlag] = useState<boolean>(false)
   const [materialFlag, setMaterialFlag] = useState<boolean>(false)
-  const [clothesGradeFlag, setClothesGradeFlag] = useState<boolean>(false)
   const [processTypeFlag, setProcessTypeFlag] = useState<boolean>(false)
   const [productTypeFlag, setProductTypeFlag] = useState<boolean>(false)
-  const [rolesFlag, setRolesFlag] = useState<boolean>(false)
   const [goodsNumFlag, setGoodsNumFlag] = useState<boolean>(false)
   const [effectiveFlag, setEffectiveFlag] = useState<boolean>(false)
   const [areaFlag, setAreaFlag] = useState<boolean>(false)
 
-  const photoConfigs2 = [
-    {
-      label: '宣传照片',
-      field: 'publicityImagesList',
-      count: 3
-    }
-  ]
   useEffect(() => {
     ;(async () => {
-      const res = cloneDeep(district)
-      // const res = await getDistrict()
-      setProvinceData(res)
-      const cData = [{ label: '不限', value: 0 }, ...res[0].children]
-      const aData = [{ label: '不限', value: 0 }]
-      setCityData(cData)
-      setAreaData(aData)
+      if (id) {
+        const detail = await orderDetail(id)
+        detail.goodsNum = [detail.goodsNumDictionary]
+        detail.effectiveLocation = [detail.effectiveLocationDictionary]
+        detail.inquiryEffectiveDate = detail.inquiryEffectiveDate
+          ? moment(detail.inquiryEffectiveDate).format('YYYY-MM-DD')
+          : null
+        detail.deliveryDate = detail.deliveryDate
+          ? moment(detail.deliveryDate).format('YYYY-MM-DD')
+          : null
+        detail.stylePicture = detail.stylePicture.map(item => ({
+          url: item
+        }))
+        detail.materialTypeList = detail.materialTypeDictionaryList
+        detail.productTypeList = detail.productTypeDictionaryList
+        detail.processTypeList = detail.processTypeDictionaryList
+
+        delete detail.id
+        setParams(detail)
+        // console.log('🚀 ~ file: index.tsx ~ line 75 ~ ; ~ detail', detail)
+      }
     })()
-  }, [district])
+  }, [])
 
   const goBack = () => {
     Taro.navigateBack()
   }
 
   const handleChange = (value, field) => {
-    console.log('🚀 ~ ~~~~~~~~~~~~', value)
     const nParams = cloneDeep(params)
     nParams[field] = value
     setParams(nParams)
@@ -152,69 +123,125 @@ const FactoryEntry = () => {
     }
   }
 
-  const onSubmit = () => {
-    console.log(params, 'params')
-    if (!params['contactsName']) {
+  const onSubmit = async () => {
+    const nParams = cloneDeep(params)
+    // contactPerson 联系人
+    // contactPersonMobile 手机号
+    // isContactPublic 联系方式公开
+    // isEnterpriseInfoPublic 企业信息公开
+    // name 订单标题
+    // goodsNum 发单量
+    // goodsPrice 目标单价
+    // categoryCodes 产品品类
+    // materialTypeList 面料类型
+    // processTypeList 加工类型
+    // productTypeList 生产方式
+    // regionalIdList 地区要求
+    // deliveryDate 交货日期
+    // effectiveLocation 车位要求
+    // payDetails 付款方式
+    // inquiryEffectiveDate 订单有效期
+    // goodsRemark 备注说明
+    // stylePicture 款图
+    if (isNil(nParams['contactPerson'])) {
       setIsOpened(true)
       setErrText('请输入联系人')
+      return
     }
+    if (
+      isNil(nParams['contactPersonMobile']) ||
+      !phoneReg.test(nParams['contactPersonMobile'])
+    ) {
+      setIsOpened(true)
+      setErrText('请输入正确的手机号')
+      return
+    }
+    if (isNil(nParams['isContactPublic'])) {
+      setIsOpened(true)
+      setErrText('请选择联系信息公开方式')
+      return
+    }
+    if (isNil(nParams['isEnterpriseInfoPublic'])) {
+      setIsOpened(true)
+      setErrText('请选择联系信息公开方式')
+      return
+    }
+    if (isNil(nParams['name'])) {
+      setIsOpened(true)
+      setErrText('请输入订单标题')
+      return
+    }
+    if (isNil(nParams['goodsNum'])) {
+      setIsOpened(true)
+      setErrText('请输入发单量')
+      return
+    }
+    if (isNil(nParams['categoryCodes'])) {
+      setIsOpened(true)
+      setErrText('请选择产品品类')
+      return
+    }
+    if (isNil(nParams['materialTypeList'])) {
+      setIsOpened(true)
+      setErrText('请选择面料类型')
+      return
+    }
+    if (isNil(nParams['processTypeList'])) {
+      setIsOpened(true)
+      setErrText('请选择加工类型')
+      return
+    }
+    if (isNil(nParams['productTypeList'])) {
+      setIsOpened(true)
+      setErrText('请选择生产方式')
+      return
+    }
+    if (isNil(nParams['regionalIdList'])) {
+      setIsOpened(true)
+      setErrText('请选择地区要求')
+      return
+    }
+    if (isNil(nParams['deliveryDate'])) {
+      setIsOpened(true)
+      setErrText('请选择交货日期')
+      return
+    }
+    if (isNil(nParams['effectiveLocation'])) {
+      setIsOpened(true)
+      setErrText('请选择车位要求')
+      return
+    }
+    if (isNil(nParams['payDetails'])) {
+      setIsOpened(true)
+      setErrText('请输入付款方式')
+      return
+    }
+    if (isNil(nParams['inquiryEffectiveDate'])) {
+      setIsOpened(true)
+      setErrText('请选择订单有效期')
+      return
+    }
+
+    nParams.goodsNum = nParams.goodsNum.join('')
+    nParams.effectiveLocation = nParams.effectiveLocation.join('')
+    nParams.stylePicture = nParams.stylePicture.map(item => item.url)
+    nParams.status = 1
+
+    nParams.inquiryEffectiveDate = nParams.inquiryEffectiveDate
+      ? moment(nParams.inquiryEffectiveDate).valueOf()
+      : null
+    nParams.deliveryDate = nParams.deliveryDate
+      ? moment(nParams.deliveryDate).valueOf()
+      : null
+    await publishOrder(nParams)
+    goBack()
+  }
+
+  const toastClose = () => {
+    setIsOpened(false)
   }
 
   const onReset = () => {}
-
-  const onAreaColumnChange = event => {
-    const {
-      detail: { column, value }
-    } = event
-
-    if (column === 0) {
-      const target = provinceData[value]
-      const province =
-        provinceData.find(item => item.value === target.value) || {}
-      province.children = province.children || []
-      const cData = [{ label: '不限', value: 0 }, ...province.children]
-      const aData = [{ label: '不限', value: 0 }]
-
-      setCityData(cData)
-      setAreaData(aData)
-      // setProvinceIdx(value)
-      setAreaValue([value, 0, 0])
-    }
-    if (column === 1) {
-      const target = cityData.find(item => item.value === cityData[value].value)
-      // setCityIdx(value)
-
-      setAreaData(
-        Array.isArray(target.children)
-          ? [{ label: '不限', value: 0 }, ...target.children]
-          : [{ label: '不限', value: 0 }]
-      )
-      setAreaValue([location[0], value, 0])
-    }
-  }
-
-  // const getAreaInfo = useMemo(() => {
-  //   const target = params['location']
-  //   return isArray(target) && target.length
-  //     ? target.reduce((prev, item, idx) => {
-  //         if (idx === 0) {
-  //           prev = provinceData[item].label
-  //         }
-  //         if (idx === 1) {
-  //           if (cityData[item].label !== '不限') {
-  //             prev += '-' + cityData[item].label
-  //           }
-  //         }
-
-  //         if (idx === 2) {
-  //           if (areaData[item].label !== '不限') {
-  //             prev += '-' + areaData[item].label
-  //           }
-  //         }
-  //         return prev
-  //       }, '')
-  //     : '请选择地区'
-  // }, [params])
 
   const productModalShow = () => {
     setProductFlag(f => !f)
@@ -224,16 +251,8 @@ const FactoryEntry = () => {
     setMaterialFlag(f => !f)
   }
 
-  const clothesGradeModalShow = () => {
-    setClothesGradeFlag(f => !f)
-  }
-
   const processTypeModalShow = () => {
     setProcessTypeFlag(f => !f)
-  }
-
-  const rolesModalShow = () => {
-    setRolesFlag(f => !f)
   }
 
   const goodsNumModalShow = () => {
@@ -253,16 +272,16 @@ const FactoryEntry = () => {
   }
 
   const getProducts = useMemo(() => {
-    const target = params['categoryId'] || []
+    const target = params['categoryCodes'] || []
     const matches = target.reduce((prev, item, idx) => {
-      const product = matchTreeData(productCategoryList, item) || {}
+      const product = matchTreeData(productCategoryList, item, 'code') || {}
       return (
         prev + (product.name ? `${idx !== 0 ? '、' : ''}${product.name}` : '')
       )
     }, '')
 
     return matches
-  }, [params.categoryId])
+  }, [params.categoryCodes])
 
   const getMaterial = useMemo(() => {
     if (isArray(params.materialTypeList)) {
@@ -308,24 +327,24 @@ const FactoryEntry = () => {
           <AtInput
             required
             className={styles.cusInput}
-            name="contactsName"
+            name="contactPerson"
             title="联系人"
             type="text"
             placeholder="请填写真实姓名"
-            value={params['contactsName']}
-            onChange={event => handleChange(event, 'contactsName')}
+            value={params['contactPerson']}
+            onChange={event => handleChange(event, 'contactPerson')}
           />
 
           <AtInput
             required
             className={styles.cusInput}
-            name="mobilePhone"
+            name="contactPersonMobile"
             border={false}
             title="手机号"
             type="phone"
             placeholder="请填写手机号"
-            value={params['mobilePhone']}
-            onChange={event => handleChange(event, 'mobilePhone')}
+            value={params['contactPersonMobile']}
+            onChange={event => handleChange(event, 'contactPersonMobile')}
           />
 
           <View className={styles.cusItem}>
@@ -464,13 +483,13 @@ const FactoryEntry = () => {
             <Text
               className={classNames(
                 styles.cusValue,
-                !getLabels(typeOptions, 'processTypeList')
+                !getLabels(processType, 'processTypeList')
                   ? styles.cusPlaceholder
                   : ''
               )}
             >
-              {getLabels(typeOptions, 'processTypeList')
-                ? getLabels(typeOptions, 'processTypeList')
+              {getLabels(processType, 'processTypeList')
+                ? getLabels(processType, 'processTypeList')
                 : '请选择加工类型'}
             </Text>
           </View>
@@ -493,26 +512,6 @@ const FactoryEntry = () => {
             </Text>
           </View>
 
-          {/* <Picker
-            mode="multiSelector"
-            value={params['location']}
-            rangeKey={'label'}
-            range={[provinceData, cityData, areaData]}
-            onChange={event => handleChange(event.detail.value, 'location')}
-            onColumnChange={throttle(onAreaColumnChange, 50)}
-          >
-            <AtList>
-              <AtListItem
-                className={classNames(
-                  styles.timeListItem,
-                  !params['location'] ? styles.placeholder : ''
-                )}
-                title="地区要求"
-                extraText={getAreaInfo}
-              />
-            </AtList>
-          </Picker> */}
-
           <View onClick={areaModalShow} className={styles.cusFormItem}>
             <Text className={classNames(styles.cusLabel, styles.required)}>
               地区要求
@@ -520,19 +519,21 @@ const FactoryEntry = () => {
             <Text
               className={classNames(
                 styles.cusValue,
-                isArray(params['location']) && params['location'].length
+                isArray(params['regionalIdList']) &&
+                  params['regionalIdList'].length
                   ? ''
                   : styles.cusPlaceholder
               )}
             >
-              {isArray(params['location']) && params['location'].length
-                ? params['location'].map((item, idx) => {
+              {isArray(params['regionalIdList']) &&
+              params['regionalIdList'].length
+                ? params['regionalIdList'].map((item, idx) => {
                     const target = findTarget(item, district, 'value') || {}
                     console.log(
-                      "🚀 ~ file: index.tsx ~ line 530 ~ ?params['location'].map ~ target",
+                      "🚀 ~ file: index.tsx ~ line 530 ~ ?params['regionalIdList'].map ~ target",
                       target
                     )
-                    return idx === params['location'].length - 1
+                    return idx === params['regionalIdList'].length - 1
                       ? target.label
                       : `${target.label}、`
                   })
@@ -549,7 +550,9 @@ const FactoryEntry = () => {
                 title="交货日期"
                 className={classNames(
                   styles.timeListItem,
-                  !params['deliveryDate'] ? styles.placeholder : ''
+                  !params['deliveryDate']
+                    ? styles.placeholder
+                    : styles.selectDate
                 )}
                 extraText={
                   params['deliveryDate']
@@ -600,7 +603,9 @@ const FactoryEntry = () => {
                 title="订单有效期"
                 className={classNames(
                   styles.timeListItem,
-                  !params['inquiryEffectiveDate'] ? styles.placeholder : ''
+                  !params['inquiryEffectiveDate']
+                    ? styles.placeholder
+                    : styles.selectDate
                 )}
                 extraText={
                   params['inquiryEffectiveDate']
@@ -642,21 +647,26 @@ const FactoryEntry = () => {
               }
             />
           </View>
+          <AtButton onClick={onSubmit} type={'primary'} className={styles.btn}>
+            立即发布
+          </AtButton>
         </View>
-
-        <AtButton onClick={onSubmit} type={'primary'} className={styles.btn}>
-          立即发布
-        </AtButton>
       </AtForm>
 
-      <AtToast isOpened={isOpened} text={errText}></AtToast>
+      <AtToast
+        isOpened={isOpened}
+        onClose={toastClose}
+        text={errText}
+        duration={1000}
+      ></AtToast>
 
       {productFlag && (
         <CusProductModal
+          keyName={'code'}
           visible={productFlag}
           onCancel={productModalShow}
-          callback={event => handleChange(event, 'categoryId')}
-          value={params['categoryId'] || []}
+          callback={event => handleChange(event, 'categoryCodes')}
+          value={params['categoryCodes'] || []}
         />
       )}
       {materialFlag && (
@@ -667,32 +677,22 @@ const FactoryEntry = () => {
           value={params['materialTypeList'] || []}
         />
       )}
-      {clothesGradeFlag && (
+      {/* {clothesGradeFlag && (
         <CusGradeModal
           visible={clothesGradeFlag}
           onCancel={clothesGradeModalShow}
           callback={event => handleChange(event, 'clothesGrade')}
           value={params['clothesGrade'] || []}
         />
-      )}
+      )} */}
       {processTypeFlag && (
         <CusModal
-          options={typeOptions}
+          options={processType}
           visible={processTypeFlag}
           onCancel={processTypeModalShow}
           title={'加工类型'}
           callback={event => handleChange(event, 'processTypeList')}
           value={params['processTypeList'] || []}
-        />
-      )}
-      {rolesFlag && (
-        <CusModal
-          options={purchaserRole}
-          visible={rolesFlag}
-          onCancel={rolesModalShow}
-          title={'企业角色'}
-          callback={event => handleChange(event, 'roleCodes')}
-          value={params['roleCodes'] || []}
         />
       )}
 
@@ -736,8 +736,8 @@ const FactoryEntry = () => {
           visible={areaFlag}
           onCancel={areaModalShow}
           title={'地区要求'}
-          callback={event => handleChange(event, 'location')}
-          value={params['location'] || []}
+          callback={event => handleChange(event, 'regionalIdList')}
+          value={params['regionalIdList'] || []}
         />
       )}
     </View>

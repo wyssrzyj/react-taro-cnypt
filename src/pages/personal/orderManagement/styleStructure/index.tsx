@@ -95,7 +95,7 @@ function index({ data, deleteMethod, earlyEnd }) {
   // 再来一单
   const oneMoreOrder = id => {
     console.log('再来一单')
-    Taro.redirectTo({
+    Taro.navigateTo({
       url: `/pages/publish/index?id=${id}`
     })
   }
@@ -104,7 +104,7 @@ function index({ data, deleteMethod, earlyEnd }) {
     console.log('查看原因')
   }
   const btn = e => {
-    Taro.redirectTo({
+    Taro.navigateTo({
       url: `/pages/personal/orderReceiving/index?ids=${e}`
     })
   }

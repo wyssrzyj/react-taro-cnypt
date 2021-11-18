@@ -37,7 +37,7 @@ export default class UserInterface {
     } catch (e) {}
   }
 
-  // 账号安全 修改手机号
+  // 账号安全 修改手机号.
   @action modifyMobilePhoneNumber = async params => {
     try {
       const res: Partial<Response> = await HTTP.post(

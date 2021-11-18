@@ -32,7 +32,7 @@ const Verify = () => {
       api(quantityId)
     }
   }, [])
-  // 回显.
+  // 回显
   const api = async e => {
     let res = await applicationReceipt({ supplierInquiryId: e })
     console.log(res)
