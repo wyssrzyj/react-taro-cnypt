@@ -1,12 +1,14 @@
 import { useState, useEffect, useRef } from 'react'
-import { View, Text } from '@tarojs/components'
+import { View, Text, Image } from '@tarojs/components'
 import Taro from '@tarojs/taro'
-
 import { AtInput, AtNavBar, AtButton } from 'taro-ui'
 import styles from './index.module.less'
-
 import { redirectTo } from '@tarojs/taro'
 import { useStores, observer } from '@/store/mobx'
+import { Navbar } from '@/components'
+const BACK_ICON =
+  'https://capacity-platform.oss-cn-hangzhou.aliyuncs.com/capacity-platform/mobile/icon/black_back.png'
+
 const index = () => {
   const { loginStore, userInterface } = useStores()
   const { sendVerifyCode } = loginStore
@@ -88,15 +90,17 @@ const index = () => {
   }
 
   return (
-    <View className={styles.subject}>
-      <View className={styles.navbar}>
-        <AtNavBar
-          onClickLeftIcon={handleClick}
-          color="#000"
-          title="修改手机号"
-          leftIconType="chevron-left"
-        />
-      </View>
+    <View className={styles.subjects}>
+      <Navbar>
+        <View className={styles.navbars}>
+          <Image
+            src={BACK_ICON}
+            className={styles.backs}
+            onClick={handleClick}
+          ></Image>
+          <View className={styles.navTitles}>修改手机号</View>
+        </View>
+      </Navbar>
       {/* 主体 */}
       <View className={styles.subject}>
         <View>

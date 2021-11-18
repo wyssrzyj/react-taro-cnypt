@@ -97,7 +97,7 @@ function index({ data, deleteMethod, reOrder, InitiateOrder, earlyEnd }) {
   // 电话
   const call = () => {
     Taro.makePhoneCall({
-      phoneNumber: '10086' //仅为示例，并非真实的电话号码
+      phoneNumber: data.contactsMobile //仅为示例，并非真实的电话号码
     }).then()
   }
   const btn = id => {
@@ -215,7 +215,7 @@ function index({ data, deleteMethod, reOrder, InitiateOrder, earlyEnd }) {
             <View>
               <View className={styles.telephone}>
                 <AtIcon value="phone" size="15" color="#333333"></AtIcon>
-                <Text>电话联系</Text>
+                <Text onClick={call}>电话联系</Text>
               </View>
               <View onClick={CancelConfirmation} className={styles.cancel}>
                 取消确认

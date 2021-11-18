@@ -33,7 +33,9 @@ export default {
         'applicationReceipt/index', //申请接单
         'resetPassword/index',
         'machiningOrderReceiving/index', //加工接单管理
-        'orderReceiving/index' //接单管理
+        'orderReceiving/index', //接单管理
+        'privacyAgreement/index', //隐私
+        'userAgreement/index' //用户协议
       ]
     },
     {
