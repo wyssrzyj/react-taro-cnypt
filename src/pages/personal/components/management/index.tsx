@@ -39,7 +39,13 @@ function index({ userInfo }) {
   }
   const accountNumber = () => {
     Taro.redirectTo({
-      url: '/pages/personal/accountNumber/index?id' + '15054920258'
+      url: '/pages/personal/accountNumber/index?id'
+    })
+  }
+  const factoryManagement = () => {
+    console.log(123)
+    Taro.redirectTo({
+      url: '/pages/factoryEntry/index'
     })
   }
 
@@ -48,7 +54,12 @@ function index({ userInfo }) {
       <View className={styles.division}></View>
       {type === '0' ? (
         <>
-          <View className={styles.order}>
+          <View
+            className={styles.order}
+            onClick={() => {
+              factoryManagement()
+            }}
+          >
             <View className={styles.remove}>
               <Image className={styles.removeIcon} src={factory}></Image>
             </View>

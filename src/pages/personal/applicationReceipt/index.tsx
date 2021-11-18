@@ -1,42 +1,52 @@
 import { useState, useEffect } from 'react'
 import styles from './index.module.less'
 import { View, Text } from '@tarojs/components'
-import { AtButton, AtNavBar } from 'taro-ui'
+import { AtNavBar, AtInput } from 'taro-ui'
 import { useRouter, redirectTo } from '@tarojs/taro'
 import { useStores, observer } from '@/store/mobx'
-import { isEmpty, isNil } from 'lodash'
-import { AtInput } from 'taro-ui'
+import Taro from '@tarojs/taro'
+
 export const ORDER_EMPTY =
   'https://capacity-platform.oss-cn-hangzhou.aliyuncs.com/capacity-platform/platform/order_empty.png'
 
 const Verify = () => {
   const { userInterface } = useStores()
-  const { applicationReceipt, orderQuantity, quantityId, submitRequisition } =
-    userInterface
+  const {
+    applicationReceiptQuantity,
+    applicationReceipt,
+    orderQuantity,
+    quantityId,
+    submitRequisition
+  } = userInterface
   const [offer, setOffer] = useState() //报价信息
   const [paymentMethod, setPaymentMethod] = useState() //收款方式
   const [products, setProducts] = useState() //产品数
   const [remarks, setRemarks] = useState('') //备注
   const [toast, setToast] = useState(false)
+
   const { params } = useRouter()
 
   // 跳转的数据
   useEffect(() => {
-    if (params) {
-      api(params.id)
+    if (quantityId) {
+      api(quantityId)
     }
   }, [])
   // 回显
   const api = async e => {
     let res = await applicationReceipt({ supplierInquiryId: e })
+    console.log(res)
+
     setProducts(res.receiveGoodsNum)
     setOffer(res.quoteInfo)
     setPaymentMethod(res.payDetails)
     setRemarks(res.remark)
   }
-  const goBack = () => {
-    redirectTo({
-      url: '/pages/personal/orderReceiving/index?id='
+  const goBack = async () => {
+    await applicationReceiptQuantity('')
+
+    Taro.redirectTo({
+      url: '/pages/personal/machiningOrderReceiving/index?tid='
     })
   }
 
@@ -59,12 +69,12 @@ const Verify = () => {
 
   const onSubmit = async () => {
     if (products) {
-      console.log('全局id', quantityId)
+      console.log('传递来的', params.id)
 
-      if (params && quantityId) {
+      if (params) {
         let arr = await orderQuantity({
           goodsNum: products,
-          id: quantityId
+          id: params.id
         })
 
         if (arr.code === 200) {
@@ -74,17 +84,10 @@ const Verify = () => {
             receiveGoodsNum: products,
             remark: remarks
           }
-          console.log({
-            ...value,
-            purchaserInquiryId: quantityId,
-            supplierInquiryId: params.id,
-            status: 2
-          })
-
           const submitRes = await submitRequisition({
             ...value,
-            purchaserInquiryId: quantityId,
-            supplierInquiryId: params.id,
+            purchaserInquiryId: params.id,
+            supplierInquiryId: quantityId,
             status: 2
           })
           console.log(submitRes)
@@ -92,6 +95,11 @@ const Verify = () => {
           if (submitRes.code === 200) {
             console.log('成功')
             console.log('跳订单管理')
+            await applicationReceiptQuantity('')
+
+            Taro.redirectTo({
+              url: '/pages/personal/machiningOrderReceiving/index?tid='
+            })
           }
 
           setToast(false)
@@ -114,83 +122,87 @@ const Verify = () => {
           leftIconType="chevron-left"
         />
       </View>
-
-      <View className={styles.container}>
-        <View className={styles.title}>
-          <Text className={styles.text}>报价信息</Text>
-        </View>
-        <View className={styles.txt}>
-          {/* {data.quoteInfo ? data.quoteInfo : '暂无'}
-           */}
-          <AtInput
-            name="offer"
-            border={false}
-            type="text"
-            placeholder="请填写报价信息"
-            value={offer}
-            onChange={offerMethod}
-          />
-        </View>
-      </View>
-      <View className={styles.container}>
-        <View className={styles.title}>
-          <Text className={styles.text}>收款方式</Text>
-        </View>
-        <View className={styles.txt}>
-          <AtInput
-            name="paymentMethod"
-            border={false}
-            type="text"
-            placeholder="请填写收款方式"
-            value={paymentMethod}
-            onChange={payment}
-          />
-        </View>
-      </View>
-      <View className={styles.container}>
-        <View className={styles.title}>
-          <Text className={styles.required}>*</Text>
-          可接产品数
-        </View>
-        <View className={styles.txt}>
-          <AtInput
-            name="orderQuantity"
-            border={false}
-            type="text"
-            placeholder="请填写可接产品数"
-            value={products}
-            onChange={orderQuantityMethod}
-          />
-          {/* {toast ? (
+      <View className={styles.outerLayer}>
+        <View className={styles.external}>
+          <View className={styles.container}>
+            <View className={styles.title}>
+              <Text className={styles.text}>报价信息</Text>
+            </View>
+            <View className={styles.txt}>
+              {/* {data.quoteInfo ? data.quoteInfo : '暂无'}
+               */}
+              <AtInput
+                name="offer"
+                border={false}
+                type="text"
+                placeholder="请填写报价信息"
+                value={offer}
+                onChange={offerMethod}
+              />
+            </View>
+          </View>
+          <View className={styles.container}>
+            <View className={styles.title}>
+              <Text className={styles.text}>收款方式</Text>
+            </View>
+            <View className={styles.txt}>
+              <AtInput
+                name="paymentMethod"
+                border={false}
+                type="text"
+                placeholder="请填写收款方式"
+                value={paymentMethod}
+                onChange={payment}
+              />
+            </View>
+          </View>
+          <View className={styles.container}>
+            <View className={styles.title}>
+              <Text className={styles.required}>*</Text>
+              可接产品数
+            </View>
+            <View className={styles.txt}>
+              <AtInput
+                name="orderQuantity"
+                border={false}
+                type="text"
+                placeholder="请填写可接产品数"
+                value={products}
+                onChange={orderQuantityMethod}
+              />
+              {/* {toast ? (
 
           ) : null} */}
-        </View>
-      </View>
-      {toast ? (
-        <View className={styles.tips}>
-          <View className={styles.requiredColor}>
-            <Text className={styles.color}>
-              <Text className={styles.text}>请填写可接产品数</Text>
-            </Text>
+            </View>
+          </View>
+          {toast ? (
+            <View className={styles.tips}>
+              <View className={styles.requiredColor}>
+                <Text className={styles.color}>
+                  <Text className={styles.text}>请填写可接产品数</Text>
+                </Text>
+              </View>
+            </View>
+          ) : null}
+
+          <View className={styles.container}>
+            <View className={styles.title}>
+              <Text className={styles.text}>备注</Text>
+            </View>
+            <View className={styles.txt}>
+              <AtInput
+                name="remarks"
+                border={false}
+                type="text"
+                placeholder="请填写备注"
+                value={remarks}
+                onChange={remarksMethod}
+              />
+            </View>
           </View>
         </View>
-      ) : null}
-
-      <View className={styles.container}>
-        <View className={styles.title}>
-          <Text className={styles.text}>备注</Text>
-        </View>
-        <View className={styles.txt}>
-          <AtInput
-            name="remarks"
-            border={false}
-            type="text"
-            placeholder="请填写备注"
-            value={remarks}
-            onChange={remarksMethod}
-          />
-        </View>
       </View>
+
       <View className={styles.btn} onClick={onSubmit}>
         <View>确认提交</View>
       </View>

@@ -185,7 +185,7 @@ const Verify = () => {
     }
   }
   const searchConfirmation = () => {
-    let res = { ...list, supplierName: value }
+    let res = { ...list, name: value }
     setList(res)
   }
 
