@@ -83,7 +83,7 @@ const Verify = () => {
       setTotalPageNumber(res.pages)
     }
   }
-  // 下拉加载更多
+  // 下拉加载更多.
   useEffect(() => {
     // 防止初始化之后重复掉接口
     if (dropDown) {
