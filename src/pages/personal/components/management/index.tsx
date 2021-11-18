@@ -72,7 +72,12 @@ function index({ userInfo }) {
       ) : null}
       {type === '1' ? (
         <>
-          <View className={styles.order}>
+          <View
+            className={styles.order}
+            onClick={() => {
+              factoryManagement()
+            }}
+          >
             <View className={styles.remove}>
               <Image className={styles.removeIcon} src={enterprise}></Image>
             </View>

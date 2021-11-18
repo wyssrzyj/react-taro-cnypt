@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import styles from './index.module.less'
-import { View, Text } from '@tarojs/components'
+import { View, Image } from '@tarojs/components'
 import Taro from '@tarojs/taro'
 import Top from './components/top'
 import Order from './components/order'
@@ -9,8 +9,8 @@ import Settled from './components/settled'
 import Management from './components/management'
 import Careful from './components/careful'
 import { useStores } from '@/store/mobx'
+import { Navbar, TabBar } from '@/components'
 
-import { TabBar } from '@/components'
 // import My from './my/index'
 // import Im from './im/index'
 
@@ -48,13 +48,16 @@ const Personal = () => {
     }
     return res
   }
+  const goBack = () => {
+    Taro.navigateBack()
+  }
   return (
     <View className={styles.container}>
-      <View className={styles.navbar}>
-        <Text>我的</Text>
-      </View>
-      {/* 头部 */}
-      {/* <Button onClick={toReset}>设置密码</Button> */}
+      <Navbar>
+        <View className={styles.navbar}>
+          <View className={styles.navTitle}>我的</View>
+        </View>
+      </Navbar>
 
       <Top list={list} userInfo={jurisdiction} />
       {/* 主体 */}
