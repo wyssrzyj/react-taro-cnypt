@@ -10,25 +10,32 @@ import {
 import { View, Text, Image, Button } from '@tarojs/components'
 import Taro from '@tarojs/taro'
 
-import { observer } from '@/store/mobx'
-// import { getTrees } from '../method'
+import { observer, useStores, toJS } from '@/store/mobx'
+import { getTrees } from '../method'
 // import { isArray, isEmpty } from 'lodash'
 function index({ data, deleteMethod, reOrder, InitiateOrder, earlyEnd }) {
-  // const { commonStore } = useStores()
-  // const { dictionary } = commonStore
-  // const { processType } = dictionary
-  // const [category, setCategory] = useState<any>([])
-  const [windowType, setWindowType] = useState<any>({}) //弹窗类型
-  const [popup, setPopup] = useState(false) //弹窗类型
+  const { commonStore } = useStores()
+  const { productCategoryList = [] } = toJS(commonStore)
+  console.log(productCategoryList)
 
-  // useEffect(() => {
-  //   if (data.processTypeValues) {
-  //     // 加工类型
-  //     setCategory(
-  //       getTrees(data.processTypeValues, toJS(processType), 'value', 'label')
-  //     )
-  //   }
-  // }, [])
+  // const { processType } = dictionary
+  const [category, setCategory] = useState<any>([])
+  const [windowType, setWindowType] = useState<any>({}) //弹窗类型
+  const [popup, setPopup] = useState(false)
+
+  useEffect(() => {
+    if (data.factoryCategoryList) {
+      // 商品类型
+      setCategory(
+        getTrees(
+          data.factoryCategoryList,
+          toJS(productCategoryList),
+          'code',
+          'name'
+        )
+      )
+    }
+  }, [])
   const sortColor = new Map()
   sortColor.set(2, styles.red)
   sortColor.set(3, styles.green)
@@ -100,6 +107,12 @@ function index({ data, deleteMethod, reOrder, InitiateOrder, earlyEnd }) {
       // url: '/pages/personal/applicationReceipt/index?tid=' + id
     })
   }
+  const details = data => {
+    Taro.redirectTo({
+      url: '/pages/orderDetail/index?id=' + data.purchaserInquiryId
+      // url: '/pages/personal/applicationReceipt/index?tid=' + id
+    })
+  }
 
   return (
     //   主体
@@ -109,7 +122,12 @@ function index({ data, deleteMethod, reOrder, InitiateOrder, earlyEnd }) {
       <View className={styles.major}>
         {/* 头部 */}
         <View className={styles.top}>
-          <View className={styles.content}>
+          <View
+            className={styles.content}
+            onClick={() => {
+              details(data)
+            }}
+          >
             <View className={styles.factorys}>{data.name}</View>
             <AtIcon value="chevron-right" size="15" color="#999999"></AtIcon>
           </View>
@@ -133,9 +151,11 @@ function index({ data, deleteMethod, reOrder, InitiateOrder, earlyEnd }) {
               </Text>
             </View>
             <View className={styles.machining}>
-              {data.factoryCategoryList.map(item => (
-                <Text className={styles.processingType}>{item}</Text>
-              ))}
+              {category
+                ? category.map(item => (
+                    <Text className={styles.processingType}>{item}</Text>
+                  ))
+                : '暂无'}
             </View>
             <View className={styles.addressExternal}>
               <AtIcon value="map-pin" size="15" color="#999999"></AtIcon>

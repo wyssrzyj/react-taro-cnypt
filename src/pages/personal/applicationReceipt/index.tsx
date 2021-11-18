@@ -1,12 +1,11 @@
 import { useState, useEffect } from 'react'
 import styles from './index.module.less'
 import { View, Text } from '@tarojs/components'
-import { AtNavBar } from 'taro-ui'
+import { AtNavBar, AtInput } from 'taro-ui'
 import { useRouter, redirectTo } from '@tarojs/taro'
 import { useStores, observer } from '@/store/mobx'
 import Taro from '@tarojs/taro'
 
-import { AtInput } from 'taro-ui'
 export const ORDER_EMPTY =
   'https://capacity-platform.oss-cn-hangzhou.aliyuncs.com/capacity-platform/platform/order_empty.png'
 
@@ -43,7 +42,9 @@ const Verify = () => {
     setPaymentMethod(res.payDetails)
     setRemarks(res.remark)
   }
-  const goBack = () => {
+  const goBack = async () => {
+    await applicationReceiptQuantity('')
+
     Taro.redirectTo({
       url: '/pages/personal/machiningOrderReceiving/index?tid='
     })
@@ -121,83 +122,87 @@ const Verify = () => {
           leftIconType="chevron-left"
         />
       </View>
-
-      <View className={styles.container}>
-        <View className={styles.title}>
-          <Text className={styles.text}>报价信息</Text>
-        </View>
-        <View className={styles.txt}>
-          {/* {data.quoteInfo ? data.quoteInfo : '暂无'}
-           */}
-          <AtInput
-            name="offer"
-            border={false}
-            type="text"
-            placeholder="请填写报价信息"
-            value={offer}
-            onChange={offerMethod}
-          />
-        </View>
-      </View>
-      <View className={styles.container}>
-        <View className={styles.title}>
-          <Text className={styles.text}>收款方式</Text>
-        </View>
-        <View className={styles.txt}>
-          <AtInput
-            name="paymentMethod"
-            border={false}
-            type="text"
-            placeholder="请填写收款方式"
-            value={paymentMethod}
-            onChange={payment}
-          />
-        </View>
-      </View>
-      <View className={styles.container}>
-        <View className={styles.title}>
-          <Text className={styles.required}>*</Text>
-          可接产品数
-        </View>
-        <View className={styles.txt}>
-          <AtInput
-            name="orderQuantity"
-            border={false}
-            type="text"
-            placeholder="请填写可接产品数"
-            value={products}
-            onChange={orderQuantityMethod}
-          />
-          {/* {toast ? (
+      <View className={styles.outerLayer}>
+        <View className={styles.external}>
+          <View className={styles.container}>
+            <View className={styles.title}>
+              <Text className={styles.text}>报价信息</Text>
+            </View>
+            <View className={styles.txt}>
+              {/* {data.quoteInfo ? data.quoteInfo : '暂无'}
+               */}
+              <AtInput
+                name="offer"
+                border={false}
+                type="text"
+                placeholder="请填写报价信息"
+                value={offer}
+                onChange={offerMethod}
+              />
+            </View>
+          </View>
+          <View className={styles.container}>
+            <View className={styles.title}>
+              <Text className={styles.text}>收款方式</Text>
+            </View>
+            <View className={styles.txt}>
+              <AtInput
+                name="paymentMethod"
+                border={false}
+                type="text"
+                placeholder="请填写收款方式"
+                value={paymentMethod}
+                onChange={payment}
+              />
+            </View>
+          </View>
+          <View className={styles.container}>
+            <View className={styles.title}>
+              <Text className={styles.required}>*</Text>
+              可接产品数
+            </View>
+            <View className={styles.txt}>
+              <AtInput
+                name="orderQuantity"
+                border={false}
+                type="text"
+                placeholder="请填写可接产品数"
+                value={products}
+                onChange={orderQuantityMethod}
+              />
+              {/* {toast ? (
 
           ) : null} */}
-        </View>
-      </View>
-      {toast ? (
-        <View className={styles.tips}>
-          <View className={styles.requiredColor}>
-            <Text className={styles.color}>
-              <Text className={styles.text}>请填写可接产品数</Text>
-            </Text>
+            </View>
+          </View>
+          {toast ? (
+            <View className={styles.tips}>
+              <View className={styles.requiredColor}>
+                <Text className={styles.color}>
+                  <Text className={styles.text}>请填写可接产品数</Text>
+                </Text>
+              </View>
+            </View>
+          ) : null}
+
+          <View className={styles.container}>
+            <View className={styles.title}>
+              <Text className={styles.text}>备注</Text>
+            </View>
+            <View className={styles.txt}>
+              <AtInput
+                name="remarks"
+                border={false}
+                type="text"
+                placeholder="请填写备注"
+                value={remarks}
+                onChange={remarksMethod}
+              />
+            </View>
           </View>
         </View>
-      ) : null}
-
-      <View className={styles.container}>
-        <View className={styles.title}>
-          <Text className={styles.text}>备注</Text>
-        </View>
-        <View className={styles.txt}>
-          <AtInput
-            name="remarks"
-            border={false}
-            type="text"
-            placeholder="请填写备注"
-            value={remarks}
-            onChange={remarksMethod}
-          />
-        </View>
       </View>
+
       <View className={styles.btn} onClick={onSubmit}>
         <View>确认提交</View>
       </View>

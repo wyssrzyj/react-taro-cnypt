@@ -9,22 +9,34 @@ import {
 } from 'taro-ui'
 import { View, Text, Image, Button } from '@tarojs/components'
 import Taro from '@tarojs/taro'
+import { getTrees } from '../method'
 
-import { observer, useStores } from '@/store/mobx'
+import { observer, useStores, toJS } from '@/store/mobx'
 function index({ data, deleteMethod, reOrder, InitiateOrder, earlyEnd }) {
-  const { userInterface } = useStores()
+  const { userInterface, commonStore } = useStores()
   const { applicationReceiptQuantity } = userInterface
+  const { productCategoryList = [], dictionary = [] } = toJS(commonStore)
   const [windowType, setWindowType] = useState<any>({}) //弹窗类型
   const [popup, setPopup] = useState(false) //弹窗类型
+  const [category, setCategory] = useState<any>([]) //类别
+  const [goodsNum, setGoodsNum] = useState<any>([]) //订单量
 
-  // useEffect(() => {
-  //   if (data.processTypeValues) {
-  //     // 加工类型
-  //     setCategory(
-  //       getTrees(data.processTypeValues, toJS(processType), 'value', 'label')
-  //     )
-  //   }
-  // }, [])
+  useEffect(() => {
+    console.log(dictionary)
+
+    if (data.categoryCodes) {
+      // 商品类型
+      setCategory(
+        getTrees(data.categoryCodes, toJS(productCategoryList), 'code', 'name')
+      )
+    }
+    if (data.goodsNum) {
+      // 订单量
+      setGoodsNum(
+        dictionary.goodsNum.filter(item => item.value == data.goodsNum)[0].label
+      )
+    }
+  }, [])
   const sortColor = new Map()
   sortColor.set(2, styles.red)
   sortColor.set(3, styles.green)
@@ -86,13 +98,6 @@ function index({ data, deleteMethod, reOrder, InitiateOrder, earlyEnd }) {
       phoneNumber: '10086' //仅为示例，并非真实的电话号码
     }).then()
   }
-  const btn = id => {
-    console.log(id)
-    Taro.redirectTo({
-      url: '/pages/personal/feedback/index?tid=' + id
-      // url: '/pages/personal/applicationReceipt/index?tid=' + id
-    })
-  }
 
   return (
     //   主体
@@ -119,16 +124,18 @@ function index({ data, deleteMethod, reOrder, InitiateOrder, earlyEnd }) {
             <Text className={styles.factory}>{data.inquiryPurchaserName}</Text>
             <View>
               <Text>
-                <Text className={styles.parking}>有效车位:</Text>
+                <Text className={styles.parking}>订单量:</Text>
                 <Text className={styles.quantity}>
-                  　{data.effectiveLocation} 人
+                  　{goodsNum ? goodsNum : '暂无'}
                 </Text>
               </Text>
             </View>
             <View className={styles.machining}>
-              {/* {data.factoryCategoryList.map(item => (
-                <Text className={styles.processingType}>{item}</Text>
-              ))} */}
+              {category
+                ? category.map(item => (
+                    <Text className={styles.processingType}>{item}</Text>
+                  ))
+                : '暂无'}
             </View>
             <View className={styles.addressExternal}>
               <AtIcon value="map-pin" size="15" color="#999999"></AtIcon>
@@ -140,12 +147,7 @@ function index({ data, deleteMethod, reOrder, InitiateOrder, earlyEnd }) {
         </View>
         <View className={styles.line}></View>
         {/* 信息 */}
-        <View
-          className={styles.informationFather}
-          onClick={() => {
-            btn(data.id)
-          }}
-        >
+        <View className={styles.informationFather}>
           <View className={styles.flex}>
             <View className={styles.information}>报价信息</View>
             <View>{data.quoteInfo ? data.quoteInfo : '暂无'}</View>
