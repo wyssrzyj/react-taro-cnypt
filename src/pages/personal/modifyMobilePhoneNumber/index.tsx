@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react'
 import { View, Text, Image } from '@tarojs/components'
 import Taro from '@tarojs/taro'
-import { AtInput, AtNavBar, AtButton } from 'taro-ui'
+import { AtInput, AtButton } from 'taro-ui'
 import styles from './index.module.less'
 import { redirectTo } from '@tarojs/taro'
 import { useStores, observer } from '@/store/mobx'
@@ -9,20 +9,17 @@ import { Navbar } from '@/components'
 const BACK_ICON =
   'https://capacity-platform.oss-cn-hangzhou.aliyuncs.com/capacity-platform/mobile/icon/black_back.png'
 
-const index = () => {
+const modifyMobilePhoneNumber = () => {
   const { loginStore, userInterface } = useStores()
   const { sendVerifyCode } = loginStore
   const { modifyMobilePhoneNumber } = userInterface
 
   const sum = Taro.getStorageSync('currentUser')
   const id = sum.match(/\d+(.\d+)?/g)[0] //用户id
-
-  // const [lastTime, setLastTime] = useState<number>(verifyTime)
   const [value, setValue] = useState<any>() //手机
   const [verification, setVerification] = useState() //验证
   const [regularJudge, setRegularJudge] = useState<any>(false) //手机号是否正确
   const [judge, setJudge] = useState<any>(false) //报错显示
-
   const intervalRef = useRef<any>(null)
   const [count, changeCount] = useState(0)
   useEffect(() => {
@@ -54,8 +51,7 @@ const index = () => {
   //  发送验证码
   const verificationCode = async () => {
     if (regularJudge) {
-      const res = await sendVerifyCode(value)
-      console.log(res)
+      await sendVerifyCode(value)
       onGetCaptcha() //倒计时
       // 点击验证码之后进入倒计时
     }
@@ -155,4 +151,4 @@ const index = () => {
   )
 }
 
-export default observer(index)
+export default observer(modifyMobilePhoneNumber)

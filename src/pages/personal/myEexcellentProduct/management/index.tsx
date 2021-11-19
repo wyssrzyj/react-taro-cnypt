@@ -3,15 +3,13 @@ import { AtIcon } from 'taro-ui'
 import './index.less'
 import Taro from '@tarojs/taro'
 
-function Management() {
+const Management = () => {
   const handleClick = () => {
     Taro.redirectTo({ url: '/pages/personal/userAgreement/index' })
   }
   const privacy = () => {
     Taro.redirectTo({ url: '/pages/personal/privacyAgreement/index' })
   }
-  console.log(1)
-
   return (
     <View>
       <View class="order">
