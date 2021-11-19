@@ -2,6 +2,7 @@ import { View, Text, Image } from '@tarojs/components'
 import { AtIcon } from 'taro-ui'
 import styles from './index.module.less'
 import Taro from '@tarojs/taro'
+console.log()
 
 function index({ type }) {
   let enterprise =
