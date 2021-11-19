@@ -6,6 +6,7 @@ import { useEffect, useState } from 'react'
 import { matchTreeData } from '@/utils/tool'
 import moment from 'moment'
 import Taro from '@tarojs/taro'
+import classNames from 'classnames'
 
 const LOCATION_ICON =
   'https://capacity-platform.oss-cn-hangzhou.aliyuncs.com/capacity-platform/mobile/icon/diqu_bai.png'
@@ -14,6 +15,7 @@ const Card = props => {
   const { data, type = 0 } = props
   // type 0 订单 1 工厂
   const img = type === 0 ? data.stylePicture : data.pictureUrl
+  // console.log('🚀 ~ file: card.tsx ~ line 17 ~ img', img)
   const title = type === 0 ? data.name : data.factoryName
   const area = type === 0 ? data.enterpriseAreaName : data.factoryDistrict
 
@@ -79,7 +81,10 @@ const Card = props => {
 
   return (
     <View className={styles.card} onClick={toDetail}>
-      <Image src={img || ''} className={styles.cardImg}></Image>
+      <Image
+        src={img}
+        className={classNames(styles.cardImg, !img ? styles.emptyCardImg : '')}
+      ></Image>
       <View className={styles.cardInfo}>
         <View className={styles.titleBox}>
           <Text className={styles.cardTitle}>{title}</Text>

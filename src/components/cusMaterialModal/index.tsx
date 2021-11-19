@@ -53,10 +53,11 @@ const CusMaterialModal = props => {
               onClick={() => materialClick(item.value)}
             >
               <Image
-                src={'' || EMPTY_IMG}
+                src={''}
                 className={classNames(
                   styles.img,
-                  selectValues.includes(item.value) ? styles.activeImg : ''
+                  selectValues.includes(item.value) ? styles.activeImg : '',
+                  !'' ? styles.emptyImg : ''
                 )}
               ></Image>
               <Text className={styles.tagText}>{item.label}</Text>
