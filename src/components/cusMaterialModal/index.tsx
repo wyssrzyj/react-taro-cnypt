@@ -5,7 +5,6 @@ import { useState } from 'react'
 import { cloneDeep } from 'lodash'
 import classNames from 'classnames'
 import { useStores, observer } from '@/store/mobx'
-import { EMPTY_IMG } from '@/utils/tool'
 
 const CusMaterialModal = props => {
   const { onCancel, visible, callback, value = [] } = props
@@ -25,7 +24,6 @@ const CusMaterialModal = props => {
   }
 
   const materialClick = val => {
-    console.log('🚀 ~ file: index.tsx ~ line 27 ~ val', val)
     let selectCopyValues = cloneDeep(selectValues)
     if (selectCopyValues.includes(val)) {
       selectCopyValues = selectCopyValues.filter(item => item !== val)

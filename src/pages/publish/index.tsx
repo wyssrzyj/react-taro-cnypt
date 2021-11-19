@@ -89,7 +89,6 @@ const FactoryEntry = () => {
 
         delete detail.id
         setParams(detail)
-        // console.log('🚀 ~ file: index.tsx ~ line 75 ~ ; ~ detail', detail)
       }
     })()
   }, [])
@@ -304,10 +303,6 @@ const FactoryEntry = () => {
       }, '')
     }
   }
-
-  useEffect(() => {
-    console.log(params, 'params')
-  }, [params])
 
   return (
     <View>

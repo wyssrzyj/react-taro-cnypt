@@ -54,7 +54,6 @@ const Verify = () => {
       Taro.redirectTo({
         url: '/pages/login/pwdLogin/index'
       })
-    // console.log(param)
   }
 
   return (

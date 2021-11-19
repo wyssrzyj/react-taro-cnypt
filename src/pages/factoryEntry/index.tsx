@@ -149,7 +149,6 @@ const FactoryEntry = () => {
   }
 
   const handleChange = (value, field) => {
-    console.log('🚀 ~ ~~~~~~~~~~~~', value)
     const nParams = cloneDeep(params)
     nParams[field] = value
     setParams(nParams)
@@ -175,7 +174,7 @@ const FactoryEntry = () => {
   }
 
   const onSubmit = async () => {
-    console.log(params, 'params')
+    params, 'params'
     if (!params['contactsName']) {
       setIsOpened(true)
       setErrText('请输入联系人')

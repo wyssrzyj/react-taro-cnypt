@@ -93,7 +93,6 @@ const OrderIssueEntry = () => {
   }
 
   const handleChange = (value, field) => {
-    console.log('🚀 ~ ~~~~~~~~~~~~', value)
     const nParams = cloneDeep(params)
     nParams[field] = value
     setParams(nParams)
@@ -121,7 +120,6 @@ const OrderIssueEntry = () => {
   }
 
   const onSubmit = async () => {
-    console.log(params, 'params')
     if (!params['contactsName']) {
       setIsOpened(true)
       setErrText('请输入联系人')

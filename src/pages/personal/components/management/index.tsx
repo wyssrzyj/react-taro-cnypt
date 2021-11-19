@@ -43,7 +43,6 @@ function index({ userInfo }) {
     })
   }
   const factoryManagement = () => {
-    console.log(123)
     Taro.navigateTo({
       url: '/pages/factoryEntry/index'
     })

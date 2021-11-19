@@ -69,7 +69,7 @@ const Verify = () => {
 
   const onSubmit = async () => {
     if (products) {
-      console.log('传递来的', params.id)
+      // console.log('传递来的', params.id)
 
       if (params) {
         let arr = await orderQuantity({
