@@ -54,14 +54,6 @@ const Login = () => {
 
   const goBack = () => {
     Taro.redirectTo({ url: '/pages/index/index' })
-    // Taro.navigateBack()
-    // console.log(source, id)
-    // if (source) {
-    //   Taro.redirectTo({ url: '/pages/index/index' })
-    //   // Taro.redirectTo({ url: `${source}?id=${id}` })
-    // } else {
-    //   Taro.navigateBack()
-    // }
   }
 
   return (

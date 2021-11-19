@@ -63,10 +63,6 @@ export default {
       pages: ['index']
     },
     {
-      root: 'pages/test',
-      pages: ['index']
-    },
-    {
       root: 'pages/search',
       pages: ['index']
     }
@@ -77,8 +73,6 @@ export default {
     navigationBarTitleText: 'WeChat',
     navigationBarTextStyle: 'black',
     navigationStyle: 'custom' //接受两个参数 ['default', 'custom']: ['系统导航栏， 默认值', '隐藏系统导航栏']
-    // enablePullDownRefresh: true,
-    // onReachBottomDistance: 50
   },
   permission: {
     'scope.userLocation': {

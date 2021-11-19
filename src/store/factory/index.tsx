@@ -272,12 +272,35 @@ export default class FactoryStore {
   }
 
   // /api/factory/purchaser-info/get-purchaser-images
-  // 获取企业照片
-  @action getEnterprisePhotos = async params => {
+  // 获取发单商企业照片
+  @action getEnterprisePhotos = async purchaserId => {
     try {
       const res: Partial<Response> = await HTTP.get(
         `/api/factory/purchaser-info/get-purchaser-images`,
-        params
+        { purchaserId }
+      )
+
+      if (res.code === 200) {
+      } else {
+        Taro.showToast({
+          title: '获取数据失败~',
+          icon: 'none',
+          duration: 1000
+        })
+      }
+      return res.data
+    } catch (e) {
+      console.log(e)
+    }
+  }
+
+  // /api/factory/info/get-factory-images-info
+  // 获取加工厂企业照片
+  @action getFactoryPhotos = async factoryId => {
+    try {
+      const res: Partial<Response> = await HTTP.get(
+        `/api/factory/info/get-factory-images-info`,
+        { factoryId }
       )
 
       if (res.code === 200) {

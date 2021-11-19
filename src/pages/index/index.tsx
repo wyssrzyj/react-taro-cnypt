@@ -69,10 +69,11 @@ const Home = () => {
           Taro.navigateTo({
             url: '/pages/login/index'
           })
+        } else {
+          Taro.navigateTo({
+            url: '/pages/factoryEntry/index'
+          })
         }
-        Taro.navigateTo({
-          url: '/pages/factoryEntry/index'
-        })
       }
     },
     {
@@ -82,10 +83,11 @@ const Home = () => {
           Taro.navigateTo({
             url: '/pages/login/index'
           })
+        } else {
+          Taro.navigateTo({
+            url: '/pages/orderIssueEntry/index'
+          })
         }
-        Taro.navigateTo({
-          url: '/pages/orderIssueEntry/index'
-        })
       }
     }
   ]
@@ -133,10 +135,11 @@ const Home = () => {
           Taro.navigateTo({
             url: '/pages/login/index'
           })
+        } else {
+          Taro.navigateTo({
+            url: '/pages/publish/index'
+          })
         }
-        Taro.navigateTo({
-          url: '/pages/publish/index'
-        })
       }
     }
   ]

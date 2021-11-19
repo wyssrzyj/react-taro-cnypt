@@ -84,7 +84,6 @@ function index({ data, deleteMethod, earlyEnd }) {
   }
   const confirmButton = async () => {
     if (windowType.type === 'mov') {
-      console.log('删除订单', data.id)
       // 删除订单
       deleteMethod(data.id)
     }
@@ -96,14 +95,13 @@ function index({ data, deleteMethod, earlyEnd }) {
   }
   // 再来一单
   const oneMoreOrder = id => {
-    console.log('再来一单')
     Taro.navigateTo({
       url: `/pages/publish/index?id=${id}`
     })
   }
   //查看原因
   const viewReason = () => {
-    console.log('查看原因')
+    // console.log('查看原因')
   }
   const btn = e => {
     let sum =

@@ -51,6 +51,7 @@ function index({ userInfo, list }) {
       url: '/pages/factoryEntry/index?modify=1'
     })
   }
+
   const enterpriseManagement = () => {
     Taro.redirectTo({
       url: '/pages/orderIssueEntry/index?modify=1'
