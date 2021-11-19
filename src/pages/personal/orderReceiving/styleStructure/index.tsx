@@ -12,13 +12,11 @@ import Taro from '@tarojs/taro'
 
 import { observer, useStores, toJS } from '@/store/mobx'
 import { getTrees } from '../method'
-// import { isArray, isEmpty } from 'lodash'
+
 function index({ data, deleteMethod, reOrder, InitiateOrder, earlyEnd }) {
   const { commonStore } = useStores()
   const { productCategoryList = [] } = toJS(commonStore)
-  console.log(productCategoryList)
 
-  // const { processType } = dictionary
   const [category, setCategory] = useState<any>([])
   const [windowType, setWindowType] = useState<any>({}) //弹窗类型
   const [popup, setPopup] = useState(false)

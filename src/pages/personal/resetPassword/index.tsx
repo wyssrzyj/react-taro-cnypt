@@ -82,7 +82,7 @@ const Verify = () => {
         <View>
           <AtInput
             className={styles.input}
-            name="password"
+            name="password1"
             type="password"
             placeholder="请输入原密码"
             value={pwd}
@@ -95,7 +95,7 @@ const Verify = () => {
         <View className={styles.new}>
           <AtInput
             className={styles.input}
-            name="password"
+            name="password2"
             type="password"
             placeholder="请输入新密码"
             value={password}

@@ -83,7 +83,7 @@ const Verify = () => {
       setTotalPageNumber(res.pages)
     }
   }
-  // 下拉加载更多
+  // 下拉加载更多.
   useEffect(() => {
     // 防止初始化之后重复掉接口
     if (dropDown) {
@@ -215,11 +215,17 @@ const Verify = () => {
         />
       </View>
       {/* Tobs标签 */}
-      <AtTabs current={current} tabList={tabList} onClick={AtTabsbind} />
+      <AtTabs
+        className={styles.tobs}
+        current={current}
+        tabList={tabList}
+        onClick={AtTabsbind}
+      />
       {/* 主体 */}
       {rallyists.length > 0 ? (
         <View>
           <View className={styles.subject}>
+            <View className={styles.interval}></View>
             {rallyists.map(item => (
               <StyleStructure
                 data={item}

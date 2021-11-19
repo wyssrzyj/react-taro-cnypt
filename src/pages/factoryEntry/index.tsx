@@ -1,6 +1,6 @@
 import { View, Image, Picker, Text } from '@tarojs/components'
 import styles from './index.module.less'
-import Taro from '@tarojs/taro'
+import Taro, { useRouter } from '@tarojs/taro'
 import {
   AtForm,
   AtInput,
@@ -43,6 +43,13 @@ const FactoryEntry = () => {
   const { getEnterpriseInfo, enterpriseInfoSave, getEnterprisePhotos } =
     factoryStore
   const { dealRefresh } = refreshStore
+
+  const router = useRouter()
+  const {
+    params: { modify }
+  } = router
+
+  console.log(modify)
 
   const clothOptions = productGrade.reduce((prev, item) => {
     prev.push(...item.children)
@@ -162,6 +169,7 @@ const FactoryEntry = () => {
     })
     await Promise.all(allImgs).then(res => {
       nParams[field] = res
+
       setParams(nParams)
     })
   }
@@ -407,6 +415,7 @@ const FactoryEntry = () => {
       }
     })
   }
+  console.log(params)
 
   return (
     <View>
@@ -417,7 +426,7 @@ const FactoryEntry = () => {
             className={styles.back}
             onClick={goBack}
           ></Image>
-          <View>工厂入驻</View>
+          <View>{modify ? '工厂管理' : '工厂入驻'}</View>
         </View>
       </View>
 

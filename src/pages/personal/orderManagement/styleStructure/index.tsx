@@ -82,7 +82,6 @@ function index({ data, deleteMethod, earlyEnd }) {
   }
   const confirmButton = async () => {
     if (windowType.type === 'mov') {
-      console.log('删除订单', data.id)
       // 删除订单
       deleteMethod(data.id)
     }
@@ -94,18 +93,29 @@ function index({ data, deleteMethod, earlyEnd }) {
   }
   // 再来一单
   const oneMoreOrder = id => {
-    console.log('再来一单')
     Taro.navigateTo({
       url: `/pages/publish/index?id=${id}`
     })
   }
   //查看原因
   const viewReason = () => {
-    console.log('查看原因')
+    // console.log('查看原因')
   }
   const btn = e => {
-    Taro.navigateTo({
-      url: `/pages/personal/orderReceiving/index?ids=${e}`
+    let sum =
+      data.enterprisePendingNum +
+      data.enterpriseConfirmeNum +
+      data.enterpriseRefuseTotalNum
+    console.log(sum)
+    if (sum !== 0) {
+      Taro.navigateTo({
+        url: `/pages/personal/orderReceiving/index?ids=${e}`
+      })
+    }
+  }
+  const details = data => {
+    Taro.redirectTo({
+      url: '/pages/orderDetail/index?id=' + data.id
     })
   }
 
@@ -114,7 +124,12 @@ function index({ data, deleteMethod, earlyEnd }) {
     <View className={styles.external}>
       <View className={styles.major}>
         {/* 主体 */}
-        <View className={styles.subject}>
+        <View
+          className={styles.subject}
+          onClick={() => {
+            details(data)
+          }}
+        >
           {/* img */}
 
           <View>

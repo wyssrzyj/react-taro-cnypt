@@ -103,7 +103,13 @@ export default class LoginStore {
       }
       return res
     } catch (e) {
-      console.log(e)
+      if (e.code !== 200) {
+        Taro.showToast({
+          title: e.msg as string,
+          icon: 'none',
+          duration: 1500
+        })
+      }
     }
   }
 

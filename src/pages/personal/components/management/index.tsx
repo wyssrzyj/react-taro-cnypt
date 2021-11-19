@@ -6,7 +6,7 @@ import styles from './index.module.less'
 import Taro from '@tarojs/taro'
 import { useStores } from '@/store/mobx'
 
-function index({ userInfo }) {
+function index({ userInfo, list }) {
   let enterprise =
     'https://capacity-platform.oss-cn-hangzhou.aliyuncs.com/capacity-platform/mobile/icon/enterprise.png'
   let account =
@@ -38,13 +38,23 @@ function index({ userInfo }) {
     Taro.redirectTo({ url: '/pages/personal/myEexcellentProduct/index' })
   }
   const accountNumber = () => {
-    Taro.navigateTo({
-      url: '/pages/personal/accountNumber/index?id'
-    })
+    if (list.userName !== undefined) {
+      Taro.navigateTo({
+        url: '/pages/personal/accountNumber/index?id'
+      })
+    } else {
+      Taro.navigateTo({ url: '/pages/login/index' })
+    }
   }
   const factoryManagement = () => {
-    Taro.navigateTo({
-      url: '/pages/factoryEntry/index'
+    Taro.redirectTo({
+      url: '/pages/factoryEntry/index?modify=1'
+    })
+  }
+
+  const enterpriseManagement = () => {
+    Taro.redirectTo({
+      url: '/pages/orderIssueEntry/index?modify=1'
     })
   }
 
@@ -62,7 +72,7 @@ function index({ userInfo }) {
             <View className={styles.remove}>
               <Image className={styles.removeIcon} src={factory}></Image>
             </View>
-            <Text>工厂管理</Text>
+            <Text className={styles.txt}>工厂管理</Text>
             <Text className={styles.iconmy}>
               <AtIcon value="chevron-right" size="15" color="#999999"></AtIcon>
             </Text>
@@ -74,14 +84,14 @@ function index({ userInfo }) {
           <View
             className={styles.order}
             onClick={() => {
-              factoryManagement()
+              enterpriseManagement()
             }}
           >
             <View className={styles.remove}>
               <Image className={styles.removeIcon} src={enterprise}></Image>
             </View>
 
-            <Text>企业管理</Text>
+            <Text className={styles.txt}>企业管理</Text>
             <Text className={styles.iconmy}>
               <AtIcon value="chevron-right" size="15" color="#999999"></AtIcon>
             </Text>
@@ -93,7 +103,7 @@ function index({ userInfo }) {
         <View className={styles.remove}>
           <Image className={styles.removeIcon} src={account}></Image>
         </View>
-        <Text>账号管理</Text>
+        <Text className={styles.txt}>账号管理</Text>
         <Text className={styles.iconmy}>
           <AtIcon value="chevron-right" size="15" color="#999999"></AtIcon>
         </Text>
@@ -106,7 +116,7 @@ function index({ userInfo }) {
             src={excellentProduction}
           ></Image>
         </View>
-        <Text>关于优产云</Text>
+        <Text className={styles.txt}>关于优产云</Text>
         <Text className={styles.iconmy}>
           <AtIcon value="chevron-right" size="15" color="#999999"></AtIcon>
         </Text>
@@ -116,7 +126,7 @@ function index({ userInfo }) {
         <View className={styles.remove}>
           <Image className={styles.removeIcon} src={signOuts}></Image>
         </View>
-        <Text>退出登录</Text>
+        <Text className={styles.txt}>退出登录</Text>
         <Text className={styles.iconmy}>
           <AtIcon value="chevron-right" size="15" color="#999999"></AtIcon>
         </Text>
