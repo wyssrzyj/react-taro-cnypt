@@ -2,6 +2,7 @@ import { View, Text } from '@tarojs/components'
 import { AtIcon } from 'taro-ui'
 import './index.less'
 import Taro from '@tarojs/taro'
+console.log()
 
 const Management = () => {
   const handleClick = () => {
