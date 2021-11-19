@@ -8,11 +8,10 @@ import {
   AtModalAction
 } from 'taro-ui'
 import { View, Text, Image, Button } from '@tarojs/components'
-import Taro, { login } from '@tarojs/taro'
+import Taro from '@tarojs/taro'
 
 import { useStores, toJS, observer } from '@/store/mobx'
 import { getTrees } from '../method'
-import { cloneDeep } from 'lodash'
 
 let imgs =
   'https://capacity-platform.oss-cn-hangzhou.aliyuncs.com/capacity-platform/platform/noData.png'
@@ -54,7 +53,6 @@ function index({ data, deleteMethod, earlyEnd }) {
   {
     /* -1 草稿箱 1 提交需求单 -2审核失败 -3已结束 */
   }
-  //  data.status
   const sortColor = new Map()
   sortColor.set(2, styles.red)
   sortColor.set(3, styles.green)
@@ -100,15 +98,12 @@ function index({ data, deleteMethod, earlyEnd }) {
     })
   }
   //查看原因
-  const viewReason = () => {
-    // console.log('查看原因')
-  }
+  const viewReason = () => {}
   const btn = e => {
     let sum =
       data.enterprisePendingNum +
       data.enterpriseConfirmeNum +
       data.enterpriseRefuseTotalNum
-    console.log(sum)
     if (sum !== 0) {
       Taro.navigateTo({
         url: `/pages/personal/orderReceiving/index?ids=${e}`
@@ -132,8 +127,6 @@ function index({ data, deleteMethod, earlyEnd }) {
             details(data)
           }}
         >
-          {/* img */}
-
           <View>
             {+data.status === 1 ? (
               <View className={styles.state}>生效中</View>

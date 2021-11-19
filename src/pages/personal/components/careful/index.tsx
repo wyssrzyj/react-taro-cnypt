@@ -1,10 +1,15 @@
 import { View, Text, Image } from '@tarojs/components'
-import { AtIcon } from 'taro-ui'
 import styles from './index.module.less'
+import Taro from '@tarojs/taro'
 
-function index({ userInfo }) {
+const careful = ({ userInfo }) => {
   console.log(userInfo)
-
+  const handleClick = () => {
+    Taro.redirectTo({ url: '/pages/personal/userAgreement/index' })
+  }
+  const privacy = () => {
+    Taro.redirectTo({ url: '/pages/personal/privacyAgreement/index' })
+  }
   let telephone =
     'https://capacity-platform.oss-cn-hangzhou.aliyuncs.com/capacity-platform/mobile/icon/telephone.png'
   let time =
@@ -25,10 +30,24 @@ function index({ userInfo }) {
         </View>
       </View>
       <View className={styles.center}>
-        <Text> 用户协议 | 隐私政策</Text>
+        <View
+          onClick={() => {
+            handleClick()
+          }}
+        >
+          用户协议
+        </View>
+        　 |　
+        <View
+          onClick={() => {
+            privacy()
+          }}
+        >
+          隐私政策
+        </View>
       </View>
     </View>
   )
 }
 
-export default index
+export default careful

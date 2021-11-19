@@ -3,7 +3,7 @@ import { AtIcon } from 'taro-ui'
 import styles from './index.module.less'
 import Taro from '@tarojs/taro'
 
-function index({ type }) {
+const settled = ({ type }) => {
   let enterprise =
     'https://capacity-platform.oss-cn-hangzhou.aliyuncs.com/capacity-platform/mobile/icon/enterprise.png'
   let factory =
@@ -56,4 +56,4 @@ function index({ type }) {
   )
 }
 
-export default index
+export default settled

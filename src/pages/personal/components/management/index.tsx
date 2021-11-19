@@ -6,7 +6,7 @@ import styles from './index.module.less'
 import Taro from '@tarojs/taro'
 import { useStores } from '@/store/mobx'
 
-function index({ userInfo, list }) {
+const management = ({ userInfo, list }) => {
   let enterprise =
     'https://capacity-platform.oss-cn-hangzhou.aliyuncs.com/capacity-platform/mobile/icon/enterprise.png'
   let account =
@@ -158,4 +158,4 @@ function index({ userInfo, list }) {
   )
 }
 
-export default index
+export default management

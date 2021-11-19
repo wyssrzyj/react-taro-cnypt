@@ -4,9 +4,9 @@ import Taro from '@tarojs/taro'
 import { Navbar } from '@/components'
 const BACK_ICON =
   'https://capacity-platform.oss-cn-hangzhou.aliyuncs.com/capacity-platform/mobile/icon/black_back.png'
-function index() {
+const privacyAgreement = () => {
   const handleClick = () => {
-    Taro.redirectTo({ url: '/pages/personal/myEexcellentProduct/index' })
+    Taro.redirectTo({ url: '/pages/personal/index' })
   }
   return (
     <View className={styles.phoneLogin}>
@@ -1117,4 +1117,4 @@ function index() {
   )
 }
 
-export default index
+export default privacyAgreement
