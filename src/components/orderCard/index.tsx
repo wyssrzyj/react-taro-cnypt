@@ -2,6 +2,7 @@ import { View, Image } from '@tarojs/components'
 import { isArray } from 'lodash'
 import styles from './index.module.less'
 import Taro from '@tarojs/taro'
+import { EMPTY_IMG } from '@/utils/tool'
 
 const RIGHT_ARROW =
   'https://capacity-platform.oss-cn-hangzhou.aliyuncs.com/capacity-platform/mobile/icon/grayRight.png'
@@ -36,7 +37,13 @@ const OrderCard = props => {
       <View className={styles.imgs}>
         {isArray(data.imgs) &&
           data.imgs.map((item, idx) => {
-            return <Image key={idx} src={item} className={styles.img}></Image>
+            return (
+              <Image
+                key={idx}
+                src={item || EMPTY_IMG}
+                className={styles.img}
+              ></Image>
+            )
           })}
       </View>
 

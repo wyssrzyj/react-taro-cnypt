@@ -1,6 +1,9 @@
 import Taro, { NodesRef } from '@tarojs/taro'
 import { isEmpty, isArray } from 'lodash'
 
+export const EMPTY_IMG =
+  'https://capacity-platform.oss-cn-hangzhou.aliyuncs.com/capacity-platform/platform/noData.png'
+
 export const matchTreeData = (data, value, key = 'id') => {
   let target
   for (let i = 0; i < data.length; i++) {

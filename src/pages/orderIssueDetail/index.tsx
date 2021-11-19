@@ -104,7 +104,7 @@ const FactoryDetail = () => {
 
   const phoneCall = () => {
     if (isEmpty(currentUser)) {
-      Taro.navigateTo({
+      Taro.redirectTo({
         url: '/pages/login/index'
       })
     }

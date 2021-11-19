@@ -102,8 +102,6 @@ function index({ data, deleteMethod, reOrder, InitiateOrder, earlyEnd }) {
   return (
     //   主体
     <View className={styles.external}>
-      <View className={styles.line}></View>
-
       <View className={styles.major}>
         {/* 头部 */}
         <View className={styles.top}>

@@ -227,6 +227,8 @@ const Verify = () => {
       {rallyists.length > 0 ? (
         <View>
           <View className={styles.subject}>
+            <View className={styles.interval}></View>
+
             {rallyists.map(item => (
               <StyleStructure
                 data={item}

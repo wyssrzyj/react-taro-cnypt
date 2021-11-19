@@ -11,15 +11,23 @@ import Careful from './components/careful'
 import { useStores } from '@/store/mobx'
 import { Navbar, TabBar } from '@/components'
 const Personal = () => {
-  const { userInterface, commonStore } = useStores()
+  Taro.setNavigationBarColor({
+    frontColor: '#ffffff',
+    backgroundColor: '#000000',
+    animation: {
+      duration: 400,
+      timingFunc: 'easeIn'
+    }
+  })
+  const { top } = Taro.getMenuButtonBoundingClientRect()
 
+  const { userInterface, commonStore } = useStores()
   const { getDistrict } = commonStore
   const { userInformation } = userInterface
   const [list, setList] = useState({})
   const [jurisdiction, setJurisdiction] = useState({})
   // 根据企业id 获取信息
   useEffect(() => {
-    // getDisr()
     if (Taro.getStorageSync('currentUser')) {
       let information = JSON.parse(Taro.getStorageSync('currentUser')).userId
       pickUpInformation({ userId: information })
@@ -44,25 +52,36 @@ const Personal = () => {
   const goBack = () => {
     Taro.navigateBack()
   }
-  return (
-    <View className={styles.container}>
-      <Navbar>
-        <View className={styles.navbar}>
-          <View className={styles.navTitle}>我的</View>
-        </View>
-      </Navbar>
 
-      <Top list={list} userInfo={jurisdiction} />
-      {/* 主体 */}
-      <View className={styles.subject}>
-        {jurisdiction === '1' ? <Order /> : null}
-        {jurisdiction === 'notLogged' || jurisdiction === null ? (
-          <Settled />
-        ) : null}
-        {jurisdiction === '0' ? <Machining /> : null}
-        <Management userInfo={jurisdiction} />
-        {/* 底部 */}
-        <Careful />
+  return (
+    <View>
+      <View className={styles.father}>
+        <View className={styles.navBar} style={{ paddingTop: `${top}px` }}>
+          <View className={styles.navContent}>
+            <View>我的</View>
+          </View>
+        </View>
+        <View className={styles.absolutes}>
+          <Top list={list} userInfo={jurisdiction} />
+          <View>
+            {/* 主体 */}
+            <View
+              className={
+                jurisdiction === 'notLogged' ? styles.subject : styles.subjects
+              }
+            >
+              {/* <View className={styles.subject}> */}
+              {jurisdiction === '1' ? <Order /> : null}
+              {jurisdiction === 'notLogged' || jurisdiction === null ? (
+                <Settled type={list} />
+              ) : null}
+              {jurisdiction === '0' ? <Machining /> : null}
+              <Management list={list} userInfo={jurisdiction} />
+              {/* 底部 */}
+              <Careful userInfo={jurisdiction} />
+            </View>
+          </View>
+        </View>
       </View>
 
       <TabBar activeTab={2}></TabBar>

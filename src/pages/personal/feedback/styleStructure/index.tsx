@@ -12,6 +12,7 @@ import Taro from '@tarojs/taro'
 
 import { useStores, toJS, observer } from '@/store/mobx'
 import { getTrees } from '../method'
+import { EMPTY_IMG } from '@/utils/tool'
 // import { isArray, isEmpty } from 'lodash'
 function index({ data, deleteMethod, reOrder, InitiateOrder, earlyEnd }) {
   const { commonStore } = useStores()
@@ -114,7 +115,11 @@ function index({ data, deleteMethod, reOrder, InitiateOrder, earlyEnd }) {
         {/* 主体 */}
         <View className={styles.subject}>
           {/* img */}
-          <Image className={styles.img} src={data.pictureUrl} alt="" />
+          <Image
+            className={styles.img}
+            src={data.pictureUrl || EMPTY_IMG}
+            alt=""
+          />
           <View>
             <Text className={styles.factory}>{data.enterpriseName}</Text>
             <View>

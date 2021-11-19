@@ -18,7 +18,7 @@ const AreaModal = props => {
   const { onCancel, callback, value = [] } = props
 
   const { commonStore } = useStores()
-  const { getDistrict, district = [] } = commonStore
+  const { district = [] } = commonStore
   const contentRef = useRef<any>(null)
 
   const [isOpened, setIsOpened] = useState(false)

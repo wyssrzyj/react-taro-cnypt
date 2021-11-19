@@ -2,13 +2,16 @@ import { View, Text, Image } from '@tarojs/components'
 import { AtIcon } from 'taro-ui'
 import styles from './index.module.less'
 
-function index() {
+function index({ userInfo }) {
+  console.log(userInfo)
+
   let telephone =
     'https://capacity-platform.oss-cn-hangzhou.aliyuncs.com/capacity-platform/mobile/icon/telephone.png'
   let time =
     'https://capacity-platform.oss-cn-hangzhou.aliyuncs.com/capacity-platform/mobile/icon/time.png'
   return (
     <View className={styles.bottoms}>
+      {/* // <View className={styles.bottoms}> */}
       <View className={styles.flex}>
         <View>
           <Image src={telephone} className={styles.icon}></Image>

@@ -63,10 +63,11 @@ export default class FactoryStore {
 
   // /api/factory/enterprise/applets-enterprise-info-save
   // 企业入驻
-  @action enterpriseInfoSave = async () => {
+  @action enterpriseInfoSave = async params => {
     try {
       const res: Partial<Response> = await HTTP.post(
-        `/api/factory/enterprise/applets-enterprise-info-save`
+        `/api/factory/enterprise/applets-enterprise-info-save`,
+        params
       )
 
       if (res) {

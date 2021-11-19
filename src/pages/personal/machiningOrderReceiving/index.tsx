@@ -215,11 +215,17 @@ const Verify = () => {
         />
       </View>
       {/* Tobs标签 */}
-      <AtTabs current={current} tabList={tabList} onClick={AtTabsbind} />
+      <AtTabs
+        className={styles.tobs}
+        current={current}
+        tabList={tabList}
+        onClick={AtTabsbind}
+      />
       {/* 主体 */}
       {rallyists.length > 0 ? (
         <View>
           <View className={styles.subject}>
+            <View className={styles.interval}></View>
             {rallyists.map(item => (
               <StyleStructure
                 data={item}

@@ -3,20 +3,30 @@ import { AtIcon } from 'taro-ui'
 import styles from './index.module.less'
 import Taro from '@tarojs/taro'
 
-function index() {
+function index({ type }) {
   let enterprise =
     'https://capacity-platform.oss-cn-hangzhou.aliyuncs.com/capacity-platform/mobile/icon/enterprise.png'
   let factory =
     'https://capacity-platform.oss-cn-hangzhou.aliyuncs.com/capacity-platform/mobile/icon/factory.png'
   const toOrderEntry = () => {
-    Taro.redirectTo({
-      url: '/pages/orderIssueEntry/index'
-    })
+    console.log(type.userName)
+
+    if (type.userName !== undefined) {
+      Taro.navigateTo({
+        url: '/pages/orderIssueEntry/index'
+      })
+    } else {
+      Taro.navigateTo({ url: '/pages/login/index' })
+    }
   }
   const toFactoryEntry = () => {
-    Taro.redirectTo({
-      url: '/pages/factoryEntry/index'
-    })
+    if (type.userName !== undefined) {
+      Taro.navigateTo({
+        url: '/pages/factoryEntry/index'
+      })
+    } else {
+      Taro.navigateTo({ url: '/pages/login/index' })
+    }
   }
   return (
     <View>

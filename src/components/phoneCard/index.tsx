@@ -82,12 +82,12 @@ const PhoneCard = props => {
 
   const showFactoryPhone = async () => {
     if (isEmpty(currentUser)) {
-      Taro.redirectTo({
+      Taro.navigateTo({
         url: `/pages/login/index?source=/pages/factoryDetail/index&id=${id}`
       })
     }
     if (isEmpty(userInfomation) || +userInfomation.enterpriseType !== 1) {
-      Taro.redirectTo({
+      Taro.navigateTo({
         url: '/pages/orderIssueEntry/index'
       })
     }
@@ -112,7 +112,7 @@ const PhoneCard = props => {
   const showOrderIssuerPhone = async () => {
     if (disabled) return
     if (isEmpty(currentUser)) {
-      Taro.redirectTo({
+      Taro.navigateTo({
         url: `/pages/login/index?source=/pages/orderDetail/index&id=${id}`
       })
     }
