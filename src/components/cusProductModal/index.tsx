@@ -116,7 +116,7 @@ const CusProductModal = props => {
                       onClick={() => tagClick(i[keyName])}
                     >
                       <Image
-                        src={'' || EMPTY_IMG}
+                        src={''}
                         className={classNames(
                           styles.img,
                           type === 'multiple' &&
@@ -125,7 +125,8 @@ const CusProductModal = props => {
                             : '',
                           type === 'single' && childValue === i[keyName]
                             ? styles.activeImg
-                            : ''
+                            : '',
+                          !'' ? styles.emptyImg : ''
                         )}
                       ></Image>
                       <Text className={styles.tagText}>{i.name}</Text>

@@ -21,6 +21,7 @@ const AreaPicker = props => {
   const [cityIdx, setCityIdx] = useState<number>(0)
   const [areaIdx, setAreaIdx] = useState<number>(0)
   const [areaValue, setAreaValue] = useState<any[]>([0, 0, 0])
+  const [init, setInit] = useState<boolean>(false)
 
   useEffect(() => {
     ;(async () => {
@@ -34,62 +35,76 @@ const AreaPicker = props => {
   }, [district])
 
   useEffect(() => {
-    if (areaInfo.provinceId) {
+    if (!init && areaInfo.provinceId && provinceData && provinceData.length) {
       let pIdx
-      const province = provinceData.find((item, idx) => {
-        if (item.value === areaInfo.provinceId) {
-          pIdx = idx
-          return true
-        }
-        return false
-      })
+      const province =
+        provinceData.find((item, idx) => {
+          if (+item.value === areaInfo.provinceId) {
+            pIdx = idx
+            return true
+          }
+          return false
+        }) || {}
+
       setProvinceIdx(pIdx)
       const cData = [{ label: '不限', value: 0 }, ...province.children]
       let cIdx
-      const city = cData.find((item, idx) => {
-        if (item.value === areaInfo.cityId) {
-          cIdx = idx
-          return true
-        }
-        return false
-      })
+      const city =
+        cData.find((item, idx) => {
+          if (+item.value === areaInfo.cityId) {
+            cIdx = idx
+            return true
+          }
+          return false
+        }) || {}
+
       setCityIdx(cIdx)
+      setCityData(cData)
+
       const aData = [{ label: '不限', value: 0 }, ...city.children]
-      let aIdx = aData.findIndex(item => item.value === areaInfo.districtId)
+      let aIdx = aData.findIndex(item => +item.value === areaInfo.districtId)
+      setAreaData(aData)
       setAreaIdx(aIdx)
       setAreaValue([pIdx, cIdx, aIdx])
+
+      getDistrictText([pIdx, cIdx, aIdx], provinceData, cData, aData)
+      setInit(true)
     }
-  }, [])
+  }, [areaInfo, provinceData])
+
+  const getDistrictText = (areaList, pData, cData, aData) => {
+    const areaText = areaList.reduce((prev, item, idx) => {
+      if (idx === 0) {
+        prev = pData[item].label
+      }
+      if (idx === 1) {
+        if (cData[item].label !== '不限') {
+          prev += '-' + cData[item].label
+        }
+      }
+
+      if (idx === 2) {
+        if (aData[item].label !== '不限') {
+          prev += '-' + aData[item].label
+        }
+      }
+      return prev
+    }, '')
+    setSelectedArea(areaText)
+  }
 
   const districtChange = event => {
     const {
       detail: { value }
     } = event
     setAreaValue(value)
+    setInit(true)
+    getDistrictText(value, provinceData, cityData, areaData)
 
-    const districtText = value.reduce((prev, item, idx) => {
-      if (idx === 0) {
-        prev = provinceData[item].label
-      }
-      if (idx === 1) {
-        if (cityData[item].label !== '不限') {
-          prev += '-' + cityData[item].label
-        }
-      }
-
-      if (idx === 2) {
-        if (areaData[item].label !== '不限') {
-          prev += '-' + areaData[item].label
-        }
-      }
-      return prev
-    }, '')
-
-    setSelectedArea(districtText)
     if (callback) {
       const provinceId = provinceData[provinceIdx].value
-      const cityId = cityData[cityIdx].value
-      const districtId = areaData[areaIdx].value
+      const cityId = cityData[cityIdx] ? cityData[cityIdx].value : null
+      const districtId = areaData[areaIdx] ? areaData[areaIdx].value : null
       callback({
         provinceId,
         cityId,
@@ -102,8 +117,6 @@ const AreaPicker = props => {
     const {
       detail: { column, value }
     } = event
-    console.log('🚀 ~ file: index.tsx ~ line 77 ~ value', value)
-    console.log('🚀 ~ file: index.tsx ~ line 77 ~ column', column)
 
     if (column === 0) {
       const target = provinceData[value]
@@ -148,7 +161,7 @@ const AreaPicker = props => {
         <AtListItem
           className={classNames(
             styles.timeListItem,
-            !selectedArea ? styles.placeholder : ''
+            !selectedArea ? styles.placeholder : styles.selectText
           )}
           title="所在地区"
           extraText={selectedArea || '请选择所在地区'}

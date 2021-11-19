@@ -11,7 +11,7 @@ import {
   AtTextarea,
   AtImagePicker
 } from 'taro-ui'
-import { useState, useMemo } from 'react'
+import { useState, useMemo, useEffect } from 'react'
 import { cloneDeep, isArray } from 'lodash'
 import moment from 'moment'
 import classNames from 'classnames'
@@ -33,14 +33,16 @@ const BACK_ICON =
 const FactoryEntry = () => {
   const { top } = Taro.getMenuButtonBoundingClientRect()
 
-  const { commonStore, factoryStore } = useStores()
+  const { commonStore, factoryStore, refreshStore } = useStores()
   const { productCategoryList, dictionary, productGrade } = commonStore
   const {
     plusMaterialType = [],
     processType = [],
     productType = []
   } = dictionary
-  // const { getEnterpriseInfo, enterpriseInfoSave } = factoryStore
+  const { getEnterpriseInfo, enterpriseInfoSave, getEnterprisePhotos } =
+    factoryStore
+  const { dealRefresh } = refreshStore
 
   const clothOptions = productGrade.reduce((prev, item) => {
     prev.push(...item.children)
@@ -57,6 +59,48 @@ const FactoryEntry = () => {
   const [clothesGradeFlag, setClothesGradeFlag] = useState<boolean>(false)
   const [productTypeFlag, setProductTypeFlag] = useState<boolean>(false)
   const [processTypeFlag, setProcessTypeFlag] = useState<boolean>(false)
+  const [oldData, setOldData] = useState<any>({})
+
+  useEffect(() => {
+    ;(async () => {
+      const enterpriseInfo = await getEnterpriseInfo()
+      if (enterpriseInfo && enterpriseInfo.factoryId) {
+        const photos = await getEnterprisePhotos({
+          factoryId: enterpriseInfo.factoryId
+        })
+        const photoKeys = Reflect.ownKeys(photos)
+
+        photoKeys.forEach(item => {
+          if (item !== 'factoryId') {
+            enterpriseInfo[item] = photos[item] || []
+            enterpriseInfo[item] = enterpriseInfo[item].map(i => {
+              i.url = i.thumbUrl
+              return i
+            })
+          }
+        })
+      }
+      enterpriseInfo['establishedTime'] = enterpriseInfo['establishedTime']
+        ? moment(enterpriseInfo['establishedTime']).format('YYYY-MM-DD')
+        : null
+
+      const arrKeys = [
+        // 'clothesGrade',
+        'materialTypeValues',
+        'mainCategoriesList',
+        'processTypeList',
+        'productTypeValues',
+        'productGradeValues'
+      ]
+
+      arrKeys.forEach(item => {
+        enterpriseInfo[item] = enterpriseInfo[item] || []
+      })
+
+      setOldData(enterpriseInfo)
+      setParams(enterpriseInfo)
+    })()
+  }, [])
 
   const photoConfigs = [
     {
@@ -174,7 +218,7 @@ const FactoryEntry = () => {
       return
     }
 
-    if (!params['productTypeList'] || !params['productTypeList'].length) {
+    if (!params['productTypeValues'] || !params['productTypeValues'].length) {
       setIsOpened(true)
       setErrText('请选择生产方式')
       return
@@ -228,13 +272,59 @@ const FactoryEntry = () => {
       return
     }
 
+    let flag = false
+    if (oldData.enterpriseId) {
+      if (oldData.enterpriseName !== params['enterpriseName']) {
+        flag = true
+      }
+      if (oldData.enterpriseType !== params['enterpriseType']) {
+        flag = true
+      }
+      if (
+        +oldData.provinceId !== +params['provinceId'] ||
+        +oldData.cityId !== +params['cityId'] ||
+        +oldData.districtId !== +params['districtId']
+      ) {
+        flag = true
+      }
+      if (oldData.address !== params['address']) {
+        flag = true
+      }
+      if (
+        oldData.latitude !== params['latitude'] ||
+        oldData.longitude !== params['longitude']
+      ) {
+        flag = true
+      }
+    } else {
+      flag = true
+    }
+
+    params['isInfoApproval'] = flag ? 1 : 0
     params.enterpriseType = 0
+    if (params['logoImage'] && params['logoImage'].length) {
+      params.enterpriseLogoUrl = params['logoImage'][0]['url']
+    }
     params.establishedTime = params.establishedTime
       ? moment(params.establishedTime).valueOf()
       : null
-    console.log(params, 'params')
-    // const res = await enterpriseInfoSave(params)
-    // console.log('🚀 ~ file: index.tsx ~ line 156 ~ onSubmit ~ res', res)
+    params['supplierEnterprisePhotoVO'] = {
+      clothInspectingMachineImage: params['clothInspectingMachineImage'],
+      cuttingBedImage: params['cuttingBedImage'],
+      flatSeamingMachineImage: params['flatSeamingMachineImage'],
+      hangImage: params['hangImage'],
+      logoImage: params['logoImage'],
+      outsizeImageList: params['outsizeImageList'],
+      overlockMachineImage: params['overlockMachineImage'],
+      sewingMachineImage: params['sewingMachineImage'],
+      spreaderImage: params['spreaderImage'],
+      workshopImageList: params['workshopImageList']
+    }
+    await enterpriseInfoSave(params)
+    await dealRefresh()
+    Taro.redirectTo({
+      url: '/pages/index/index'
+    })
   }
 
   const onReset = () => {}
@@ -381,7 +471,9 @@ const FactoryEntry = () => {
                 title="成立时间"
                 className={classNames(
                   styles.timeListItem,
-                  !params['establishedTime'] ? styles.placeholder : ''
+                  !params['establishedTime']
+                    ? styles.placeholder
+                    : styles.selectText
                 )}
                 extraText={
                   params['establishedTime']
@@ -453,13 +545,13 @@ const FactoryEntry = () => {
             <Text
               className={classNames(
                 styles.cusValue,
-                !getLabels(productType, 'productTypeList')
+                !getLabels(productType, 'productTypeValues')
                   ? styles.cusPlaceholder
                   : ''
               )}
             >
-              {getLabels(productType, 'productTypeList')
-                ? getLabels(productType, 'productTypeList')
+              {getLabels(productType, 'productTypeValues')
+                ? getLabels(productType, 'productTypeValues')
                 : '请选择生产方式'}
             </Text>
           </View>
@@ -601,7 +693,7 @@ const FactoryEntry = () => {
             <View className={styles.logoPhotoBox}>
               <ImagePicker
                 addTitle={'logo'}
-                files={params['enterpriseLogoUrl']}
+                files={params['enterpriseLogoUrl'] || []}
                 callback={event => imgsChange(event, 'enterpriseLogoUrl')}
                 count={1}
                 showAddBtn={
@@ -619,7 +711,7 @@ const FactoryEntry = () => {
               <View className={styles.photoTitle}>{item.label}</View>
               <View className={styles.photoBox}>
                 <AtImagePicker
-                  files={params[item.field]}
+                  files={params[item.field] || []}
                   onChange={event => imgsChange(event, item.field)}
                   count={3}
                   sizeType={['70']}
@@ -640,7 +732,7 @@ const FactoryEntry = () => {
               <ImagePicker
                 key={item.field}
                 addTitle={item.label}
-                files={params[item.field]}
+                files={params[item.field] || []}
                 callback={event => imgsChange(event, item.field)}
                 count={1}
                 showAddBtn={
@@ -651,11 +743,11 @@ const FactoryEntry = () => {
               ></ImagePicker>
             ))}
           </View>
-        </View>
 
-        <AtButton onClick={onSubmit} type={'primary'} className={styles.btn}>
-          立即入驻
-        </AtButton>
+          <AtButton onClick={onSubmit} type={'primary'} className={styles.btn}>
+            立即入驻
+          </AtButton>
+        </View>
       </AtForm>
 
       <AtToast
@@ -708,8 +800,8 @@ const FactoryEntry = () => {
           visible={productTypeFlag}
           onCancel={productTypeModalShow}
           title={'生产方式'}
-          callback={event => handleChange(event, 'productTypeList')}
-          value={params['productTypeList'] || []}
+          callback={event => handleChange(event, 'productTypeValues')}
+          value={params['productTypeValues'] || []}
         />
       )}
     </View>

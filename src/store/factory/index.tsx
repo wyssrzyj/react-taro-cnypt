@@ -40,7 +40,7 @@ export default class FactoryStore {
   }
 
   // '/api/factory/enterprise/get-enterprise-info'
-  // 工厂入驻
+  // 获取企业信息
   @action getEnterpriseInfo = async () => {
     try {
       const res: Partial<Response> = await HTTP.get(
@@ -254,6 +254,29 @@ export default class FactoryStore {
     try {
       const res: Partial<Response> = await HTTP.post(
         `/api/oms/inquiry-purchase/save`,
+        params
+      )
+
+      if (res.code === 200) {
+      } else {
+        Taro.showToast({
+          title: '获取数据失败~',
+          icon: 'none',
+          duration: 1000
+        })
+      }
+      return res.data
+    } catch (e) {
+      console.log(e)
+    }
+  }
+
+  // /api/factory/purchaser-info/get-purchaser-images
+  // 获取企业照片
+  @action getEnterprisePhotos = async params => {
+    try {
+      const res: Partial<Response> = await HTTP.get(
+        `/api/factory/purchaser-info/get-purchaser-images`,
         params
       )
 

@@ -56,4 +56,5 @@ class httpRequest {
   }
 }
 
+export { httpRequest }
 export default new httpRequest()

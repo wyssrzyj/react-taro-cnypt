@@ -4,6 +4,7 @@ import LoginStore, { loginStore } from './login'
 import UserInterface, { userInterface } from './user'
 import FactoryStore, { factoryStore } from './factory'
 import OrderStore, { orderStore } from './order'
+import RefreshStore, { refreshStore } from './dealRefresh'
 
 export interface Stores {
   homeStore: HomeStore
@@ -12,6 +13,7 @@ export interface Stores {
   userInterface: UserInterface
   factoryStore: FactoryStore
   orderStore: OrderStore
+  refreshStore: RefreshStore
 }
 
 export const stores: Stores = {
@@ -20,5 +22,6 @@ export const stores: Stores = {
   loginStore,
   userInterface,
   factoryStore,
-  orderStore
+  orderStore,
+  refreshStore
 }
