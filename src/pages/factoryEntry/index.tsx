@@ -1,6 +1,6 @@
 import { View, Image, Picker, Text } from '@tarojs/components'
 import styles from './index.module.less'
-import Taro, { useRouter } from '@tarojs/taro'
+import Taro from '@tarojs/taro'
 import {
   AtForm,
   AtInput,
@@ -27,6 +27,8 @@ import {
 import { matchTreeData, phoneReg } from '@/utils/tool'
 import { upload } from '@/utils/upload'
 
+const host =
+  'https://capacity-platform.oss-cn-hangzhou.aliyuncs.com/capacity-platform/mobile/images'
 const BACK_ICON =
   'https://capacity-platform.oss-cn-hangzhou.aliyuncs.com/capacity-platform/mobile/icon/back.png'
 
@@ -40,16 +42,9 @@ const FactoryEntry = () => {
     processType = [],
     productType = []
   } = dictionary
-  const { getEnterpriseInfo, enterpriseInfoSave, getEnterprisePhotos } =
+  const { getEnterpriseInfo, enterpriseInfoSave, getFactoryPhotos } =
     factoryStore
   const { dealRefresh } = refreshStore
-
-  const router = useRouter()
-  const {
-    params: { modify }
-  } = router
-
-  console.log(modify)
 
   const clothOptions = productGrade.reduce((prev, item) => {
     prev.push(...item.children)
@@ -72,9 +67,7 @@ const FactoryEntry = () => {
     ;(async () => {
       const enterpriseInfo = await getEnterpriseInfo()
       if (enterpriseInfo && enterpriseInfo.factoryId) {
-        const photos = await getEnterprisePhotos({
-          factoryId: enterpriseInfo.factoryId
-        })
+        const photos = await getFactoryPhotos(enterpriseInfo.factoryId)
         const photoKeys = Reflect.ownKeys(photos)
 
         photoKeys.forEach(item => {
@@ -91,6 +84,12 @@ const FactoryEntry = () => {
         ? moment(enterpriseInfo['establishedTime']).format('YYYY-MM-DD')
         : null
 
+      enterpriseInfo['logoImage'] = [
+        {
+          url: enterpriseInfo['enterpriseLogoUrl'],
+          thumbUrl: enterpriseInfo['enterpriseLogoUrl']
+        }
+      ]
       const arrKeys = [
         // 'clothesGrade',
         'materialTypeValues',
@@ -104,6 +103,7 @@ const FactoryEntry = () => {
         enterpriseInfo[item] = enterpriseInfo[item] || []
       })
 
+      console.log(enterpriseInfo, 'enterpriseInfo')
       setOldData(enterpriseInfo)
       setParams(enterpriseInfo)
     })()
@@ -169,7 +169,6 @@ const FactoryEntry = () => {
     })
     await Promise.all(allImgs).then(res => {
       nParams[field] = res
-
       setParams(nParams)
     })
   }
@@ -177,12 +176,13 @@ const FactoryEntry = () => {
   const customRequest = async ({ url }) => {
     const imgUrl = await upload(url)
     return {
-      url: imgUrl
+      url: imgUrl,
+      thumbUrl: imgUrl,
+      name: imgUrl.replace(host, '')
     }
   }
 
   const onSubmit = async () => {
-    params, 'params'
     if (!params['contactsName']) {
       setIsOpened(true)
       setErrText('请输入联系人')
@@ -415,7 +415,6 @@ const FactoryEntry = () => {
       }
     })
   }
-  console.log(params)
 
   return (
     <View>
@@ -426,7 +425,7 @@ const FactoryEntry = () => {
             className={styles.back}
             onClick={goBack}
           ></Image>
-          <View>{modify ? '工厂管理' : '工厂入驻'}</View>
+          <View>工厂入驻</View>
         </View>
       </View>
 
@@ -701,12 +700,11 @@ const FactoryEntry = () => {
             <View className={styles.logoPhotoBox}>
               <ImagePicker
                 addTitle={'logo'}
-                files={params['enterpriseLogoUrl'] || []}
-                callback={event => imgsChange(event, 'enterpriseLogoUrl')}
+                files={params['logoImage'] || []}
+                callback={event => imgsChange(event, 'logoImage')}
                 count={1}
                 showAddBtn={
-                  params['enterpriseLogoUrl'] &&
-                  params['enterpriseLogoUrl'].length >= 1
+                  params['logoImage'] && params['logoImage'].length >= 1
                     ? false
                     : true
                 }

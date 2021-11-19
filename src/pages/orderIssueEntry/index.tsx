@@ -60,9 +60,7 @@ const OrderIssueEntry = () => {
     ;(async () => {
       const enterpriseInfo = await getEnterpriseInfo()
       if (enterpriseInfo && enterpriseInfo.purchaserId) {
-        const photos = await getEnterprisePhotos({
-          purchaserId: enterpriseInfo.purchaserId
-        })
+        const photos = await getEnterprisePhotos(enterpriseInfo.purchaserId)
         const photoKeys = Reflect.ownKeys(photos)
 
         photoKeys.forEach(item => {
@@ -78,6 +76,13 @@ const OrderIssueEntry = () => {
       enterpriseInfo['establishedTime'] = enterpriseInfo['establishedTime']
         ? moment(enterpriseInfo['establishedTime']).format('YYYY-MM-DD')
         : null
+
+      enterpriseInfo['logoImage'] = [
+        {
+          url: enterpriseInfo['enterpriseLogoUrl'],
+          thumbUrl: enterpriseInfo['enterpriseLogoUrl']
+        }
+      ]
 
       setOldData(enterpriseInfo)
       setParams(enterpriseInfo)

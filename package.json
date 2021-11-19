@@ -10,7 +10,7 @@
   },
   "scripts": {
     "build:weapp:prod": "cross-env NODE_ENV=production taro build --type weapp --watch",
-    "build:weapp:test": "cross-env NODE_ENV=test taro build --type weapp",
+    "build:weapp:test": "cross-env NODE_ENV=test taro build --type weapp --watch",
     "build:weapp:dev": "cross-env NODE_ENV=development taro build --type weapp ",
     "build:swan": "taro build --type swan",
     "build:alipay": "taro build --type alipay",
