@@ -32,19 +32,23 @@ function index({ type }) {
   return (
     <View>
       <View className={styles.order} onClick={toOrderEntry}>
-        <View className={styles.remove}>
-          <Image className={styles.removeIcon} src={enterprise}></Image>
+        <View className={styles.content}>
+          <View className={styles.remove}>
+            <Image className={styles.removeIcon} src={enterprise}></Image>
+          </View>
+          <Text>发单商入驻</Text>
         </View>
-        <Text>发单商入驻</Text>
         <Text className={styles.iconmy}>
           <AtIcon value="chevron-right" size="15" color="#666"></AtIcon>
         </Text>
       </View>
       <View className={styles.order} onClick={toFactoryEntry}>
-        <View className={styles.remove}>
-          <Image className={styles.removeIcon} src={factory}></Image>
+        <View className={styles.content}>
+          <View className={styles.remove}>
+            <Image className={styles.removeIcon} src={factory}></Image>
+          </View>
+          <Text>工厂入驻</Text>
         </View>
-        <Text>工厂入驻</Text>
         <Text className={styles.iconmy}>
           <AtIcon value="chevron-right" size="15" color="#666"></AtIcon>
         </Text>

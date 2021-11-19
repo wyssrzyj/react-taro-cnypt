@@ -14,7 +14,13 @@ import { useStores, toJS, observer } from '@/store/mobx'
 import { getTrees } from '../method'
 import { EMPTY_IMG } from '@/utils/tool'
 // import { isArray, isEmpty } from 'lodash'
-function index({ data, deleteMethod, reOrder, InitiateOrder, earlyEnd }) {
+const styleStructure = ({
+  data,
+  deleteMethod,
+  reOrder,
+  InitiateOrder,
+  earlyEnd
+}) => {
   const { commonStore } = useStores()
   const { dictionary } = commonStore
   const { processType } = dictionary
@@ -247,4 +253,4 @@ function index({ data, deleteMethod, reOrder, InitiateOrder, earlyEnd }) {
   )
 }
 
-export default observer(index)
+export default observer(styleStructure)

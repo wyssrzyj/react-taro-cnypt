@@ -13,7 +13,9 @@ import Taro, { login } from '@tarojs/taro'
 import { useStores, toJS, observer } from '@/store/mobx'
 import { getTrees } from '../method'
 import { cloneDeep } from 'lodash'
-let Simg = 'http://dev.uchat.com.cn:8002/images/b140ef.png'
+
+let imgs =
+  'https://capacity-platform.oss-cn-hangzhou.aliyuncs.com/capacity-platform/platform/noData.png'
 
 function index({ data, deleteMethod, earlyEnd }) {
   const { commonStore } = useStores()
@@ -144,12 +146,11 @@ function index({ data, deleteMethod, earlyEnd }) {
             {+data.status === -2 ? (
               <View className={styles.fail}>审核失败</View>
             ) : null}
-
-            <Image
-              className={styles.img}
-              src={data.pictureUrl ? data.pictureUrl : Simg}
-              alt=""
-            />
+            <View
+              className={data.pictureUrl ? styles.img : styles.emptyCardImg}
+            >
+              <Image className={styles.img} src={data.pictureUrl} alt="" />
+            </View>
           </View>
           <View>
             <Text className={styles.factory}>{data.name}</Text>

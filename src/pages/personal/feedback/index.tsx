@@ -1,10 +1,9 @@
 import { useState, useEffect } from 'react'
 import styles from './index.module.less'
 import { View, Image } from '@tarojs/components'
-import { AtNavBar } from 'taro-ui'
 import { useRouter, redirectTo } from '@tarojs/taro'
 import { useStores, observer } from '@/store/mobx'
-import { isEmpty, isNil } from 'lodash'
+import { isNil } from 'lodash'
 import { Navbar } from '@/components'
 const BACK_ICON =
   'https://capacity-platform.oss-cn-hangzhou.aliyuncs.com/capacity-platform/mobile/icon/black_back.png'

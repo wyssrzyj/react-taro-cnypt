@@ -23,6 +23,9 @@ function index({ data, deleteMethod, reOrder, InitiateOrder, earlyEnd }) {
   const [windowType, setWindowType] = useState<any>({}) //弹窗类型
   const [popup, setPopup] = useState(false)
 
+  let imgs =
+    'https://capacity-platform.oss-cn-hangzhou.aliyuncs.com/capacity-platform/platform/noData.png'
+
   useEffect(() => {
     if (data.factoryCategoryList) {
       // 商品类型
@@ -137,7 +140,9 @@ function index({ data, deleteMethod, reOrder, InitiateOrder, earlyEnd }) {
         {/* 主体 */}
         <View className={styles.subject}>
           {/* img */}
-          <Image className={styles.img} src={data.pictureUrl} alt="" />
+          <View className={data.pictureUrl ? styles.img : styles.emptyCardImg}>
+            <Image className={styles.img} src={data.pictureUrl} alt="" />
+          </View>
           <View>
             <Text className={styles.factory}>{data.enterpriseName}</Text>
             <View>

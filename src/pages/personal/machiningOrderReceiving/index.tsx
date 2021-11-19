@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import styles from './index.module.less'
 import { View, Image, Text } from '@tarojs/components'
-import { AtNavBar, AtSearchBar, AtTabs } from 'taro-ui'
+import { AtSearchBar, AtTabs } from 'taro-ui'
 import { useReachBottom, useRouter, redirectTo } from '@tarojs/taro'
 import StyleStructure from './styleStructure/index'
 import { useStores, observer } from '@/store/mobx'
@@ -32,7 +32,6 @@ const Verify = () => {
   const [pageNum, setPageNum] = useState(1)
   const [display, setDisplay] = useState(false)
   const [dropDown, setDropDown] = useState(false)
-  // 2 3 -2
   // 接口数据
   const [list, setList] = useState<any>({
     pageNum: 1,
@@ -74,8 +73,6 @@ const Verify = () => {
   }
   const api = async () => {
     let res = await supplierGetOrders(list)
-    console.log(res)
-
     if (Array.isArray(res.records)) {
       let filterStatus = eliminate(res.records, -1)
       let final = eliminate(filterStatus, 1)

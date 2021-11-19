@@ -38,8 +38,6 @@ const Verify = () => {
   // 回显
   const api = async e => {
     let res = await applicationReceipt({ supplierInquiryId: e })
-    console.log(res)
-
     setProducts(res.receiveGoodsNum)
     setOffer(res.quoteInfo)
     setPaymentMethod(res.payDetails)
@@ -72,14 +70,11 @@ const Verify = () => {
 
   const onSubmit = async () => {
     if (products) {
-      console.log('传递来的', params.id)
-
       if (params) {
         let arr = await orderQuantity({
           goodsNum: products,
           id: params.id
         })
-
         if (arr.code === 200) {
           let value = {
             quoteInfo: offer,
@@ -93,20 +88,14 @@ const Verify = () => {
             supplierInquiryId: quantityId,
             status: 2
           })
-          console.log(submitRes)
-
           if (submitRes.code === 200) {
-            console.log('成功')
-            console.log('跳订单管理')
             await applicationReceiptQuantity('')
-
             Taro.redirectTo({
               url: '/pages/personal/machiningOrderReceiving/index?tid='
             })
           }
 
           setToast(false)
-          console.log(arr)
         }
       }
     } else {

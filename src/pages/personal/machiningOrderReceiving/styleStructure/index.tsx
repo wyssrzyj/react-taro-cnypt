@@ -12,7 +12,13 @@ import Taro from '@tarojs/taro'
 import { getTrees } from '../method'
 
 import { observer, useStores, toJS } from '@/store/mobx'
-function index({ data, deleteMethod, reOrder, InitiateOrder, earlyEnd }) {
+const styleStructure = ({
+  data,
+  deleteMethod,
+  reOrder,
+  InitiateOrder,
+  earlyEnd
+}) => {
   const { userInterface, commonStore } = useStores()
   const { applicationReceiptQuantity } = userInterface
   const { productCategoryList = [], dictionary = [] } = toJS(commonStore)
@@ -22,8 +28,6 @@ function index({ data, deleteMethod, reOrder, InitiateOrder, earlyEnd }) {
   const [goodsNum, setGoodsNum] = useState<any>([]) //订单量
 
   useEffect(() => {
-    console.log(dictionary)
-
     if (data.categoryCodes) {
       // 商品类型
       setCategory(
@@ -119,7 +123,11 @@ function index({ data, deleteMethod, reOrder, InitiateOrder, earlyEnd }) {
         {/* 主体 */}
         <View className={styles.subject}>
           {/* img */}
-          <Image className={styles.img} src={data.stylePicture} alt="" />
+          <View
+            className={data.stylePicture ? styles.img : styles.emptyCardImg}
+          >
+            <Image className={styles.img} src={data.stylePicture} alt="" />
+          </View>
           <View>
             <Text className={styles.factory}>{data.inquiryPurchaserName}</Text>
             <View>
@@ -260,4 +268,4 @@ function index({ data, deleteMethod, reOrder, InitiateOrder, earlyEnd }) {
   )
 }
 
-export default observer(index)
+export default observer(styleStructure)

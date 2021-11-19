@@ -6,7 +6,7 @@ import { Navbar } from '@/components'
 const BACK_ICON =
   'https://capacity-platform.oss-cn-hangzhou.aliyuncs.com/capacity-platform/mobile/icon/black_back.png'
 
-function index() {
+const AccountNumber = () => {
   const handleClick = () => {
     redirectTo({ url: '/pages/personal/index' })
   }
@@ -28,4 +28,4 @@ function index() {
   )
 }
 
-export default index
+export default AccountNumber

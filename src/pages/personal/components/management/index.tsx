@@ -68,10 +68,13 @@ function index({ userInfo, list }) {
               factoryManagement()
             }}
           >
-            <View className={styles.remove}>
-              <Image className={styles.removeIcon} src={factory}></Image>
+            <View className={styles.content}>
+              <View className={styles.remove}>
+                <Image className={styles.removeIcon} src={factory}></Image>
+              </View>
+              <Text className={styles.txt}>工厂管理</Text>
             </View>
-            <Text className={styles.txt}>工厂管理</Text>
+
             <Text className={styles.iconmy}>
               <AtIcon value="chevron-right" size="15" color="#999999"></AtIcon>
             </Text>
@@ -86,11 +89,13 @@ function index({ userInfo, list }) {
               enterpriseManagement()
             }}
           >
-            <View className={styles.remove}>
-              <Image className={styles.removeIcon} src={enterprise}></Image>
+            <View className={styles.content}>
+              <View className={styles.remove}>
+                <Image className={styles.removeIcon} src={enterprise}></Image>
+              </View>
+              <Text className={styles.txt}>企业管理</Text>
             </View>
 
-            <Text className={styles.txt}>企业管理</Text>
             <Text className={styles.iconmy}>
               <AtIcon value="chevron-right" size="15" color="#999999"></AtIcon>
             </Text>
@@ -99,33 +104,39 @@ function index({ userInfo, list }) {
       ) : null}
 
       <View className={styles.order} onClick={accountNumber}>
-        <View className={styles.remove}>
-          <Image className={styles.removeIcon} src={account}></Image>
+        <View className={styles.content}>
+          <View className={styles.remove}>
+            <Image className={styles.removeIcon} src={account}></Image>
+          </View>
+          <Text className={styles.txt}>账号管理</Text>
         </View>
-        <Text className={styles.txt}>账号管理</Text>
         <Text className={styles.iconmy}>
           <AtIcon value="chevron-right" size="15" color="#999999"></AtIcon>
         </Text>
       </View>
 
       <View className={styles.order} onClick={about}>
-        <View className={styles.remove}>
-          <Image
-            className={styles.removeIcon}
-            src={excellentProduction}
-          ></Image>
+        <View className={styles.content}>
+          <View className={styles.remove}>
+            <Image
+              className={styles.removeIcon}
+              src={excellentProduction}
+            ></Image>
+          </View>
+          <Text className={styles.txt}>关于优产云</Text>
         </View>
-        <Text className={styles.txt}>关于优产云</Text>
         <Text className={styles.iconmy}>
           <AtIcon value="chevron-right" size="15" color="#999999"></AtIcon>
         </Text>
       </View>
 
       <View className={styles.order} onClick={retreat}>
-        <View className={styles.remove}>
-          <Image className={styles.removeIcon} src={signOuts}></Image>
+        <View className={styles.content}>
+          <View className={styles.remove}>
+            <Image className={styles.removeIcon} src={signOuts}></Image>
+          </View>
+          <Text className={styles.txt}>退出登录</Text>
         </View>
-        <Text className={styles.txt}>退出登录</Text>
         <Text className={styles.iconmy}>
           <AtIcon value="chevron-right" size="15" color="#999999"></AtIcon>
         </Text>
