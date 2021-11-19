@@ -32,19 +32,19 @@ function index({ userInfo }) {
   const sign = () => {
     signOut()
     setModal(false)
-    Taro.navigateTo({ url: '/pages/login/index' })
+    Taro.redirectTo({ url: '/pages/login/index' })
   }
   const about = () => {
     Taro.redirectTo({ url: '/pages/personal/myEexcellentProduct/index' })
   }
   const accountNumber = () => {
-    Taro.redirectTo({
+    Taro.navigateTo({
       url: '/pages/personal/accountNumber/index?id'
     })
   }
   const factoryManagement = () => {
     console.log(123)
-    Taro.redirectTo({
+    Taro.navigateTo({
       url: '/pages/factoryEntry/index'
     })
   }

@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react'
 import { cloneDeep } from 'lodash'
 import classNames from 'classnames'
 import { useStores, observer } from '@/store/mobx'
+import { EMPTY_IMG } from '@/utils/tool'
 
 const CusProductModal = props => {
   const {
@@ -115,7 +116,7 @@ const CusProductModal = props => {
                       onClick={() => tagClick(i[keyName])}
                     >
                       <Image
-                        src={''}
+                        src={'' || EMPTY_IMG}
                         className={classNames(
                           styles.img,
                           type === 'multiple' &&

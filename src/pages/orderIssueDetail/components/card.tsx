@@ -53,7 +53,7 @@ const Card = props => {
 
   return (
     <View className={styles.card} onClick={toOrderDetail}>
-      <Image src={img || ''} className={styles.cardImg}></Image>
+      <Image src={img || EMPTY_IMG} className={styles.cardImg}></Image>
       <View className={styles.cardInfo}>
         <View className={styles.titleBox}>
           <Text className={styles.cardTitle}>{title}</Text>

@@ -31,11 +31,11 @@ const TabBarModal = props => {
       background: '#335498',
       onClick: () => {
         if (isEmpty(currentUser)) {
-          Taro.navigateTo({
+          Taro.redirectTo({
             url: '/pages/login/index'
           })
         }
-        Taro.navigateTo({
+        Taro.redirectTo({
           url: '/pages/orderIssueEntry/index'
         })
       }
@@ -47,11 +47,11 @@ const TabBarModal = props => {
       background: '#377383',
       onClick: () => {
         if (isEmpty(currentUser)) {
-          Taro.navigateTo({
+          Taro.redirectTo({
             url: '/pages/login/index'
           })
         }
-        Taro.navigateTo({
+        Taro.redirectTo({
           url: '/pages/publish/index'
         })
       }
@@ -63,11 +63,11 @@ const TabBarModal = props => {
       background: '#335498',
       onClick: () => {
         if (isEmpty(currentUser)) {
-          Taro.navigateTo({
+          Taro.redirectTo({
             url: '/pages/login/index'
           })
         }
-        Taro.navigateTo({
+        Taro.redirectTo({
           url: '/pages/factoryEntry/index'
         })
       }

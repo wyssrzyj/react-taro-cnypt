@@ -79,5 +79,10 @@ export default {
     navigationStyle: 'custom' //接受两个参数 ['default', 'custom']: ['系统导航栏， 默认值', '隐藏系统导航栏']
     // enablePullDownRefresh: true,
     // onReachBottomDistance: 50
+  },
+  permission: {
+    'scope.userLocation': {
+      desc: '你的位置信息将用于小程序位置接口的效果展示'
+    }
   }
 }

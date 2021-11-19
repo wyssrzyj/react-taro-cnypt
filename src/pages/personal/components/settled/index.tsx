@@ -9,12 +9,12 @@ function index() {
   let factory =
     'https://capacity-platform.oss-cn-hangzhou.aliyuncs.com/capacity-platform/mobile/icon/factory.png'
   const toOrderEntry = () => {
-    Taro.redirectTo({
+    Taro.navigateTo({
       url: '/pages/orderIssueEntry/index'
     })
   }
   const toFactoryEntry = () => {
-    Taro.redirectTo({
+    Taro.navigateTo({
       url: '/pages/factoryEntry/index'
     })
   }

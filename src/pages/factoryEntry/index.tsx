@@ -11,51 +11,36 @@ import {
   AtTextarea,
   AtImagePicker
 } from 'taro-ui'
-import { useEffect, useState, useMemo } from 'react'
-import { cloneDeep, isArray, isNil, throttle } from 'lodash'
+import { useState, useMemo } from 'react'
+import { cloneDeep, isArray } from 'lodash'
 import moment from 'moment'
 import classNames from 'classnames'
-import { useStores, observer, toJS } from '@/store/mobx'
+import { useStores, observer } from '@/store/mobx'
 import {
   CusProductModal,
   CusMaterialModal,
   CusGradeModal,
   CusModal,
-  ImagePicker
+  ImagePicker,
+  AreaPicker
 } from '@/components'
-import { matchTreeData } from '@/utils/tool'
-import OSS from '@/utils/oss'
+import { matchTreeData, phoneReg } from '@/utils/tool'
 import { upload } from '@/utils/upload'
 
 const BACK_ICON =
   'https://capacity-platform.oss-cn-hangzhou.aliyuncs.com/capacity-platform/mobile/icon/back.png'
 
-interface OptionsType {
-  label: string
-  value: string
-}
-const typeOptions: Partial<OptionsType>[] = [
-  { label: '清加工单', value: 'QJG' },
-  { label: 'OEM', value: 'OEM' },
-  { label: 'ODM', value: 'ODM' },
-  { label: '经销单', value: 'JXD' },
-  { label: '自营进出口单', value: 'ZCK' },
-  {}
-]
-
 const FactoryEntry = () => {
   const { top } = Taro.getMenuButtonBoundingClientRect()
 
   const { commonStore, factoryStore } = useStores()
+  const { productCategoryList, dictionary, productGrade } = commonStore
   const {
-    // getDistrict,
-    productCategoryList,
-    dictionary,
-    productGrade,
-    district
-  } = commonStore
-  const { plusMaterialType = [], processType = [] } = dictionary
-  const { getEnterpriseInfo } = factoryStore
+    plusMaterialType = [],
+    processType = [],
+    productType = []
+  } = dictionary
+  // const { getEnterpriseInfo, enterpriseInfoSave } = factoryStore
 
   const clothOptions = productGrade.reduce((prev, item) => {
     prev.push(...item.children)
@@ -67,15 +52,11 @@ const FactoryEntry = () => {
   const [errText, setErrText] = useState('')
   const [isOpened, setIsOpened] = useState(false)
 
-  const [provinceData, setProvinceData] = useState<any[]>([])
-  const [cityData, setCityData] = useState<any[]>([])
-  const [areaData, setAreaData] = useState<any[]>([])
-  const [areaValue, setAreaValue] = useState<any[]>([0, 0, 0])
-
   const [productFlag, setProductFlag] = useState<boolean>(false)
   const [materialFlag, setMaterialFlag] = useState<boolean>(false)
   const [clothesGradeFlag, setClothesGradeFlag] = useState<boolean>(false)
   const [productTypeFlag, setProductTypeFlag] = useState<boolean>(false)
+  const [processTypeFlag, setProcessTypeFlag] = useState<boolean>(false)
 
   const photoConfigs = [
     {
@@ -118,50 +99,6 @@ const FactoryEntry = () => {
       field: 'workshopImageList'
     }
   ]
-  useEffect(() => {
-    ;(async () => {
-      const res = cloneDeep(district)
-      // const res = await getDistrict()
-      setProvinceData(res)
-      const cData = [{ label: '不限', value: 0 }, ...res[0].children]
-      const aData = [{ label: '不限', value: 0 }]
-      setCityData(cData)
-      setAreaData(aData)
-    })()
-  }, [district])
-
-  useEffect(() => {
-    ;(async () => {
-      if (!provinceData.length) return
-      const info = await getEnterpriseInfo()
-
-      info.establishedTime = info.establishedTime
-        ? moment(info.establishedTime).format('YYYY-MM-DD')
-        : null
-
-      const provinceIdx = provinceData.findIndex(
-        (item: any) => +item.value === +info.provinceId
-      )
-
-      const citys = provinceIdx > -1 ? provinceData[provinceIdx].children : []
-      citys.unshift({ label: '不限', value: 0 })
-      const cityIdx =
-        provinceIdx > -1 && isArray(citys)
-          ? citys.findIndex((item: any) => +item.value === +info.cityId)
-          : -1
-      setCityData(citys)
-
-      const districts = cityIdx > -1 ? citys[cityIdx].children : []
-      districts.unshift({ label: '不限', value: 0 })
-      const districtIdx =
-        cityIdx > -1 && isArray(districts)
-          ? districts.findIndex((item: any) => +item.value === +info.districtId)
-          : -1
-      setAreaData(districts)
-      info.areaValue = [provinceIdx, cityIdx, districtIdx]
-      setParams(info)
-    })()
-  }, [provinceData])
 
   const goBack = () => {
     Taro.navigateBack()
@@ -193,71 +130,114 @@ const FactoryEntry = () => {
     }
   }
 
-  const onSubmit = () => {
+  const onSubmit = async () => {
+    console.log(params, 'params')
     if (!params['contactsName']) {
       setIsOpened(true)
       setErrText('请输入联系人')
+      return
     }
 
-    // Taro.redirectTo({
-    //   url: '/pages/index/index'
-    // })
+    if (!params['mobilePhone'] || !phoneReg.test(params['mobilePhone'])) {
+      setIsOpened(true)
+      setErrText('请输入正确的手机号')
+      return
+    }
+
+    if (!params['enterpriseName']) {
+      setIsOpened(true)
+      setErrText('请输入工厂名称')
+      return
+    }
+
+    if (!params['establishedTime']) {
+      setIsOpened(true)
+      setErrText('请选择成立时间')
+      return
+    }
+
+    if (!params['provinceId']) {
+      setIsOpened(true)
+      setErrText('请选择地区')
+      return
+    }
+
+    if (!params['address']) {
+      setIsOpened(true)
+      setErrText('请输入工厂地址')
+      return
+    }
+
+    if (!params['mainCategoriesList'] || !params['mainCategoriesList'].length) {
+      setIsOpened(true)
+      setErrText('请选择主营类别')
+      return
+    }
+
+    if (!params['productTypeList'] || !params['productTypeList'].length) {
+      setIsOpened(true)
+      setErrText('请选择生产方式')
+      return
+    }
+
+    if (!params['materialTypeValues'] || !params['materialTypeValues'].length) {
+      setIsOpened(true)
+      setErrText('请选择面料类型')
+      return
+    }
+
+    if (!params['productGradeValues'] || !params['productGradeValues'].length) {
+      setIsOpened(true)
+      setErrText('请选择产品档次')
+      return
+    }
+
+    if (!params['processTypeList'] || !params['processTypeList'].length) {
+      setIsOpened(true)
+      setErrText('请选择加工类型')
+      return
+    }
+
+    if (!params['moq']) {
+      setIsOpened(true)
+      setErrText('请输入起订量')
+      return
+    }
+
+    if (!params['factoryArea']) {
+      setIsOpened(true)
+      setErrText('请输入厂房面积')
+      return
+    }
+
+    if (!params['effectiveLocation']) {
+      setIsOpened(true)
+      setErrText('请输入有效车位')
+      return
+    }
+
+    if (!params['staffNumber']) {
+      setIsOpened(true)
+      setErrText('请输入员工总数')
+      return
+    }
+
+    if (!params['productLineNum']) {
+      setIsOpened(true)
+      setErrText('请输入生产线')
+      return
+    }
+
+    params.enterpriseType = 0
+    params.establishedTime = params.establishedTime
+      ? moment(params.establishedTime).valueOf()
+      : null
+    console.log(params, 'params')
+    // const res = await enterpriseInfoSave(params)
+    // console.log('🚀 ~ file: index.tsx ~ line 156 ~ onSubmit ~ res', res)
   }
 
   const onReset = () => {}
-
-  const onAreaColumnChange = event => {
-    const {
-      detail: { column, value }
-    } = event
-
-    if (column === 0) {
-      const target = provinceData[value]
-      const province =
-        provinceData.find(item => item.value === target.value) || {}
-      province.children = province.children || []
-      const cData = [{ label: '不限', value: 0 }, ...province.children]
-      const aData = [{ label: '不限', value: 0 }]
-
-      setCityData(cData)
-      setAreaData(aData)
-      // setProvinceIdx(value)
-      setAreaValue([value, 0, 0])
-    }
-    if (column === 1) {
-      const target = cityData.find(item => item.value === cityData[value].value)
-      // setCityIdx(value)
-
-      setAreaData(
-        Array.isArray(target.children)
-          ? [{ label: '不限', value: 0 }, ...target.children]
-          : [{ label: '不限', value: 0 }]
-      )
-      setAreaValue([areaValue[0], value, 0])
-    }
-  }
-
-  const getAreaInfo = useMemo(() => {
-    const target = params['areaValue']
-    return isArray(target) && target.length
-      ? target.reduce((prev, item, idx) => {
-          if (idx === 0) {
-            prev = provinceData[item].label
-          }
-          if (idx === 1) {
-            if (cityData[item].label !== '不限') {
-              prev += '-' + cityData[item].label
-            }
-          }
-          if (idx === 2) {
-            if (areaData[item].label !== '不限') {
-              prev += '-' + areaData[item].label
-            }
-          }
-          return prev
-        }, '')
-      : '请选择地区'
-  }, [params.areaValue])
 
   const productModalShow = () => {
     setProductFlag(f => !f)
@@ -275,7 +255,9 @@ const FactoryEntry = () => {
     setProductTypeFlag(f => !f)
   }
 
-  // setProductTypeModalShow
+  const processTypeModalShow = () => {
+    setProcessTypeFlag(f => !f)
+  }
 
   const getProducts = useMemo(() => {
     const target = params['mainCategoriesList'] || []
@@ -302,12 +284,6 @@ const FactoryEntry = () => {
   }, [params.materialTypeValues, plusMaterialType])
 
   const getLabels = (options, field) => {
-    console.log('🚀 ~ file: index.tsx ~ line 301 ~ getLabels ~ field', field)
-    console.log(
-      '🚀 ~ file: index.tsx ~ line 301 ~ getLabels ~ options',
-      options
-    )
-    console.log(params[field], 'params[field]')
     if (isArray(params[field])) {
       return params[field].reduce((prev, item, idx) => {
         const target = options.find(i => i.value === item) || {}
@@ -318,7 +294,30 @@ const FactoryEntry = () => {
     }
   }
 
-  console.log(params, 'params')
+  const areaChange = areaInfo => {
+    const keys = Reflect.ownKeys(areaInfo)
+    const nParams = cloneDeep(params)
+    keys.forEach(item => {
+      nParams[item] = areaInfo[item]
+    })
+    setParams(nParams)
+  }
+
+  const toastClose = () => {
+    setIsOpened(false)
+  }
+
+  const addressChoose = () => {
+    Taro.chooseLocation({
+      success: function (res) {
+        const nParams = cloneDeep(params)
+        nParams['address'] = res.address
+        nParams['latitude'] = res.latitude
+        nParams['longitude'] = res.longitude
+        setParams(nParams)
+      }
+    })
+  }
 
   return (
     <View>
@@ -376,7 +375,6 @@ const FactoryEntry = () => {
             onChange={event =>
               handleChange(event.detail.value, 'establishedTime')
             }
-            value={params['establishedTime']}
           >
             <AtList>
               <AtListItem
@@ -388,42 +386,34 @@ const FactoryEntry = () => {
                 extraText={
                   params['establishedTime']
                     ? moment(params['establishedTime']).format('YYYY-MM-DD')
-                    : '请选择时间'
+                    : '请选择成立时间'
                 }
               />
             </AtList>
           </Picker>
 
-          <Picker
-            mode="multiSelector"
-            value={params['areaValue']}
-            rangeKey={'label'}
-            range={[provinceData, cityData, areaData]}
-            onChange={event => handleChange(event.detail.value, 'areaValue')}
-            onColumnChange={throttle(onAreaColumnChange, 50)}
-          >
-            <AtList>
-              <AtListItem
-                className={classNames(
-                  styles.timeListItem,
-                  !params['areaValue'] ? styles.placeholder : ''
-                )}
-                title="请选择地区"
-                extraText={getAreaInfo}
-              />
-            </AtList>
-          </Picker>
+          <AreaPicker
+            callback={areaChange}
+            areaInfo={{
+              provinceId: params.provinceId,
+              cityId: params.cityId,
+              districtId: params.districtId
+            }}
+          ></AreaPicker>
 
-          <AtInput
-            required
-            className={styles.cusInput}
-            name="address"
-            title="工厂地址"
-            type="text"
-            placeholder="请填写工厂地址"
-            value={params['address']}
-            onChange={event => handleChange(event, 'address')}
-          />
+          <View className={styles.cusFormItem}>
+            <Text className={classNames(styles.cusLabel, styles.required)}>
+              工厂地址
+            </Text>
+            <Text
+              className={
+                params['address'] ? styles.cusValue : styles.cusPlaceholder
+              }
+              onClick={addressChoose}
+            >
+              {params['address'] ? params['address'] : '请填写工厂地址'}
+            </Text>
+          </View>
         </View>
 
         <View className={styles.processingInfo}>
@@ -454,6 +444,24 @@ const FactoryEntry = () => {
                 handleChange(event, 'mainProductCategoriesDesc')
               }
             />
+          </View>
+
+          <View onClick={productTypeModalShow} className={styles.cusFormItem}>
+            <Text className={classNames(styles.cusLabel, styles.required)}>
+              生产方式
+            </Text>
+            <Text
+              className={classNames(
+                styles.cusValue,
+                !getLabels(productType, 'productTypeList')
+                  ? styles.cusPlaceholder
+                  : ''
+              )}
+            >
+              {getLabels(productType, 'productTypeList')
+                ? getLabels(productType, 'productTypeList')
+                : '请选择生产方式'}
+            </Text>
           </View>
 
           <View onClick={materialModalShow} className={styles.cusFormItem}>
@@ -488,20 +496,20 @@ const FactoryEntry = () => {
             </Text>
           </View>
 
-          <View onClick={productTypeModalShow} className={styles.cusFormItem}>
+          <View onClick={processTypeModalShow} className={styles.cusFormItem}>
             <Text className={classNames(styles.cusLabel, styles.required)}>
               加工类型
             </Text>
             <Text
               className={classNames(
                 styles.cusValue,
-                !getLabels(typeOptions, 'factoryProcessTypeList')
+                !getLabels(processType, 'processTypeList')
                   ? styles.cusPlaceholder
                   : ''
               )}
             >
-              {getLabels(typeOptions, 'factoryProcessTypeList')
-                ? getLabels(typeOptions, 'factoryProcessTypeList')
+              {getLabels(processType, 'processTypeList')
+                ? getLabels(processType, 'processTypeList')
                 : '请选择加工类型'}
             </Text>
           </View>
@@ -588,7 +596,7 @@ const FactoryEntry = () => {
             />
           </View>
 
-          {/* <View>
+          <View>
             <View className={styles.photoTitle}>logo</View>
             <View className={styles.logoPhotoBox}>
               <ImagePicker
@@ -642,7 +650,7 @@ const FactoryEntry = () => {
                 }
               ></ImagePicker>
             ))}
-          </View> */}
+          </View>
         </View>
 
         <AtButton onClick={onSubmit} type={'primary'} className={styles.btn}>
@@ -650,7 +658,12 @@ const FactoryEntry = () => {
         </AtButton>
       </AtForm>
 
-      <AtToast isOpened={isOpened} text={errText}></AtToast>
+      <AtToast
+        isOpened={isOpened}
+        onClose={toastClose}
+        text={errText}
+        duration={1000}
+      ></AtToast>
 
       {productFlag && (
         <CusProductModal
@@ -678,14 +691,25 @@ const FactoryEntry = () => {
         />
       )}
 
-      {productTypeFlag && (
+      {processTypeFlag && (
         <CusModal
           options={processType}
+          visible={processTypeFlag}
+          onCancel={processTypeModalShow}
+          title={'加工类型'}
+          callback={event => handleChange(event, 'processTypeList')}
+          value={params['processTypeList'] || []}
+        />
+      )}
+
+      {productTypeFlag && (
+        <CusModal
+          options={productType}
           visible={productTypeFlag}
           onCancel={productTypeModalShow}
-          title={'加工类型'}
-          callback={event => handleChange(event, 'factoryProcessTypeList')}
-          value={params['factoryProcessTypeList'] || []}
+          title={'生产方式'}
+          callback={event => handleChange(event, 'productTypeList')}
+          value={params['productTypeList'] || []}
         />
       )}
     </View>

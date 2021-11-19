@@ -1,3 +1,4 @@
+import { EMPTY_IMG } from '@/utils/tool'
 import { View, Image } from '@tarojs/components'
 import { isArray } from 'lodash'
 import styles from './index.module.less'
@@ -47,7 +48,7 @@ const EnterpriseCard = props => {
             return (
               <Image
                 key={idx}
-                src={item.thumbUrl}
+                src={item.thumbUrl || EMPTY_IMG}
                 className={styles.img}
               ></Image>
             )

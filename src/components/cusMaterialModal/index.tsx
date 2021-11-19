@@ -5,6 +5,7 @@ import { useState } from 'react'
 import { cloneDeep } from 'lodash'
 import classNames from 'classnames'
 import { useStores, observer } from '@/store/mobx'
+import { EMPTY_IMG } from '@/utils/tool'
 
 const CusMaterialModal = props => {
   const { onCancel, visible, callback, value = [] } = props
@@ -52,7 +53,7 @@ const CusMaterialModal = props => {
               onClick={() => materialClick(item.value)}
             >
               <Image
-                src={''}
+                src={'' || EMPTY_IMG}
                 className={classNames(
                   styles.img,
                   selectValues.includes(item.value) ? styles.activeImg : ''

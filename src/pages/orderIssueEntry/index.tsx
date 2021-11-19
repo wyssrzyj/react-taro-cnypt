@@ -11,15 +11,22 @@ import {
   AtTextarea,
   AtImagePicker
 } from 'taro-ui'
-import { useEffect, useState, useMemo } from 'react'
-import { cloneDeep, isArray, throttle } from 'lodash'
+import { useState, useMemo } from 'react'
+import { cloneDeep, isArray } from 'lodash'
 import moment from 'moment'
 import classNames from 'classnames'
 import { useStores, observer } from '@/store/mobx'
-import { CusProductModal, CusModal, ImagePicker } from '@/components'
-import { matchTreeData } from '@/utils/tool'
+import {
+  CusProductModal,
+  CusModal,
+  ImagePicker,
+  AreaPicker
+} from '@/components'
+import { matchTreeData, phoneReg } from '@/utils/tool'
 import { upload } from '@/utils/upload'
 
+const host =
+  'https://capacity-platform.oss-cn-hangzhou.aliyuncs.com/capacity-platform/mobile/images'
 const BACK_ICON =
   'https://capacity-platform.oss-cn-hangzhou.aliyuncs.com/capacity-platform/mobile/icon/back.png'
 
@@ -30,20 +37,14 @@ const FactoryEntry = () => {
   const {
     // getDistrict,
     productCategoryList,
-    dictionary,
-    district
+    dictionary
   } = commonStore
   const { purchaserRole } = dictionary
-  const { getEnterpriseInfo } = factoryStore
+  const { getEnterpriseInfo, enterpriseInfoSave } = factoryStore
 
   const [params, setParams] = useState<any>({})
   const [errText, setErrText] = useState('')
   const [isOpened, setIsOpened] = useState(false)
-
-  const [provinceData, setProvinceData] = useState<any[]>([])
-  const [cityData, setCityData] = useState<any[]>([])
-  const [areaData, setAreaData] = useState<any[]>([])
-  const [areaValue, setAreaValue] = useState<any[]>([0, 0, 0])
 
   const [productFlag, setProductFlag] = useState<boolean>(false)
   const [rolesFlag, setRolesFlag] = useState<boolean>(false)
@@ -55,51 +56,6 @@ const FactoryEntry = () => {
       count: 3
     }
   ]
-  useEffect(() => {
-    ;(async () => {
-      const res = cloneDeep(district)
-      // const res = await getDistrict()
-      setProvinceData(res)
-      const cData = [{ label: '不限', value: 0 }, ...res[0].children]
-      const aData = [{ label: '不限', value: 0 }]
-      setCityData(cData)
-      setAreaData(aData)
-    })()
-  }, [district])
-
-  useEffect(() => {
-    ;(async () => {
-      if (!provinceData.length) return
-      const info = await getEnterpriseInfo()
-      info.establishedTime = info.establishedTime
-        ? moment(info.establishedTime)
-        : null
-
-      const provinceIdx = provinceData.findIndex(
-        (item: any) => +item.value === +info.provinceId
-      )
-
-      const citys = provinceIdx > -1 ? provinceData[provinceIdx].children : []
-      citys.unshift({ label: '不限', value: 0 })
-      const cityIdx =
-        provinceIdx > -1 && isArray(citys)
-          ? citys.findIndex((item: any) => +item.value === +info.cityId)
-          : -1
-      setCityData(citys)
-
-      const districts = cityIdx > -1 ? citys[cityIdx].children : []
-      districts.unshift({ label: '不限', value: 0 })
-      const districtIdx =
-        cityIdx > -1 && isArray(districts)
-          ? districts.findIndex((item: any) => +item.value === +info.districtId)
-          : -1
-      setAreaData(districts)
-      info.areaValue = [provinceIdx, cityIdx, districtIdx]
-
-      // setParams(info)
-      console.log('🚀 ~ file: index.tsx ~ line 78 ~ info', info)
-    })()
-  }, [provinceData])
 
   const goBack = () => {
     Taro.navigateBack()
@@ -127,77 +83,83 @@ const FactoryEntry = () => {
   const customRequest = async ({ url }) => {
     const imgUrl = await upload(url)
     return {
-      url: imgUrl
+      url: imgUrl,
+      thumbUrl: imgUrl,
+      name: imgUrl.replace(host, '')
     }
   }
 
-  const onSubmit = () => {
+  const onSubmit = async () => {
     console.log(params, 'params')
     if (!params['contactsName']) {
       setIsOpened(true)
       setErrText('请输入联系人')
+      return
     }
 
-    // Taro.redirectTo({
-    //   url: '/pages/index/index'
-    // })
+    if (!params['mobilePhone'] || !phoneReg.test(params['mobilePhone'])) {
+      setIsOpened(true)
+      setErrText('请输入正确的手机号')
+      return
+    }
+
+    if (!params['enterpriseName']) {
+      setIsOpened(true)
+      setErrText('请输入企业名称')
+      return
+    }
+
+    if (!params['establishedTime']) {
+      setIsOpened(true)
+      setErrText('请选择成立时间')
+      return
+    }
+
+    if (!params['roleCodes'] || !params['roleCodes'].length) {
+      setIsOpened(true)
+      setErrText('请选择企业角色')
+      return
+    }
+
+    if (!params['provinceId']) {
+      setIsOpened(true)
+      setErrText('请选择地区')
+      return
+    }
+
+    if (!params['address']) {
+      setIsOpened(true)
+      setErrText('请输入工厂地址')
+      return
+    }
+
+    if (!params['mainCategoriesList'] || !params['mainCategoriesList'].length) {
+      setIsOpened(true)
+      setErrText('请选择主营类别')
+      return
+    }
+
+    if (!params['yearOrderTransaction']) {
+      setIsOpened(true)
+      setErrText('请输入年发单量')
+      return
+    }
+
+    if (!params['enterpriseDesc']) {
+      setIsOpened(true)
+      setErrText('请输入企业简介')
+      return
+    }
+    params.enterpriseType = 1
+    params.establishedTime = params.establishedTime
+      ? moment(params.establishedTime).valueOf()
+      : null
+    console.log(params, 'params')
+    const res = await enterpriseInfoSave(params)
+    console.log('🚀 ~ file: index.tsx ~ line 156 ~ onSubmit ~ res', res)
   }
 
   const onReset = () => {}
-
-  const onAreaColumnChange = event => {
-    const {
-      detail: { column, value }
-    } = event
-
-    if (column === 0) {
-      const target = provinceData[value]
-      const province =
-        provinceData.find(item => item.value === target.value) || {}
-      province.children = province.children || []
-      const cData = [{ label: '不限', value: 0 }, ...province.children]
-      const aData = [{ label: '不限', value: 0 }]
-
-      setCityData(cData)
-      setAreaData(aData)
-      // setProvinceIdx(value)
-      setAreaValue([value, 0, 0])
-    }
-    if (column === 1) {
-      const target = cityData.find(item => item.value === cityData[value].value)
-      // setCityIdx(value)
-
-      setAreaData(
-        Array.isArray(target.children)
-          ? [{ label: '不限', value: 0 }, ...target.children]
-          : [{ label: '不限', value: 0 }]
-      )
-      setAreaValue([areaValue[0], value, 0])
-    }
-  }
-
-  const getAreaInfo = useMemo(() => {
-    const target = params['areaValue']
-    return isArray(target) && target.length
-      ? target.reduce((prev, item, idx) => {
-          if (idx === 0) {
-            prev = provinceData[item].label
-          }
-          if (idx === 1) {
-            if (cityData[item].label !== '不限') {
-              prev += '-' + cityData[item].label
-            }
-          }
-
-          if (idx === 2) {
-            if (areaData[item].label !== '不限') {
-              prev += '-' + areaData[item].label
-            }
-          }
-          return prev
-        }, '')
-      : '请选择地区'
-  }, [params])
 
   const productModalShow = () => {
     setProductFlag(f => !f)
@@ -212,7 +174,7 @@ const FactoryEntry = () => {
   const getProducts = useMemo(() => {
     const target = params['mainCategoriesList'] || []
     const matches = target.reduce((prev, item, idx) => {
-      const product = matchTreeData(productCategoryList, item) || {}
+      const product = matchTreeData(productCategoryList, item, 'code') || {}
       return (
         prev + (product.name ? `${idx !== 0 ? '、' : ''}${product.name}` : '')
       )
@@ -230,6 +192,31 @@ const FactoryEntry = () => {
         )
       }, '')
     }
+  }
+
+  const areaChange = areaInfo => {
+    const keys = Reflect.ownKeys(areaInfo)
+    const nParams = cloneDeep(params)
+    keys.forEach(item => {
+      nParams[item] = areaInfo[item]
+    })
+    setParams(nParams)
+  }
+
+  const toastClose = () => {
+    setIsOpened(false)
+  }
+
+  const addressChoose = () => {
+    Taro.chooseLocation({
+      success: function (res) {
+        const nParams = cloneDeep(params)
+        nParams['address'] = res.address
+        nParams['latitude'] = res.latitude
+        nParams['longitude'] = res.longitude
+        setParams(nParams)
+      }
+    })
   }
 
   return (
@@ -323,27 +310,16 @@ const FactoryEntry = () => {
             </Text>
           </View>
 
-          <Picker
-            mode="multiSelector"
-            value={params['areaValue']}
-            rangeKey={'label'}
-            range={[provinceData, cityData, areaData]}
-            onChange={event => handleChange(event.detail.value, 'areaValue')}
-            onColumnChange={throttle(onAreaColumnChange, 50)}
-          >
-            <AtList>
-              <AtListItem
-                className={classNames(
-                  styles.timeListItem,
-                  !params['areaValue'] ? styles.placeholder : ''
-                )}
-                title="所在地区"
-                extraText={getAreaInfo}
-              />
-            </AtList>
-          </Picker>
+          <AreaPicker
+            callback={areaChange}
+            areaInfo={{
+              provinceId: params.provinceId,
+              cityId: params.cityId,
+              districtId: params.districtId
+            }}
+          ></AreaPicker>
 
-          <AtInput
+          {/* <AtInput
             required
             className={styles.cusInput}
             name="address"
@@ -352,7 +328,21 @@ const FactoryEntry = () => {
             placeholder="请填写工厂地址"
             value={params['address']}
             onChange={event => handleChange(event, 'address')}
-          />
+          /> */}
+
+          <View className={styles.cusFormItem}>
+            <Text className={classNames(styles.cusLabel, styles.required)}>
+              工厂地址
+            </Text>
+            <Text
+              className={
+                params['address'] ? styles.cusValue : styles.cusPlaceholder
+              }
+              onClick={addressChoose}
+            >
+              {params['address'] ? params['address'] : '请填写工厂地址'}
+            </Text>
+          </View>
         </View>
 
         <View className={styles.processingInfo}>
@@ -429,12 +419,11 @@ const FactoryEntry = () => {
             <View className={styles.logoPhotoBox}>
               <ImagePicker
                 addTitle={'logo'}
-                files={params['enterpriseLogoUrl']}
-                callback={event => imgsChange(event, 'enterpriseLogoUrl')}
+                files={params['logoImage']}
+                callback={event => imgsChange(event, 'logoImage')}
                 count={1}
                 showAddBtn={
-                  params['enterpriseLogoUrl'] &&
-                  params['enterpriseLogoUrl'].length >= 1
+                  params['logoImage'] && params['logoImage'].length >= 1
                     ? false
                     : true
                 }
@@ -486,7 +475,12 @@ const FactoryEntry = () => {
         </AtButton>
       </AtForm>
 
-      <AtToast isOpened={isOpened} text={errText}></AtToast>
+      <AtToast
+        isOpened={isOpened}
+        onClose={toastClose}
+        text={errText}
+        duration={1000}
+      ></AtToast>
 
       {productFlag && (
         <CusProductModal
@@ -494,6 +488,7 @@ const FactoryEntry = () => {
           onCancel={productModalShow}
           callback={event => handleChange(event, 'mainCategoriesList')}
           value={params['mainCategoriesList'] || []}
+          keyName={'code'}
         />
       )}
 

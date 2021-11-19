@@ -50,10 +50,10 @@ const Verify = () => {
     const res = await resetPwd(param)
     console.log('8888', res)
 
-    // res &&
-    //   Taro.redirectTo({
-    //     url: '/pages/login/pwdLogin/index'
-    //   })
+    res &&
+      Taro.redirectTo({
+        url: '/pages/login/pwdLogin/index'
+      })
     // console.log(param)
   }
 
