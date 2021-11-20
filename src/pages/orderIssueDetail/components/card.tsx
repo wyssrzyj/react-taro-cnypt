@@ -6,6 +6,7 @@ import { useEffect, useState } from 'react'
 import { matchTreeData } from '@/utils/tool'
 import moment from 'moment'
 import Taro from '@tarojs/taro'
+import classNames from 'classnames'
 
 const LOCATION_ICON =
   'https://capacity-platform.oss-cn-hangzhou.aliyuncs.com/capacity-platform/mobile/icon/diqu_bai.png'
@@ -53,7 +54,10 @@ const Card = props => {
 
   return (
     <View className={styles.card} onClick={toOrderDetail}>
-      <Image src={img || EMPTY_IMG} className={styles.cardImg}></Image>
+      <Image
+        src={img}
+        className={classNames(styles.cardImg, !img ? styles.emptyImg : '')}
+      ></Image>
       <View className={styles.cardInfo}>
         <View className={styles.titleBox}>
           <Text className={styles.cardTitle}>{title}</Text>

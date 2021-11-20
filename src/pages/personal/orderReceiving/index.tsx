@@ -47,7 +47,6 @@ const Verify = () => {
   // 路由状态
   useEffect(() => {
     if (Number(params.tid)) {
-      // purchaserInquiryId: params.ids
       const tid = Number(params.tid)
       if (tid === null) {
         setCurrent(0)
@@ -67,7 +66,6 @@ const Verify = () => {
   useEffect(() => {
     api()
   }, [list])
-
   //  过滤 被拒绝和等待答复
   const eliminate = (data, key) => {
     let arr = data.filter(item => item.status !== key)

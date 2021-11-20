@@ -26,10 +26,6 @@ export default class HomeStore {
       const res: Partial<Response> = await HTTP.get(
         '/api/factory/district/list-tree'
       )
-      console.log(
-        '🚀 ~ file: index.tsx ~ line 29 ~ HomeStore ~ @actiongetInfo= ~ res',
-        res
-      )
       if (res.code === 200) {
         return res.data
       }
@@ -63,7 +59,9 @@ export default class HomeStore {
   @action getOrderList = async pageNum => {
     const params = {
       pageNum: pageNum,
-      pageSize: 10
+      pageSize: 10,
+      sortField: 'update_time',
+      sortType: 'Desc'
     }
     try {
       const res: Partial<Response> = await HTTP.post(

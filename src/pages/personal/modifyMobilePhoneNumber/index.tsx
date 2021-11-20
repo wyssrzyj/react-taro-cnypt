@@ -64,7 +64,7 @@ const modifyMobilePhoneNumber = () => {
     setVerification(e)
   }
   const handleClick = () => {
-    redirectTo({ url: '/pages/personal/accountNumber/index' })
+    Taro.navigateBack()
   }
   const btn = async () => {
     if (regularJudge) {

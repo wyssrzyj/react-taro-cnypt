@@ -248,6 +248,18 @@ export default class UserInterface {
         duration: 1500
       })
       if (res.code === 200) {
+        Taro.setStorage({
+          key: 'token',
+          data: null
+        })
+        Taro.setStorage({
+          key: 'refresh',
+          data: null
+        })
+        Taro.setStorage({
+          key: 'currentUser',
+          data: null
+        })
         return true
       }
       return false

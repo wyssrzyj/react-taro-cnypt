@@ -1,7 +1,6 @@
 import { View, Text, Image } from '@tarojs/components'
 import styles from './index.module.less'
 import Taro from '@tarojs/taro'
-
 const careful = ({ userInfo }) => {
   console.log(userInfo)
   const handleClick = () => {
@@ -16,7 +15,6 @@ const careful = ({ userInfo }) => {
     'https://capacity-platform.oss-cn-hangzhou.aliyuncs.com/capacity-platform/mobile/icon/time.png'
   return (
     <View className={styles.bottoms}>
-      {/* // <View className={styles.bottoms}> */}
       <View className={styles.flex}>
         <View>
           <Image src={telephone} className={styles.icon}></Image>

@@ -5,19 +5,22 @@ import { AtIcon, AtActionSheet, AtActionSheetItem } from 'taro-ui'
 import styles from './index.module.less'
 import Taro from '@tarojs/taro'
 import { useStores } from '@/store/mobx'
+import { isNil } from 'lodash'
 
-const management = ({ userInfo, list }) => {
-  let enterprise =
-    'https://capacity-platform.oss-cn-hangzhou.aliyuncs.com/capacity-platform/mobile/icon/enterprise.png'
-  let account =
-    'https://capacity-platform.oss-cn-hangzhou.aliyuncs.com/capacity-platform/mobile/icon/accountNumber.png'
-  let excellentProduction =
-    'https://capacity-platform.oss-cn-hangzhou.aliyuncs.com/capacity-platform/mobile/icon/excellentProduction.png'
-  let signOuts =
-    'https://capacity-platform.oss-cn-hangzhou.aliyuncs.com/capacity-platform/mobile/icon/signOut.png'
+let enterprise =
+  'https://capacity-platform.oss-cn-hangzhou.aliyuncs.com/capacity-platform/mobile/icon/enterprise.png'
+let account =
+  'https://capacity-platform.oss-cn-hangzhou.aliyuncs.com/capacity-platform/mobile/icon/accountNumber.png'
+let excellentProduction =
+  'https://capacity-platform.oss-cn-hangzhou.aliyuncs.com/capacity-platform/mobile/icon/excellentProduction.png'
+let signOuts =
+  'https://capacity-platform.oss-cn-hangzhou.aliyuncs.com/capacity-platform/mobile/icon/signOut.png'
 
-  let factory =
-    'https://capacity-platform.oss-cn-hangzhou.aliyuncs.com/capacity-platform/mobile/icon/factory.png'
+let factory =
+  'https://capacity-platform.oss-cn-hangzhou.aliyuncs.com/capacity-platform/mobile/icon/factory.png'
+
+const Managemenet = props => {
+  const { userInfo, list } = props
   const { userInterface } = useStores()
   const { signOut } = userInterface
   let type = userInfo //判断用户权限  // 企业类型 0 加工厂 1 发单商
@@ -35,25 +38,25 @@ const management = ({ userInfo, list }) => {
     Taro.redirectTo({ url: '/pages/login/index' })
   }
   const about = () => {
-    Taro.redirectTo({ url: '/pages/personal/myEexcellentProduct/index' })
+    Taro.navigateTo({ url: '/pages/personal/myEexcellentProduct/index' })
   }
   const accountNumber = () => {
-    if (list.userName !== undefined) {
+    if (!isNil(list.userName)) {
       Taro.navigateTo({
         url: '/pages/personal/accountNumber/index?id'
       })
     } else {
-      Taro.navigateTo({ url: '/pages/login/index' })
+      Taro.redirectTo({ url: '/pages/login/index' })
     }
   }
   const factoryManagement = () => {
-    Taro.redirectTo({
+    Taro.navigateTo({
       url: '/pages/factoryEntry/index?modify=1'
     })
   }
 
   const enterpriseManagement = () => {
-    Taro.redirectTo({
+    Taro.navigateTo({
       url: '/pages/orderIssueEntry/index?modify=1'
     })
   }
@@ -62,46 +65,42 @@ const management = ({ userInfo, list }) => {
     <View>
       <View className={styles.division}></View>
       {type === '0' ? (
-        <>
-          <View
-            className={styles.order}
-            onClick={() => {
-              factoryManagement()
-            }}
-          >
-            <View className={styles.content}>
-              <View className={styles.remove}>
-                <Image className={styles.removeIcon} src={factory}></Image>
-              </View>
-              <Text className={styles.txt}>工厂管理</Text>
+        <View
+          className={styles.order}
+          onClick={() => {
+            factoryManagement()
+          }}
+        >
+          <View className={styles.content}>
+            <View className={styles.remove}>
+              <Image className={styles.removeIcon} src={factory}></Image>
             </View>
-
-            <Text className={styles.iconmy}>
-              <AtIcon value="chevron-right" size="15" color="#999999"></AtIcon>
-            </Text>
+            <Text className={styles.txt}>工厂管理</Text>
           </View>
-        </>
+
+          <Text className={styles.iconmy}>
+            <AtIcon value="chevron-right" size="15" color="#999999"></AtIcon>
+          </Text>
+        </View>
       ) : null}
       {type === '1' ? (
-        <>
-          <View
-            className={styles.order}
-            onClick={() => {
-              enterpriseManagement()
-            }}
-          >
-            <View className={styles.content}>
-              <View className={styles.remove}>
-                <Image className={styles.removeIcon} src={enterprise}></Image>
-              </View>
-              <Text className={styles.txt}>企业管理</Text>
+        <View
+          className={styles.order}
+          onClick={() => {
+            enterpriseManagement()
+          }}
+        >
+          <View className={styles.content}>
+            <View className={styles.remove}>
+              <Image className={styles.removeIcon} src={enterprise}></Image>
             </View>
-
-            <Text className={styles.iconmy}>
-              <AtIcon value="chevron-right" size="15" color="#999999"></AtIcon>
-            </Text>
+            <Text className={styles.txt}>企业管理</Text>
           </View>
-        </>
+
+          <Text className={styles.iconmy}>
+            <AtIcon value="chevron-right" size="15" color="#999999"></AtIcon>
+          </Text>
+        </View>
       ) : null}
 
       <View className={styles.order} onClick={accountNumber}>
@@ -158,4 +157,4 @@ const management = ({ userInfo, list }) => {
   )
 }
 
-export default management
+export default Managemenet

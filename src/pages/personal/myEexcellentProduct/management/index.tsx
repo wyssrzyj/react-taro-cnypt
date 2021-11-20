@@ -5,10 +5,10 @@ import Taro from '@tarojs/taro'
 
 const Management = () => {
   const handleClick = () => {
-    Taro.redirectTo({ url: '/pages/personal/userAgreement/index' })
+    Taro.navigateTo({ url: '/pages/personal/userAgreement/index' })
   }
   const privacy = () => {
-    Taro.redirectTo({ url: '/pages/personal/privacyAgreement/index' })
+    Taro.navigateTo({ url: '/pages/personal/privacyAgreement/index' })
   }
   return (
     <View>

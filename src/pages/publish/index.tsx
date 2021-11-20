@@ -233,7 +233,7 @@ const FactoryEntry = () => {
       ? moment(nParams.deliveryDate).valueOf()
       : null
     await publishOrder(nParams)
-    goBack()
+    Taro.redirectTo({ url: '/pages/index/index' })
   }
 
   const toastClose = () => {

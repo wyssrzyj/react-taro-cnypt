@@ -19,6 +19,15 @@ const OrderCard = props => {
     })
   }
 
+  const imgPreview = url => {
+    Taro.previewImage({
+      // 所有图片
+      urls: data.imgs,
+      // 当前图片
+      current: url
+    })
+  }
+
   return (
     <View className={styles.orderCard}>
       <View className={styles.title}>{data.name}</View>
@@ -40,8 +49,9 @@ const OrderCard = props => {
             return (
               <Image
                 key={idx}
-                src={item || EMPTY_IMG}
+                src={item}
                 className={styles.img}
+                onClick={() => imgPreview(item)}
               ></Image>
             )
           })}
