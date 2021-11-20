@@ -1,6 +1,5 @@
 import { View, Image, Text } from '@tarojs/components'
 import styles from './index.module.less'
-import { AtIcon } from 'taro-ui'
 import Taro from '@tarojs/taro'
 
 const Top = ({ userInfo, list }) => {

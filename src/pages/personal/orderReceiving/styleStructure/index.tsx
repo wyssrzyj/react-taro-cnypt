@@ -13,16 +13,19 @@ import Taro from '@tarojs/taro'
 import { observer, useStores, toJS } from '@/store/mobx'
 import { getTrees } from '../method'
 
-function index({ data, deleteMethod, reOrder, InitiateOrder, earlyEnd }) {
+const styleStructure = ({
+  data,
+  deleteMethod,
+  reOrder,
+  InitiateOrder,
+  earlyEnd
+}) => {
   const { commonStore } = useStores()
   const { productCategoryList = [] } = toJS(commonStore)
 
   const [category, setCategory] = useState<any>([])
   const [windowType, setWindowType] = useState<any>({}) //弹窗类型
   const [popup, setPopup] = useState(false)
-
-  let imgs =
-    'https://capacity-platform.oss-cn-hangzhou.aliyuncs.com/capacity-platform/platform/noData.png'
 
   useEffect(() => {
     if (data.factoryCategoryList) {
@@ -102,7 +105,6 @@ function index({ data, deleteMethod, reOrder, InitiateOrder, earlyEnd }) {
     }).then()
   }
   const btn = id => {
-    console.log(id)
     Taro.redirectTo({
       url: '/pages/personal/feedback/index?tid=' + id
     })
@@ -275,4 +277,4 @@ function index({ data, deleteMethod, reOrder, InitiateOrder, earlyEnd }) {
   )
 }
 
-export default observer(index)
+export default observer(styleStructure)

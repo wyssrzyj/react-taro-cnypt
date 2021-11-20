@@ -1,6 +1,6 @@
 import { View, Image, Picker, Text } from '@tarojs/components'
 import styles from './index.module.less'
-import Taro from '@tarojs/taro'
+import Taro, { useRouter } from '@tarojs/taro'
 import {
   AtForm,
   AtInput,
@@ -63,6 +63,10 @@ const FactoryEntry = () => {
   const [productTypeFlag, setProductTypeFlag] = useState<boolean>(false)
   const [processTypeFlag, setProcessTypeFlag] = useState<boolean>(false)
   const [oldData, setOldData] = useState<any>({})
+  const router = useRouter()
+  const {
+    params: { modify }
+  } = router
 
   useEffect(() => {
     ;(async () => {
@@ -472,7 +476,7 @@ const FactoryEntry = () => {
             className={styles.back}
             onClick={goBack}
           ></Image>
-          <View>工厂入驻</View>
+          <View>{modify ? '工厂管理' : '工厂入驻'}</View>
         </View>
       </View>
 
@@ -761,9 +765,8 @@ const FactoryEntry = () => {
               ></ImagePicker>
             ))}
           </View>
-
           <AtButton onClick={onSubmit} type={'primary'} className={styles.btn}>
-            立即入驻
+            {modify ? '立即修改' : '立即入驻'}
           </AtButton>
         </View>
       </AtForm>

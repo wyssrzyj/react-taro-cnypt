@@ -542,7 +542,7 @@ const OrderIssueEntry = () => {
           </View>
 
           <AtButton onClick={onSubmit} type={'primary'} className={styles.btn}>
-            立即入驻
+            {modify ? '立即修改' : '立即入驻'}
           </AtButton>
         </View>
       </AtForm>

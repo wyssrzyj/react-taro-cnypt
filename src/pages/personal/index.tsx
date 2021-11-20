@@ -64,13 +64,12 @@ const Personal = () => {
               ) : null}
               {jurisdiction === '0' ? <Machining /> : null}
               <Management list={list} userInfo={jurisdiction} />
-              {/* 底部 */}
-              <Careful userInfo={jurisdiction} />
             </View>
           </View>
         </View>
       </View>
-
+      {/* 底部 */}
+      <Careful userInfo={jurisdiction} />
       <TabBar activeTab={2}></TabBar>
     </View>
   )

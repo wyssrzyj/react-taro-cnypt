@@ -3,7 +3,7 @@ import { AtGrid } from 'taro-ui'
 import styles from './index.module.less'
 import Taro from '@tarojs/taro'
 
-function index() {
+const machining = () => {
   const whole = () => {
     Taro.redirectTo({
       url: '/pages/personal/machiningOrderReceiving/index?tid='
@@ -52,4 +52,4 @@ function index() {
   )
 }
 
-export default index
+export default machining

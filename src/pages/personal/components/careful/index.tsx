@@ -1,17 +1,20 @@
 import { View, Text, Image } from '@tarojs/components'
-import { AtIcon } from 'taro-ui'
 import styles from './index.module.less'
-
-const Careful = props => {
-  const { userInfo } = props
-
+import Taro from '@tarojs/taro'
+const careful = ({ userInfo }) => {
+  console.log(userInfo)
+  const handleClick = () => {
+    Taro.redirectTo({ url: '/pages/personal/userAgreement/index' })
+  }
+  const privacy = () => {
+    Taro.redirectTo({ url: '/pages/personal/privacyAgreement/index' })
+  }
   let telephone =
     'https://capacity-platform.oss-cn-hangzhou.aliyuncs.com/capacity-platform/mobile/icon/telephone.png'
   let time =
     'https://capacity-platform.oss-cn-hangzhou.aliyuncs.com/capacity-platform/mobile/icon/time.png'
   return (
     <View className={styles.bottoms}>
-      {/* // <View className={styles.bottoms}> */}
       <View className={styles.flex}>
         <View>
           <Image src={telephone} className={styles.icon}></Image>
@@ -25,10 +28,24 @@ const Careful = props => {
         </View>
       </View>
       <View className={styles.center}>
-        <Text> 用户协议 | 隐私政策</Text>
+        <View
+          onClick={() => {
+            handleClick()
+          }}
+        >
+          用户协议
+        </View>
+        　 |　
+        <View
+          onClick={() => {
+            privacy()
+          }}
+        >
+          隐私政策
+        </View>
       </View>
     </View>
   )
 }
 
-export default Careful
+export default careful

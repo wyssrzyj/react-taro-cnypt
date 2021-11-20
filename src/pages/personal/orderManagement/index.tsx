@@ -1,11 +1,10 @@
 import { useState, useEffect } from 'react'
 import styles from './index.module.less'
 import { View, Image, Text } from '@tarojs/components'
-import { AtNavBar, AtSearchBar, AtTabs } from 'taro-ui'
+import { AtSearchBar, AtTabs } from 'taro-ui'
 import { useReachBottom, useRouter, redirectTo } from '@tarojs/taro'
 import StyleStructure from './styleStructure/index'
 import { useStores, observer } from '@/store/mobx'
-// import Taro from '@tarojs/taro'
 import { cloneDeep } from 'lodash'
 import { Navbar } from '@/components'
 const BACK_ICON =

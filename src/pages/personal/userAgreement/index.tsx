@@ -1,12 +1,14 @@
 import { Image, View, Text } from '@tarojs/components'
 import styles from './index.module.less'
 import Taro from '@tarojs/taro'
-import { Navbar } from '@/components'
+import Navbar from './navBar/index'
+
 const BACK_ICON =
   'https://capacity-platform.oss-cn-hangzhou.aliyuncs.com/capacity-platform/mobile/icon/black_back.png'
-function index() {
+const userAgreement = () => {
+  const { top } = Taro.getMenuButtonBoundingClientRect()
+  const tops = top + 40 + 30
   const handleClick = () => {
-    // Taro.redirectTo({ url: '/pages/personal/myEexcellentProduct/index' })
     Taro.navigateBack()
   }
   return (
@@ -22,7 +24,7 @@ function index() {
         </View>
       </Navbar>
       {/* 内容 */}
-      <View className={styles.container}>
+      <View className={styles.container} style={{ paddingTop: tops + 'px' }}>
         <View className={styles.top}>
           <Text>《优产云用户协议》</Text>
         </View>
@@ -569,4 +571,4 @@ function index() {
   )
 }
 
-export default index
+export default userAgreement

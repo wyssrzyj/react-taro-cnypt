@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import styles from './index.module.less'
 import { View, Image, Text } from '@tarojs/components'
-import { AtNavBar, AtSearchBar, AtTabs } from 'taro-ui'
+import { AtSearchBar, AtTabs } from 'taro-ui'
 import { useReachBottom, useRouter, redirectTo } from '@tarojs/taro'
 import StyleStructure from './styleStructure/index'
 import { useStores, observer } from '@/store/mobx'
@@ -47,7 +47,6 @@ const Verify = () => {
   // 路由状态
   useEffect(() => {
     if (Number(params.tid)) {
-      // purchaserInquiryId: params.ids
       const tid = Number(params.tid)
       if (tid === null) {
         setCurrent(0)
@@ -67,7 +66,6 @@ const Verify = () => {
   useEffect(() => {
     api()
   }, [list])
-
   //  过滤 被拒绝和等待答复
   const eliminate = (data, key) => {
     let arr = data.filter(item => item.status !== key)
@@ -165,7 +163,7 @@ const Verify = () => {
   ]
   const deleteMethod = async id => {
     // 删除
-    await deleteIssuer({ supplierInquiryId: id })
+    await deleteIssuer({ purchaseQuoteId: id })
     api()
   }
   const reOrder = async id => {

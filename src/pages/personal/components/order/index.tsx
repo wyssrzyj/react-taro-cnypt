@@ -3,7 +3,7 @@ import { AtGrid } from 'taro-ui'
 import styles from './index.module.less'
 import Taro from '@tarojs/taro'
 
-function index() {
+const order = () => {
   const handleClick = e => {
     Taro.redirectTo({
       url: '/pages/personal/orderReceiving/index?tid=' + e.id
@@ -91,4 +91,4 @@ function index() {
   )
 }
 
-export default index
+export default order
