@@ -1,6 +1,9 @@
 import Taro, { NodesRef } from '@tarojs/taro'
 import { isEmpty, isArray } from 'lodash'
 
+export const BACK_ICON =
+  'https://capacity-platform.oss-cn-hangzhou.aliyuncs.com/capacity-platform/mobile/icon/back.png'
+
 export const EMPTY_IMG =
   'https://capacity-platform.oss-cn-hangzhou.aliyuncs.com/capacity-platform/platform/noData.png'
 

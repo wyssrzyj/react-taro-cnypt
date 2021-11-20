@@ -36,12 +36,6 @@ const AreaModal = props => {
   }, [])
 
   useEffect(() => {
-    ;(async () => {
-      // await getDistrict()
-    })()
-  }, [])
-
-  useEffect(() => {
     if (isArray(district) && district.length) {
       setProvinceData(district)
       const cData = [...district[0].children]
@@ -95,7 +89,7 @@ const AreaModal = props => {
   }
 
   return (
-    <View className={styles.container}>
+    <View className={styles.container} catchMove>
       <Navbar>
         <View className={styles.navbar}>
           <Image

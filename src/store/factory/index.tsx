@@ -157,11 +157,11 @@ export default class FactoryStore {
 
   // /api/oms/inquiry-purchase/inquiry-list
   // 查询某个发单商的其他订单 POST
-  @action getOtherOrder = async tenantId => {
+  @action getOtherOrder = async enterpriseId => {
     try {
       const res: Partial<Response> = await HTTP.post(
         `/api/oms/inquiry-purchase/list-inquiry-search-applet`,
-        { tenantId }
+        { enterpriseId }
       )
 
       if (res.code === 200) {
