@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import styles from './index.module.less'
-import { View, Image } from '@tarojs/components'
+import { View } from '@tarojs/components'
 import Taro from '@tarojs/taro'
 import Top from './components/top'
 import Order from './components/order'
@@ -9,20 +9,11 @@ import Settled from './components/settled'
 import Management from './components/management'
 import Careful from './components/careful'
 import { useStores } from '@/store/mobx'
-import { Navbar, TabBar } from '@/components'
+import { TabBar } from '@/components'
 const Personal = () => {
-  Taro.setNavigationBarColor({
-    frontColor: '#ffffff',
-    backgroundColor: '#000000',
-    animation: {
-      duration: 400,
-      timingFunc: 'easeIn'
-    }
-  })
   const { top } = Taro.getMenuButtonBoundingClientRect()
 
-  const { userInterface, commonStore } = useStores()
-  const { getDistrict } = commonStore
+  const { userInterface } = useStores()
   const { userInformation } = userInterface
   const [list, setList] = useState({})
   const [jurisdiction, setJurisdiction] = useState({})
@@ -49,9 +40,6 @@ const Personal = () => {
     }
     return res
   }
-  const goBack = () => {
-    Taro.navigateBack()
-  }
 
   return (
     <View>
@@ -70,7 +58,6 @@ const Personal = () => {
                 jurisdiction === 'notLogged' ? styles.subject : styles.subjects
               }
             >
-              {/* <View className={styles.subject}> */}
               {jurisdiction === '1' ? <Order /> : null}
               {jurisdiction === 'notLogged' || jurisdiction === null ? (
                 <Settled type={list} />

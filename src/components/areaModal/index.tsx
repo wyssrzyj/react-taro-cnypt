@@ -1,7 +1,7 @@
-import { View, Button, Image } from '@tarojs/components'
+import { View, Button, Image, Text } from '@tarojs/components'
 import styles from './index.module.less'
 import { useEffect, useRef, useState } from 'react'
-import { cloneDeep } from 'lodash'
+import { cloneDeep, isArray } from 'lodash'
 import classNames from 'classnames'
 import { useStores, observer } from '@/store/mobx'
 import Navbar from '../navbar'
@@ -15,7 +15,7 @@ const BACK_ICON = BASE_URL + '/icon/black_back.png'
 const REMOVE_ICON = BASE_URL + '/icon/remove.png'
 
 const AreaModal = props => {
-  const { onCancel, callback, value = [] } = props
+  const { onCancel, callback, value = [], title = '选择地区' } = props
 
   const { commonStore } = useStores()
   const { district = [] } = commonStore
@@ -26,6 +26,7 @@ const AreaModal = props => {
   const [provinceData, setProvinceData] = useState<any[]>([])
   const [cityData, setCityData] = useState<any[]>([])
   const [selectedValues, setSelectedValues] = useState<string[]>(value)
+  const [provinceSelect, setProvinceSelect] = useState<string>(value)
 
   useEffect(() => {
     Taro.nextTick(async () => {
@@ -41,9 +42,12 @@ const AreaModal = props => {
   }, [])
 
   useEffect(() => {
-    setProvinceData(district)
-    const cData = [...district[0].children]
-    setCityData(cData)
+    if (isArray(district) && district.length) {
+      setProvinceData(district)
+      const cData = [...district[0].children]
+      setCityData(cData)
+      setProvinceSelect(district[0].value)
+    }
   }, [district])
 
   const onClose = () => {
@@ -59,6 +63,7 @@ const AreaModal = props => {
     const target = district.find(item => item.value === id)
     target.children = target.children || []
     const cData = [...target.children]
+    setProvinceSelect(target.value)
     setCityData(cData)
   }
 
@@ -98,7 +103,7 @@ const AreaModal = props => {
             className={styles.back}
             onClick={onClose}
           ></Image>
-          <View>选择地区</View>
+          <View>{title}</View>
         </View>
       </Navbar>
 
@@ -106,10 +111,16 @@ const AreaModal = props => {
         <View className={styles.province}>
           {provinceData.map(item => (
             <View
-              className={styles.provinceItem}
+              className={classNames(styles.provinceItem)}
               onClick={() => provinceChange(item.value)}
             >
-              {item.label}
+              <Text
+                className={
+                  provinceSelect === item.value ? styles.selectedProvince : ''
+                }
+              >
+                {item.label}
+              </Text>
             </View>
           ))}
         </View>

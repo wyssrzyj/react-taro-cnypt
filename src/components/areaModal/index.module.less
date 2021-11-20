@@ -49,22 +49,26 @@
 }
 
 .province {
+  width: 186px;
   height: 100%;
   padding-bottom: 32px;
   overflow-y: auto;
-  flex: 1;
   box-sizing: border-box;
   border-right: 2px solid #efefef;
   padding-bottom: 420px;
+  background: #f4f7fd;
 }
 
 .city {
+  flex: 1;
+  // display: flex;
+  // flex-wrap: wrap;
   height: 100%;
   padding-bottom: 32px;
   overflow-y: auto;
-  flex: 1;
   box-sizing: border-box;
   border-right: 2px solid #efefef;
+  padding-left: 30px;
   padding-bottom: 420px;
 }
 
@@ -82,17 +86,39 @@
   height: 80px !important;
 }
 
-.provinceItem,
-.cityItem,
-.areaItem {
+.provinceItem {
   display: flex;
+  align-items: center;
+  min-height: 90px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 12px;
+  font-size: 28px;
+  box-sizing: border-box;
+  border: 2px solid #e2ebfc;
+}
+
+.selectedProvince {
+  color: #3b80ff;
+}
+
+.cityItem {
+  margin-right: 20px;
+  margin-bottom: 24px;
+  display: inline-flex;
   align-items: center;
   padding: 16px 24px;
   font-size: 28px;
+  box-sizing: border-box;
+  border-radius: 10px;
+  border: 2px solid #e7e7e7;
 }
 
 .selectedItem {
-  color: #3b80ff;
+  color: #ffffff;
+  background: #3b80ff;
+  border: 2px solid #3b80ff;
 }
 
 .footer {
@@ -113,7 +139,6 @@
 .footerItems {
   height: 220px;
   overflow: auto;
-  // display: flex;
 }
 
 .footerItem {
@@ -122,12 +147,12 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 8px 12px;
+  padding: 16px 24px;
   font-size: 28px;
-  color: #333;
   box-sizing: border-box;
-  border: 2px solid #333;
   border-radius: 8px;
+  color: #3b80ff;
+  border: 2px solid #3b80ff;
 }
 
 .btns {
@@ -140,7 +165,7 @@
   align-items: center;
   justify-content: center;
   flex: 1;
-  height: 64px !important;
+  height: 80px !important;
   font-size: 28px;
   margin-right: 32px;
 }
@@ -150,8 +175,9 @@
   align-items: center;
   justify-content: center;
   flex: 2;
-  height: 64px !important;
+  height: 80px !important;
   font-size: 28px;
+  background: #3b80ff !important;
 }
 
 .removeIcon {

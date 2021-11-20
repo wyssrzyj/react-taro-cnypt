@@ -2,8 +2,8 @@ import { View, Text, Image } from '@tarojs/components'
 import { AtIcon } from 'taro-ui'
 import styles from './index.module.less'
 
-function index({ userInfo }) {
-  console.log(userInfo)
+const Careful = props => {
+  const { userInfo } = props
 
   let telephone =
     'https://capacity-platform.oss-cn-hangzhou.aliyuncs.com/capacity-platform/mobile/icon/telephone.png'
@@ -31,4 +31,4 @@ function index({ userInfo }) {
   )
 }
 
-export default index
+export default Careful

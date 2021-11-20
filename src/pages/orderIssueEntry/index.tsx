@@ -37,7 +37,7 @@ const OrderIssueEntry = () => {
     params: { modify }
   } = router
 
-  const { commonStore, factoryStore, refreshStore } = useStores()
+  const { commonStore, factoryStore, refreshStore, loginStore } = useStores()
   const { dealRefresh } = refreshStore
   const {
     // getDistrict,
@@ -47,6 +47,7 @@ const OrderIssueEntry = () => {
   const { purchaserRole } = dictionary
   const { getEnterpriseInfo, enterpriseInfoSave, getEnterprisePhotos } =
     factoryStore
+  const { userInfo } = loginStore
 
   const [params, setParams] = useState<any>({})
   const [errText, setErrText] = useState('')
@@ -77,12 +78,14 @@ const OrderIssueEntry = () => {
         ? moment(enterpriseInfo['establishedTime']).format('YYYY-MM-DD')
         : null
 
-      enterpriseInfo['logoImage'] = [
-        {
-          url: enterpriseInfo['enterpriseLogoUrl'],
-          thumbUrl: enterpriseInfo['enterpriseLogoUrl']
-        }
-      ]
+      if (enterpriseInfo['enterpriseLogoUrl']) {
+        enterpriseInfo['logoImage'] = [
+          {
+            url: enterpriseInfo['enterpriseLogoUrl'],
+            thumbUrl: enterpriseInfo['enterpriseLogoUrl']
+          }
+        ]
+      }
 
       setOldData(enterpriseInfo)
       setParams(enterpriseInfo)
@@ -231,6 +234,7 @@ const OrderIssueEntry = () => {
     }
     await enterpriseInfoSave(params)
     await dealRefresh()
+    await userInfo()
     Taro.redirectTo({
       url: '/pages/index/index'
     })
@@ -318,7 +322,7 @@ const OrderIssueEntry = () => {
             title="联系人"
             type="text"
             placeholder="请填写真实姓名"
-            value={params['contactsName']}
+            value={params['contactsName'] || ''}
             onChange={event => handleChange(event, 'contactsName')}
           />
 
@@ -330,7 +334,7 @@ const OrderIssueEntry = () => {
             title="手机号"
             type="phone"
             placeholder="请填写手机号"
-            value={params['mobilePhone']}
+            value={params['mobilePhone'] || ''}
             onChange={event => handleChange(event, 'mobilePhone')}
           />
         </View>
@@ -343,7 +347,7 @@ const OrderIssueEntry = () => {
             title="企业名称"
             type="text"
             placeholder="请填写企业名称"
-            value={params['enterpriseName']}
+            value={params['enterpriseName'] || ''}
             onChange={event => handleChange(event, 'enterpriseName')}
           />
 
@@ -450,7 +454,7 @@ const OrderIssueEntry = () => {
             title="年发单量"
             type="number"
             placeholder="请填写年发单量"
-            value={params['yearOrderTransaction']}
+            value={params['yearOrderTransaction'] || ''}
             onChange={event => handleChange(event, 'yearOrderTransaction')}
           >
             <View className={styles.addon}>万件</View>
@@ -463,7 +467,7 @@ const OrderIssueEntry = () => {
             title="订单品牌"
             type="number"
             placeholder="请填写订单品牌"
-            value={params['orderBrand']}
+            value={params['orderBrand'] || ''}
             onChange={event => handleChange(event, 'orderBrand')}
           ></AtInput>
         </View>
@@ -476,7 +480,7 @@ const OrderIssueEntry = () => {
             <AtTextarea
               className={styles.cusTextarea}
               placeholder="请填写企业简介"
-              value={params['enterpriseDesc']}
+              value={params['enterpriseDesc'] || ''}
               maxLength={700}
               onChange={event => handleChange(event, 'enterpriseDesc')}
             />

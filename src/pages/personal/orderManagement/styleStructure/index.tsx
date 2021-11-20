@@ -116,7 +116,7 @@ function index({ data, deleteMethod, earlyEnd }) {
     }
   }
   const details = data => {
-    Taro.redirectTo({
+    Taro.navigateTo({
       url: '/pages/orderDetail/index?id=' + data.id
     })
   }

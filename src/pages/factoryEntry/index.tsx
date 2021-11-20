@@ -35,7 +35,7 @@ const BACK_ICON =
 const FactoryEntry = () => {
   const { top } = Taro.getMenuButtonBoundingClientRect()
 
-  const { commonStore, factoryStore, refreshStore } = useStores()
+  const { commonStore, factoryStore, refreshStore, loginStore } = useStores()
   const { productCategoryList, dictionary, productGrade } = commonStore
   const {
     plusMaterialType = [],
@@ -45,6 +45,7 @@ const FactoryEntry = () => {
   const { getEnterpriseInfo, enterpriseInfoSave, getFactoryPhotos } =
     factoryStore
   const { dealRefresh } = refreshStore
+  const { userInfo } = loginStore
 
   const clothOptions = productGrade.reduce((prev, item) => {
     prev.push(...item.children)
@@ -84,12 +85,15 @@ const FactoryEntry = () => {
         ? moment(enterpriseInfo['establishedTime']).format('YYYY-MM-DD')
         : null
 
-      enterpriseInfo['logoImage'] = [
-        {
-          url: enterpriseInfo['enterpriseLogoUrl'],
-          thumbUrl: enterpriseInfo['enterpriseLogoUrl']
-        }
-      ]
+      if (enterpriseInfo['enterpriseLogoUrl']) {
+        enterpriseInfo['logoImage'] = [
+          {
+            url: enterpriseInfo['enterpriseLogoUrl'],
+            thumbUrl: enterpriseInfo['enterpriseLogoUrl']
+          }
+        ]
+      }
+
       const arrKeys = [
         // 'clothesGrade',
         'materialTypeValues',
@@ -103,7 +107,6 @@ const FactoryEntry = () => {
         enterpriseInfo[item] = enterpriseInfo[item] || []
       })
 
-      console.log(enterpriseInfo, 'enterpriseInfo')
       setOldData(enterpriseInfo)
       setParams(enterpriseInfo)
     })()
@@ -279,6 +282,12 @@ const FactoryEntry = () => {
       return
     }
 
+    if (!params['enterpriseDesc']) {
+      setIsOpened(true)
+      setErrText('请输入企业简介')
+      return
+    }
+
     let flag = false
     if (oldData.enterpriseId) {
       if (oldData.enterpriseName !== params['enterpriseName']) {
@@ -329,6 +338,7 @@ const FactoryEntry = () => {
     }
     await enterpriseInfoSave(params)
     await dealRefresh()
+    await userInfo()
     Taro.redirectTo({
       url: '/pages/index/index'
     })
@@ -357,6 +367,8 @@ const FactoryEntry = () => {
   }
 
   const getProducts = useMemo(() => {
+    if (!isArray(params['mainCategoriesList']) || !isArray(productCategoryList))
+      return
     const target = params['mainCategoriesList'] || []
 
     const matches = target.reduce((prev, item, idx) => {
@@ -370,7 +382,7 @@ const FactoryEntry = () => {
   }, [params.mainCategoriesList, productCategoryList])
 
   const getMaterial = useMemo(() => {
-    if (isArray(params.materialTypeValues)) {
+    if (isArray(params.materialTypeValues) && isArray(plusMaterialType)) {
       return params.materialTypeValues.reduce((prev, item, idx) => {
         const target = plusMaterialType.find(i => i.value === item) || {}
         return (
@@ -438,7 +450,7 @@ const FactoryEntry = () => {
             title="联系人"
             type="text"
             placeholder="请填写真实姓名"
-            value={params['contactsName']}
+            value={params['contactsName'] || ''}
             onChange={event => handleChange(event, 'contactsName')}
           />
 
@@ -450,7 +462,7 @@ const FactoryEntry = () => {
             title="手机号"
             type="phone"
             placeholder="请填写手机号"
-            value={params['mobilePhone']}
+            value={params['mobilePhone'] || ''}
             onChange={event => handleChange(event, 'mobilePhone')}
           />
         </View>
@@ -463,7 +475,7 @@ const FactoryEntry = () => {
             title="工厂名称"
             type="text"
             placeholder="请填写工厂名称"
-            value={params['enterpriseName']}
+            value={params['enterpriseName'] || ''}
             onChange={event => handleChange(event, 'enterpriseName')}
           />
 
@@ -620,7 +632,7 @@ const FactoryEntry = () => {
             title="起订量"
             type="number"
             placeholder="请填写起订量"
-            value={params['moq']}
+            value={params['moq'] || ''}
             onChange={event => handleChange(event, 'moq')}
           >
             <View className={styles.addon}>件</View>
@@ -689,7 +701,7 @@ const FactoryEntry = () => {
             <AtTextarea
               className={styles.cusTextarea}
               placeholder="请填写企业简介"
-              value={params['enterpriseDesc']}
+              value={params['enterpriseDesc'] || ''}
               maxLength={700}
               onChange={event => handleChange(event, 'enterpriseDesc')}
             />
@@ -704,7 +716,8 @@ const FactoryEntry = () => {
                 callback={event => imgsChange(event, 'logoImage')}
                 count={1}
                 showAddBtn={
-                  params['logoImage'] && params['logoImage'].length >= 1
+                  isArray(params['logoImage']) &&
+                  params['logoImage'].length >= 1
                     ? false
                     : true
                 }
@@ -723,7 +736,8 @@ const FactoryEntry = () => {
                   sizeType={['70']}
                   multiple={false}
                   showAddBtn={
-                    params[item.field] && params[item.field].length >= 3
+                    isArray(params[item.field]) &&
+                    params[item.field].length >= 3
                       ? false
                       : true
                   }
@@ -742,7 +756,7 @@ const FactoryEntry = () => {
                 callback={event => imgsChange(event, item.field)}
                 count={1}
                 showAddBtn={
-                  params[item.field] && params[item.field].length >= 1
+                  isArray(params[item.field]) && params[item.field].length >= 1
                     ? false
                     : true
                 }

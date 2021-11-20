@@ -3,11 +3,14 @@ import { AtIcon } from 'taro-ui'
 import styles from './index.module.less'
 import Taro from '@tarojs/taro'
 
-function index({ type }) {
-  let enterprise =
-    'https://capacity-platform.oss-cn-hangzhou.aliyuncs.com/capacity-platform/mobile/icon/enterprise.png'
-  let factory =
-    'https://capacity-platform.oss-cn-hangzhou.aliyuncs.com/capacity-platform/mobile/icon/factory.png'
+let enterprise =
+  'https://capacity-platform.oss-cn-hangzhou.aliyuncs.com/capacity-platform/mobile/icon/enterprise.png'
+let factory =
+  'https://capacity-platform.oss-cn-hangzhou.aliyuncs.com/capacity-platform/mobile/icon/factory.png'
+
+const Settled = props => {
+  const { type } = props
+
   const toOrderEntry = () => {
     console.log(type.userName)
 
@@ -56,4 +59,4 @@ function index({ type }) {
   )
 }
 
-export default index
+export default Settled

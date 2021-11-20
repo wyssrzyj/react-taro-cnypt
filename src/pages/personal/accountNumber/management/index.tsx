@@ -4,10 +4,10 @@ import './index.less'
 import Taro from '@tarojs/taro'
 function Management() {
   const accountNumber = () => {
-    Taro.redirectTo({ url: '/pages/personal/modifyMobilePhoneNumber/index' })
+    Taro.navigateTo({ url: '/pages/personal/modifyMobilePhoneNumber/index' })
   }
   const toReset = () => {
-    Taro.redirectTo({ url: '/pages/personal/resetPassword/index' })
+    Taro.navigateTo({ url: '/pages/personal/resetPassword/index' })
   }
   return (
     <View>

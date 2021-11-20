@@ -1,7 +1,8 @@
-import { EMPTY_IMG } from '@/utils/tool'
 import { View, Image } from '@tarojs/components'
 import { isArray } from 'lodash'
 import styles from './index.module.less'
+import Taro from '@tarojs/taro'
+import classNames from 'classnames'
 
 const EnterpriseCard = props => {
   const { data } = props
@@ -27,6 +28,15 @@ const EnterpriseCard = props => {
     }
   ]
 
+  const imgPreview = thumbUrl => {
+    Taro.previewImage({
+      // 所有图片
+      urls: data.imgs.map(item => item.thumbUrl),
+      // 当前图片
+      current: thumbUrl
+    })
+  }
+
   return (
     <View className={styles.card}>
       {data['enterpriseName'] && (
@@ -48,8 +58,12 @@ const EnterpriseCard = props => {
             return (
               <Image
                 key={idx}
-                src={item.thumbUrl || EMPTY_IMG}
-                className={styles.img}
+                src={item.thumbUrl}
+                className={classNames(
+                  styles.img,
+                  !item.thumbUrl ? styles.emptyImg : ''
+                )}
+                onClick={() => imgPreview(item.thumbUrl)}
               ></Image>
             )
           })}

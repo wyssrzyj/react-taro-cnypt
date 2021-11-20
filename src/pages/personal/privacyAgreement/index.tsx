@@ -6,7 +6,8 @@ const BACK_ICON =
   'https://capacity-platform.oss-cn-hangzhou.aliyuncs.com/capacity-platform/mobile/icon/black_back.png'
 function index() {
   const handleClick = () => {
-    Taro.redirectTo({ url: '/pages/personal/myEexcellentProduct/index' })
+    // Taro.redirectTo({ url: '/pages/personal/myEexcellentProduct/index' })
+    Taro.navigateBack()
   }
   return (
     <View className={styles.phoneLogin}>
