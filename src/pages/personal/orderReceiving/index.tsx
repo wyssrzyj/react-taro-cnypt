@@ -163,7 +163,7 @@ const Verify = () => {
   ]
   const deleteMethod = async id => {
     // 删除
-    await deleteIssuer({ supplierInquiryId: id })
+    await deleteIssuer({ purchaseQuoteId: id })
     api()
   }
   const reOrder = async id => {

@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import styles from './index.module.less'
+import { isNil } from 'lodash'
 import {
   AtIcon,
   AtModal,
@@ -21,11 +22,16 @@ const styleStructure = ({
 }) => {
   const { userInterface, commonStore } = useStores()
   const { applicationReceiptQuantity } = userInterface
-  const { productCategoryList = [], dictionary = [] } = toJS(commonStore)
+  const {
+    productCategoryList = [],
+    dictionary = [],
+    district = []
+  } = toJS(commonStore)
   const [windowType, setWindowType] = useState<any>({}) //弹窗类型
   const [popup, setPopup] = useState(false) //弹窗类型
   const [category, setCategory] = useState<any>([]) //类别
   const [goodsNum, setGoodsNum] = useState<any>([]) //订单量
+  const [region, setRegion] = useState('不限') //地区
 
   useEffect(() => {
     if (data.categoryCodes) {
@@ -39,6 +45,17 @@ const styleStructure = ({
       setGoodsNum(
         dictionary.goodsNum.filter(item => item.value == data.goodsNum)[0].label
       )
+    }
+    // 地区
+    console.log(data.regionalIdList)
+    if (data.regionalIdList.length > 0) {
+      setRegion(
+        getTrees(data.regionalIdList, toJS(district), 'value', 'label').join(
+          '、'
+        )
+      )
+    } else {
+      setRegion('不限')
     }
   }, [])
   const sortColor = new Map()
@@ -147,9 +164,7 @@ const styleStructure = ({
             </View>
             <View className={styles.addressExternal}>
               <AtIcon value="map-pin" size="15" color="#999999"></AtIcon>
-              <Text className={styles.region}>
-                {data.factoryDistrict ? data.factoryDistrict : '暂无'}
-              </Text>
+              <Text className={styles.region}>{region}</Text>
             </View>
           </View>
         </View>

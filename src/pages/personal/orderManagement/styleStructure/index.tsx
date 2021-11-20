@@ -40,7 +40,7 @@ function index({ data, deleteMethod, earlyEnd }) {
       )
     }
     // 地区
-    if (data.regionalIdList) {
+    if (data.regionalIdList.length > 0) {
       setRegion(
         getTrees(data.regionalIdList, toJS(district), 'value', 'label').join(
           '、'
