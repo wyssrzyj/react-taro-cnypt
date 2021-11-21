@@ -7,7 +7,7 @@ import { Navbar } from '@/components'
 import { useStores } from '@/store/mobx'
 import classNames from 'classnames'
 
-const BACK_ICON =
+export const BACK_ICON =
   'https://capacity-platform.oss-cn-hangzhou.aliyuncs.com/capacity-platform/mobile/icon/back.png'
 
 const LoginHeader = () => {
@@ -25,7 +25,8 @@ const PhoneLogin = () => {
   const contentRef = useRef<any>(null)
 
   const { loginStore } = useStores()
-  const { checkUser, sendVerifyCode, login, userInfo } = loginStore
+  const { checkUser, sendVerifyCode, login, userInfo, checkPwdExist } =
+    loginStore
 
   const [phone, setPhone] = useState<string>('')
   const [verifyCode, setVerifyCode] = useState()
@@ -132,15 +133,17 @@ const PhoneLogin = () => {
 
       if (res && res.success) {
         setError(false)
-        const data = await userInfo()
-        if (data) {
-          // data.enterpriseType && history.push('/control-panel/home')
-          // !data.enterpriseType && history.push('/')
+        await userInfo()
+
+        const checkPwdRes = await checkPwdExist({ userId: res.data.userId })
+
+        if (checkPwdRes) {
+          Taro.navigateTo({
+            url: `/pages/login/phoneLogin/setPwd?id=${res.data.userId}`
+          })
         } else {
-          // history.push('/')
-          // Taro.redirectTo({ url: '/pages/index/index' })
+          Taro.redirectTo({ url: '/pages/index/index' })
         }
-        Taro.redirectTo({ url: '/pages/index/index' })
       } else {
         setError(true)
       }

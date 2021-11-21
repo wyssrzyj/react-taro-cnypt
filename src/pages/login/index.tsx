@@ -5,7 +5,7 @@ import { Icon, Navbar } from '@/components/index'
 import { useEffect } from 'react'
 import { useStores, observer } from '@/store/mobx'
 
-const BACK_ICON =
+export const BLCAK_BACK_ICON =
   'https://capacity-platform.oss-cn-hangzhou.aliyuncs.com/capacity-platform/mobile/icon/black_back.png'
 
 const Login = () => {
@@ -53,7 +53,8 @@ const Login = () => {
   }
 
   const goBack = () => {
-    Taro.redirectTo({ url: '/pages/index/index' })
+    // Taro.redirectTo({ url: '/pages/index/index' })
+    Taro.navigateBack()
   }
 
   return (
@@ -62,7 +63,7 @@ const Login = () => {
       <Navbar>
         <View className={styles.navbar}>
           <Image
-            src={BACK_ICON}
+            src={BLCAK_BACK_ICON}
             className={styles.back}
             onClick={goBack}
           ></Image>

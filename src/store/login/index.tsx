@@ -254,6 +254,61 @@ export default class LoginStore {
       })
     }
   }
+
+  // /api/user/check-password-is-empty
+  // 检查用户密码是否为空 GET
+  @action checkPwdExist = async params => {
+    try {
+      const res: Partial<Response> = await HTTP.get(
+        `/api/user/check-password-is-empty`,
+        params
+      )
+      if (res.code === 200) {
+        Taro.showToast({
+          title: res.msg as string,
+          icon: 'none',
+          duration: 1500
+        })
+      }
+      console.log('🚀 ~ file: index.tsx ~ line 266 ~ LoginStore ~ res', res)
+
+      return res.data
+    } catch (err) {
+      console.log(err)
+      Taro.showToast({
+        title: err.msg as string,
+        icon: 'none',
+        duration: 1500
+      })
+    }
+  }
+
+  // /api/user/reset-password
+  // 重置密码 POST
+  @action resetPassword = async params => {
+    try {
+      const res: Partial<Response> = await HTTP.post(
+        `/api/user/reset-password`,
+        params
+      )
+      if (res.code === 200) {
+        Taro.showToast({
+          title: res.msg as string,
+          icon: 'none',
+          duration: 1500
+        })
+      }
+
+      return res.code
+    } catch (err) {
+      console.log(err)
+      Taro.showToast({
+        title: err.msg as string,
+        icon: 'none',
+        duration: 1500
+      })
+    }
+  }
 }
 
 export const loginStore = new LoginStore()

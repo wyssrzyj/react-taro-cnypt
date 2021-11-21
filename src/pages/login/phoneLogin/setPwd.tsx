@@ -1,34 +1,85 @@
-import { View, Button } from '@tarojs/components'
+import { View, Button, Image } from '@tarojs/components'
 import { AtInput } from 'taro-ui'
-import styles from './index.module.less'
+import styles from './setPwd.module.less'
 import { useState } from 'react'
+import { Navbar } from '@/components'
+import Taro, { useRouter } from '@tarojs/taro'
+import { useStores } from '@/store/mobx'
+import { pwdReg } from '@/utils/tool'
+
+export const BLCAK_BACK_ICON =
+  'https://capacity-platform.oss-cn-hangzhou.aliyuncs.com/capacity-platform/mobile/icon/black_back.png'
 
 const SetPwd = () => {
-  const [pwd, setPwd] = useState()
+  const router = useRouter()
+  const {
+    params: { id }
+  } = router
+  const { loginStore } = useStores()
+  const { resetPassword } = loginStore
+
+  const [pwd, setPwd] = useState('')
 
   const pwdChange = val => {
     setPwd(val)
   }
 
+  const goBack = () => {
+    Taro.navigateBack()
+  }
+
+  const setUserPwd = async () => {
+    const code = await resetPassword({
+      password: pwd,
+      userId: id
+    })
+    if (code === 200) {
+      Taro.redirectTo({ url: '/pages/index/index' })
+    }
+  }
+
   return (
-    <View>
-      <View className={styles.loginTitle}>请设置密码</View>
-      <View className={styles.tips}>字母、符号或数字中至少2项且超过6位</View>
+    <View className={styles.phoneLogin}>
+      <Navbar>
+        <View className={styles.navbar}>
+          <Image
+            src={BLCAK_BACK_ICON}
+            className={styles.blackBack}
+            onClick={goBack}
+          ></Image>
+          <View className={styles.navTitle}>设置密码</View>
+        </View>
+      </Navbar>
 
-      <View>
-        <AtInput
-          className={styles.pwdInput}
-          name="password"
-          type="password"
-          placeholder="请输入密码"
-          value={pwd}
-          onChange={pwdChange}
-        ></AtInput>
+      <View className={styles.content}>
+        <View className={styles.loginHeader}>
+          <View className={styles.loginTitle}>设置密码</View>
+          <View className={styles.loginMsg}>
+            字母、符号或数字中至少2项且超过6位
+          </View>
+        </View>
+
+        <View>
+          <AtInput
+            className={styles.pwdInput}
+            name="password"
+            type="password"
+            placeholder="请输入密码"
+            value={pwd}
+            onChange={pwdChange}
+          ></AtInput>
+        </View>
+
+        <View
+          type={'primary'}
+          className={
+            !pwdReg.test(pwd) ? styles.loginDisabledBtn : styles.loginBtn
+          }
+          onClick={setUserPwd}
+        >
+          完成
+        </View>
       </View>
-
-      <Button type={'primary'} className={styles.loginBtn}>
-        完成
-      </Button>
     </View>
   )
 }

@@ -158,6 +158,41 @@ const FactoryEntry = () => {
     }
   ]
 
+  const infoConfigs = [
+    {
+      label: '厂房面积',
+      field: 'factoryArea',
+      type: 'number',
+      placeholder: '请填写厂房面积',
+      valueType: 'string',
+      addon: '平方'
+    },
+    {
+      label: '有效车位',
+      field: 'effectiveLocation',
+      type: 'number',
+      placeholder: '请填写人数',
+      valueType: 'string',
+      addon: '人'
+    },
+    {
+      label: '员工总数',
+      field: 'staffNumber',
+      type: 'number',
+      placeholder: '请填写人数',
+      valueType: 'string',
+      addon: '人'
+    },
+    {
+      label: '生产线',
+      field: 'productLineNum',
+      type: 'number',
+      placeholder: '请填写数量',
+      valueType: 'string',
+      addon: '条'
+    }
+  ]
+
   const goBack = () => {
     Taro.navigateBack()
   }
@@ -644,57 +679,20 @@ const FactoryEntry = () => {
         </View>
 
         <View className={styles.processingInfo}>
-          <AtInput
-            required
-            className={styles.cusInput}
-            name="factoryArea"
-            title="厂房面积"
-            type="number"
-            placeholder="请填写厂房面积"
-            value={params['factoryArea']}
-            onChange={event => handleChange(event, 'factoryArea')}
-          >
-            <View className={styles.addon}>平方</View>
-          </AtInput>
-
-          <AtInput
-            required
-            className={styles.cusInput}
-            name="effectiveLocation"
-            title="有效车位"
-            type="number"
-            placeholder="请填写人数"
-            value={params['effectiveLocation']}
-            onChange={event => handleChange(event, 'effectiveLocation')}
-          >
-            <View className={styles.addon}>人</View>
-          </AtInput>
-
-          <AtInput
-            required
-            className={styles.cusInput}
-            name="staffNumber"
-            title="员工总数"
-            type="number"
-            placeholder="请填写人数"
-            value={params['staffNumber']}
-            onChange={event => handleChange(event, 'staffNumber')}
-          >
-            <View className={styles.addon}>人</View>
-          </AtInput>
-
-          <AtInput
-            required
-            className={styles.cusInput}
-            name="productLineNum"
-            title="生产线"
-            type="number"
-            placeholder="请填写数量"
-            value={params['productLineNum']}
-            onChange={event => handleChange(event, 'productLineNum')}
-          >
-            <View className={styles.addon}>条</View>
-          </AtInput>
+          {infoConfigs.map(item => (
+            <AtInput
+              required
+              className={styles.cusInput}
+              name={item.field}
+              title={item.label}
+              type={item.type as any}
+              placeholder={item.placeholder}
+              value={params[item.field]}
+              onChange={event => handleChange(event, item.field)}
+            >
+              <View className={styles.addon}>平方</View>
+            </AtInput>
+          ))}
         </View>
 
         <View className={styles.photoInfo}>

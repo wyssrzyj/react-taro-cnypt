@@ -194,14 +194,15 @@ export default class UserInterface {
         '/api/oms/inquiry-purchase/inquiry-list',
         params
       )
-      console.log('成功', res)
-      Taro.showToast({
-        title: res.msg as string,
-        icon: 'none',
-        duration: 1500
-      })
+
       if (res.code === 200) {
         return res.data
+      } else {
+        Taro.showToast({
+          title: res.msg as string,
+          icon: 'none',
+          duration: 1500
+        })
       }
       return res.data
     } catch (e) {
