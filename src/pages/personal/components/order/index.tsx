@@ -15,13 +15,11 @@ const order = () => {
     })
   }
   const whole = () => {
-    console.log('接单管理')
     Taro.redirectTo({
       url: '/pages/personal/orderReceiving/index?tid='
     })
   }
   const myOrder = () => {
-    console.log('我的订单')
     Taro.redirectTo({
       url: '/pages/personal/orderManagement/index?tid='
     })
