@@ -28,6 +28,8 @@ const styleStructure = ({
   const [popup, setPopup] = useState(false)
 
   useEffect(() => {
+    console.log('接单管理')
+
     if (data.factoryCategoryList) {
       // 商品类型
       setCategory(
