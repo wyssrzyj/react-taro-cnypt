@@ -10,7 +10,7 @@ export const BLCAK_BACK_ICON =
 
 const Login = () => {
   const { loginStore } = useStores()
-  const { getSessionId, wxLogin, setWxInfo } = loginStore
+  const { getSessionId, wxLogin, setWxInfo, checkPwdExist } = loginStore
   // const router = useRouter()
   // const { params } = router
   // const { source, id } = params
@@ -38,18 +38,22 @@ const Login = () => {
       console.log('拒绝授权')
     } else {
       //允许授权执行跳转
-      const code = await wxLogin()
-      if (code === 200) {
-        setTimeout(() => {
+      const res = (await wxLogin()) || {}
+      if (res.code === 200) {
+        const checkPwdRes = await checkPwdExist({ userId: res.data.userId })
+        if (checkPwdRes) {
+          Taro.navigateTo({
+            url: `/pages/login/phoneLogin/setPwd?id=${res.data.userId}`
+          })
+        } else {
           Taro.redirectTo({ url: '/pages/index/index' })
-          // goBack()
-        })
+        }
       }
     }
   }
 
   const toPhoneLogin = () => {
-    Taro.redirectTo({ url: '/pages/login/phoneLogin/index' })
+    Taro.navigateTo({ url: '/pages/login/phoneLogin/index' })
   }
 
   const goBack = () => {

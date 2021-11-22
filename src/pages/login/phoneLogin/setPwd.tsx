@@ -25,7 +25,8 @@ const SetPwd = () => {
   }
 
   const goBack = () => {
-    Taro.navigateBack()
+    // Taro.navigateBack()
+    Taro.redirectTo({ url: '/pages/index/index' })
   }
 
   const setUserPwd = async () => {

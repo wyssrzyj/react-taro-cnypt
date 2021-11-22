@@ -25,8 +25,7 @@ const PhoneLogin = () => {
   const contentRef = useRef<any>(null)
 
   const { loginStore } = useStores()
-  const { checkUser, sendVerifyCode, login, userInfo, checkPwdExist } =
-    loginStore
+  const { sendVerifyCode, login, userInfo, checkPwdExist } = loginStore
 
   const [phone, setPhone] = useState<string>('')
   const [verifyCode, setVerifyCode] = useState()
@@ -34,7 +33,7 @@ const PhoneLogin = () => {
   const [sending, setSending] = useState<boolean>(false)
   const [timer, setTimer] = useState<any>(null)
   const [loginDisabled, setLoginDisabled] = useState<boolean>(true)
-  const [error, setError] = useState<boolean>(false)
+  const [_error, setError] = useState<boolean>(false)
 
   useEffect(() => {
     const navBarMarginTop = Taro['$navBarMarginTop']
@@ -119,7 +118,7 @@ const PhoneLogin = () => {
   }, [lastTime])
 
   const toPwdLogin = () => {
-    Taro.redirectTo({ url: '/pages/login/pwdLogin/index' })
+    Taro.navigateTo({ url: '/pages/login/pwdLogin/index' })
   }
 
   const submit = async () => {

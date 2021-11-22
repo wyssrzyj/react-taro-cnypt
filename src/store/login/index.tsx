@@ -244,7 +244,7 @@ export default class LoginStore {
         })
         await this.userInfo()
       }
-      return res.code
+      return res || {}
     } catch (err) {
       console.log(err)
       Taro.showToast({

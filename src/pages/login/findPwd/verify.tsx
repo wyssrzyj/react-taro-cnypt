@@ -90,7 +90,7 @@ const Verify = () => {
         })
 
         res &&
-          Taro.redirectTo({
+          Taro.navigateTo({
             url: `/pages/login/findPwd/reset?phone=${params.phone}&code=${verify}`
           })
       }

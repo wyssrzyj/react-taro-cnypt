@@ -47,11 +47,11 @@ const PwdLogin = () => {
   }
 
   const toVerifyLogin = () => {
-    Taro.redirectTo({ url: '/pages/login/phoneLogin/index' })
+    Taro.navigateTo({ url: '/pages/login/phoneLogin/index' })
   }
 
   const toFindPwd = () => {
-    Taro.redirectTo({ url: '/pages/login/findPwd/index' })
+    Taro.navigateTo({ url: '/pages/login/findPwd/index' })
   }
 
   const goBack = () => {

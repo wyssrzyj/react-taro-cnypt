@@ -40,7 +40,7 @@ const PwdLogin = () => {
         duration: 1000
       })
     if (checktFlag) return
-    Taro.redirectTo({
+    Taro.navigateTo({
       url: `/pages/login/findPwd/verify?phone=${phone}`
     })
   }
