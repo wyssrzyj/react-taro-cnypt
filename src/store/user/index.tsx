@@ -27,12 +27,22 @@ export default class UserInterface {
   @observable currentUser: Partial<User> = {}
   @observable modi = '' //修改成功
   @observable quantityId = '' //申请接单的数量数据
+  @observable feedbackInformations = [] //反馈信息回显
 
   // 申请接单的数量数据
   @action applicationReceiptQuantity = async params => {
     try {
       runInAction(() => {
         this.quantityId = params
+      })
+    } catch (e) {}
+  }
+
+  // 反馈信息回显
+  @action feedbackInformationEcho = async params => {
+    try {
+      runInAction(() => {
+        this.feedbackInformations = params
       })
     } catch (e) {}
   }
@@ -108,23 +118,11 @@ export default class UserInterface {
         '/api/oms/inquiry-purchase/inquiry-application-list',
         params
       )
-      console.log('成功', res)
-      Taro.showToast({
-        title: res.msg as string,
-        icon: 'none',
-        duration: 1500
-      })
       if (res.code === 200) {
         return res.data
       }
       return res.data
     } catch (e) {
-      Taro.showToast({
-        title: e.msg as string,
-        icon: 'none',
-        duration: 1500
-      })
-      console.log('失败', e)
       if (e.code === 200) {
         return e
       }
