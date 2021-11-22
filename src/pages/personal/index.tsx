@@ -23,6 +23,8 @@ const Personal = () => {
       let information = JSON.parse(Taro.getStorageSync('currentUser')).userId
       pickUpInformation({ userId: information })
     }
+    console.log(Taro.getStorageSync('userInfo'))
+
     if (Taro.getStorageSync('userInfo')) {
       setJurisdiction(
         JSON.parse(Taro.getStorageSync('userInfo')).enterpriseType
