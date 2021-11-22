@@ -89,22 +89,24 @@ const PhoneLogin = () => {
     if (sending) return
     if (phone.length !== 11) return
     try {
-      let flag = true
-      const checktFlag = await checkUser(phone, 'mobilePhone')
-      checktFlag &&
-        Taro.showToast({
-          title: '手机号未注册~',
-          icon: 'none',
-          duration: 1500
-        })
-      flag = !checktFlag // checkFlag false 已注册
+      // let flag = true
+      // const checktFlag = await checkUser(phone, 'mobilePhone')
+      // checktFlag &&
+      //   Taro.showToast({
+      //     title: '手机号未注册~',
+      //     icon: 'none',
+      //     duration: 1500
+      //   })
+      // flag = !checktFlag // checkFlag false 已注册
 
-      if (flag) {
-        const res = await sendVerifyCode(phone)
-        res && setSending(true)
-        res && timerRun()
-      }
-    } catch {}
+      // if (flag) {
+      const res = await sendVerifyCode(phone)
+      res && setSending(true)
+      res && timerRun()
+      // }
+    } catch (err) {
+      console.log(err)
+    }
   }
 
   useEffect(() => {
