@@ -45,9 +45,7 @@ const Top = ({ userInfo, list }) => {
               <View className={styles.bottom}>
                 <Image src={enterprise} className={styles.enterprise}></Image>
                 <Text className={styles.icon}>
-                  {enterpriseName
-                    ? enterpriseName
-                    : 'XXXX服装进出口股份有限公司'}
+                  {enterpriseName ? enterpriseName : '暂无'}
                 </Text>
               </View>
             </>

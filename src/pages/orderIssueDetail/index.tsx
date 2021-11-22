@@ -1,7 +1,9 @@
 import styles from './index.module.less'
 import { View, Button, Image } from '@tarojs/components'
 import Taro, { useRouter } from '@tarojs/taro'
-import { Line, Navbar, OrderIssueCard } from '@/components'
+import { Line, OrderIssueCard } from '@/components'
+import Navbar from './navBar/index'
+
 import Title from '@/components/title'
 import Card from './components/card'
 import { useStores } from '@/store/mobx'
@@ -116,13 +118,13 @@ const FactoryDetail = () => {
   return (
     <View className={styles.container}>
       <Navbar>
-        <View className={styles.navbar}>
+        <View className={styles.navbars}>
           <Image
             src={BACK_ICON}
-            className={styles.back}
+            className={styles.backs}
             onClick={goBack}
           ></Image>
-          <View className={styles.navTitle}>企业主页</View>
+          <View className={styles.navTitles}>企业主页</View>
         </View>
       </Navbar>
 

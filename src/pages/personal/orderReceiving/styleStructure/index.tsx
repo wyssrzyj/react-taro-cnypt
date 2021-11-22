@@ -20,8 +20,9 @@ const styleStructure = ({
   InitiateOrder,
   earlyEnd
 }) => {
-  const { commonStore } = useStores()
+  const { commonStore, userInterface } = useStores()
   const { productCategoryList = [] } = toJS(commonStore)
+  const { feedbackInformationEcho } = toJS(userInterface)
 
   const [category, setCategory] = useState<any>([])
   const [windowType, setWindowType] = useState<any>({}) //弹窗类型
@@ -106,9 +107,10 @@ const styleStructure = ({
       phoneNumber: data.contactsMobile //仅为示例，并非真实的电话号码
     }).then()
   }
-  const btn = id => {
+  const btn = async item => {
+    await feedbackInformationEcho(item)
     Taro.redirectTo({
-      url: '/pages/personal/feedback/index?tid=' + id
+      url: '/pages/personal/feedback/index'
     })
   }
   const details = data => {
@@ -138,6 +140,7 @@ const styleStructure = ({
             {map.get(data.status)}
           </View>
         </View>
+
         <View className={styles.line}></View>
         {/* 主体 */}
         <View className={styles.subject}>
@@ -175,7 +178,7 @@ const styleStructure = ({
         <View
           className={styles.informationFather}
           onClick={() => {
-            btn(data.id)
+            btn(data)
           }}
         >
           <View className={styles.flex}>

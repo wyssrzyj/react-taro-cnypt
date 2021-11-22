@@ -1,9 +1,8 @@
 import { useState, useEffect } from 'react'
 import styles from './index.module.less'
 import { View, Image } from '@tarojs/components'
-import { useRouter, redirectTo } from '@tarojs/taro'
-import { useStores, observer } from '@/store/mobx'
-import { isNil } from 'lodash'
+import { redirectTo } from '@tarojs/taro'
+import { useStores, observer, toJS } from '@/store/mobx'
 import { Navbar } from '@/components'
 const BACK_ICON =
   'https://capacity-platform.oss-cn-hangzhou.aliyuncs.com/capacity-platform/mobile/icon/black_back.png'
@@ -12,29 +11,28 @@ export const ORDER_EMPTY =
 
 const Verify = () => {
   const { userInterface } = useStores()
-  const { feedbackInformation } = userInterface
+  const { feedbackInformationEcho, feedbackInformations } = toJS(userInterface)
   const [data, setData] = useState<any>({})
-  const { params } = useRouter()
 
   // 跳转的数据
   useEffect(() => {
-    if (params) {
-      api(params.tid)
+    console.log(feedbackInformations)
+    if (feedbackInformations) {
+      setData(feedbackInformations)
     }
+
+    // if (params) {
+    //   api(params.tid)
+    // }
   }, [])
 
-  const api = async e => {
-    let res = await feedbackInformation({ supplierInquiryId: e })
-    if (!isNil(res)) {
-      setData(res.data)
-    }
-  }
   const goBack = () => {
     redirectTo({
       url: '/pages/personal/orderReceiving/index?tid='
     })
   }
-  const btn = () => {
+  const btn = async () => {
+    await feedbackInformationEcho([])
     redirectTo({
       url: '/pages/personal/orderReceiving/index?tid='
     })
@@ -73,7 +71,10 @@ const Verify = () => {
       </View>
       <View className={styles.container}>
         <View className={styles.title}>备注</View>
-        <View className={styles.txt}>{data.remark ? data.remark : '暂无'}</View>
+        <View className={styles.txt}>
+          {' '}
+          {data.remark ? data.remark : '暂无'}
+        </View>
       </View>
 
       <View className={styles.btn} onClick={btn}>

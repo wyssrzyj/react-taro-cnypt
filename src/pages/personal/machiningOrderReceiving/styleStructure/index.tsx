@@ -144,7 +144,8 @@ const styleStructure = ({
           >
             <Image className={styles.img} src={data.stylePicture} alt="" />
           </View>
-          <View>
+
+          <View className={styles.text}>
             <Text className={styles.factory}>{data.inquiryPurchaserName}</Text>
             <View>
               <Text>
@@ -162,8 +163,15 @@ const styleStructure = ({
                 : '暂无'}
             </View>
             <View className={styles.addressExternal}>
-              <AtIcon value="map-pin" size="15" color="#999999"></AtIcon>
-              <Text className={styles.region}>{region}</Text>
+              <AtIcon
+                className={styles.iconRegion}
+                value="map-pin"
+                size="15"
+                color="#999999"
+              ></AtIcon>
+              <View className={styles.region}>
+                <Text className={styles.regionText}>{region}</Text>
+              </View>
             </View>
           </View>
         </View>
