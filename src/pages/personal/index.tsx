@@ -45,6 +45,7 @@ const Personal = () => {
 
   return (
     <View>
+      {console.log('状态', jurisdiction)}
       <View className={styles.father}>
         <View className={styles.navBar} style={{ paddingTop: `${top}px` }}>
           <View className={styles.navContent}>

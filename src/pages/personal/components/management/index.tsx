@@ -123,7 +123,7 @@ const Managemenet = props => {
               src={excellentProduction}
             ></Image>
           </View>
-          <Text className={styles.txt}>关于优产云</Text>
+          <Text className={styles.txt}>关于优产</Text>
         </View>
         <Text className={styles.iconmy}>
           <AtIcon value="chevron-right" size="15" color="#999999"></AtIcon>

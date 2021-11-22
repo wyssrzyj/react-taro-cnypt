@@ -690,7 +690,7 @@ const FactoryEntry = () => {
               value={params[item.field]}
               onChange={event => handleChange(event, item.field)}
             >
-              <View className={styles.addon}>平方</View>
+              <View className={styles.addon}>{item.addon}</View>
             </AtInput>
           ))}
         </View>

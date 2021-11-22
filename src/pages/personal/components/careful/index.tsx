@@ -15,33 +15,34 @@ const careful = ({ userInfo }) => {
     'https://capacity-platform.oss-cn-hangzhou.aliyuncs.com/capacity-platform/mobile/icon/time.png'
   return (
     <View className={styles.bottoms}>
-      <View className={styles.flex}>
-        <View>
-          <Image src={telephone} className={styles.icon}></Image>
-          <Text className={styles.margin}>400-82996660</Text>
+      <View className={styles.name}>
+        <View className={styles.flex}>
+          <View className={styles.flexIcon}>
+            <Image src={telephone} className={styles.icon}></Image>
+            <Text className={styles.margin}>400-82996660</Text>
+          </View>
+          <View className={styles.kong}></View>
+          <View className={styles.flexIcon}>
+            <Image src={time} className={styles.icon}></Image>
+            <Text className={styles.margin}>9:00 - 18:00</Text>
+          </View>
         </View>
-        <View className={styles.kong}></View>
-        <View>
-          <Image src={time} className={styles.icon}></Image>
-
-          <Text className={styles.margin}>9:00 - 18:00</Text>
-        </View>
-      </View>
-      <View className={styles.center}>
-        <View
-          onClick={() => {
-            handleClick()
-          }}
-        >
-          用户协议
-        </View>
-        　 |　
-        <View
-          onClick={() => {
-            privacy()
-          }}
-        >
-          隐私政策
+        <View className={styles.center}>
+          <View
+            onClick={() => {
+              handleClick()
+            }}
+          >
+            用户协议
+          </View>
+          　 |　
+          <View
+            onClick={() => {
+              privacy()
+            }}
+          >
+            隐私政策
+          </View>
         </View>
       </View>
     </View>
