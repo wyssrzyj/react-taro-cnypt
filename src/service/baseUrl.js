@@ -11,8 +11,8 @@ const getBaseUrl = url => {
     // BASE_URL = 'https://cn.uchat.com.cn/gateway'
   } else {
     // 测试环境
-    // BASE_URL = 'https://cn.uchat.com.cn/test/gateway'
-    BASE_URL = 'https://cn.uchat.com.cn/gateway'
+    BASE_URL = 'https://cn.uchat.com.cn/test/gateway'
+    // BASE_URL = 'https://cn.uchat.com.cn/gateway'
     // BASE_URL = 'http://47.97.217.13:8888'
   }
   return BASE_URL

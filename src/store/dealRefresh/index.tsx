@@ -14,10 +14,6 @@ export default class RefreshStore {
     const url = `/api/user/account/refresh-token?accessToken=${authorization}`
 
     const res = await HTTP.post(url)
-    console.log(
-      '🚀 ~ file: index.tsx ~ line 17 ~ LoginStore ~ @actiondealRefresh= ~ res',
-      res
-    )
     const rToken = res.data.access_token
     const expiresTime = res.data.expires_in // 过期时间
     // 更新用户信息
