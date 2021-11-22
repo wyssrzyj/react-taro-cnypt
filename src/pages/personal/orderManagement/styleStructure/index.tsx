@@ -39,8 +39,10 @@ function index({ data, deleteMethod, earlyEnd }) {
         getTrees(data.processTypeList, toJS(processType), 'value', 'label')
       )
     }
+    console.log('我的订单')
+
     // 地区
-    if (data.regionalIdList.length > 0) {
+    if (data.regionalIdList) {
       setRegion(
         getTrees(data.regionalIdList, toJS(district), 'value', 'label').join(
           '、'

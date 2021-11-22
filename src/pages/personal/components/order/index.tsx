@@ -69,23 +69,28 @@ const order = () => {
   ]
   return (
     <View>
-      <View className={styles.order}>
-        <Text className={styles.text} onClick={myOrder}>
-          我的订单
-        </Text>
+      <View className={styles.top}>
+        <View className={styles.order}>
+          <Text className={styles.text} onClick={myOrder}>
+            我的订单
+          </Text>
+        </View>
+        <View className={styles.orders}>
+          <AtGrid onClick={order} hasBorder={false} data={data1} />
+        </View>
       </View>
-      <View className={styles.orders}>
-        <AtGrid onClick={order} hasBorder={false} data={data1} />
-      </View>
+
       <View className={styles.division}></View>
 
-      <View className={styles.order}>
-        <Text onClick={whole} className={styles.text}>
-          接单管理
-        </Text>
-      </View>
-      <View className={styles.orders}>
-        <AtGrid onClick={handleClick} hasBorder={false} data={data} />
+      <View className={styles.bottom}>
+        <View className={styles.order}>
+          <Text onClick={whole} className={styles.text}>
+            接单管理
+          </Text>
+        </View>
+        <View className={styles.orders}>
+          <AtGrid onClick={handleClick} hasBorder={false} data={data} />
+        </View>
       </View>
     </View>
   )

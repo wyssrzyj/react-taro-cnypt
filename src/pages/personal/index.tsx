@@ -17,7 +17,7 @@ const Personal = () => {
   const { userInformation } = userInterface
   const [list, setList] = useState({})
   const [jurisdiction, setJurisdiction] = useState({})
-  // 根据企业id 获取信息
+  // 根据企业id 获取信息.
   useEffect(() => {
     if (Taro.getStorageSync('currentUser')) {
       let information = JSON.parse(Taro.getStorageSync('currentUser')).userId
@@ -35,6 +35,8 @@ const Personal = () => {
   // 用户信息
   const pickUpInformation = async e => {
     let res = await userInformation(e)
+    console.log(res)
+
     if (res) {
       setList(res)
     }

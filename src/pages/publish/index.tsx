@@ -27,6 +27,7 @@ import { CusProductModal, CusMaterialModal, CusModal } from '@/components'
 import { findTarget, matchTreeData, phoneReg } from '@/utils/tool'
 import { upload } from '@/utils/upload'
 import AreaModal from '@/components/areaModal'
+import { errorConfigs } from './errorConfig'
 
 const BACK_ICON =
   'https://capacity-platform.oss-cn-hangzhou.aliyuncs.com/capacity-platform/mobile/icon/back.png'
@@ -72,6 +73,10 @@ const FactoryEntry = () => {
     ;(async () => {
       if (id) {
         const detail = await orderDetail(id)
+        console.log('数据更改前', detail)
+        console.log(moment(detail.inquiryEffectiveDate))
+        console.log(moment(detail.inquiryEffectiveDate).format('YYYY-MM-DD'))
+
         detail.goodsNum = [detail.goodsNumDictionary]
         detail.effectiveLocation = [detail.effectiveLocationDictionary]
         detail.inquiryEffectiveDate = detail.inquiryEffectiveDate
@@ -88,6 +93,7 @@ const FactoryEntry = () => {
         detail.processTypeList = detail.processTypeDictionaryList
 
         delete detail.id
+        console.log('数据更改完毕', detail)
         setParams(detail)
       }
     })()
@@ -124,101 +130,16 @@ const FactoryEntry = () => {
 
   const onSubmit = async () => {
     const nParams = cloneDeep(params)
-    // contactPerson 联系人
-    // contactPersonMobile 手机号
-    // isContactPublic 联系方式公开
-    // isEnterpriseInfoPublic 企业信息公开
-    // name 订单标题
-    // goodsNum 发单量
-    // goodsPrice 目标单价
-    // categoryCodes 产品品类
-    // materialTypeList 面料类型
-    // processTypeList 加工类型
-    // productTypeList 生产方式
-    // regionalIdList 地区要求
-    // deliveryDate 交货日期
-    // effectiveLocation 车位要求
-    // payDetails 付款方式
-    // inquiryEffectiveDate 订单有效期
-    // goodsRemark 备注说明
-    // stylePicture 款图
-    if (isNil(nParams['contactPerson'])) {
-      setIsOpened(true)
-      setErrText('请输入联系人')
-      return
-    }
-    if (
-      isNil(nParams['contactPersonMobile']) ||
-      !phoneReg.test(nParams['contactPersonMobile'])
-    ) {
-      setIsOpened(true)
-      setErrText('请输入正确的手机号')
-      return
-    }
-    if (isNil(nParams['isContactPublic'])) {
-      setIsOpened(true)
-      setErrText('请选择联系信息公开方式')
-      return
-    }
-    if (isNil(nParams['isEnterpriseInfoPublic'])) {
-      setIsOpened(true)
-      setErrText('请选择联系信息公开方式')
-      return
-    }
-    if (isNil(nParams['name'])) {
-      setIsOpened(true)
-      setErrText('请输入订单标题')
-      return
-    }
-    if (isNil(nParams['goodsNum'])) {
-      setIsOpened(true)
-      setErrText('请输入发单量')
-      return
-    }
-    if (isNil(nParams['categoryCodes'])) {
-      setIsOpened(true)
-      setErrText('请选择产品品类')
-      return
-    }
-    if (isNil(nParams['materialTypeList'])) {
-      setIsOpened(true)
-      setErrText('请选择面料类型')
-      return
-    }
-    if (isNil(nParams['processTypeList'])) {
-      setIsOpened(true)
-      setErrText('请选择加工类型')
-      return
-    }
-    if (isNil(nParams['productTypeList'])) {
-      setIsOpened(true)
-      setErrText('请选择生产方式')
-      return
-    }
-    if (isNil(nParams['regionalIdList'])) {
-      setIsOpened(true)
-      setErrText('请选择地区要求')
-      return
-    }
-    if (isNil(nParams['deliveryDate'])) {
-      setIsOpened(true)
-      setErrText('请选择交货日期')
-      return
-    }
-    if (isNil(nParams['effectiveLocation'])) {
-      setIsOpened(true)
-      setErrText('请选择车位要求')
-      return
-    }
-    if (isNil(nParams['payDetails'])) {
-      setIsOpened(true)
-      setErrText('请输入付款方式')
-      return
-    }
-    if (isNil(nParams['inquiryEffectiveDate'])) {
-      setIsOpened(true)
-      setErrText('请选择订单有效期')
-      return
+
+    for (let i = 0; i < errorConfigs.length; i++) {
+      if (
+        isNil(nParams[errorConfigs[i].field]) ||
+        (errorConfigs[i].reg && !phoneReg.test(nParams[errorConfigs[i].field]))
+      ) {
+        setIsOpened(true)
+        setErrText(errorConfigs[i].errorText)
+        return
+      }
     }
 
     nParams.goodsNum = nParams.goodsNum.join('')
