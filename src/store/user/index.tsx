@@ -259,6 +259,10 @@ export default class UserInterface {
           key: 'currentUser',
           data: null
         })
+        Taro.setStorage({
+          key: 'userInfo',
+          data: null
+        })
         return true
       }
       return false

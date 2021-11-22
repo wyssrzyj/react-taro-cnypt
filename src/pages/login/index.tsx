@@ -80,7 +80,7 @@ const Login = () => {
           className={styles.img}
           src="https://capacity-platform.oss-cn-hangzhou.aliyuncs.com/capacity-platform/mobile/index/logo.png"
         />
-        <Text className={styles.text}>优产云平台</Text>
+        <Text className={styles.text}>优产平台</Text>
       </View>
       {/* 内容 */}
       <View className={styles.content}>

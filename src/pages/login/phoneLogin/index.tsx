@@ -13,7 +13,7 @@ export const BACK_ICON =
 const LoginHeader = () => {
   return (
     <View className={styles.loginHeader}>
-      <View className={styles.loginTitle}>您好，欢迎来到优产云！</View>
+      <View className={styles.loginTitle}>您好，欢迎来到优产！</View>
       <View className={styles.loginMsg}>未注册的手机号验证后自动创建账户</View>
     </View>
   )
