@@ -41,8 +41,8 @@ const Login = () => {
       const code = await wxLogin()
       if (code === 200) {
         setTimeout(() => {
-          // Taro.redirectTo({ url: '/pages/index/index' })
-          goBack()
+          Taro.redirectTo({ url: '/pages/index/index' })
+          // goBack()
         })
       }
     }

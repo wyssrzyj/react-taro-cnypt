@@ -34,10 +34,11 @@ const TabBarModal = props => {
           Taro.redirectTo({
             url: '/pages/login/index'
           })
+        } else {
+          Taro.navigateTo({
+            url: '/pages/orderIssueEntry/index'
+          })
         }
-        Taro.redirectTo({
-          url: '/pages/orderIssueEntry/index'
-        })
       }
     },
     {
@@ -50,10 +51,11 @@ const TabBarModal = props => {
           Taro.redirectTo({
             url: '/pages/login/index'
           })
+        } else {
+          Taro.navigateTo({
+            url: '/pages/publish/index'
+          })
         }
-        Taro.redirectTo({
-          url: '/pages/publish/index'
-        })
       }
     },
     {
@@ -66,10 +68,11 @@ const TabBarModal = props => {
           Taro.redirectTo({
             url: '/pages/login/index'
           })
+        } else {
+          Taro.navigateTo({
+            url: '/pages/factoryEntry/index'
+          })
         }
-        Taro.redirectTo({
-          url: '/pages/factoryEntry/index'
-        })
       }
     }
   ]
@@ -84,10 +87,18 @@ const TabBarModal = props => {
       isNil(userInformation.enterpriseType)
     ) {
     }
-    if (userInformation && +userInformation.enterpriseType === 0) {
+    if (
+      userInformation &&
+      !isNil(userInformation.enterpriseType) &&
+      +userInformation.enterpriseType === 0
+    ) {
       nConfigs = []
     }
-    if (userInformation && +userInformation.enterpriseType === 1) {
+    if (
+      userInformation &&
+      !isNil(userInformation.enterpriseType) &&
+      +userInformation.enterpriseType === 1
+    ) {
       nConfigs = nConfigs.filter((_, idx) => idx === 1)
     }
     setConfigs(nConfigs)
