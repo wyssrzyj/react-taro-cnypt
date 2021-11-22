@@ -1,3 +1,3 @@
 export default {
-  navigationBarTitleText: "关于优产云",
-};
+  navigationBarTitleText: '关于优产'
+}

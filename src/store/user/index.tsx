@@ -236,7 +236,7 @@ export default class UserInterface {
     }
   }
 
-  // 用户登出
+  // 用户登出.
   @action signOut = async () => {
     try {
       const res: Partial<Response> = await HTTP.post('/api/user/account/logout')
@@ -257,6 +257,10 @@ export default class UserInterface {
         })
         Taro.setStorage({
           key: 'currentUser',
+          data: null
+        })
+        Taro.setStorage({
+          key: 'userInfo',
           data: null
         })
         return true

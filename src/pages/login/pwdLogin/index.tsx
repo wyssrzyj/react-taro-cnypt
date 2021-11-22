@@ -14,7 +14,7 @@ const LoginHeader = () => {
   return (
     <View className={styles.loginHeader}>
       <View className={styles.loginTitle}>账号密码登录</View>
-      <View className={styles.loginMsg}>欢迎来到优产云平台</View>
+      <View className={styles.loginMsg}>欢迎来到优产平台</View>
     </View>
   )
 }
