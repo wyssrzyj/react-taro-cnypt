@@ -170,7 +170,7 @@ const OrderIssueEntry = () => {
 
     if (!params['address']) {
       setIsOpened(true)
-      setErrText('请输入工厂地址')
+      setErrText('请输入企业地址')
       return
     }
 
@@ -404,7 +404,7 @@ const OrderIssueEntry = () => {
 
           <View className={styles.cusFormItem}>
             <Text className={classNames(styles.cusLabel, styles.required)}>
-              工厂地址
+              企业地址
             </Text>
             <Text
               className={
@@ -412,7 +412,7 @@ const OrderIssueEntry = () => {
               }
               onClick={addressChoose}
             >
-              {params['address'] ? params['address'] : '请填写工厂地址'}
+              {params['address'] ? params['address'] : '请填写企业地址'}
             </Text>
           </View>
         </View>
