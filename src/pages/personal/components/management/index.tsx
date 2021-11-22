@@ -129,19 +129,19 @@ const Managemenet = props => {
           <AtIcon value="chevron-right" size="15" color="#999999"></AtIcon>
         </Text>
       </View>
-
-      <View className={styles.order} onClick={retreat}>
-        <View className={styles.content}>
-          <View className={styles.remove}>
-            <Image className={styles.removeIcon} src={signOuts}></Image>
+      {type !== 'notLogged' ? (
+        <View className={styles.order} onClick={retreat}>
+          <View className={styles.content}>
+            <View className={styles.remove}>
+              <Image className={styles.removeIcon} src={signOuts}></Image>
+            </View>
+            <Text className={styles.txt}>退出登录</Text>
           </View>
-          <Text className={styles.txt}>退出登录</Text>
+          <Text className={styles.iconmy}>
+            <AtIcon value="chevron-right" size="15" color="#999999"></AtIcon>
+          </Text>
         </View>
-        <Text className={styles.iconmy}>
-          <AtIcon value="chevron-right" size="15" color="#999999"></AtIcon>
-        </Text>
-      </View>
-
+      ) : null}
       {/* 弹窗 */}
       <AtActionSheet
         isOpened={modal}
