@@ -20,9 +20,9 @@ const Card = props => {
 
   const { commonStore } = useStores()
   const { dictionary, productCategoryList } = commonStore
-  const { processType } = dictionary
+  const { processType = [] } = dictionary
 
-  const [processTypes, setProcessTypes] = useState<string[]>()
+  const [processTypes, setProcessTypes] = useState<string[]>([])
 
   useEffect(() => {
     if (type === 0) {

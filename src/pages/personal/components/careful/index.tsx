@@ -2,7 +2,6 @@ import { View, Text, Image } from '@tarojs/components'
 import styles from './index.module.less'
 import Taro from '@tarojs/taro'
 const careful = ({ userInfo }) => {
-  console.log(userInfo)
   const handleClick = () => {
     Taro.redirectTo({ url: '/pages/personal/userAgreement/index' })
   }

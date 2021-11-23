@@ -71,14 +71,8 @@ const PwdLogin = () => {
 
       if (res && res.success) {
         setError(false)
-        const data = await userInfo()
-        if (data) {
-          // data.enterpriseType && history.push('/control-panel/home')
-          // !data.enterpriseType && history.push('/')
-        } else {
-          // history.push('/')
-          // Taro.redirectTo({ url: '/pages/index/index' })
-        }
+        // await userInfo()
+
         Taro.redirectTo({ url: '/pages/index/index' })
       } else {
         setError(true)

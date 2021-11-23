@@ -46,7 +46,6 @@ const styleStructure = ({
       )
     }
     // 地区
-    console.log(data.regionalIdList)
     if (data.regionalIdList.length > 0) {
       setRegion(
         getTrees(data.regionalIdList, toJS(district), 'value', 'label').join(

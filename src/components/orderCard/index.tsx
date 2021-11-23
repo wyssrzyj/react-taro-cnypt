@@ -20,8 +20,6 @@ const OrderCard = props => {
   }
 
   const imgPreview = url => {
-    console.log(data.imgs)
-
     Taro.previewImage({
       // 所有图片
       urls: data.imgs,
@@ -39,7 +37,6 @@ const OrderCard = props => {
       <View className={styles.addressBox}>
         <View className={styles.label}>地区要求</View>
         <View className={styles.address}>
-          {console.log('地区要求', data.regionalNameList)}
           {data.regionalNameList ? data.regionalNameList : ''}
         </View>
       </View>

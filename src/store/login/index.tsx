@@ -62,9 +62,12 @@ export default class LoginStore {
       return res
     } catch (err) {
       console.log(err)
-
-      // const { response } = err
-      // const { code } = response
+      Taro.hideLoading()
+      Taro.showToast({
+        title: err.msg as string,
+        icon: 'none',
+        duration: 1500
+      })
     }
   }
 
@@ -104,6 +107,7 @@ export default class LoginStore {
       return res
     } catch (e) {
       if (e.code !== 200) {
+        Taro.hideLoading()
         Taro.showToast({
           title: e.msg as string,
           icon: 'none',
@@ -163,6 +167,7 @@ export default class LoginStore {
       )
 
       if (res.code === 200) {
+        Taro.hideLoading()
         Taro.showToast({
           title: res.msg as string,
           icon: 'none',
@@ -173,6 +178,7 @@ export default class LoginStore {
       return res.data
     } catch (err) {
       console.log(err)
+      Taro.hideLoading()
       Taro.showToast({
         title: err.msg as string,
         icon: 'none',
@@ -199,6 +205,7 @@ export default class LoginStore {
       return res.data
     } catch (err) {
       console.log(err)
+      Taro.hideLoading()
       Taro.showToast({
         title: err.msg as string,
         icon: 'none',
@@ -242,8 +249,9 @@ export default class LoginStore {
           key: 'currentUser',
           data: JSON.stringify(data)
         })
-        await this.userInfo()
+        // await this.userInfo()
       } else {
+        Taro.hideLoading()
         Taro.showToast({
           title: res.msg as string,
           icon: 'none',
@@ -253,6 +261,7 @@ export default class LoginStore {
       return res || {}
     } catch (err) {
       console.log(err)
+      Taro.hideLoading()
       Taro.showToast({
         title: err.msg as string,
         icon: 'none',
@@ -271,6 +280,7 @@ export default class LoginStore {
       )
       if (res.code === 200) {
       } else {
+        Taro.hideLoading()
         Taro.showToast({
           title: res.msg as string,
           icon: 'none',
@@ -281,6 +291,7 @@ export default class LoginStore {
       return res.data
     } catch (err) {
       console.log(err)
+      Taro.hideLoading()
       Taro.showToast({
         title: err.msg as string,
         icon: 'none',
@@ -298,6 +309,8 @@ export default class LoginStore {
         params
       )
       if (res.code === 200) {
+      } else {
+        Taro.hideLoading()
         Taro.showToast({
           title: res.msg as string,
           icon: 'none',
@@ -308,6 +321,7 @@ export default class LoginStore {
       return res.code
     } catch (err) {
       console.log(err)
+      Taro.hideLoading()
       Taro.showToast({
         title: err.msg as string,
         icon: 'none',

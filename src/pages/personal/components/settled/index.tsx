@@ -12,8 +12,6 @@ const Settled = props => {
   const { type } = props
 
   const toOrderEntry = () => {
-    console.log(type.userName)
-
     if (type.userName !== undefined) {
       Taro.navigateTo({
         url: '/pages/orderIssueEntry/index'

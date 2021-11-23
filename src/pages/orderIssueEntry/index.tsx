@@ -266,7 +266,7 @@ const OrderIssueEntry = () => {
   }, [params.mainCategoriesList])
 
   const getLabels = (options, field) => {
-    if (isArray(params[field])) {
+    if (isArray(params[field]) && isArray(options)) {
       return params[field].reduce((prev, item, idx) => {
         const target = options.find(i => i.value === item) || {}
         return (

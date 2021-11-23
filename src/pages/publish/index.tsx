@@ -73,10 +73,6 @@ const FactoryEntry = () => {
     ;(async () => {
       if (id) {
         const detail = await orderDetail(id)
-        console.log('数据更改前', detail)
-        console.log(moment(detail.inquiryEffectiveDate))
-        console.log(moment(detail.inquiryEffectiveDate).format('YYYY-MM-DD'))
-
         detail.goodsNum = [detail.goodsNumDictionary]
         detail.effectiveLocation = [detail.effectiveLocationDictionary]
         detail.inquiryEffectiveDate = detail.inquiryEffectiveDate
@@ -93,7 +89,6 @@ const FactoryEntry = () => {
         detail.processTypeList = detail.processTypeDictionaryList
 
         delete detail.id
-        console.log('数据更改完毕', detail)
         setParams(detail)
       }
     })()
@@ -154,7 +149,6 @@ const FactoryEntry = () => {
       ? moment(nParams.deliveryDate).valueOf()
       : null
     let res = await publishOrder(nParams)
-    console.log(res)
     if (res.code === 200) {
       Taro.redirectTo({ url: '/pages/index/index' })
     }
@@ -218,7 +212,7 @@ const FactoryEntry = () => {
   }, [params.materialTypeList])
 
   const getLabels = (options, field) => {
-    if (isArray(params[field])) {
+    if (isArray(params[field]) && isArray(options)) {
       return params[field].reduce((prev, item, idx) => {
         const target = options.find(i => i.value === item) || {}
         return (
@@ -466,10 +460,6 @@ const FactoryEntry = () => {
               params['regionalIdList'].length
                 ? params['regionalIdList'].map((item, idx) => {
                     const target = findTarget(item, district, 'value') || {}
-                    console.log(
-                      "🚀 ~ file: index.tsx ~ line 530 ~ ?params['regionalIdList'].map ~ target",
-                      target
-                    )
                     return idx === params['regionalIdList'].length - 1
                       ? target.label
                       : `${target.label}、`

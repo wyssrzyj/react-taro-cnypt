@@ -16,7 +16,7 @@ import {
 } from '@/components'
 import { cloneDeep, isArray, isNil } from 'lodash'
 import AreaModal from '@/components/areaModal'
-import Card from '../index/components/card'
+import Card from './components/card'
 
 const BASE_URL =
   'https://capacity-platform.oss-cn-hangzhou.aliyuncs.com/capacity-platform/mobile'
@@ -352,13 +352,15 @@ const Search = () => {
         </View>
       )}
 
-      {pageStatus === 2 &&
-        dataSource.map((data, idx) => {
-          return <Card key={idx} data={data} type={activeTab}></Card>
-        })}
-      {pageStatus === 2 && dataSource.length >= total && init && (
-        <View className={styles.noMoreText}>没有更多了</View>
-      )}
+      <View className={styles.cradsBox}>
+        {pageStatus === 2 &&
+          dataSource.map((data, idx) => {
+            return <Card key={idx} data={data} type={activeTab}></Card>
+          })}
+        {pageStatus === 2 && dataSource.length >= total && init && (
+          <View className={styles.noMoreText}>没有更多了</View>
+        )}
+      </View>
 
       {areaFlag && (
         <AreaModal

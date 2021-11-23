@@ -54,10 +54,10 @@ export default class UserInterface {
         '/api/user/update-user-mobile-phone',
         params
       )
-      console.log('成功', res)
       runInAction(() => {
         this.modi = '0'
       })
+      Taro.hideLoading()
       Taro.showToast({
         title: res.msg as string,
         icon: 'none',
@@ -68,10 +68,10 @@ export default class UserInterface {
       }
       return false
     } catch (e) {
-      console.log('失败', e)
       runInAction(() => {
         this.modi = '1'
       })
+      Taro.hideLoading()
       Taro.showToast({
         title: e.msg as string,
         icon: 'none',
@@ -87,7 +87,7 @@ export default class UserInterface {
         '/api/user/update-password',
         params
       )
-      console.log('成功', res)
+      Taro.hideLoading()
       Taro.showToast({
         title: res.msg as string,
         icon: 'none',
@@ -98,12 +98,12 @@ export default class UserInterface {
       }
       return false
     } catch (e) {
+      Taro.hideLoading()
       Taro.showToast({
         title: e.msg as string,
         icon: 'none',
         duration: 1500
       })
-      console.log('失败', e)
       if (e.code === 200) {
         return true
       }
@@ -137,6 +137,7 @@ export default class UserInterface {
         '/api/oms/inquiry-quote/judge-goods-num',
         params
       )
+      Taro.hideLoading()
       Taro.showToast({
         title: res.msg as string,
         icon: 'none',
@@ -147,12 +148,12 @@ export default class UserInterface {
       }
       return res
     } catch (e) {
+      Taro.hideLoading()
       Taro.showToast({
         title: e.msg as string,
         icon: 'none',
         duration: 1500
       })
-      console.log('失败', e)
       if (e.code === 200) {
         return e
       }
@@ -172,12 +173,12 @@ export default class UserInterface {
       }
       return res
     } catch (e) {
+      Taro.hideLoading()
       Taro.showToast({
         title: e.msg as string,
         icon: 'none',
         duration: 1500
       })
-      console.log('失败', e)
       if (e.code === 200) {
         return e
       }
@@ -196,6 +197,7 @@ export default class UserInterface {
       if (res.code === 200) {
         return res.data
       } else {
+        Taro.hideLoading()
         Taro.showToast({
           title: res.msg as string,
           icon: 'none',
@@ -204,12 +206,12 @@ export default class UserInterface {
       }
       return res.data
     } catch (e) {
+      Taro.hideLoading()
       Taro.showToast({
         title: e.msg as string,
         icon: 'none',
         duration: 1500
       })
-      console.log('失败', e)
       if (e.code === 200) {
         return e
       }
@@ -240,11 +242,6 @@ export default class UserInterface {
   @action signOut = async () => {
     try {
       const res: Partial<Response> = await HTTP.post('/api/user/account/logout')
-<<<<<<< HEAD
-      console.log('成功', res)
-
-=======
->>>>>>> 4fda843c524a058e988a5570b41260e5901da884
       if (res.code === 200) {
         Taro.setStorage({
           key: 'token',
@@ -266,12 +263,12 @@ export default class UserInterface {
       }
       return false
     } catch (e) {
+      Taro.hideLoading()
       Taro.showToast({
         title: e.msg as string,
         icon: 'none',
         duration: 1500
       })
-      console.log('失败', e)
       if (e.code === 200) {
         return true
       }
@@ -345,6 +342,7 @@ export default class UserInterface {
         `/api/oms/inquiry-purchase/cancel-cooperation`,
         params
       )
+      Taro.hideLoading()
       Taro.showToast({
         title: res.msg as string,
         icon: 'none',
@@ -352,6 +350,7 @@ export default class UserInterface {
       })
       return res
     } catch (e) {
+      Taro.hideLoading()
       Taro.showToast({
         title: e.msg as string,
         icon: 'none',
@@ -369,6 +368,7 @@ export default class UserInterface {
         `/api/oms/inquiry-purchase/confirm-cooperation`,
         params
       )
+      Taro.hideLoading()
       Taro.showToast({
         title: res.msg as string,
         icon: 'none',
@@ -376,6 +376,7 @@ export default class UserInterface {
       })
       return res
     } catch (e) {
+      Taro.hideLoading()
       Taro.showToast({
         title: e.msg as string,
         icon: 'none',
@@ -392,6 +393,7 @@ export default class UserInterface {
         `/api/oms/inquiry-quote/refuse-take-inquiry`,
         params
       )
+      Taro.hideLoading()
       Taro.showToast({
         title: res.msg as string,
         icon: 'none',
@@ -399,6 +401,7 @@ export default class UserInterface {
       })
       return res
     } catch (e) {
+      Taro.hideLoading()
       Taro.showToast({
         title: e.msg as string,
         icon: 'none',
@@ -415,6 +418,7 @@ export default class UserInterface {
         `/api/oms/inquiry-purchase/decline-inquiry-application`,
         params
       )
+      Taro.hideLoading()
       Taro.showToast({
         title: res.msg as string,
         icon: 'none',
@@ -422,6 +426,7 @@ export default class UserInterface {
       })
       return res
     } catch (e) {
+      Taro.hideLoading()
       Taro.showToast({
         title: e.msg as string,
         icon: 'none',
@@ -492,7 +497,6 @@ export default class UserInterface {
         `/api/user/get-account-info`,
         params
       )
-      console.log(res)
 
       return res.data
     } catch (e) {
@@ -505,7 +509,7 @@ export default class UserInterface {
       const res: Partial<Response> = await HTTP.delete(
         `/api/oms/inquiry-purchase/delete?id=${value}`
       )
-      console.log(res)
+      Taro.hideLoading()
       Taro.showToast({
         title: res.msg as string,
         icon: 'none',
@@ -513,6 +517,7 @@ export default class UserInterface {
       })
       return res
     } catch (e) {
+      Taro.hideLoading()
       Taro.showToast({
         title: e.msg as string,
         icon: 'none',
@@ -528,6 +533,7 @@ export default class UserInterface {
         `/api/oms/inquiry-purchase/advance-end`,
         params
       )
+      Taro.hideLoading()
       Taro.showToast({
         title: res.msg as string,
         icon: 'none',
@@ -535,6 +541,7 @@ export default class UserInterface {
       })
       return res
     } catch (e) {
+      Taro.hideLoading()
       Taro.showToast({
         title: e.msg as string,
         icon: 'none',
@@ -552,6 +559,7 @@ export default class UserInterface {
         params
       )
       if (res.code === 200) {
+        Taro.hideLoading()
         Taro.showToast({
           title: res.msg as string,
           icon: 'none',
@@ -562,6 +570,7 @@ export default class UserInterface {
       return res.data
     } catch (err) {
       console.log(err)
+      Taro.hideLoading()
       Taro.showToast({
         title: err.msg as string,
         icon: 'none',

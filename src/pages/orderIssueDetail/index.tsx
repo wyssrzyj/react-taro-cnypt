@@ -137,7 +137,6 @@ const FactoryDetail = () => {
               <View key={item.field} className={styles.item}>
                 <View className={styles.itemTitle}>{item.label}</View>
                 <View className={styles.itemValue}>
-                  {console.log(data[item.field])}
                   {isArray(data[item.field])
                     ? data[item.field].join('、')
                     : data[item.field]}

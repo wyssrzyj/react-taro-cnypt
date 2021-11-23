@@ -39,8 +39,6 @@ function index({ data, deleteMethod, earlyEnd }) {
         getTrees(data.processTypeList, toJS(processType), 'value', 'label')
       )
     }
-    console.log('我的订单')
-
     // 地区
     if (data.regionalIdList) {
       setRegion(

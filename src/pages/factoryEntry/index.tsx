@@ -210,10 +210,6 @@ const FactoryEntry = () => {
       allImgs.push(customRequest(item))
     })
     await Promise.all(allImgs).then(res => {
-      console.log(
-        '🚀 ~ file: index.tsx ~ line 213 ~ awaitPromise.all ~ res',
-        res
-      )
       nParams[field] = res
       setParams(nParams)
     })
@@ -436,7 +432,7 @@ const FactoryEntry = () => {
   }, [params.materialTypeValues, plusMaterialType])
 
   const getLabels = (options, field) => {
-    if (isArray(params[field])) {
+    if (isArray(params[field]) && isArray(options)) {
       return params[field].reduce((prev, item, idx) => {
         const target = options.find(i => i.value === item) || {}
         return (
@@ -813,7 +809,6 @@ const FactoryEntry = () => {
         text={errText}
         duration={1000}
       ></AtToast>
-
       {productFlag && (
         <CusProductModal
           visible={productFlag}

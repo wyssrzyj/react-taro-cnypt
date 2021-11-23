@@ -71,6 +71,7 @@ export default class CommonStore {
         })
         return res.data || []
       } else {
+        Taro.hideLoading()
         Taro.showToast({
           title: '获取数据失败~',
           icon: 'none',
@@ -97,6 +98,7 @@ export default class CommonStore {
         })
         return res.data || []
       } else {
+        Taro.hideLoading()
         Taro.showToast({
           title: '获取数据失败~',
           icon: 'none',

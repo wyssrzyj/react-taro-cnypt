@@ -38,16 +38,26 @@ const Login = () => {
       console.log('拒绝授权')
     } else {
       //允许授权执行跳转
-      const res = (await wxLogin()) || {}
-      if (res.code === 200) {
-        const checkPwdRes = await checkPwdExist({ userId: res.data.userId })
-        if (checkPwdRes) {
-          Taro.navigateTo({
-            url: `/pages/login/phoneLogin/setPwd?id=${res.data.userId}`
-          })
-        } else {
-          Taro.redirectTo({ url: '/pages/index/index' })
+      try {
+        const res = (await wxLogin()) || {}
+        if (res.code === 200) {
+          try {
+            const checkPwdRes = await checkPwdExist({
+              userId: res.data.userId
+            })
+            if (checkPwdRes) {
+              Taro.navigateTo({
+                url: `/pages/login/phoneLogin/setPwd?id=${res.data.userId}`
+              })
+            } else {
+              Taro.redirectTo({ url: '/pages/index/index' })
+            }
+          } catch (error) {
+            console.log(error, 'error')
+          }
         }
+      } catch (err) {
+        console.log(err, 'err')
       }
     }
   }

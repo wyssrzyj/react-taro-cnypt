@@ -33,12 +33,12 @@ const PwdLogin = () => {
   const changeStep = async () => {
     if (phone.length !== 11) return
     const checktFlag = await checkUser(phone, 'mobilePhone')
-    checktFlag &&
-      Taro.showToast({
-        title: '手机号未注册~',
-        icon: 'none',
-        duration: 1000
-      })
+    checktFlag && Taro.hideLoading()
+    Taro.showToast({
+      title: '手机号未注册~',
+      icon: 'none',
+      duration: 1000
+    })
     if (checktFlag) return
     Taro.navigateTo({
       url: `/pages/login/findPwd/verify?phone=${phone}`

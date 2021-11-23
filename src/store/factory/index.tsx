@@ -24,6 +24,7 @@ export default class FactoryStore {
       if (res) {
         return res.data || []
       } else {
+        Taro.hideLoading()
         Taro.showToast({
           title: '获取数据失败~',
           icon: 'none',
@@ -49,6 +50,7 @@ export default class FactoryStore {
       if (res) {
         return res.data || []
       } else {
+        Taro.hideLoading()
         Taro.showToast({
           title: '获取数据失败~',
           icon: 'none',
@@ -74,6 +76,7 @@ export default class FactoryStore {
       Taro.hideLoading()
       if (res) {
       } else {
+        Taro.hideLoading()
         Taro.showToast({
           title: '获取数据失败~',
           icon: 'none',
@@ -101,6 +104,7 @@ export default class FactoryStore {
         const { data } = res
         return data
       } else {
+        Taro.hideLoading()
         Taro.showToast({
           title: '获取数据失败~',
           icon: 'none',
@@ -128,6 +132,7 @@ export default class FactoryStore {
         const { data } = res
         return data
       } else {
+        Taro.hideLoading()
         Taro.showToast({
           title: '获取数据失败~',
           icon: 'none',
@@ -147,7 +152,7 @@ export default class FactoryStore {
     })
     try {
       const res: Partial<Response> = await HTTP.get(
-        `/api/oms/inquiry-purchase/get-applets-another-order`,
+        `/api/oms/inquiry-purchase/get-applets`,
         { id }
       )
       Taro.hideLoading()
@@ -155,6 +160,7 @@ export default class FactoryStore {
         const { data } = res
         return data
       } else {
+        Taro.hideLoading()
         Taro.showToast({
           title: '获取数据失败~',
           icon: 'none',
@@ -179,6 +185,7 @@ export default class FactoryStore {
         const { data } = res
         return data
       } else {
+        Taro.hideLoading()
         Taro.showToast({
           title: '获取数据失败~',
           icon: 'none',
@@ -201,6 +208,7 @@ export default class FactoryStore {
 
       if (res.code === 200) {
       } else {
+        Taro.hideLoading()
         Taro.showToast({
           title: '获取数据失败~',
           icon: 'none',
@@ -224,6 +232,7 @@ export default class FactoryStore {
 
       if (res.code === 200) {
       } else {
+        Taro.hideLoading()
         Taro.showToast({
           title: '获取数据失败~',
           icon: 'none',
@@ -247,6 +256,7 @@ export default class FactoryStore {
 
       if (res.code === 200) {
       } else {
+        Taro.hideLoading()
         Taro.showToast({
           title: '获取数据失败~',
           icon: 'none',
@@ -273,6 +283,7 @@ export default class FactoryStore {
       Taro.hideLoading()
       return res
     } catch (err) {
+      Taro.hideLoading()
       Taro.showToast({
         title: err.msg as string,
         icon: 'none',
@@ -293,6 +304,7 @@ export default class FactoryStore {
 
       if (res.code === 200) {
       } else {
+        Taro.hideLoading()
         Taro.showToast({
           title: '获取数据失败~',
           icon: 'none',
@@ -316,6 +328,7 @@ export default class FactoryStore {
 
       if (res.code === 200) {
       } else {
+        Taro.hideLoading()
         Taro.showToast({
           title: '获取数据失败~',
           icon: 'none',

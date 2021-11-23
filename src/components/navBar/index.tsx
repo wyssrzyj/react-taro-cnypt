@@ -16,6 +16,7 @@ const Navbar = props => {
       id={'navbar'}
       style={{
         padding: `${top + 'px'} 0 ${top - Taro['$navBarMarginTop'] + 'px'}`,
+        // padding: `${top + 'px'} 0 0}`,
         background: background
       }}
       className={styles.navbarOutWrap}

@@ -174,8 +174,6 @@ const Home = () => {
 
   useReachBottom(() => {
     if (loading) return
-    console.log(loading)
-
     if (dataSource.length >= total) return
     setPageNum(n => n + 1)
   })

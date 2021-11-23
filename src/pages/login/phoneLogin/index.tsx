@@ -1,7 +1,7 @@
 import styles from './index.module.less'
 import { View, Text, Image } from '@tarojs/components'
 import { useState, useEffect, useRef } from 'react'
-import { AtInput } from 'taro-ui'
+import { AtInput, AtToast } from 'taro-ui'
 import Taro from '@tarojs/taro'
 import { Navbar } from '@/components'
 import { useStores } from '@/store/mobx'
@@ -25,7 +25,7 @@ const PhoneLogin = () => {
   const contentRef = useRef<any>(null)
 
   const { loginStore } = useStores()
-  const { sendVerifyCode, login, userInfo, checkPwdExist } = loginStore
+  const { sendVerifyCode, login, checkPwdExist } = loginStore
 
   const [phone, setPhone] = useState<string>('')
   const [verifyCode, setVerifyCode] = useState()
@@ -88,21 +88,9 @@ const PhoneLogin = () => {
     if (sending) return
     if (phone.length !== 11) return
     try {
-      // let flag = true
-      // const checktFlag = await checkUser(phone, 'mobilePhone')
-      // checktFlag &&
-      //   Taro.showToast({
-      //     title: '手机号未注册~',
-      //     icon: 'none',
-      //     duration: 1500
-      //   })
-      // flag = !checktFlag // checkFlag false 已注册
-
-      // if (flag) {
       const res = await sendVerifyCode(phone)
       res && setSending(true)
       res && timerRun()
-      // }
     } catch (err) {
       console.log(err)
     }
@@ -134,7 +122,7 @@ const PhoneLogin = () => {
 
       if (res && res.success) {
         setError(false)
-        await userInfo()
+        // await userInfo()
 
         const checkPwdRes = await checkPwdExist({ userId: res.data.userId })
 

@@ -16,7 +16,6 @@ const Verify = () => {
 
   // 跳转的数据
   useEffect(() => {
-    console.log(feedbackInformations)
     if (feedbackInformations) {
       setData(feedbackInformations)
     }
