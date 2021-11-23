@@ -147,7 +147,7 @@ export default class FactoryStore {
     })
     try {
       const res: Partial<Response> = await HTTP.get(
-        `/api/oms/inquiry-purchase/get-applets`,
+        `/api/oms/inquiry-purchase/get-applets-another-order`,
         { id }
       )
       Taro.hideLoading()
@@ -259,7 +259,7 @@ export default class FactoryStore {
     }
   }
 
-  // /api/oms/inquiry-purchase/save
+  // /api/oms/inquiry-purchase/save.
   // 更新或新增需求单 post
   @action publishOrder = async params => {
     Taro.showLoading({
@@ -271,17 +271,14 @@ export default class FactoryStore {
         params
       )
       Taro.hideLoading()
-      if (res.code === 200) {
-      } else {
-        Taro.showToast({
-          title: '获取数据失败~',
-          icon: 'none',
-          duration: 1000
-        })
-      }
-      return res.data
-    } catch (e) {
-      console.log(e)
+      return res
+    } catch (err) {
+      Taro.showToast({
+        title: err.msg as string,
+        icon: 'none',
+        duration: 1000
+      })
+      return err
     }
   }
 

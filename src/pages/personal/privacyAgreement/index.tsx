@@ -26,7 +26,7 @@ const privacyAgreement = () => {
         </View>
       </Navbar>
       {/* 内容 */}
-      <View className={styles.container} style={{ paddingTop: tops + 'px' }}>
+      <View className={styles.container}>
         <View className={styles.top}>
           <Text>《优产隐私政策》</Text>
           <View className={styles.top}>

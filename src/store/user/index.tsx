@@ -240,8 +240,11 @@ export default class UserInterface {
   @action signOut = async () => {
     try {
       const res: Partial<Response> = await HTTP.post('/api/user/account/logout')
+<<<<<<< HEAD
       console.log('成功', res)
 
+=======
+>>>>>>> 4fda843c524a058e988a5570b41260e5901da884
       if (res.code === 200) {
         Taro.setStorage({
           key: 'token',

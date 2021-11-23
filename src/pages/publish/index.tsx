@@ -153,8 +153,11 @@ const FactoryEntry = () => {
     nParams.deliveryDate = nParams.deliveryDate
       ? moment(nParams.deliveryDate).valueOf()
       : null
-    await publishOrder(nParams)
-    Taro.redirectTo({ url: '/pages/index/index' })
+    let res = await publishOrder(nParams)
+    console.log(res)
+    if (res.code === 200) {
+      Taro.redirectTo({ url: '/pages/index/index' })
+    }
   }
 
   const toastClose = () => {
