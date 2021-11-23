@@ -259,7 +259,7 @@ export default class FactoryStore {
     }
   }
 
-  // /api/oms/inquiry-purchase/save
+  // /api/oms/inquiry-purchase/save.
   // 更新或新增需求单 post
   @action publishOrder = async params => {
     Taro.showLoading({
