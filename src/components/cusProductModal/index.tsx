@@ -1,4 +1,4 @@
-import { View, Button, Image, Text } from '@tarojs/components'
+import { View, Button, Image, Text, CoverView } from '@tarojs/components'
 import styles from './index.module.less'
 import { AtFloatLayout, AtTabs, AtTabsPane } from 'taro-ui'
 import { useEffect, useState } from 'react'
@@ -83,6 +83,7 @@ const CusProductModal = props => {
       onClose={onClose}
     >
       <AtTabs
+        className={styles.tabs}
         current={activeTab}
         scroll
         height="200px"
@@ -137,7 +138,6 @@ const CusProductModal = props => {
           )
         })}
       </AtTabs>
-
       <View>
         <Button type={'primary'} onClick={submit} className={styles.btn}>
           确定
