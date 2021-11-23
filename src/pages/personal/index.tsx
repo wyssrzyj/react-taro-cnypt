@@ -23,8 +23,6 @@ const Personal = () => {
       let information = JSON.parse(Taro.getStorageSync('currentUser')).userId
       pickUpInformation({ userId: information })
     }
-    console.log(Taro.getStorageSync('userInfo'))
-
     if (Taro.getStorageSync('userInfo')) {
       setJurisdiction(
         JSON.parse(Taro.getStorageSync('userInfo')).enterpriseType
@@ -37,7 +35,6 @@ const Personal = () => {
   // 用户信息
   const pickUpInformation = async e => {
     let res = await userInformation(e)
-    console.log(res)
 
     if (res) {
       setList(res)
@@ -47,7 +44,6 @@ const Personal = () => {
 
   return (
     <View>
-      {console.log('状态', jurisdiction)}
       <View className={styles.father}>
         <View className={styles.navBar} style={{ paddingTop: `${top}px` }}>
           <View className={styles.navContent}>

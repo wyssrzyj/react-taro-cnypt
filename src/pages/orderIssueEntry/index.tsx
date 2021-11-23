@@ -436,6 +436,7 @@ const OrderIssueEntry = () => {
             <Text className={classNames(styles.cusLabel, styles.unRequired)}>
               类别说明
             </Text>
+
             <AtTextarea
               className={styles.cusTextarea}
               placeholder="请填写类别说明"
