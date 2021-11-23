@@ -1,9 +1,12 @@
 import { Image, View, Text } from '@tarojs/components'
 import styles from './index.module.less'
 import Taro from '@tarojs/taro'
-import Navbar from './navBar/index'
+import { Navbar } from '@/components'
+// import Navbar from './navBar/index'
+
 const BACK_ICON =
   'https://capacity-platform.oss-cn-hangzhou.aliyuncs.com/capacity-platform/mobile/icon/black_back.png'
+
 const privacyAgreement = () => {
   const { top } = Taro.getMenuButtonBoundingClientRect()
   const tops = top + 40 + 30
@@ -22,7 +25,6 @@ const privacyAgreement = () => {
           <View className={styles.navTitles}>隐私协议</View>
         </View>
       </Navbar>
-      <View></View>
       {/* 内容 */}
       <View className={styles.container} style={{ paddingTop: tops + 'px' }}>
         <View className={styles.top}>

@@ -17,12 +17,8 @@ const Home = () => {
     commonStore
   const { userInfo } = loginStore
 
-  const userInfomation = Taro.getStorageSync('userInfo')
-    ? JSON.parse(Taro.getStorageSync('userInfo'))
-    : {}
-  const currentUser = Taro.getStorageSync('currentUser')
-    ? JSON.parse(Taro.getStorageSync('currentUser'))
-    : {}
+  const [userInformation, setUserInformation] = useState<any>({})
+  const [currentUser, setCurrentUser] = useState<any>({})
 
   const containerRef = useRef<HTMLElement>()
 
@@ -35,14 +31,26 @@ const Home = () => {
 
   useEffect(() => {
     ;(async () => {
+      if (!isEmpty(currentUser)) {
+        await userInfo()
+      }
       await allDictionary([])
       await productCategory()
       await getProductGrade()
       await getDistrict()
-      if (!isEmpty(currentUser)) {
-        await userInfo()
-      }
     })()
+  }, [])
+
+  useEffect(() => {
+    const info = Taro.getStorageSync('userInfo')
+      ? JSON.parse(Taro.getStorageSync('userInfo'))
+      : {}
+    setUserInformation(info)
+
+    const user = Taro.getStorageSync('currentUser')
+      ? JSON.parse(Taro.getStorageSync('currentUser'))
+      : {}
+    setCurrentUser(user)
   }, [])
 
   const isNilConfigs = [
@@ -160,8 +168,6 @@ const Home = () => {
   })
 
   useReachBottom(() => {
-    console.log('下拉')
-
     if (loading) return
     console.log(loading)
 
@@ -232,7 +238,7 @@ const Home = () => {
             </SwiperItem>
           ))}
         </Swiper>
-        {isNil(userInfomation.enterpriseType) ? (
+        {isNil(userInformation.enterpriseType) ? (
           <View className={styles.unImgs}>
             {isNilConfigs.map((item, idx) => (
               <Image
@@ -243,7 +249,7 @@ const Home = () => {
               ></Image>
             ))}
           </View>
-        ) : +userInfomation.enterpriseType === 0 ? ( // 加工厂
+        ) : +userInformation.enterpriseType === 0 ? ( // 加工厂
           <View className={styles.unImgs}>
             {factoryConfigs.map((item, idx) => (
               <Image

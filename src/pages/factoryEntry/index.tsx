@@ -210,6 +210,10 @@ const FactoryEntry = () => {
       allImgs.push(customRequest(item))
     })
     await Promise.all(allImgs).then(res => {
+      console.log(
+        '🚀 ~ file: index.tsx ~ line 213 ~ awaitPromise.all ~ res',
+        res
+      )
       nParams[field] = res
       setParams(nParams)
     })
@@ -479,7 +483,6 @@ const FactoryEntry = () => {
           <View>{modify ? '工厂管理' : '工厂入驻'}</View>
         </View>
       </View>
-
       <AtForm onSubmit={onSubmit} onReset={onReset} className={styles.form}>
         <View className={styles.concatInfo}>
           <AtInput
@@ -585,15 +588,32 @@ const FactoryEntry = () => {
             <Text className={classNames(styles.cusLabel, styles.unRequired)}>
               类别说明
             </Text>
-            <AtTextarea
-              className={styles.cusTextarea}
-              placeholder="请填写类别说明"
-              value={params['mainProductCategoriesDesc'] || ''}
-              maxLength={999}
-              onChange={event =>
-                handleChange(event, 'mainProductCategoriesDesc')
-              }
-            />
+
+            {productTypeFlag ||
+            processTypeFlag ||
+            clothesGradeFlag ||
+            materialFlag ||
+            productFlag ? (
+              <View
+                className={
+                  params['mainProductCategoriesDesc']
+                    ? styles.likeTextarea
+                    : styles.textareaPlaceholder
+                }
+              >
+                {params['mainProductCategoriesDesc'] || '请填写类别说明'}
+              </View>
+            ) : (
+              <AtTextarea
+                className={styles.cusTextarea}
+                placeholder="请填写类别说明"
+                value={params['mainProductCategoriesDesc'] || ''}
+                maxLength={999}
+                onChange={event =>
+                  handleChange(event, 'mainProductCategoriesDesc')
+                }
+              />
+            )}
           </View>
 
           <View onClick={productTypeModalShow} className={styles.cusFormItem}>
@@ -700,13 +720,30 @@ const FactoryEntry = () => {
             <Text className={classNames(styles.cusLabel, styles.required)}>
               企业简介
             </Text>
-            <AtTextarea
-              className={styles.cusTextarea}
-              placeholder="请填写企业简介"
-              value={params['enterpriseDesc'] || ''}
-              maxLength={700}
-              onChange={event => handleChange(event, 'enterpriseDesc')}
-            />
+
+            {productTypeFlag ||
+            processTypeFlag ||
+            clothesGradeFlag ||
+            materialFlag ||
+            productFlag ? (
+              <View
+                className={
+                  params['enterpriseDesc']
+                    ? styles.likeTextarea
+                    : styles.textareaPlaceholder
+                }
+              >
+                {params['enterpriseDesc'] || '请填写企业简介'}
+              </View>
+            ) : (
+              <AtTextarea
+                className={styles.cusTextarea}
+                placeholder="请填写企业简介"
+                value={params['enterpriseDesc'] || ''}
+                maxLength={700}
+                onChange={event => handleChange(event, 'enterpriseDesc')}
+              />
+            )}
           </View>
 
           <View>
@@ -770,7 +807,6 @@ const FactoryEntry = () => {
           </AtButton>
         </View>
       </AtForm>
-
       <AtToast
         isOpened={isOpened}
         onClose={toastClose}
@@ -803,7 +839,6 @@ const FactoryEntry = () => {
           value={params['productGradeValues'] || []}
         />
       )}
-
       {processTypeFlag && (
         <CusModal
           options={processType}
@@ -814,7 +849,6 @@ const FactoryEntry = () => {
           value={params['processTypeList'] || []}
         />
       )}
-
       {productTypeFlag && (
         <CusModal
           options={productType}

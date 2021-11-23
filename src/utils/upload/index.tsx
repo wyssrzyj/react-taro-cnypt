@@ -22,14 +22,16 @@ const getOssSecret = accesskey => {
 
 export const upload = async filePath => {
   // 图片路径不包含 'http://tmp/' 则图片没有变化 不需要重新上传
-  if (!filePath.includes('http://tmp/')) {
+  if (!filePath.includes('http://tmp/') && !filePath.includes('wxfile://')) {
     return filePath
   }
   const { policyBase64, signature } = getOssSecret(accesskey)
-  const imgPath = `capacity-platform/mobile/images/${filePath.replace(
+  let imgPath = `capacity-platform/mobile/images/${filePath.replace(
     'http://tmp/',
     ''
   )}`
+  imgPath = imgPath.replace('wxfile://', '')
+
   const res = await Taro.uploadFile({
     url: host, //bucket的外网域名 url
     filePath: filePath, //要上传文件资源的路径

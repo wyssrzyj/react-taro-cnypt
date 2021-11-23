@@ -91,7 +91,7 @@ export default class CommonStore {
         runInAction(() => {
           this.productGrade = res.data
           Taro.setStorage({
-            key: 'productCategoryList',
+            key: 'productGrade',
             data: JSON.stringify(res.data)
           })
         })

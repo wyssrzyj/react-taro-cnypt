@@ -57,8 +57,8 @@ const Login = () => {
   }
 
   const goBack = () => {
-    // Taro.redirectTo({ url: '/pages/index/index' })
-    Taro.navigateBack()
+    Taro.redirectTo({ url: '/pages/index/index' })
+    // Taro.navigateBack()
   }
 
   return (

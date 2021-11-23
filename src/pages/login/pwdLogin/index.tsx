@@ -64,7 +64,7 @@ const PwdLogin = () => {
       const values = {
         userName: phone,
         passWord: base64Js.fromByteArray(Buffer.from(pwd)),
-        loginType: 'password'
+        loginType: 'applet_password'
       }
 
       const res = await login(values)

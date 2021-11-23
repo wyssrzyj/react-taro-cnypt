@@ -3,7 +3,7 @@ import { View, Button, Image } from '@tarojs/components'
 import Taro, { useRouter } from '@tarojs/taro'
 import { Line, Navbar, OrderCard, PhoneCard } from '@/components'
 import Title from '@/components/title'
-import { isArray, isEmpty } from 'lodash'
+import { isArray, isEmpty, isNil } from 'lodash'
 import { useStores } from '@/store/mobx'
 import { useEffect, useState } from 'react'
 import moment from 'moment'
@@ -47,6 +47,10 @@ const OrderDetail = () => {
       orderIssuer.inquiryEffectiveDate = orderIssuer.inquiryEffectiveDate
         ? moment(orderIssuer.inquiryEffectiveDate).format('YYYY')
         : null
+
+      orderIssuer.deliveryDate = orderIssuer.deliveryDate
+        ? moment(orderIssuer.deliveryDate).format('YYYY')
+        : null
       orderIssuer.imgs = orderIssuer.stylePicture
       setData(orderIssuer)
     })()
@@ -86,7 +90,7 @@ const OrderDetail = () => {
     },
     {
       label: '产品品类',
-      field: 'categoryCodes'
+      field: 'categoryNames'
     },
     {
       label: '面料类型',
@@ -114,10 +118,14 @@ const OrderDetail = () => {
     }
   ]
 
-  const phoneCall = () => {
+  const apply = () => {
     if (isEmpty(currentUser)) {
       Taro.redirectTo({
         url: '/pages/login/index'
+      })
+    } else if (isNil(userInfomation.enterpriseType)) {
+      Taro.redirectTo({
+        url: '/pages/orderIssueEntry/index'
       })
     } else {
       Taro.redirectTo({
@@ -183,11 +191,7 @@ const OrderDetail = () => {
 
       {+userInfomation.enterpriseType !== 1 && (
         <View className={styles.phoneBtnBox}>
-          <Button
-            type={'primary'}
-            className={styles.phoneBtn}
-            onClick={phoneCall}
-          >
+          <Button type={'primary'} className={styles.phoneBtn} onClick={apply}>
             申请接单
           </Button>
         </View>

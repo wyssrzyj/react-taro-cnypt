@@ -4,13 +4,13 @@ import { HTTP_STATUS } from './config'
 
 const customInterceptor = chain => {
   const requestParams = chain.requestParams
-  Taro.showLoading({
-    title: '加载中'
-  })
+  // Taro.showLoading({
+  //   title: '加载中'
+  // })
   return chain
     .proceed(requestParams)
     .then(res => {
-      Taro.hideLoading()
+      // Taro.hideLoading()
       // 只要请求成功，不管返回什么状态码，都走这个回调
       if (res.statusCode === HTTP_STATUS.NOT_FOUND) {
         return Promise.reject({ desc: '请求资源不存在' })

@@ -1,13 +1,12 @@
 import { observable, action, makeAutoObservable } from 'mobx'
 import HTTP from '@/service/http'
-
+import Taro from '@tarojs/taro'
 interface Response {
   code: number
   data: any
   msg: string
   success: boolean
 }
-
 export default class HomeStore {
   constructor() {
     makeAutoObservable(this) // 指定要暴露出去的属性
@@ -35,6 +34,9 @@ export default class HomeStore {
   }
 
   @action getNewFactory = async pageNum => {
+    Taro.showLoading({
+      title: '加载中'
+    })
     const params = {
       sortField: 'create_time',
       sortType: 'Desc',
@@ -46,7 +48,7 @@ export default class HomeStore {
         '/api/factory/info/list-search-factory-applet',
         params
       )
-
+      Taro.hideLoading()
       if (res.code === 200) {
         return res.data
       }
@@ -63,12 +65,15 @@ export default class HomeStore {
       sortField: 'update_time',
       sortType: 'Desc'
     }
+    Taro.showLoading({
+      title: '加载中'
+    })
     try {
       const res: Partial<Response> = await HTTP.post(
         `/api/oms/inquiry-purchase/list-inquiry-search-applet`,
         params
       )
-
+      Taro.hideLoading()
       if (res.code === 200) {
         return res.data
       }

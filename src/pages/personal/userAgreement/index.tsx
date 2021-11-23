@@ -1,13 +1,12 @@
 import { Image, View, Text } from '@tarojs/components'
 import styles from './index.module.less'
 import Taro from '@tarojs/taro'
-import Navbar from './navBar/index'
+import { Navbar } from '@/components'
 
 const BACK_ICON =
   'https://capacity-platform.oss-cn-hangzhou.aliyuncs.com/capacity-platform/mobile/icon/black_back.png'
+
 const userAgreement = () => {
-  const { top } = Taro.getMenuButtonBoundingClientRect()
-  const tops = top + 40 + 30
   const handleClick = () => {
     Taro.navigateBack()
   }
@@ -24,7 +23,7 @@ const userAgreement = () => {
         </View>
       </Navbar>
       {/* 内容 */}
-      <View className={styles.container} style={{ paddingTop: tops + 'px' }}>
+      <View className={styles.container}>
         <View className={styles.top}>
           <Text>《优产用户协议》</Text>
         </View>

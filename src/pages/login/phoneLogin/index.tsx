@@ -127,7 +127,7 @@ const PhoneLogin = () => {
       const values = {
         mobilePhone: phone,
         code: verifyCode,
-        loginType: 'sms_code'
+        loginType: 'applet_sms_code'
       }
 
       const res = await login(values)

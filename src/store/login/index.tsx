@@ -71,7 +71,7 @@ export default class LoginStore {
   @action login = async params => {
     try {
       const res: Partial<Response> = await HTTP.post(
-        '/api/user/account/login',
+        '/api/user/account/applet-login',
         params
       )
 
@@ -243,6 +243,12 @@ export default class LoginStore {
           data: JSON.stringify(data)
         })
         await this.userInfo()
+      } else {
+        Taro.showToast({
+          title: res.msg as string,
+          icon: 'none',
+          duration: 1500
+        })
       }
       return res || {}
     } catch (err) {
@@ -264,13 +270,13 @@ export default class LoginStore {
         params
       )
       if (res.code === 200) {
+      } else {
         Taro.showToast({
           title: res.msg as string,
           icon: 'none',
           duration: 1500
         })
       }
-      console.log('🚀 ~ file: index.tsx ~ line 266 ~ LoginStore ~ res', res)
 
       return res.data
     } catch (err) {

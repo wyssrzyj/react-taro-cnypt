@@ -1,9 +1,8 @@
 import styles from './index.module.less'
 import { View, Button, Image } from '@tarojs/components'
 import Taro, { useRouter } from '@tarojs/taro'
-import { Line, OrderIssueCard } from '@/components'
-import Navbar from './navBar/index'
-
+import { Line, Navbar, OrderIssueCard } from '@/components'
+// import Navbar from './navBar/index'
 import Title from '@/components/title'
 import Card from './components/card'
 import { useStores } from '@/store/mobx'

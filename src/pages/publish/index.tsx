@@ -237,7 +237,6 @@ const FactoryEntry = () => {
           <View>发布订单</View>
         </View>
       </View>
-
       <AtForm onSubmit={onSubmit} onReset={onReset} className={styles.form}>
         <View className={styles.concatInfo}>
           <AtInput
@@ -325,13 +324,32 @@ const FactoryEntry = () => {
             <Text className={classNames(styles.cusLabel, styles.required)}>
               订单标题
             </Text>
-            <AtTextarea
-              className={styles.cusTextarea}
-              placeholder="请填写订单标题"
-              value={params['name']}
-              maxLength={99}
-              onChange={event => handleChange(event, 'name')}
-            />
+
+            {areaFlag ||
+            effectiveFlag ||
+            productTypeFlag ||
+            goodsNumFlag ||
+            processTypeFlag ||
+            materialFlag ||
+            productFlag ? (
+              <View
+                className={
+                  params['name']
+                    ? styles.likeTextarea
+                    : styles.textareaPlaceholder
+                }
+              >
+                {params['name'] || '请填写订单标题'}
+              </View>
+            ) : (
+              <AtTextarea
+                className={styles.cusTextarea}
+                placeholder="请填写订单标题"
+                value={params['name']}
+                maxLength={99}
+                onChange={event => handleChange(event, 'name')}
+              />
+            )}
           </View>
 
           <View onClick={goodsNumModalShow} className={styles.cusFormItem}>
@@ -540,13 +558,32 @@ const FactoryEntry = () => {
             <Text className={classNames(styles.cusLabel, styles.unRequired)}>
               备注说明
             </Text>
-            <AtTextarea
-              className={styles.cusTextarea}
-              placeholder="请填写备注说明"
-              value={params['goodsRemark'] || ''}
-              maxLength={999}
-              onChange={event => handleChange(event, 'goodsRemark')}
-            />
+
+            {areaFlag ||
+            effectiveFlag ||
+            productTypeFlag ||
+            goodsNumFlag ||
+            processTypeFlag ||
+            materialFlag ||
+            productFlag ? (
+              <View
+                className={
+                  params['goodsRemark']
+                    ? styles.likeTextarea
+                    : styles.textareaPlaceholder
+                }
+              >
+                {params['goodsRemark'] || '请填写备注说明'}
+              </View>
+            ) : (
+              <AtTextarea
+                className={styles.cusTextarea}
+                placeholder="请填写备注说明"
+                value={params['goodsRemark'] || ''}
+                maxLength={999}
+                onChange={event => handleChange(event, 'goodsRemark')}
+              />
+            )}
           </View>
 
           <View className={styles.photoTitle}>款图(最多可上传10张)</View>
@@ -568,7 +605,6 @@ const FactoryEntry = () => {
           </AtButton>
         </View>
       </AtForm>
-
       <AtToast
         isOpened={isOpened}
         onClose={toastClose}
@@ -611,7 +647,6 @@ const FactoryEntry = () => {
           value={params['processTypeList'] || []}
         />
       )}
-
       {goodsNumFlag && (
         <CusModal
           options={goodsNum}
@@ -623,7 +658,6 @@ const FactoryEntry = () => {
           type={'single'}
         />
       )}
-
       {productTypeFlag && (
         <CusModal
           options={productType}
@@ -634,7 +668,6 @@ const FactoryEntry = () => {
           value={params['productTypeList'] || []}
         />
       )}
-
       {effectiveFlag && (
         <CusModal
           options={effectiveLocation}
@@ -646,7 +679,6 @@ const FactoryEntry = () => {
           type={'single'}
         />
       )}
-
       {areaFlag && (
         <AreaModal
           visible={areaFlag}

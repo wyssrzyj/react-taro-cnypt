@@ -1,4 +1,4 @@
-import { observable, action, makeAutoObservable, runInAction } from 'mobx'
+import { action, makeAutoObservable } from 'mobx'
 import HTTP from '@/service/http'
 import Taro from '@tarojs/taro'
 
@@ -7,10 +7,6 @@ interface Response {
   data: any
   msg: string
   success: boolean
-}
-
-interface Dictionary {
-  [key: string]: any
 }
 
 export default class FactoryStore {
@@ -42,11 +38,14 @@ export default class FactoryStore {
   // '/api/factory/enterprise/get-enterprise-info'
   // 获取企业信息
   @action getEnterpriseInfo = async () => {
+    Taro.showLoading({
+      title: '加载中'
+    })
     try {
       const res: Partial<Response> = await HTTP.get(
         `/api/factory/enterprise/get-enterprise-info`
       )
-
+      Taro.hideLoading()
       if (res) {
         return res.data || []
       } else {
@@ -64,12 +63,15 @@ export default class FactoryStore {
   // /api/factory/enterprise/applets-enterprise-info-save
   // 企业入驻
   @action enterpriseInfoSave = async params => {
+    Taro.showLoading({
+      title: '加载中'
+    })
     try {
       const res: Partial<Response> = await HTTP.post(
         `/api/factory/enterprise/applets-enterprise-info-save`,
         params
       )
-
+      Taro.hideLoading()
       if (res) {
       } else {
         Taro.showToast({
@@ -86,12 +88,15 @@ export default class FactoryStore {
   // /api/factory/info/get-applet-factory-details
   // 加工厂详情
   @action factoryDetail = async enterpriseId => {
+    Taro.showLoading({
+      title: '加载中'
+    })
     try {
       const res: Partial<Response> = await HTTP.get(
         `/api/factory/info/get-applet-factory-details`,
         { enterpriseId }
       )
-
+      Taro.hideLoading()
       if (res.code === 200) {
         const { data } = res
         return data
@@ -110,12 +115,15 @@ export default class FactoryStore {
   // /api/factory/purchaser-info/get-applet-purchaser-details
   // 发单商详情
   @action orderIssuerDetail = async enterpriseId => {
+    Taro.showLoading({
+      title: '加载中'
+    })
     try {
       const res: Partial<Response> = await HTTP.get(
         `/api/factory/purchaser-info/get-applet-purchaser-details`,
         { enterpriseId }
       )
-
+      Taro.hideLoading()
       if (res.code === 200) {
         const { data } = res
         return data
@@ -134,12 +142,15 @@ export default class FactoryStore {
   // /api/oms/inquiry-purchase/get-applets
   // 需求单详情
   @action orderDetail = async id => {
+    Taro.showLoading({
+      title: '加载中'
+    })
     try {
       const res: Partial<Response> = await HTTP.get(
         `/api/oms/inquiry-purchase/get-applets`,
         { id }
       )
-
+      Taro.hideLoading()
       if (res.code === 200) {
         const { data } = res
         return data
@@ -251,12 +262,15 @@ export default class FactoryStore {
   // /api/oms/inquiry-purchase/save
   // 更新或新增需求单 post
   @action publishOrder = async params => {
+    Taro.showLoading({
+      title: '加载中'
+    })
     try {
       const res: Partial<Response> = await HTTP.post(
         `/api/oms/inquiry-purchase/save`,
         params
       )
-
+      Taro.hideLoading()
       if (res.code === 200) {
       } else {
         Taro.showToast({

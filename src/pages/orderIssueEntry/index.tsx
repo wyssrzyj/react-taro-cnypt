@@ -24,6 +24,7 @@ import {
 } from '@/components'
 import { matchTreeData, phoneReg } from '@/utils/tool'
 import { upload } from '@/utils/upload'
+import { CoverView } from '@tarojs/components'
 
 const host =
   'https://capacity-platform.oss-cn-hangzhou.aliyuncs.com/capacity-platform/mobile/images'
@@ -436,15 +437,27 @@ const OrderIssueEntry = () => {
             <Text className={classNames(styles.cusLabel, styles.unRequired)}>
               类别说明
             </Text>
-            <AtTextarea
-              className={styles.cusTextarea}
-              placeholder="请填写类别说明"
-              value={params['mainProductCategoriesDesc'] || ''}
-              maxLength={999}
-              onChange={event =>
-                handleChange(event, 'mainProductCategoriesDesc')
-              }
-            />
+            {productFlag || rolesFlag ? (
+              <View
+                className={
+                  params['mainProductCategoriesDesc']
+                    ? styles.likeTextarea
+                    : styles.textareaPlaceholder
+                }
+              >
+                {params['mainProductCategoriesDesc'] || '请填写类别说明'}
+              </View>
+            ) : (
+              <AtTextarea
+                className={styles.cusTextarea}
+                placeholder="请填写类别说明"
+                value={params['mainProductCategoriesDesc'] || ''}
+                maxLength={999}
+                onChange={event =>
+                  handleChange(event, 'mainProductCategoriesDesc')
+                }
+              />
+            )}
           </View>
 
           <AtInput
@@ -465,7 +478,6 @@ const OrderIssueEntry = () => {
             className={styles.cusInput}
             name="orderBrand"
             title="订单品牌"
-            type="number"
             placeholder="请填写订单品牌"
             value={params['orderBrand'] || ''}
             onChange={event => handleChange(event, 'orderBrand')}
@@ -477,13 +489,25 @@ const OrderIssueEntry = () => {
             <Text className={classNames(styles.cusLabel, styles.required)}>
               企业简介
             </Text>
-            <AtTextarea
-              className={styles.cusTextarea}
-              placeholder="请填写企业简介"
-              value={params['enterpriseDesc'] || ''}
-              maxLength={700}
-              onChange={event => handleChange(event, 'enterpriseDesc')}
-            />
+            {productFlag || rolesFlag ? (
+              <View
+                className={
+                  params['mainProductCategoriesDesc']
+                    ? styles.likeTextarea
+                    : styles.textareaPlaceholder
+                }
+              >
+                {params['mainProductCategoriesDesc'] || '请填写企业简介'}
+              </View>
+            ) : (
+              <AtTextarea
+                className={styles.cusTextarea}
+                placeholder="请填写企业简介"
+                value={params['enterpriseDesc'] || ''}
+                maxLength={700}
+                onChange={event => handleChange(event, 'enterpriseDesc')}
+              />
+            )}
           </View>
 
           <View>
@@ -554,26 +578,28 @@ const OrderIssueEntry = () => {
         duration={1000}
       ></AtToast>
 
-      {productFlag && (
-        <CusProductModal
-          visible={productFlag}
-          onCancel={productModalShow}
-          callback={event => handleChange(event, 'mainCategoriesList')}
-          value={params['mainCategoriesList'] || []}
-          keyName={'code'}
-        />
-      )}
+      <CoverView style={{ zIndex: 9999 }}>
+        {productFlag && (
+          <CusProductModal
+            visible={productFlag}
+            onCancel={productModalShow}
+            callback={event => handleChange(event, 'mainCategoriesList')}
+            value={params['mainCategoriesList'] || []}
+            keyName={'code'}
+          />
+        )}
 
-      {rolesFlag && (
-        <CusModal
-          options={purchaserRole}
-          visible={rolesFlag}
-          onCancel={rolesModalShow}
-          title={'企业角色'}
-          callback={event => handleChange(event, 'roleCodes')}
-          value={params['roleCodes'] || []}
-        />
-      )}
+        {rolesFlag && (
+          <CusModal
+            options={purchaserRole}
+            visible={rolesFlag}
+            onCancel={rolesModalShow}
+            title={'企业角色'}
+            callback={event => handleChange(event, 'roleCodes')}
+            value={params['roleCodes'] || []}
+          />
+        )}
+      </CoverView>
     </View>
   )
 }
