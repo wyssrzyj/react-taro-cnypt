@@ -45,11 +45,11 @@ const OrderDetail = () => {
       })
 
       orderIssuer.inquiryEffectiveDate = orderIssuer.inquiryEffectiveDate
-        ? moment(orderIssuer.inquiryEffectiveDate).format('YYYY')
+        ? moment(orderIssuer.inquiryEffectiveDate).format('YYYY-MM-DD')
         : null
 
       orderIssuer.deliveryDate = orderIssuer.deliveryDate
-        ? moment(orderIssuer.deliveryDate).format('YYYY')
+        ? moment(orderIssuer.deliveryDate).format('YYYY-MM-DD')
         : null
       orderIssuer.imgs = orderIssuer.stylePicture
       setData(orderIssuer)
@@ -125,7 +125,7 @@ const OrderDetail = () => {
       })
     } else if (isNil(userInfomation.enterpriseType)) {
       Taro.redirectTo({
-        url: '/pages/orderIssueEntry/index'
+        url: '/pages/factoryEntry/index'
       })
     } else {
       Taro.redirectTo({

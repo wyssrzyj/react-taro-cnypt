@@ -31,9 +31,6 @@ const Home = () => {
 
   useEffect(() => {
     ;(async () => {
-      if (!isEmpty(currentUser)) {
-        await userInfo()
-      }
       await allDictionary([])
       await productCategory()
       await getProductGrade()
@@ -52,6 +49,14 @@ const Home = () => {
       : {}
     setCurrentUser(user)
   }, [])
+
+  useEffect(() => {
+    ;(async () => {
+      if (!isEmpty(currentUser)) {
+        await userInfo()
+      }
+    })()
+  }, [currentUser])
 
   const isNilConfigs = [
     {

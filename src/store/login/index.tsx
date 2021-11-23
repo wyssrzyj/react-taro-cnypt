@@ -294,7 +294,7 @@ export default class LoginStore {
   @action resetPassword = async params => {
     try {
       const res: Partial<Response> = await HTTP.post(
-        `/api/user/reset-password`,
+        `/api/user/applet-reset-password`,
         params
       )
       if (res.code === 200) {

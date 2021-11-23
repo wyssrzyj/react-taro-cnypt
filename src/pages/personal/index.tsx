@@ -51,7 +51,7 @@ const Personal = () => {
           </View>
         </View>
         <View className={styles.absolutes}>
-          <Top list={list} userInfo={jurisdiction} />
+          <Top />
           <View>
             {/* 主体 */}
             <View

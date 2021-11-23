@@ -1,17 +1,31 @@
 import { View, Image, Text } from '@tarojs/components'
 import styles from './index.module.less'
 import Taro from '@tarojs/taro'
+import { useEffect, useState } from 'react'
+import { isNil, isEmpty } from 'lodash'
 
-const Top = ({ userInfo, list }) => {
-  let enterprise =
-    'https://capacity-platform.oss-cn-hangzhou.aliyuncs.com/capacity-platform/mobile/icon/enterpriseName.png '
+let ICON =
+  'https://capacity-platform.oss-cn-hangzhou.aliyuncs.com/capacity-platform/mobile/icon/enterpriseName.png '
 
-  const { enterpriseName, userFaceUrl, userName } = list
-
+const Top = () => {
+  // const { enterpriseName, userFaceUrl, userName } = list
   // 企业类型 0 加工厂 1 发单商
 
-  let sum = userInfo //判断用户权限 新用户=0 发单商=1,加工厂=2
-  // let sum = 2 //判断用户权限 新用户=0 发单商=1,加工厂=2
+  const [userInfo, setUserInfo] = useState<any>({})
+  const [currentUser, setCurrentuser] = useState<any>({})
+
+  useEffect(() => {
+    let information = Taro.getStorageSync('currentUser')
+      ? JSON.parse(Taro.getStorageSync('currentUser'))
+      : {}
+    setCurrentuser(information)
+    const user = Taro.getStorageSync('userInfo')
+      ? JSON.parse(Taro.getStorageSync('userInfo'))
+      : {}
+    setUserInfo(user)
+  }, [])
+
+  // let sum = userInfo //判断用户权限 新用户=0 发单商=1,加工厂=2
 
   const toLogin = () => {
     Taro.navigateTo({ url: '/pages/login/index' })
@@ -21,8 +35,8 @@ const Top = ({ userInfo, list }) => {
     <View className={styles.top}>
       <View className={styles.tops}>
         <View className={styles.imgs}>
-          {sum !== 'notLogged' ? (
-            <Image className={styles.img} src={userFaceUrl} />
+          {!isEmpty(currentUser) ? (
+            <Image className={styles.img} src={currentUser.userFaceUrl} />
           ) : (
             <Image
               className={styles.img}
@@ -31,21 +45,23 @@ const Top = ({ userInfo, list }) => {
           )}
         </View>
         <View className={styles.right}>
-          {sum !== 'notLogged' ? (
+          {!isEmpty(currentUser) ? (
             <>
               <View className={styles.txts}>
-                <Text className={styles.txt}>{userName}</Text>
-                {sum === '1' ? (
+                <Text className={styles.txt}>{currentUser.username}</Text>
+                {!isNil(userInfo.enterpriseType) &&
+                +userInfo.enterpriseType === 1 ? (
                   <View className={styles.customer}>发单商</View>
                 ) : null}
-                {sum === '0' ? (
+                {!isNil(userInfo.enterpriseType) &&
+                +userInfo.enterpriseType === 0 ? (
                   <View className={styles.customer}>加工厂</View>
                 ) : null}
               </View>
               <View className={styles.bottom}>
-                <Image src={enterprise} className={styles.enterprise}></Image>
+                <Image src={ICON} className={styles.enterprise}></Image>
                 <Text className={styles.icon}>
-                  {enterpriseName ? enterpriseName : '暂无'}
+                  {userInfo.enterpriseName ? userInfo.enterpriseName : '暂无'}
                 </Text>
               </View>
             </>

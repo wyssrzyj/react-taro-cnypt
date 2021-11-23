@@ -6,6 +6,7 @@ import { Navbar } from '@/components'
 import Taro, { useRouter } from '@tarojs/taro'
 import { useStores } from '@/store/mobx'
 import { pwdReg } from '@/utils/tool'
+import base64Js from 'base64-js'
 
 export const BLCAK_BACK_ICON =
   'https://capacity-platform.oss-cn-hangzhou.aliyuncs.com/capacity-platform/mobile/icon/black_back.png'
@@ -31,7 +32,7 @@ const SetPwd = () => {
 
   const setUserPwd = async () => {
     const code = await resetPassword({
-      password: pwd,
+      password: base64Js.fromByteArray(Buffer.from(pwd)),
       userId: id
     })
     if (code === 200) {

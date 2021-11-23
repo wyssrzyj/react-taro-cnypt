@@ -104,7 +104,7 @@ const Card = props => {
                 : data.goodsNum
                 ? data.goodsNum.replace(',', '~')
                 : '--'}
-              &nbsp;件
+              &nbsp;{data.goodsNum !== '1000,100000000' ? '件' : ''}
             </Text>
             <Text className={styles.cusTag2}>
               {data.inquiryEffectiveDate

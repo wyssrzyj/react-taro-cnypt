@@ -1,11 +1,11 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { View, Text, Image } from '@tarojs/components'
 import { AtIcon, AtActionSheet, AtActionSheetItem } from 'taro-ui'
 
 import styles from './index.module.less'
 import Taro from '@tarojs/taro'
 import { useStores } from '@/store/mobx'
-import { isNil } from 'lodash'
+import { isEmpty, isNil } from 'lodash'
 
 let enterprise =
   'https://capacity-platform.oss-cn-hangzhou.aliyuncs.com/capacity-platform/mobile/icon/enterprise.png'
@@ -20,12 +20,26 @@ let factory =
   'https://capacity-platform.oss-cn-hangzhou.aliyuncs.com/capacity-platform/mobile/icon/factory.png'
 
 const Managemenet = props => {
-  const { userInfo, list } = props
+  // const { userInfo, list } = props
   const { userInterface } = useStores()
   const { signOut } = userInterface
-  let type = userInfo //判断用户权限  // 企业类型 0 加工厂 1 发单商
+  // let type = userInfo //判断用户权限  // 企业类型 0 加工厂 1 发单商
   // let type = 2 //判断用户权限  // 企业类型 0 加工厂 1 发单商
   const [modal, setModal] = useState(false)
+  const [userInfo, setUserInfo] = useState<any>({})
+  const [currentUser, setCurrentuser] = useState<any>({})
+
+  useEffect(() => {
+    let information = Taro.getStorageSync('currentUser')
+      ? JSON.parse(Taro.getStorageSync('currentUser'))
+      : {}
+    setCurrentuser(information)
+    const user = Taro.getStorageSync('userInfo')
+      ? JSON.parse(Taro.getStorageSync('userInfo'))
+      : {}
+    setUserInfo(user)
+  }, [])
+
   const retreat = async () => {
     setModal(true)
   }
@@ -41,7 +55,7 @@ const Managemenet = props => {
     Taro.navigateTo({ url: '/pages/personal/myEexcellentProduct/index' })
   }
   const accountNumber = () => {
-    if (!isNil(list.userName)) {
+    if (currentUser && currentUser.username) {
       Taro.navigateTo({
         url: '/pages/personal/accountNumber/index?id'
       })
@@ -64,7 +78,7 @@ const Managemenet = props => {
   return (
     <View>
       <View className={styles.division}></View>
-      {type === '0' ? (
+      {!isNil(userInfo.enterpriseType) && +userInfo.enterpriseType === 0 ? (
         <View
           className={styles.order}
           onClick={() => {
@@ -83,7 +97,7 @@ const Managemenet = props => {
           </Text>
         </View>
       ) : null}
-      {type === '1' ? (
+      {!isNil(userInfo.enterpriseType) && +userInfo.enterpriseType === 1 ? (
         <View
           className={styles.order}
           onClick={() => {
@@ -129,7 +143,7 @@ const Managemenet = props => {
           <AtIcon value="chevron-right" size="15" color="#999999"></AtIcon>
         </Text>
       </View>
-      {type !== 'notLogged' ? (
+      {!isEmpty(currentUser) ? (
         <View className={styles.order} onClick={retreat}>
           <View className={styles.content}>
             <View className={styles.remove}>

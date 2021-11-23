@@ -115,13 +115,14 @@ const PhoneCard = props => {
       Taro.navigateTo({
         url: `/pages/login/index?source=/pages/orderDetail/index&id=${id}`
       })
-    }
-    if (isEmpty(userInfomation) || +userInfomation.enterpriseType !== 0) {
+    } else if (
+      isEmpty(userInfomation) ||
+      +userInfomation.enterpriseType !== 0
+    ) {
       Taro.navigateTo({
         url: '/pages/factoryEntry/index'
       })
-    }
-    if (+userInfomation.enterpriseType === 0) {
+    } else if (+userInfomation.enterpriseType === 0) {
       const info = (await getFactoryPhoneInfo(data[personId])) || {}
       setShowService(true)
       const { name = null, mobile = null, verifyMessage } = info

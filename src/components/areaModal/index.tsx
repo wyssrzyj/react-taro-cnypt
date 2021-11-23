@@ -89,7 +89,7 @@ const AreaModal = props => {
   }
 
   return (
-    <View className={styles.container} catchMove>
+    <View className={styles.container}>
       <Navbar>
         <View className={styles.navbar}>
           <Image
