@@ -8,7 +8,7 @@ import Card from './components/card'
 import { useStores } from '@/store/mobx'
 import { useEffect, useState } from 'react'
 import moment from 'moment'
-import { isEmpty } from 'lodash'
+import { isArray, isEmpty } from 'lodash'
 
 const BACK_ICON =
   'https://capacity-platform.oss-cn-hangzhou.aliyuncs.com/capacity-platform/mobile/icon/black_back.png'
@@ -137,7 +137,10 @@ const FactoryDetail = () => {
               <View key={item.field} className={styles.item}>
                 <View className={styles.itemTitle}>{item.label}</View>
                 <View className={styles.itemValue}>
-                  {data[item.field]}
+                  {console.log(data[item.field])}
+                  {isArray(data[item.field])
+                    ? data[item.field].join('、')
+                    : data[item.field]}
                   {item.addon}
                 </View>
               </View>

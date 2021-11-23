@@ -36,6 +36,7 @@ const OrderIssueCard = props => {
       {configs.map(item => (
         <View className={styles.addressBox} key={item.field}>
           <View className={styles.label}>{item.label}</View>
+          {console.log(data)}
           <View className={styles.address}>{data[item.field]}</View>
         </View>
       ))}
