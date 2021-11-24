@@ -10,12 +10,15 @@ const Navbar = props => {
   // 将状态栏的区域空余出来
   // 获取胶囊信息
   const { height, top } = Taro.getMenuButtonBoundingClientRect()
+  console.log('🚀 ----', top)
+  console.log('🚀 ~~~~', Taro['$navBarMarginTop'])
 
   return (
     <View
       id={'navbar'}
       style={{
-        padding: `${top + 'px'} 0 ${top - Taro['$navBarMarginTop'] + 'px'}`,
+        // padding: `${top + 'px'} 0 ${top - Taro['$navBarMarginTop'] + 'px'}`,
+        padding: `${top + 'px'} 0 0`,
         background: background
       }}
       className={styles.navbarOutWrap}
@@ -25,8 +28,8 @@ const Navbar = props => {
         style={{
           // marginTop: Taro['$navBarMarginTop'] + 'px',
           height: height + 2 * (top - Taro['$navBarMarginTop']) + 'px',
-          background: background
-          // borderBottom: border ? '2px solid #efefef' : 'none'
+          background: background,
+          borderBottom: border ? '1px solid #efefef' : 'none'
         }}
       >
         {children}
