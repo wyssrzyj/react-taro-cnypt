@@ -3,8 +3,8 @@ import { View } from '@tarojs/components'
 import styles from './index.module.less'
 import classNames from 'classnames'
 
-const Navbar = props => {
-  const { children, background = '#FFF', border = true, className } = props
+export const Navbar = props => {
+  const { children, background = '#3b80ff', border = true, className } = props
 
   // 将状态栏的区域空余出来
   // 获取胶囊信息
@@ -26,7 +26,7 @@ const Navbar = props => {
           // marginTop: Taro['$navBarMarginTop'] + 'px',
           height: height + 2 * (top - Taro['$navBarMarginTop']) + 'px',
           background: background,
-          borderBottom: border ? '1px solid #efefef' : 'none'
+          borderBottom: border ? '1px solid #3b80ff' : 'none'
         }}
       >
         {children}

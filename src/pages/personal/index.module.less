@@ -60,6 +60,9 @@
   background: url(https://capacity-platform.oss-cn-hangzhou.aliyuncs.com/capacity-platform/mobile/factoryEntry/headerBg.png)
     no-repeat center center;
   background-size: cover;
+  position: sticky;
+  top: 0;
+  left: 0;
 }
 .father {
   min-height: calc(100vh - 100px);
@@ -67,9 +70,27 @@
   position: relative;
 }
 .absolutes {
+  display: flex;
   min-height: calc(100vh - 100px);
   position: absolute;
+  flex-direction: column;
+  justify-content: space-between;
+
   top: 120px;
+}
+.navTitles {
+  flex: 1;
+  font-size: 34px;
+  font-weight: bold;
+  color: #1a1003;
+  text-align: center;
+}
+
+.navbars {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
 }
 .navContent {
   position: relative;
