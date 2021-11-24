@@ -28,6 +28,16 @@ import { findTarget, matchTreeData, phoneReg } from '@/utils/tool'
 import { upload } from '@/utils/upload'
 import AreaModal from '@/components/areaModal'
 import { errorConfigs } from './errorConfig'
+import { Navbar } from './navBar/index'
+
+Taro.setNavigationBarColor({
+  frontColor: '#ffffff',
+  backgroundColor: '',
+  animation: {
+    duration: 400,
+    timingFunc: 'easeIn'
+  }
+})
 
 const BACK_ICON =
   'https://capacity-platform.oss-cn-hangzhou.aliyuncs.com/capacity-platform/mobile/icon/back.png'
@@ -38,8 +48,6 @@ const initParams = {
 }
 
 const FactoryEntry = () => {
-  const { top } = Taro.getMenuButtonBoundingClientRect()
-
   const router = useRouter()
   const {
     params: { id }
@@ -224,7 +232,17 @@ const FactoryEntry = () => {
 
   return (
     <View>
-      <View className={styles.navBar} style={{ paddingTop: `${top}px` }}>
+      <Navbar>
+        <View className={styles.navbars}>
+          <Image
+            src={BACK_ICON}
+            className={styles.backs}
+            onClick={goBack}
+          ></Image>
+          <View className={styles.navTitles}>发布订单</View>
+        </View>
+      </Navbar>
+      {/* <View className={styles.navBar} style={{ paddingTop: `${top}px` }}>
         <View className={styles.navContent}>
           <Image
             src={BACK_ICON}
@@ -233,7 +251,9 @@ const FactoryEntry = () => {
           ></Image>
           <View>发布订单</View>
         </View>
-      </View>
+      </View> */}
+      <View className={styles.color}></View>
+
       <AtForm onSubmit={onSubmit} onReset={onReset} className={styles.form}>
         <View className={styles.concatInfo}>
           <AtInput

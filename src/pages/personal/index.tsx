@@ -10,6 +10,8 @@ import Management from './components/management'
 import Careful from './components/careful'
 import { useStores } from '@/store/mobx'
 import { TabBar } from '@/components'
+import { Navbar } from '@/components'
+
 const Personal = () => {
   Taro.setNavigationBarColor({
     frontColor: '#ffffff',
@@ -60,24 +62,28 @@ const Personal = () => {
         </View>
       </View>
       <View className={styles.absolutes}>
-        <Top list={list} />
         <View>
-          {/* 主体 */}
-          <View
-            className={
-              jurisdiction === 'notLogged' ? styles.subject : styles.subjects
-            }
-          >
-            {jurisdiction === '1' ? <Order /> : null}
-            {jurisdiction === 'notLogged' || jurisdiction === null ? (
-              <Settled type={list} />
-            ) : null}
-            {jurisdiction === '0' ? <Machining /> : null}
-            <Management list={list} userInfo={jurisdiction} />
+          <Top list={list} />
+          <View>
+            {/* 主体 */}
+            <View
+              className={
+                jurisdiction === 'notLogged' ? styles.subject : styles.subjects
+              }
+            >
+              {jurisdiction === '1' ? <Order /> : null}
+              {jurisdiction === 'notLogged' || jurisdiction === null ? (
+                <Settled type={list} />
+              ) : null}
+              {jurisdiction === '0' ? <Machining /> : null}
+              <Management list={list} userInfo={jurisdiction} />
+            </View>
           </View>
         </View>
-        {/* 底部 */}
-        <Careful userInfo={jurisdiction} />
+        <View>
+          {/* 底部 */}
+          <Careful userInfo={jurisdiction} />
+        </View>
       </View>
 
       <TabBar activeTab={2}></TabBar>
