@@ -28,7 +28,7 @@ const TabBarModal = props => {
       title: '发单商入驻',
       msg: '我要下订单',
       image: FDS,
-      background: '#335498',
+      background: 'linear-gradient(180deg, #CCAE9A 0%, #CBAC98 100%);',
       onClick: () => {
         if (isEmpty(currentUser)) {
           Taro.redirectTo({
@@ -45,7 +45,7 @@ const TabBarModal = props => {
       title: '发布订单',
       msg: '我要发布订单',
       image: FBDD,
-      background: '#377383',
+      background: 'linear-gradient(180deg, #A8C2C8 0%, #A8C2C8 100%);',
       onClick: () => {
         if (isEmpty(currentUser)) {
           Taro.redirectTo({
@@ -62,7 +62,7 @@ const TabBarModal = props => {
       title: '工厂入驻',
       msg: '我要更多人知道',
       image: GCRZ,
-      background: '#335498',
+      background: 'linear-gradient(180deg, #A4A2C6 0%, #A2A0C4 100%)',
       onClick: () => {
         if (isEmpty(currentUser)) {
           Taro.redirectTo({
@@ -113,7 +113,7 @@ const TabBarModal = props => {
           style={{ background: config.background }}
           onClick={config.onClick}
         >
-          <View className={styles.blurBox}></View>
+          {/* <View className={styles.blurBox}></View> */}
           <Image src={config.image} className={styles.img}></Image>
           <View className={styles.configInfo}>
             <Text className={styles.title}>{config.title}</Text>

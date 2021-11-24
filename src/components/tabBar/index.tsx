@@ -1,10 +1,10 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { View, Text, Image } from '@tarojs/components'
 import classNames from 'classnames'
 import './index.less'
 import TabBarModal from '../tabBarModal'
-import Taro from '@tarojs/taro'
-import { isiOS } from '@/utils/tool'
+import Taro, { useRouter } from '@tarojs/taro'
+import { isNil } from 'lodash'
 
 const HOME =
   'https://capacity-platform.oss-cn-hangzhou.aliyuncs.com/capacity-platform/mobile/tabBar/home.png'
@@ -19,15 +19,38 @@ const ADD =
 
 const TabBar = props => {
   const { activeTab } = props
+
+  const router = useRouter()
+
   const [tab, setTab] = useState<number>(activeTab)
   const [modalFlag, setModalFlag] = useState<boolean>(false)
+  const [isIOS, setIsIOS] = useState<boolean>(false)
+  const [userInformation, setUserInformation] = useState<any>({})
 
-  console.log(isiOS, 'isiOS')
+  useEffect(() => {
+    setTimeout(() => {
+      const info = Taro.getStorageSync('userInfo')
+        ? JSON.parse(Taro.getStorageSync('userInfo'))
+        : {}
+      setUserInformation(info)
+    })
+  }, [])
+
+  useEffect(() => {
+    Taro.getSystemInfo({
+      success: res => {
+        setIsIOS(res.system.includes('iOS'))
+      }
+    })
+  })
 
   const changeTab = index => {
+    const targetPath =
+      index === 2 ? '/pages/personal/index' : '/pages/index/index'
+    if (targetPath === router.path) return
     setTab(index)
     Taro.redirectTo({
-      url: index === 2 ? '/pages/personal/index' : '/pages/index/index'
+      url: targetPath
     })
   }
 
@@ -49,10 +72,13 @@ const TabBar = props => {
           <Text>首页</Text>
         </View>
 
-        <View className={'tabAddBox'}>
-          <Image src={ADD} className={'tabAdd'} onClick={showAdd}></Image>
-          <Text></Text>
-        </View>
+        {isNil(userInformation.enterprise) ||
+          (+userInformation.enterprise === 1 && (
+            <View className={'tabAddBox'}>
+              <Image src={ADD} className={'tabAdd'} onClick={showAdd}></Image>
+              <Text></Text>
+            </View>
+          ))}
 
         <View
           onClick={() => changeTab(2)}
@@ -65,7 +91,7 @@ const TabBar = props => {
           <Text>我的</Text>
         </View>
       </View>
-      {isiOS ? <View className={'iosAdd'}></View> : null}
+      {isIOS ? <View className={'iosAdd'}></View> : null}
 
       {modalFlag && <TabBarModal showModal={showAdd}></TabBarModal>}
     </View>

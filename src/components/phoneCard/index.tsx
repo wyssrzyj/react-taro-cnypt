@@ -125,6 +125,10 @@ const PhoneCard = props => {
       })
     } else if (+userInfomation.enterpriseType === 0) {
       const info = (await getFactoryPhoneInfo(data[personId])) || {}
+      console.log(
+        '🚀 ~ file: index.tsx ~ line 128 ~ showOrderIssuerPhone ~ info',
+        info
+      )
       setShowService(true)
       const { name = null, mobile = null, verifyMessage } = info
       callback && name && mobile && callback(mobile, name)
@@ -147,8 +151,8 @@ const PhoneCard = props => {
     <View className={styles.phoneCard}>
       <View
         className={classNames(
-          styles.content,
-          !toolTips ? styles.noToolBox : ''
+          styles.content
+          // !toolTips ? styles.noToolBox : ''
         )}
       >
         <View className={styles.left}>

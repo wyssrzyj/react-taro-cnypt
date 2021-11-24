@@ -24,9 +24,6 @@ const Top = props => {
     console.log(user)
   }, [])
 
-  console.log(userInfo, 'userInfo')
-  console.log(currentUser, 'currentUser')
-
   const toLogin = () => {
     Taro.redirectTo({ url: '/pages/login/index' })
   }

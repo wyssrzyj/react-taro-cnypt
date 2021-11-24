@@ -3,7 +3,7 @@ import { View, Button, Image } from '@tarojs/components'
 import Taro, { useRouter } from '@tarojs/taro'
 import { Line, Navbar, OrderCard, PhoneCard } from '@/components'
 import Title from '@/components/title'
-import { isArray, isEmpty, isNil } from 'lodash'
+import { cloneDeep, isArray, isEmpty, isNil } from 'lodash'
 import { useStores } from '@/store/mobx'
 import { useEffect, useState } from 'react'
 import moment from 'moment'
@@ -134,6 +134,13 @@ const OrderDetail = () => {
     }
   }
 
+  const phoneChange = (phone, name) => {
+    const nData = cloneDeep(data)
+    nData['contactPersonMobile'] = phone
+    nData['contactPerson'] = name
+    setData(nData)
+  }
+
   return (
     <View className={styles.container}>
       <Navbar>
@@ -178,6 +185,7 @@ const OrderDetail = () => {
           <View className={styles.contact}>
             <Title title={'联系方式'}></Title>
             <PhoneCard
+              callback={phoneChange}
               data={data}
               person={'contactPerson'}
               phone={'contactPersonMobile'}

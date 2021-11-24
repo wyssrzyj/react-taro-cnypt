@@ -1,6 +1,6 @@
-import { useEffect, useState, useRef } from 'react'
+import { useEffect, useState } from 'react'
 import { View, Image, Swiper, SwiperItem, Text } from '@tarojs/components'
-import { useStores, observer, toJS } from '@/store/mobx'
+import { useStores, observer } from '@/store/mobx'
 import styles from './index.module.less'
 import { usePullDownRefresh, useReachBottom } from '@tarojs/taro'
 import TabBar from '@/components/tabBar'
@@ -28,8 +28,6 @@ const Home = () => {
 
   const [userInformation, setUserInformation] = useState<any>({})
   const [currentUser, setCurrentUser] = useState<any>({})
-
-  const containerRef = useRef<HTMLElement>()
 
   const [pageNum, setPageNum] = useState(1)
   const [dataSource, setDataSource] = useState<any[]>([])
@@ -186,6 +184,9 @@ const Home = () => {
   useEffect(() => {
     ;(async () => {
       setLoading(true)
+      if (!district.length) {
+        return
+      }
       const nData = cloneDeep(dataSource)
       const fn = activeTab === 0 ? getOrderList : getNewFactory
       const res = (await fn(pageNum)) || {}
