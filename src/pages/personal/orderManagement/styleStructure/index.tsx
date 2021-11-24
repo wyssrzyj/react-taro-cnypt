@@ -146,7 +146,7 @@ function index({ data, deleteMethod, earlyEnd }) {
             </View>
           </View>
           <View>
-            <Text className={styles.factory}>{data.name}</Text>
+            <View className={styles.factory}>{data.name}</View>
             <View>
               <Text>
                 <Text className={styles.parking}>
@@ -226,7 +226,7 @@ function index({ data, deleteMethod, earlyEnd }) {
                     oneMoreOrder(data.id)
                   }}
                 >
-                  再来一单99
+                  再来一单
                 </Text>
               </View>
               <View onClick={decline} className={styles.cancel}>
@@ -238,7 +238,13 @@ function index({ data, deleteMethod, earlyEnd }) {
           {data.status === -3 ? (
             <View>
               <View className={styles.telephone}>
-                <Text>再来一单</Text>
+                <Text
+                  onClick={() => {
+                    oneMoreOrder(data.id)
+                  }}
+                >
+                  再来一单
+                </Text>
               </View>
               <View onClick={showModal} className={styles.cancel}>
                 删除记录
@@ -266,15 +272,15 @@ function index({ data, deleteMethod, earlyEnd }) {
       <View className={styles.popup}>
         <AtModal isOpened={popup}>
           <AtModalHeader>
-            {windowType.type === 'mov' ? '删除订单' : null}
-            {windowType.type === 'CancelConfirmation' ? '取消确认' : null}
-            {windowType.type === 'confirmCooperation' ? '确定合作' : null}
-            {windowType.type === 'end' ? '提前结束' : null}
+            {windowType.type === 'mov' ? '提示' : null}
+            {windowType.type === 'CancelConfirmation' ? '提示' : null}
+            {windowType.type === 'confirmCooperation' ? '提示' : null}
+            {windowType.type === 'end' ? '提示' : null}
           </AtModalHeader>
           <AtModalContent>
             {windowType.type === 'mov' ? (
               <View className={styles.delContent}>
-                <View className={styles.delText}>确定删除订单？</View>
+                <View className={styles.delText}>确定删除订单吗？</View>
               </View>
             ) : null}
             {windowType.type === 'CancelConfirmation' ? (
@@ -289,7 +295,7 @@ function index({ data, deleteMethod, earlyEnd }) {
             ) : null}
             {windowType.type === 'end' ? (
               <View className={styles.delContent}>
-                <View className={styles.delText}>提前结束</View>
+                <View className={styles.delText}>是否提前结束?</View>
               </View>
             ) : null}
           </AtModalContent>

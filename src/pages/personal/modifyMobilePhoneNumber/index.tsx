@@ -98,7 +98,7 @@ const modifyMobilePhoneNumber = () => {
         </View>
       </Navbar>
       {/* 主体 */}
-      <View className={styles.subject}>
+      <View className={styles.contain}>
         <View>
           <Text className={styles.topText}>请输入新手机号</Text>
         </View>
@@ -138,14 +138,22 @@ const modifyMobilePhoneNumber = () => {
             </Text>
           </AtInput>
         </View>
-        <AtButton
+        {/* <AtButton
           onClick={btn}
           className={styles.btn}
           disabled={verification && value ? false : true}
-          type="primary"
+          // type="primary"
         >
           提交
-        </AtButton>
+        </AtButton> */}
+        <View
+          className={
+            verification && value ? styles.loginBtn : styles.loginDisabledBtn
+          }
+          onClick={btn}
+        >
+          提交
+        </View>
       </View>
     </View>
   )

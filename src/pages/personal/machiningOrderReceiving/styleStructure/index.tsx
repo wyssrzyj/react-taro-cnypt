@@ -252,15 +252,15 @@ const styleStructure = ({
       <View className={styles.popup}>
         <AtModal isOpened={popup}>
           <AtModalHeader>
-            {windowType.type === 'mov' ? '删除订单' : null}
-            {windowType.type === 'CancelConfirmation' ? '取消确认' : null}
+            {windowType.type === 'mov' ? '提示' : null}
+            {windowType.type === 'CancelConfirmation' ? '提示' : null}
             {windowType.type === 'confirmCooperation' ? '拒接接单' : null}
-            {windowType.type === 'decline' ? '是否谢绝' : null}
+            {windowType.type === 'decline' ? '提示' : null}
           </AtModalHeader>
           <AtModalContent>
             {windowType.type === 'mov' ? (
               <View className={styles.delContent}>
-                <View className={styles.delText}>确定删除订单？</View>
+                <View className={styles.delText}>确定删除该订单吗？</View>
               </View>
             ) : null}
             {windowType.type === 'CancelConfirmation' ? (

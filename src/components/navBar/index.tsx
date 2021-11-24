@@ -17,13 +17,8 @@ const Navbar = props => {
     <View
       id={'navbar'}
       style={{
-<<<<<<< HEAD
         padding: `${top + 'px'} 0 ${top - Taro['$navBarMarginTop'] + 'px'}`,
         // padding: `${top + 'px'} 0 0}`,
-=======
-        // padding: `${top + 'px'} 0 ${top - Taro['$navBarMarginTop'] + 'px'}`,
-        padding: `${top + 'px'} 0 0`,
->>>>>>> dev_lyj
         background: background
       }}
       className={styles.navbarOutWrap}

@@ -204,7 +204,7 @@ const Home = () => {
   }
 
   return (
-    <View className={styles.container} ref={containerRef}>
+    <View className={styles.container}>
       <Navbar>
         <View className={styles.tabs}>
           <Text
@@ -304,7 +304,7 @@ const Home = () => {
               <Image className={styles.img} src={ORDER_EMPTY} alt="" />
             </View>
             <View>
-              <Text>您还没有订单~</Text>
+              <Text> {activeTab === 0 ? '暂无订单' : '暂无工厂'}</Text>
             </View>
           </View>
         )}

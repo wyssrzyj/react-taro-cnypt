@@ -83,10 +83,8 @@ const order = () => {
       <View className={styles.division}></View>
 
       <View className={styles.bottom}>
-        <View className={styles.order}>
-          <Text onClick={whole} className={styles.text}>
-            接单管理
-          </Text>
+        <View onClick={whole} className={styles.order}>
+          <Text className={styles.text}>接单管理</Text>
         </View>
         <View className={styles.orders}>
           <AtGrid onClick={handleClick} hasBorder={false} data={data} />

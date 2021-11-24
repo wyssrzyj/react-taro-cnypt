@@ -109,7 +109,9 @@ const Verify = () => {
         </View>
 
         <View
-          className={password ? styles.loginBtn : styles.loginDisabledBtn}
+          className={
+            password && pwd ? styles.loginBtn : styles.loginDisabledBtn
+          }
           onClick={submit}
         >
           完成
