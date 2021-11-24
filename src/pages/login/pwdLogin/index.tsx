@@ -23,12 +23,12 @@ const PwdLogin = () => {
   const contentRef = useRef<any>(null)
 
   const { loginStore } = useStores()
-  const { login, userInfo } = loginStore
+  const { login } = loginStore
 
   const [phone, setPhone] = useState<string>('')
   const [pwd, setPwd] = useState<string>('')
   const [loginDisabled, setLoginDisabled] = useState<boolean>(true)
-  const [error, setError] = useState<boolean>(false)
+  const [_error, setError] = useState<boolean>(false)
 
   useEffect(() => {
     const navBarMarginTop = Taro['$navBarMarginTop']
@@ -47,7 +47,7 @@ const PwdLogin = () => {
   }
 
   const toVerifyLogin = () => {
-    Taro.navigateTo({ url: '/pages/login/phoneLogin/index' })
+    Taro.redirectTo({ url: '/pages/login/phoneLogin/index' })
   }
 
   const toFindPwd = () => {
@@ -56,6 +56,7 @@ const PwdLogin = () => {
 
   const goBack = () => {
     Taro.navigateBack()
+    // Taro.redirectTo({ url: '/pages/personal/index' })
   }
 
   const submit = async () => {
@@ -71,7 +72,6 @@ const PwdLogin = () => {
 
       if (res && res.success) {
         setError(false)
-        // await userInfo()
 
         Taro.redirectTo({ url: '/pages/index/index' })
       } else {

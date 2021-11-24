@@ -4,6 +4,7 @@ import classNames from 'classnames'
 import './index.less'
 import TabBarModal from '../tabBarModal'
 import Taro from '@tarojs/taro'
+import { isiOS } from '@/utils/tool'
 
 const HOME =
   'https://capacity-platform.oss-cn-hangzhou.aliyuncs.com/capacity-platform/mobile/tabBar/home.png'
@@ -20,6 +21,8 @@ const TabBar = props => {
   const { activeTab } = props
   const [tab, setTab] = useState<number>(activeTab)
   const [modalFlag, setModalFlag] = useState<boolean>(false)
+
+  console.log(isiOS, 'isiOS')
 
   const changeTab = index => {
     setTab(index)
@@ -62,6 +65,7 @@ const TabBar = props => {
           <Text>我的</Text>
         </View>
       </View>
+      {isiOS ? <View className={'iosAdd'}></View> : null}
 
       {modalFlag && <TabBarModal showModal={showAdd}></TabBarModal>}
     </View>

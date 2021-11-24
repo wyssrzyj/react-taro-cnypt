@@ -46,7 +46,7 @@ const EnterpriseCard = props => {
       {configs.map(item => (
         <View className={styles.item} key={item.field}>
           <View className={styles.label}>{item.label}</View>
-          <View className={styles.value}>
+          <View className={styles.value} style={{ color: item.color }}>
             {data[item.field] ? data[item.field] : '暂无'}
           </View>
         </View>

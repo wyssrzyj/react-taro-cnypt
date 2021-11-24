@@ -59,7 +59,7 @@ const Personal = () => {
           </View>
         </View>
         <View className={styles.absolutes}>
-          <Top list={list} />
+          <Top />
           <View>
             {/* 主体 */}
             <View

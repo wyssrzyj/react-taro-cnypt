@@ -46,7 +46,7 @@ const Login = () => {
               userId: res.data.userId
             })
             if (checkPwdRes) {
-              Taro.navigateTo({
+              Taro.redirectTo({
                 url: `/pages/login/phoneLogin/setPwd?id=${res.data.userId}`
               })
             } else {
@@ -67,8 +67,8 @@ const Login = () => {
   }
 
   const goBack = () => {
-    Taro.redirectTo({ url: '/pages/index/index' })
     // Taro.navigateBack()
+    Taro.redirectTo({ url: '/pages/personal/index' })
   }
 
   return (

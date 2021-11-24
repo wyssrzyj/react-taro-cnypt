@@ -60,11 +60,9 @@ const Verify = () => {
   }
 
   const timerRun = () => {
-    const t =
-      (() => {
-        setLastTime(n => n - 1)
-      },
-      1000)
+    const t = setTimeout(() => {
+      setLastTime(n => n - 1)
+    }, 1000)
     setTimer(t)
   }
 

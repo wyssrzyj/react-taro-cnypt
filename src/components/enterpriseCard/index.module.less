@@ -12,7 +12,7 @@
 
 .item {
   display: flex;
-  margin-bottom: 12px;
+  margin-bottom: 16px;
   font-size: 28px;
 }
 
@@ -30,6 +30,22 @@
   padding-top: 12px;
   overflow-x: auto;
   white-space: nowrap;
+}
+
+.imgs::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+}
+.imgs::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.imgs::-webkit-scrollbar-thumb {
+  background: transparent;
+}
+
+.imgs::-webkit-scrollbar-thumb:hover {
+  background: transparent;
 }
 
 .img {

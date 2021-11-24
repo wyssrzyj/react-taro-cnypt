@@ -1,5 +1,5 @@
 import styles from './index.module.less'
-import { View, Button, Image } from '@tarojs/components'
+import { View, Image } from '@tarojs/components'
 import { useState } from 'react'
 import { AtInput } from 'taro-ui'
 import { Navbar } from '@/components'
@@ -49,7 +49,7 @@ const Verify = () => {
     const res = await resetPwd(param)
 
     res &&
-      Taro.redirectTo({
+      Taro.navigateTo({
         url: '/pages/login/pwdLogin/index'
       })
   }

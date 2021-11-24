@@ -58,3 +58,7 @@ export const phoneReg =
   /^(13[0-9]|14[01456879]|15[0-35-9]|16[2567]|17[0-8]|18[0-9]|19[0-35-9])\d{8}$/
 
 export const pwdReg = /^(?![\d]+$)(?![a-zA-Z]+$)(?![^\da-zA-Z]+$).{6,}$/
+
+const u = navigator.userAgent
+export const isAndroid = u.indexOf('Android') > -1 || u.indexOf('Adr') > -1 //android手机终端
+export const isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/) //ios手机终端

@@ -9,10 +9,7 @@ let ICON =
 
 const Top = props => {
   const { list } = props
-  const { enterpriseName } = list
-
-  // const { enterpriseName, userFaceUrl, userName } = list
-  // 企业类型 0 加工厂 1 发单商
+  // const { enterpriseName } = list
 
   const [userInfo, setUserInfo] = useState<any>({})
   const [currentUser, setCurrentuser] = useState<any>({})
@@ -29,10 +26,8 @@ const Top = props => {
     console.log(user)
   }, [])
 
-  // let sum = userInfo //判断用户权限 新用户=0 发单商=1,加工厂=2
-
   const toLogin = () => {
-    Taro.navigateTo({ url: '/pages/login/index' })
+    Taro.redirectTo({ url: '/pages/login/index' })
   }
 
   return (
@@ -65,8 +60,7 @@ const Top = props => {
               <View className={styles.bottom}>
                 <Image src={ICON} className={styles.enterprise}></Image>
                 <Text className={styles.icon}>
-                  {console.log(userInfo.enterpriseName)}
-                  {enterpriseName ? enterpriseName : '暂无'}
+                  {userInfo.enterpriseName ? userInfo.enterpriseName : '暂无'}
                 </Text>
               </View>
             </>
