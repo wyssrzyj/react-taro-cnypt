@@ -377,10 +377,12 @@ const FactoryEntry = () => {
     }
     await enterpriseInfoSave(params)
     await dealRefresh()
-    await userInfo()
-    Taro.redirectTo({
-      url: '/pages/index/index'
-    })
+    setTimeout(async () => {
+      await userInfo()
+      Taro.redirectTo({
+        url: '/pages/index/index'
+      })
+    }, 100)
   }
 
   const onReset = () => {}

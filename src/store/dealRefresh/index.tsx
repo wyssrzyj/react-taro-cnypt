@@ -13,21 +13,25 @@ export default class RefreshStore {
     var authorization = await Taro.getStorageSync('token')
     const url = `/api/user/account/refresh-token?accessToken=${authorization}`
 
-    const res = await HTTP.post(url)
-    const rToken = res.data.access_token
-    const expiresTime = res.data.expires_in // 过期时间
-    // 更新用户信息
-    const updateUser = JSON.parse(Taro.getStorageSync('currentUser'))
-    updateUser.expire = expiresTime
-    updateUser.access_token = rToken
-    Taro.setStorage({
-      key: 'token',
-      data: rToken
-    })
-    Taro.setStorage({
-      key: 'currentUser',
-      data: JSON.stringify(updateUser)
-    })
+    try {
+      const res = await HTTP.post(url)
+      const rToken = res.data.access_token
+      const expiresTime = res.data.expires_in // 过期时间
+      // 更新用户信息
+      const updateUser = JSON.parse(Taro.getStorageSync('currentUser'))
+      updateUser.expire = expiresTime
+      updateUser.access_token = rToken
+      Taro.setStorage({
+        key: 'token',
+        data: rToken
+      })
+      Taro.setStorage({
+        key: 'currentUser',
+        data: JSON.stringify(updateUser)
+      })
+    } catch (err) {
+      console.log(err.msg, 'dealRefresh')
+    }
   }
 }
 

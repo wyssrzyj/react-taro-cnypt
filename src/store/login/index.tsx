@@ -122,24 +122,19 @@ export default class LoginStore {
       const res: Partial<Response> = await HTTP.get(
         '/api/factory/enterprise/get-login-account-enterprise-factory-info'
       )
-      const { data = {}, msg = '' } = res
+      const { data = {} } = res
       if (data) {
         runInAction(() => {
           this.userInfomation = data
         })
-        Taro.setStorage({
-          key: 'userInfo',
-          data: JSON.stringify(data)
-        })
-      }
-      if (res.code !== 200) {
-        Taro.atMessage({
-          message: msg,
-          type: 'error'
-        })
+        Taro.setStorageSync('userInfo', JSON.stringify(data))
       }
       return res.data
     } catch (e) {
+      Taro.atMessage({
+        message: e.msg as string,
+        type: 'error'
+      })
       console.log(e)
     }
   }

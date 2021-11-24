@@ -9,8 +9,6 @@ let ICON =
 
 const Top = props => {
   const { list } = props
-  // const { enterpriseName } = list
-
   const [userInfo, setUserInfo] = useState<any>({})
   const [currentUser, setCurrentuser] = useState<any>({})
 
@@ -25,6 +23,9 @@ const Top = props => {
     setUserInfo(user)
     console.log(user)
   }, [])
+
+  console.log(userInfo, 'userInfo')
+  console.log(currentUser, 'currentUser')
 
   const toLogin = () => {
     Taro.redirectTo({ url: '/pages/login/index' })
@@ -60,7 +61,7 @@ const Top = props => {
               <View className={styles.bottom}>
                 <Image src={ICON} className={styles.enterprise}></Image>
                 <Text className={styles.icon}>
-                  {userInfo.enterpriseName ? userInfo.enterpriseName : '暂无'}
+                  {list.enterpriseName ? list.enterpriseName : '暂无'}
                 </Text>
               </View>
             </>

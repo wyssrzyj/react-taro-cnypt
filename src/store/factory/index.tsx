@@ -69,21 +69,18 @@ export default class FactoryStore {
       title: '加载中'
     })
     try {
-      const res: Partial<Response> = await HTTP.post(
+      await HTTP.post(
         `/api/factory/enterprise/applets-enterprise-info-save`,
         params
       )
       Taro.hideLoading()
-      if (res) {
-      } else {
-        Taro.hideLoading()
-        Taro.showToast({
-          title: '获取数据失败~',
-          icon: 'none',
-          duration: 1000
-        })
-      }
     } catch (e) {
+      Taro.hideLoading()
+      Taro.showToast({
+        title: '获取数据失败~  enterpriseInfoSave',
+        icon: 'none',
+        duration: 1000
+      })
       console.log(e)
     }
   }
@@ -231,16 +228,15 @@ export default class FactoryStore {
       )
 
       if (res.code === 200) {
-      } else {
-        Taro.hideLoading()
-        Taro.showToast({
-          title: '获取数据失败~',
-          icon: 'none',
-          duration: 1000
-        })
       }
       return res.data
     } catch (e) {
+      Taro.hideLoading()
+      Taro.showToast({
+        title: e.msg,
+        icon: 'none',
+        duration: 1000
+      })
       console.log(e)
     }
   }

@@ -112,7 +112,7 @@ const styleStructure = ({
     })
   }
   const details = data => {
-    Taro.redirectTo({
+    Taro.navigateTo({
       url: '/pages/orderDetail/index?id=' + data.purchaserInquiryId
     })
   }

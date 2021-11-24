@@ -1,14 +1,15 @@
 import { useEffect, useState, useRef } from 'react'
 import { View, Image, Swiper, SwiperItem, Text } from '@tarojs/components'
-import { useStores, observer } from '@/store/mobx'
+import { useStores, observer, toJS } from '@/store/mobx'
 import styles from './index.module.less'
 import { usePullDownRefresh, useReachBottom } from '@tarojs/taro'
 import TabBar from '@/components/tabBar'
 import Card from './components/card'
-import { cloneDeep, isNil, isEmpty } from 'lodash'
+import { cloneDeep, isNil, isEmpty, isArray } from 'lodash'
 import { Navbar } from '@/components'
 import classNames from 'classnames'
 import Taro from '@tarojs/taro'
+import { matchTreeData } from '@/utils/tool'
 
 export const ORDER_EMPTY =
   'https://capacity-platform.oss-cn-hangzhou.aliyuncs.com/capacity-platform/platform/order_empty.png'
@@ -16,8 +17,13 @@ export const ORDER_EMPTY =
 const Home = () => {
   const { homeStore, commonStore, loginStore } = useStores()
   const { getNewFactory, getOrderList } = homeStore
-  const { allDictionary, productCategory, getProductGrade, getDistrict } =
-    commonStore
+  const {
+    allDictionary,
+    productCategory,
+    getProductGrade,
+    getDistrict,
+    district
+  } = commonStore
   const { userInfo } = loginStore
 
   const [userInformation, setUserInformation] = useState<any>({})
@@ -42,24 +48,20 @@ const Home = () => {
   }, [])
 
   useEffect(() => {
-    const info = Taro.getStorageSync('userInfo')
-      ? JSON.parse(Taro.getStorageSync('userInfo'))
-      : {}
-    setUserInformation(info)
-
-    const user = Taro.getStorageSync('currentUser')
-      ? JSON.parse(Taro.getStorageSync('currentUser'))
-      : {}
-    setCurrentUser(user)
-  }, [])
-
-  useEffect(() => {
     ;(async () => {
-      if (!isEmpty(currentUser)) {
+      const user = Taro.getStorageSync('currentUser')
+        ? JSON.parse(Taro.getStorageSync('currentUser'))
+        : {}
+      setCurrentUser(user)
+      if (!isEmpty(user)) {
         await userInfo()
+        const info = Taro.getStorageSync('userInfo')
+          ? JSON.parse(Taro.getStorageSync('userInfo'))
+          : {}
+        setUserInformation(info)
       }
     })()
-  }, [currentUser])
+  }, [])
 
   const isNilConfigs = [
     {
@@ -188,6 +190,17 @@ const Home = () => {
       const fn = activeTab === 0 ? getOrderList : getNewFactory
       const res = (await fn(pageNum)) || {}
       const { records = [], current = 1, total = 0 } = res
+      if (activeTab === 0) {
+        records.forEach(item => {
+          if (isArray(item.inquiryDistrictIds)) {
+            item.area =
+              item.inquiryDistrictIds.map(i => {
+                const target = matchTreeData(district, i, 'value') || {}
+                return target.label
+              }) || []
+          }
+        })
+      }
       const target = current === 1 ? records : [...nData, ...records]
 
       setDataSource(target)
@@ -195,14 +208,14 @@ const Home = () => {
       setTotal(total)
       setInit(true)
     })()
-  }, [pageNum, activeTab])
+  }, [pageNum, activeTab, district])
 
   const tabClick = tab => {
     if (tab === activeTab) return
+    setDataSource([])
     setActiveTab(tab)
     setPageNum(1)
   }
-
   return (
     <View className={styles.container} ref={containerRef}>
       <Navbar>
@@ -237,9 +250,11 @@ const Home = () => {
           autoplay
           interval={3000}
           className={styles.swipers}
+          previousMargin={'0px'}
+          nextMargin={'0px'}
         >
           {banners.map((item, idx) => (
-            <SwiperItem key={idx}>
+            <SwiperItem key={idx} className={styles.swiperItem}>
               <Image src={item.img} className={styles.banner}></Image>
             </SwiperItem>
           ))}
@@ -282,7 +297,7 @@ const Home = () => {
         <View className={styles.title}>
           {activeTab === 0 ? '最新订单' : '最新工厂'}
         </View>
-        {dataSource.length > 0 ? (
+        {!loading && dataSource.length > 0 ? (
           <View>
             {dataSource.map((data, idx) => {
               return (
@@ -298,7 +313,8 @@ const Home = () => {
               <View className={styles.noMoreText}>没有更多了</View>
             )}
           </View>
-        ) : (
+        ) : null}
+        {!loading && !dataSource.length ? (
           <View class={styles.emptyDisplay}>
             <View className={styles.empty}>
               <Image className={styles.img} src={ORDER_EMPTY} alt="" />
@@ -307,7 +323,7 @@ const Home = () => {
               <Text>您还没有订单~</Text>
             </View>
           </View>
-        )}
+        ) : null}
       </View>
       <TabBar activeTab={1}></TabBar>
     </View>

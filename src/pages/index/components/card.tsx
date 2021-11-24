@@ -17,7 +17,7 @@ const Card = props => {
   const img = type === 0 ? data.stylePicture : data.pictureUrl
   // ('🚀 ~ file: card.tsx ~ line 17 ~ img', img)
   const title = type === 0 ? data.name : data.factoryName
-  const area = type === 0 ? data.enterpriseAreaName : data.factoryDistrict
+  const area = type === 0 ? data.area.join(',') : data.factoryDistrict
 
   const { commonStore } = useStores()
   const { dictionary, productCategoryList } = commonStore
