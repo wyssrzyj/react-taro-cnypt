@@ -25,8 +25,8 @@ const Navbar = props => {
         style={{
           // marginTop: Taro['$navBarMarginTop'] + 'px',
           height: height + 2 * (top - Taro['$navBarMarginTop']) + 'px',
-          background: background,
-          borderBottom: border ? '2px solid #efefef' : 'none'
+          background: background
+          // borderBottom: border ? '2px solid #efefef' : 'none'
         }}
       >
         {children}

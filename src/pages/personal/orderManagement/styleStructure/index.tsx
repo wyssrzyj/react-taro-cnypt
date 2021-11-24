@@ -95,6 +95,8 @@ function index({ data, deleteMethod, earlyEnd }) {
   }
   // 再来一单
   const oneMoreOrder = id => {
+    console.log(id)
+
     Taro.navigateTo({
       url: `/pages/publish/index?id=${id}`
     })
@@ -226,7 +228,7 @@ function index({ data, deleteMethod, earlyEnd }) {
                     oneMoreOrder(data.id)
                   }}
                 >
-                  再来一单
+                  再来一单99
                 </Text>
               </View>
               <View onClick={decline} className={styles.cancel}>

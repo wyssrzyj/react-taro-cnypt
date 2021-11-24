@@ -10,6 +10,9 @@ import { Navbar } from '@/components'
 import classNames from 'classnames'
 import Taro from '@tarojs/taro'
 
+export const ORDER_EMPTY =
+  'https://capacity-platform.oss-cn-hangzhou.aliyuncs.com/capacity-platform/platform/order_empty.png'
+
 const Home = () => {
   const { homeStore, commonStore, loginStore } = useStores()
   const { getNewFactory, getOrderList } = homeStore
@@ -281,18 +284,31 @@ const Home = () => {
         <View className={styles.title}>
           {activeTab === 0 ? '最新订单' : '最新工厂'}
         </View>
-        {dataSource.map((data, idx) => {
-          return (
-            <Card
-              key={idx}
-              data={data}
-              type={activeTab}
-              source={'/pages/index/index'}
-            ></Card>
-          )
-        })}
-        {dataSource.length >= total && init && (
-          <View className={styles.noMoreText}>没有更多了</View>
+        {dataSource.length > 0 ? (
+          <View>
+            {dataSource.map((data, idx) => {
+              return (
+                <Card
+                  key={idx}
+                  data={data}
+                  type={activeTab}
+                  source={'/pages/index/index'}
+                ></Card>
+              )
+            })}
+            {dataSource.length >= total && init && (
+              <View className={styles.noMoreText}>没有更多了</View>
+            )}
+          </View>
+        ) : (
+          <View class={styles.emptyDisplay}>
+            <View className={styles.empty}>
+              <Image className={styles.img} src={ORDER_EMPTY} alt="" />
+            </View>
+            <View>
+              <Text>您还没有订单~</Text>
+            </View>
+          </View>
         )}
       </View>
       <TabBar activeTab={1}></TabBar>

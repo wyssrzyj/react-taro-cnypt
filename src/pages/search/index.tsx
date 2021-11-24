@@ -18,6 +18,9 @@ import { cloneDeep, isArray, isNil } from 'lodash'
 import AreaModal from '@/components/areaModal'
 import Card from '../index/components/card'
 
+export const ORDER_EMPTY =
+  'https://capacity-platform.oss-cn-hangzhou.aliyuncs.com/capacity-platform/platform/order_empty.png'
+
 const BASE_URL =
   'https://capacity-platform.oss-cn-hangzhou.aliyuncs.com/capacity-platform/mobile'
 
@@ -351,13 +354,25 @@ const Search = () => {
           </View>
         </View>
       )}
-
-      {pageStatus === 2 &&
-        dataSource.map((data, idx) => {
-          return <Card key={idx} data={data} type={activeTab}></Card>
-        })}
-      {pageStatus === 2 && dataSource.length >= total && init && (
-        <View className={styles.noMoreText}>没有更多了</View>
+      {dataSource.length > 0 ? (
+        <View>
+          {pageStatus === 2 &&
+            dataSource.map((data, idx) => {
+              return <Card key={idx} data={data} type={activeTab}></Card>
+            })}
+          {pageStatus === 2 && dataSource.length >= total && init && (
+            <View className={styles.noMoreText}>没有更多了</View>
+          )}
+        </View>
+      ) : (
+        <View class={styles.emptyDisplay}>
+          <View className={styles.empty}>
+            <Image className={styles.img} src={ORDER_EMPTY} alt="" />
+          </View>
+          <View>
+            <Text>您还没有订单~</Text>
+          </View>
+        </View>
       )}
 
       {areaFlag && (
