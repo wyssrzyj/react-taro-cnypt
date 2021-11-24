@@ -296,7 +296,7 @@ const Search = () => {
       )}
 
       {pageStatus === 2 && (
-        <View>
+        <View className={styles.top}>
           <View className={styles.tabs}>
             <AtTabs
               onClick={tabChange}
@@ -371,7 +371,7 @@ const Search = () => {
             <Image className={styles.img} src={ORDER_EMPTY} alt="" />
           </View>
           <View>
-            <Text>您还没有订单~</Text>
+            <Text>{activeTab === 0 ? '没有对应订单' : '没有对应工厂'}</Text>
           </View>
         </View>
       )}

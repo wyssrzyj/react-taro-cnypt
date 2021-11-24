@@ -12,7 +12,7 @@ const BACK_ICON =
   'https://capacity-platform.oss-cn-hangzhou.aliyuncs.com/capacity-platform/mobile/icon/black_back.png'
 
 export const ORDER_EMPTY =
-  'https://capacity-platform.oss-cn-hangzhou.aliyuncs.com/capacity-platform/platform/order_empty.png'
+  'https://capacity-platform.oss-cn-hangzhou.aliyuncs.com/capacity-platform/mobile/images/notYet.png'
 
 const Verify = () => {
   const defaultPageSize = 10
@@ -245,7 +245,7 @@ const Verify = () => {
             <Image className={styles.img} src={ORDER_EMPTY} alt="" />
           </View>
           <View>
-            <Text>您还没有订单~</Text>
+            <Text>您还没有接单的工厂~</Text>
           </View>
         </View>
       )}

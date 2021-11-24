@@ -13,7 +13,7 @@ import { TabBar } from '@/components'
 const Personal = () => {
   Taro.setNavigationBarColor({
     frontColor: '#ffffff',
-    backgroundColor: '#ff0000',
+    backgroundColor: '',
     animation: {
       duration: 400,
       timingFunc: 'easeIn'
@@ -51,34 +51,35 @@ const Personal = () => {
   }
 
   return (
-    <View>
+    <View className={styles.containers}>
       <View className={styles.father}>
         <View className={styles.navBar} style={{ paddingTop: `${top}px` }}>
           <View className={styles.navContent}>
             <View>我的</View>
           </View>
         </View>
-        <View className={styles.absolutes}>
-          <Top list={list} />
-          <View>
-            {/* 主体 */}
-            <View
-              className={
-                jurisdiction === 'notLogged' ? styles.subject : styles.subjects
-              }
-            >
-              {jurisdiction === '1' ? <Order /> : null}
-              {jurisdiction === 'notLogged' || jurisdiction === null ? (
-                <Settled type={list} />
-              ) : null}
-              {jurisdiction === '0' ? <Machining /> : null}
-              <Management list={list} userInfo={jurisdiction} />
-            </View>
+      </View>
+      <View className={styles.absolutes}>
+        <Top list={list} />
+        <View>
+          {/* 主体 */}
+          <View
+            className={
+              jurisdiction === 'notLogged' ? styles.subject : styles.subjects
+            }
+          >
+            {jurisdiction === '1' ? <Order /> : null}
+            {jurisdiction === 'notLogged' || jurisdiction === null ? (
+              <Settled type={list} />
+            ) : null}
+            {jurisdiction === '0' ? <Machining /> : null}
+            <Management list={list} userInfo={jurisdiction} />
           </View>
         </View>
+        {/* 底部 */}
+        <Careful userInfo={jurisdiction} />
       </View>
-      {/* 底部 */}
-      <Careful userInfo={jurisdiction} />
+
       <TabBar activeTab={2}></TabBar>
     </View>
   )

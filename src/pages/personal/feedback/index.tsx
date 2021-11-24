@@ -49,35 +49,36 @@ const Verify = () => {
           <View className={styles.navTitles}>反馈信息</View>
         </View>
       </Navbar>
+      <View className={styles.top}>
+        <View className={styles.container}>
+          <View className={styles.title}>报价信息</View>
+          <View className={styles.txt}>
+            {data.quoteInfo ? data.quoteInfo : '暂无'}
+          </View>
+        </View>
+        <View className={styles.container}>
+          <View className={styles.title}>收款方式</View>
+          <View className={styles.txt}>
+            {data.payDetails ? data.payDetails : '暂无'}
+          </View>
+        </View>
+        <View className={styles.container}>
+          <View className={styles.title}>可接订单数</View>
+          <View className={styles.txt}>
+            {data.receiveGoodsNum ? data.receiveGoodsNum : '暂无'}
+          </View>
+        </View>
+        <View className={styles.container}>
+          <View className={styles.title}>备注</View>
+          <View className={styles.txt}>
+            {' '}
+            {data.remark ? data.remark : '暂无'}
+          </View>
+        </View>
 
-      <View className={styles.container}>
-        <View className={styles.title}>报价信息</View>
-        <View className={styles.txt}>
-          {data.quoteInfo ? data.quoteInfo : '暂无'}
+        <View className={styles.btn} onClick={btn}>
+          <View>返回订单</View>
         </View>
-      </View>
-      <View className={styles.container}>
-        <View className={styles.title}>收款方式</View>
-        <View className={styles.txt}>
-          {data.payDetails ? data.payDetails : '暂无'}
-        </View>
-      </View>
-      <View className={styles.container}>
-        <View className={styles.title}>可接订单数</View>
-        <View className={styles.txt}>
-          {data.receiveGoodsNum ? data.receiveGoodsNum : '暂无'}
-        </View>
-      </View>
-      <View className={styles.container}>
-        <View className={styles.title}>备注</View>
-        <View className={styles.txt}>
-          {' '}
-          {data.remark ? data.remark : '暂无'}
-        </View>
-      </View>
-
-      <View className={styles.btn} onClick={btn}>
-        <View>返回订单</View>
       </View>
     </View>
   )
