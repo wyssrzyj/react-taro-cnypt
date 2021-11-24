@@ -7,7 +7,10 @@ import { isNil, isEmpty } from 'lodash'
 let ICON =
   'https://capacity-platform.oss-cn-hangzhou.aliyuncs.com/capacity-platform/mobile/icon/enterpriseName.png '
 
-const Top = () => {
+const Top = props => {
+  const { list } = props
+  const { enterpriseName } = list
+
   // const { enterpriseName, userFaceUrl, userName } = list
   // 企业类型 0 加工厂 1 发单商
 
@@ -23,6 +26,7 @@ const Top = () => {
       ? JSON.parse(Taro.getStorageSync('userInfo'))
       : {}
     setUserInfo(user)
+    console.log(user)
   }, [])
 
   // let sum = userInfo //判断用户权限 新用户=0 发单商=1,加工厂=2
@@ -61,7 +65,8 @@ const Top = () => {
               <View className={styles.bottom}>
                 <Image src={ICON} className={styles.enterprise}></Image>
                 <Text className={styles.icon}>
-                  {userInfo.enterpriseName ? userInfo.enterpriseName : '暂无'}
+                  {console.log(userInfo.enterpriseName)}
+                  {enterpriseName ? enterpriseName : '暂无'}
                 </Text>
               </View>
             </>

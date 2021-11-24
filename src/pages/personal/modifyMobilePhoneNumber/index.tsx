@@ -132,7 +132,7 @@ const modifyMobilePhoneNumber = () => {
           >
             <Text
               onClick={verificationCode}
-              className={!regularJudge ? styles.prohibit : null}
+              className={!regularJudge ? styles.prohibit : styles.color}
             >
               {count ? `${count} s` : '获取验证码'}
             </Text>

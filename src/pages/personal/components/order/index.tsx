@@ -30,7 +30,7 @@ const order = () => {
       id: 2,
       image:
         'https://capacity-platform.oss-cn-hangzhou.aliyuncs.com/capacity-platform/mobile/icon/pending.png',
-      value: '待处理',
+      value: '待反馈',
       url: ''
     },
     {

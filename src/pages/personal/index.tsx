@@ -11,6 +11,14 @@ import Careful from './components/careful'
 import { useStores } from '@/store/mobx'
 import { TabBar } from '@/components'
 const Personal = () => {
+  Taro.setNavigationBarColor({
+    frontColor: '#ffffff',
+    backgroundColor: '#ff0000',
+    animation: {
+      duration: 400,
+      timingFunc: 'easeIn'
+    }
+  })
   const { top } = Taro.getMenuButtonBoundingClientRect()
 
   const { userInterface } = useStores()
@@ -51,7 +59,7 @@ const Personal = () => {
           </View>
         </View>
         <View className={styles.absolutes}>
-          <Top />
+          <Top list={list} />
           <View>
             {/* 主体 */}
             <View
