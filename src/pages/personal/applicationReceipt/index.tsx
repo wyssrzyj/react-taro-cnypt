@@ -19,6 +19,7 @@ const Verify = () => {
     applicationReceipt,
     orderQuantity,
     quantityId,
+    submitApplication,
     submitRequisition
   } = userInterface
   const [offer, setOffer] = useState() //报价信息
@@ -82,26 +83,45 @@ const Verify = () => {
             receiveGoodsNum: products,
             remark: remarks
           }
-          const submitRes = await submitRequisition({
-            ...value,
-            purchaserInquiryId: params.id,
-            supplierInquiryId: quantityId,
-            status: 2
-          })
-          if (submitRes.code === 200) {
-            await applicationReceiptQuantity('')
-            Taro.redirectTo({
-              url: '/pages/personal/machiningOrderReceiving/index?tid='
+          //  申请接单一个
+          if (quantityId) {
+            // 修改一个
+            const submitRes = await submitRequisition({
+              ...value,
+              purchaserInquiryId: params.id,
+              supplierInquiryId: quantityId,
+              status: 2
             })
+            if (submitRes.code === 200) {
+              await applicationReceiptQuantity('')
+              Taro.redirectTo({
+                url: '/pages/personal/machiningOrderReceiving/index?tid='
+              })
+            }
+            setToast(false)
+          } else {
+            const submitRes = await submitApplication({
+              ...value,
+              purchaserInquiryId: params.id,
+              supplierInquiryId: quantityId,
+              status: 2
+            })
+            if (submitRes.code === 200) {
+              await applicationReceiptQuantity('')
+              Taro.redirectTo({
+                url: '/pages/personal/machiningOrderReceiving/index?tid='
+              })
+            }
+            setToast(false)
           }
-
-          setToast(false)
         }
       }
     } else {
       setToast(true)
     }
   }
+  console.log(quantityId)
+
   return (
     <View className={styles.phoneLogin}>
       {/* 导航 */}
@@ -113,7 +133,7 @@ const Verify = () => {
             onClick={goBack}
           ></Image>
           <View className={styles.navTitles}>
-            {products !== null ? '修改回复' : '申请接单'}
+            {quantityId ? '修改回复' : '申请接单'}
           </View>
         </View>
       </Navbar>

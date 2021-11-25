@@ -244,7 +244,7 @@ const Verify = () => {
           <View className={styles.empty}>
             <Image className={styles.img} src={ORDER_EMPTY} alt="" />
           </View>
-          <View>
+          <View className={styles.color}>
             <Text>您还没有接单的工厂~</Text>
           </View>
         </View>

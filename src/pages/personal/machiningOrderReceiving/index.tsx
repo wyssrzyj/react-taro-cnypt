@@ -240,7 +240,7 @@ const Verify = () => {
           <View className={styles.empty}>
             <Image className={styles.img} src={ORDER_EMPTY} alt="" />
           </View>
-          <View>
+          <View class={styles.color}>
             <Text>您还没有订单~</Text>
           </View>
         </View>

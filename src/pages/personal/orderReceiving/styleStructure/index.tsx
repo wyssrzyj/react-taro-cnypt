@@ -147,7 +147,7 @@ const styleStructure = ({
             <Image className={styles.img} src={data.pictureUrl} alt="" />
           </View>
           <View>
-            <Text className={styles.factory}>{data.enterpriseName}</Text>
+            <View className={styles.factory}>{data.enterpriseName}</View>
             <View>
               <Text>
                 <Text className={styles.parking}>有效车位:</Text>
