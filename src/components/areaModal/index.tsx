@@ -91,13 +91,13 @@ const AreaModal = props => {
   return (
     <View className={styles.container}>
       <Navbar>
-        <View className={styles.navbar}>
+        <View className={styles.navbars}>
           <Image
             src={BACK_ICON}
-            className={styles.back}
+            className={styles.backs}
             onClick={onClose}
           ></Image>
-          <View>{title}</View>
+          <View className={styles.navTitles}>{title}</View>
         </View>
       </Navbar>
 

@@ -309,7 +309,7 @@ const Home = () => {
         <View className={styles.title}>
           {activeTab === 0 ? '最新订单' : '最新工厂'}
         </View>
-        {!loading && dataSource.length > 0 ? (
+        {dataSource.length > 0 ? (
           <View>
             {dataSource.map((data, idx) => {
               return (

@@ -374,7 +374,9 @@ const Search = () => {
             <View className={styles.noMoreText}>没有更多了</View>
           )}
         </View>
-      ) : (
+      ) : null}
+
+      {!loading && !dataSource.length ? (
         <View class={styles.emptyDisplay}>
           <View className={styles.empty}>
             <Image className={styles.img} src={ORDER_EMPTY} alt="" />
@@ -383,7 +385,9 @@ const Search = () => {
             <Text>{activeTab === 0 ? '没有对应订单' : '没有对应工厂'}</Text>
           </View>
         </View>
-      )}
+      ) : null}
+
+      {/* loading */}
 
       {areaFlag && (
         <AreaModal
