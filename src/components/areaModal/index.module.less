@@ -10,8 +10,29 @@
   flex-direction: column;
 }
 
-.navbar {
+.navbars {
+  position: relative;
   display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.backs {
+  padding: 12px 16px;
+  position: absolute;
+  top: 50%;
+  left: 16px;
+  transform: translateY(-50%);
+  width: 16px;
+  height: 28px;
+}
+
+.navTitles {
+  flex: 1;
+  font-size: 34px;
+  font-weight: bold;
+  color: #1a1003;
+  text-align: center;
 }
 
 .box {
@@ -36,13 +57,6 @@
   }
 }
 
-.back {
-  padding: 12px 16px;
-  width: 16px;
-  height: 28px;
-  margin-right: 36px;
-}
-
 .content {
   position: relative;
   display: flex;
@@ -51,25 +65,22 @@
 .province {
   width: 186px;
   height: 100%;
-  padding-bottom: 32px;
   overflow-y: auto;
   box-sizing: border-box;
   border-right: 1px solid #efefef;
-  padding-bottom: 420px;
+  padding-bottom: 440px;
   background: #f4f7fd;
 }
 
 .city {
   flex: 1;
-  // display: flex;
-  // flex-wrap: wrap;
   height: 100%;
   padding-top: 32px;
   overflow-y: auto;
   box-sizing: border-box;
   border-right: 1px solid #efefef;
   padding-left: 30px;
-  padding-bottom: 420px;
+  padding-bottom: 440px;
 }
 
 .area {
@@ -122,7 +133,7 @@
 }
 
 .footer {
-  height: 320px;
+  // height: 320px;
   padding-bottom: 12px;
   position: fixed;
   bottom: 0;
@@ -137,7 +148,8 @@
 }
 
 .footerItems {
-  height: 150px;
+  // height: 150px;
+  max-height: 270px;
   overflow: auto;
 }
 
