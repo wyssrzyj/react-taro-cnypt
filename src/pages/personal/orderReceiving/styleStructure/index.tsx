@@ -247,6 +247,14 @@ const styleStructure = ({
               </View>
             </View>
           ) : null}
+          {/* 已谢绝 */}
+          {data.status === -1 ? (
+            <View>
+              <View onClick={showModal} className={styles.cancel}>
+                删除记录
+              </View>
+            </View>
+          ) : null}
         </View>
       </View>
 
