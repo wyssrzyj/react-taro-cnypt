@@ -182,6 +182,7 @@ const Home = () => {
 
   usePullDownRefresh(async () => {
     await setPageNum(1)
+    Taro.stopPullDownRefresh()
   })
 
   useReachBottom(() => {
