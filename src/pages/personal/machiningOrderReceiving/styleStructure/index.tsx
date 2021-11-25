@@ -114,7 +114,7 @@ const styleStructure = ({
   // 电话
   const call = () => {
     Taro.makePhoneCall({
-      phoneNumber: data.contactPersonMobile //仅为示例，并非真实的电话号码
+      phoneNumber: data.contactPersonMobile //仅为示例.，并非真实的电话号码
     }).then()
   }
 
