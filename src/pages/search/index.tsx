@@ -127,6 +127,7 @@ const Search = () => {
 
   usePullDownRefresh(async () => {
     await setPageNum(1)
+    Taro.stopPullDownRefresh()
   })
 
   useReachBottom(() => {
