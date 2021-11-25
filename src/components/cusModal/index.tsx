@@ -1,6 +1,6 @@
-import { View, Button } from '@tarojs/components'
+import { View } from '@tarojs/components'
 import styles from './index.module.less'
-import { AtFloatLayout } from 'taro-ui'
+import { AtFloatLayout, AtButton } from 'taro-ui'
 import { useState } from 'react'
 import { cloneDeep } from 'lodash'
 import classNames from 'classnames'
@@ -68,9 +68,10 @@ const CusModal = props => {
             )
           })}
         </View>
-        <Button type={'primary'} onClick={submit} className={styles.btn}>
+
+        <AtButton type="primary" onClick={submit}>
           确定
-        </Button>
+        </AtButton>
       </AtFloatLayout>
     </View>
   )

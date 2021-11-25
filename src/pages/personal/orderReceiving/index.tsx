@@ -35,6 +35,7 @@ const Verify = () => {
   const [pageNum, setPageNum] = useState(1)
   const [display, setDisplay] = useState(false)
   const [dropDown, setDropDown] = useState(false)
+  const [loading, setLoading] = useState(true)
   // 2 3 -2
   // 接口数据
   const [list, setList] = useState<any>({
@@ -74,12 +75,14 @@ const Verify = () => {
     }
   }
   const api = async () => {
+    setLoading(false)
     let res = await listData(list)
     if (Array.isArray(res.records)) {
       let final = eliminate(res.records, 1)
       setReallyLists(final)
       setTotalPageNumber(res.pages)
     }
+    setLoading(true)
   }
   // 下拉加载更多
   useEffect(() => {
@@ -189,6 +192,12 @@ const Verify = () => {
     let res = { ...list, name: value }
     setList(res)
   }
+  const onConfirm = () => {
+    console.log('1')
+
+    let res = { ...list, name: value }
+    setList(res)
+  }
 
   return (
     <View className={styles.phoneLogin}>
@@ -207,9 +216,11 @@ const Verify = () => {
       {/* 搜索 */}
       <View className={styles.search}>
         <AtSearchBar
+          placeholder="搜索订单名称"
           value={value}
           onActionClick={searchConfirmation}
           onChange={bind}
+          onConfirm={onConfirm}
         />
       </View>
       {/* Tobs标签 */}
@@ -237,7 +248,8 @@ const Verify = () => {
           </View>
           {display ? <View className={styles.notYet}>没有更多了~</View> : null}
         </View>
-      ) : (
+      ) : null}
+      {loading && !rallyists.length ? (
         <View class={styles.emptyDisplay}>
           <View className={styles.empty}>
             <Image className={styles.img} src={ORDER_EMPTY} alt="" />
@@ -246,7 +258,7 @@ const Verify = () => {
             <Text>您还没有接单的工厂~</Text>
           </View>
         </View>
-      )}
+      ) : null}
     </View>
   )
 }

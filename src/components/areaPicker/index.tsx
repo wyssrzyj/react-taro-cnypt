@@ -27,8 +27,8 @@ const AreaPicker = props => {
     ;(async () => {
       const res = cloneDeep(district)
       setProvinceData(res)
-      const cData = [{ label: '不限', value: 0 }, ...res[0].children]
-      const aData = [{ label: '不限', value: 0 }]
+      const cData = [{ label: '不限1', value: 0 }, ...res[0].children]
+      const aData = [{ label: '不限2', value: 0 }]
       setCityData(cData)
       setAreaData(aData)
     })()
@@ -47,7 +47,7 @@ const AreaPicker = props => {
         }) || {}
 
       setProvinceIdx(pIdx)
-      const cData = [{ label: '不限', value: 0 }, ...province.children]
+      const cData = [{ label: '不限3', value: 0 }, ...province.children]
       let cIdx
       const city =
         cData.find((item, idx) => {
@@ -61,7 +61,7 @@ const AreaPicker = props => {
       setCityIdx(cIdx)
       setCityData(cData)
 
-      const aData = [{ label: '不限', value: 0 }, ...city.children]
+      const aData = [{ label: '不限4', value: 0 }, ...city.children]
       let aIdx = aData.findIndex(item => +item.value === areaInfo.districtId)
       setAreaData(aData)
       setAreaIdx(aIdx)
@@ -78,13 +78,13 @@ const AreaPicker = props => {
         prev = pData[item].label
       }
       if (idx === 1) {
-        if (cData[item].label !== '不限') {
+        if (cData[item].label !== '不限5') {
           prev += '-' + cData[item].label
         }
       }
 
       if (idx === 2) {
-        if (aData[item].label !== '不限') {
+        if (aData[item].label !== '不限6') {
           prev += '-' + aData[item].label
         }
       }
@@ -123,8 +123,8 @@ const AreaPicker = props => {
       const province =
         provinceData.find(item => item.value === target.value) || {}
       province.children = province.children || []
-      const cData = [{ label: '不限', value: 0 }, ...province.children]
-      const aData = [{ label: '不限', value: 0 }]
+      const cData = [{ label: '不限7', value: 0 }, ...province.children]
+      const aData = [{ label: '不限8', value: 0 }]
 
       setCityData(cData)
       setAreaData(aData)
@@ -137,8 +137,8 @@ const AreaPicker = props => {
 
       setAreaData(
         Array.isArray(target.children)
-          ? [{ label: '不限', value: 0 }, ...target.children]
-          : [{ label: '不限', value: 0 }]
+          ? [{ label: '不限9', value: 0 }, ...target.children]
+          : [{ label: '不限0', value: 0 }]
       )
       setAreaValue([areaValue[0], value, 0])
     }
@@ -163,8 +163,8 @@ const AreaPicker = props => {
             styles.timeListItem,
             !selectedArea ? styles.placeholder : styles.selectText
           )}
-          title="所在地区"
-          extraText={selectedArea || '请选择所在地区'}
+          title="所在地区555"
+          extraText={selectedArea || '请选择所在地区222'}
         />
       </AtList>
     </Picker>

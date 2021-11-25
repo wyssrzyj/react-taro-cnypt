@@ -207,6 +207,8 @@ const Search = () => {
   }
 
   const confirm = event => {
+    console.log('回车，confirm')
+
     const nParams = cloneDeep(params)
     const nSearch = cloneDeep(historySearch) || []
     const {
@@ -247,6 +249,8 @@ const Search = () => {
   }
 
   const searchFocus = () => {
+    console.log('回车searchFocus')
+
     setPageStatus(1)
   }
 

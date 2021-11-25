@@ -128,7 +128,7 @@ const Card = props => {
               <Image src={LOCATION_ICON} className={styles.icon}></Image>
             )}
             <Text className={styles.cardAddress}>
-              {area ? area.replace(/,/g, ' ') : ''}
+              {area ? area.replace(/,/g, ' ') : '不限'}
             </Text>
           </View>
         </View>

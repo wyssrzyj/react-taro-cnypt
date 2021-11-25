@@ -159,6 +159,10 @@ const Verify = () => {
     let res = { ...list, name: value }
     setList(res)
   }
+  const onConfirm = () => {
+    let res = { ...list, name: value }
+    setList(res)
+  }
 
   return (
     <View className={styles.phoneLogin}>
@@ -176,9 +180,11 @@ const Verify = () => {
       {/* 搜索 */}
       <View className={styles.search}>
         <AtSearchBar
+          placeholder="搜索订单名称"
           value={value}
           onActionClick={searchConfirmation}
           onChange={bind}
+          onConfirm={onConfirm}
         />
       </View>
       {/* Tobs标签 */}
@@ -212,7 +218,7 @@ const Verify = () => {
             <Image className={styles.img} src={ORDER_EMPTY} alt="" />
           </View>
           <View className={styles.color}>
-            <Text>您还没有订单~</Text>
+            <Text>您还没有新的订单~</Text>
           </View>
         </View>
       ) : null}

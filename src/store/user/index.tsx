@@ -113,19 +113,26 @@ export default class UserInterface {
 
   // 申请列表数据展示
   @action listData = async params => {
+    Taro.showLoading({
+      title: '加载中'
+    })
     try {
       const res: Partial<Response> = await HTTP.post(
         '/api/oms/inquiry-purchase/inquiry-application-list',
         params
       )
       if (res.code === 200) {
+        Taro.hideLoading()
         return res.data
       }
+
       return res.data
     } catch (e) {
       if (e.code === 200) {
+        Taro.hideLoading()
         return e
       }
+
       return e
     }
   }
@@ -249,19 +256,27 @@ export default class UserInterface {
 
   // 供应商需求单查询
   @action supplierGetOrders = async params => {
+    Taro.showLoading({
+      title: '加载中'
+    })
     try {
       const res: Partial<Response> = await HTTP.post(
         '/api/oms/inquiry-supplier/list',
         params
       )
+
       if (res.code === 200) {
+        Taro.hideLoading()
         return res.data
       }
+
       return res.data
     } catch (e) {
       if (e.code === 200) {
+        Taro.hideLoading()
         return e
       }
+
       return e
     }
   }
