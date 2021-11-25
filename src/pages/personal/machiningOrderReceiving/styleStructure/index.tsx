@@ -145,7 +145,7 @@ const styleStructure = ({
           </View>
 
           <View className={styles.text}>
-            <Text className={styles.factory}>{data.inquiryPurchaserName}</Text>
+            <View className={styles.factory}>{data.inquiryPurchaserName}</View>
             <View>
               <Text>
                 <Text className={styles.parking}>订单量:</Text>
@@ -179,19 +179,25 @@ const styleStructure = ({
         <View className={styles.informationFather}>
           <View className={styles.flex}>
             <View className={styles.information}>报价信息</View>
-            <View>{data.quoteInfo ? data.quoteInfo : '暂无'}</View>
+            <View className={styles.valueText}>
+              {data.quoteInfo ? data.quoteInfo : '暂无'}
+            </View>
           </View>
           <View className={styles.flex}>
             <View className={styles.information}>收款信息</View>
-            <View>{data.payDetails ? data.payDetails : '暂无'}</View>
+            <View className={styles.valueText}>
+              {data.payDetails ? data.payDetails : '暂无'}
+            </View>
           </View>
           <View className={styles.flex}>
             <View className={styles.information}>可接产品数</View>
-            <View>{data.receiveGoodsNum ? data.receiveGoodsNum : '暂无'}</View>
+            <View className={styles.valueText}>
+              {data.receiveGoodsNum ? data.receiveGoodsNum : '暂无'}
+            </View>
           </View>
           <View className={styles.flex}>
             <View className={styles.information}>备注</View>
-            <View className={styles.remarks}>
+            <View className={styles.valueText}>
               {data.remark ? data.remark : '暂无'}
             </View>
           </View>
