@@ -196,7 +196,7 @@ export default class FactoryStore {
     }
   }
 
-  // /api/oms/inquiry-purchase/inquiry-list
+  // /api/oms/inquiry-purchase/inquiry-list.
   // 查询某个发单商的其他订单 POST
   @action getOtherOrder = async enterpriseId => {
     try {
