@@ -40,7 +40,12 @@ const PhoneLogin = () => {
     const target = `calc(100vh - 40px - ${navBarMarginTop / 2}px - 272px)`
     contentRef.current.style.height = target
   }, [])
-
+  const handleClick = () => {
+    Taro.navigateTo({ url: '/pages/personal/userAgreement/index' })
+  }
+  const privacy = () => {
+    Taro.navigateTo({ url: '/pages/personal/privacyAgreement/index' })
+  }
   const phoneChange = val => {
     setPhone(val)
     setLoginDisabled(!val || !verifyCode ? true : false)
@@ -205,8 +210,22 @@ const PhoneLogin = () => {
 
         <View className={styles.agreeBox}>
           <Text>登录即表明同意</Text>
-          <Text className={styles.agreeTag}>《优产用户协议》</Text>
-          <Text className={styles.agreeTag}>《隐私政策》</Text>
+          <Text
+            onClick={() => {
+              handleClick()
+            }}
+            className={styles.agreeTag}
+          >
+            《优产用户协议》
+          </Text>
+          <Text
+            onClick={() => {
+              privacy()
+            }}
+            className={styles.agreeTag}
+          >
+            《隐私政策》
+          </Text>
         </View>
       </View>
     </View>

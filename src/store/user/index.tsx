@@ -186,6 +186,31 @@ export default class UserInterface {
     }
   }
 
+  // 小程序供应商主动申请需求单
+  @action submitApplication = async params => {
+    try {
+      const res: Partial<Response> = await HTTP.post(
+        `/api/oms/inquiry-quote/active-application-inquiry-applet`,
+        params
+      )
+      if (res.code === 200) {
+        return res
+      }
+      return res
+    } catch (e) {
+      Taro.hideLoading()
+      Taro.showToast({
+        title: e.msg as string,
+        icon: 'none',
+        duration: 1500
+      })
+      if (e.code === 200) {
+        return e
+      }
+      return e
+    }
+  }
+
   // 订单管理数据
   @action orderListData = async params => {
     try {
