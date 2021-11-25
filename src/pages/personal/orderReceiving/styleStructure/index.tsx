@@ -46,7 +46,7 @@ const styleStructure = ({
   sortColor.set(3, styles.green)
   sortColor.set(1, styles.yellow)
   sortColor.set(-2, styles.black)
-  sortColor.set(-1, styles.blue)
+  sortColor.set(-1, styles.black)
   let map = new Map()
   map.set(1, '') //设置
   map.set(2, '待反馈') //设置
@@ -124,13 +124,13 @@ const styleStructure = ({
 
       <View className={styles.major}>
         {/* 头部 */}
-        <View className={styles.top}>
-          <View
-            className={styles.content}
-            onClick={() => {
-              details(data)
-            }}
-          >
+        <View
+          className={styles.top}
+          onClick={() => {
+            details(data)
+          }}
+        >
+          <View className={styles.content}>
             <View className={styles.factorys}>{data.name}</View>
             <AtIcon value="chevron-right" size="15" color="#999999"></AtIcon>
           </View>
@@ -141,7 +141,12 @@ const styleStructure = ({
 
         <View className={styles.line}></View>
         {/* 主体 */}
-        <View className={styles.subject}>
+        <View
+          className={styles.subject}
+          onClick={() => {
+            details(data)
+          }}
+        >
           {/* img */}
           <View className={data.pictureUrl ? styles.img : styles.emptyCardImg}>
             <Image className={styles.img} src={data.pictureUrl} alt="" />

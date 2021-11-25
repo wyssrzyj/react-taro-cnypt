@@ -74,8 +74,7 @@ const Verify = () => {
   const api = async () => {
     let res = await supplierGetOrders(list)
     if (Array.isArray(res.records)) {
-      let filterStatus = eliminate(res.records, -1)
-      let final = eliminate(filterStatus, 1)
+      let final = eliminate(res.records, 1)
       setReallyLists(final)
       setTotalPageNumber(res.pages)
     }
@@ -101,8 +100,7 @@ const Verify = () => {
         const nData = cloneDeep(rallyists)
         const { records = [] } = res
         const target = [...nData, ...records]
-        let filterStatus = eliminate(target, -1)
-        let final = eliminate(filterStatus, 1)
+        let final = eliminate(target, 1)
         setReallyLists(final)
         setDropDown(false)
       }
@@ -124,16 +122,16 @@ const Verify = () => {
   const AtTabsbind = e => {
     let sum = '0'
     if (e === 0) {
-      sum = ''
-    }
-    if (e === 1) {
       sum = '2'
     }
-    if (e === 2) {
+    if (e === 1) {
       sum = '3'
     }
-    if (e === 3) {
+    if (e === 2) {
       sum = '-2'
+    }
+    if (e === 3) {
+      sum = '-1'
     }
     setPageNum(1) //点击tops的时候让下拉需要的数据重新计算
     setList({
@@ -154,10 +152,10 @@ const Verify = () => {
   }
 
   const tabList = [
-    { title: '全部' },
     { title: '待反馈' },
     { title: '已确认' },
-    { title: '已谢绝' }
+    { title: '被谢绝' },
+    { title: '已拒绝' }
   ]
   const deleteMethod = async id => {
     // 删除

@@ -48,7 +48,7 @@ const order = () => {
     {
       id: -1,
       image:
-        'https://capacity-platform.oss-cn-hangzhou.aliyuncs.com/capacity-platform/mobile/icon/declined.png',
+        'https://capacity-platform.oss-cn-hangzhou.aliyuncs.com/capacity-platform/mobile/icon/rejected.png',
       value: '被拒绝'
     }
   ]

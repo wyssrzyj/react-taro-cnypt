@@ -76,8 +76,7 @@ const Verify = () => {
   const api = async () => {
     let res = await listData(list)
     if (Array.isArray(res.records)) {
-      let filterStatus = eliminate(res.records, -1)
-      let final = eliminate(filterStatus, 1)
+      let final = eliminate(res.records, 1)
       setReallyLists(final)
       setTotalPageNumber(res.pages)
     }
@@ -103,8 +102,7 @@ const Verify = () => {
         const nData = cloneDeep(rallyists)
         const { records = [] } = res
         const target = [...nData, ...records]
-        let filterStatus = eliminate(target, -1)
-        let final = eliminate(filterStatus, 1)
+        let final = eliminate(target, 1)
         setReallyLists(final)
         setDropDown(false)
       }

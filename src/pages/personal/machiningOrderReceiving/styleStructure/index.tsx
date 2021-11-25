@@ -60,15 +60,14 @@ const styleStructure = ({
   sortColor.set(2, styles.red)
   sortColor.set(3, styles.green)
   sortColor.set(1, styles.yellow)
-  sortColor.set(-2, styles.black)
+  sortColor.set(-2, styles.blue)
   sortColor.set(-1, styles.blue)
   let map = new Map()
-  map.set(1, '') //设置
+
   map.set(2, '待反馈') //设置
   map.set(3, '已确认') //设置
-  map.set(-2, '已谢绝') //设置
-
-  map.set(-1, '被拒绝') //设置
+  map.set(-1, '已拒绝') //设置
+  map.set(-2, '被谢绝') //设置
 
   // 删除
   const showModal = () => {
@@ -243,8 +242,16 @@ const styleStructure = ({
               </View>
             </View>
           ) : null}
-          {/* 已谢绝 */}
+          {/* 被谢绝 */}
           {data.status === -2 ? (
+            <View>
+              <View onClick={showModal} className={styles.cancel}>
+                删除记录
+              </View>
+            </View>
+          ) : null}
+          {/* 已拒绝 */}
+          {data.status === -1 ? (
             <View>
               <View onClick={showModal} className={styles.cancel}>
                 删除记录

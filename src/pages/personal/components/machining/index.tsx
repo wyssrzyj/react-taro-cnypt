@@ -33,8 +33,8 @@ const machining = () => {
     {
       id: -2,
       image:
-        'https://capacity-platform.oss-cn-hangzhou.aliyuncs.com/capacity-platform/mobile/icon/declined.png',
-      value: '已谢绝'
+        'https://capacity-platform.oss-cn-hangzhou.aliyuncs.com/capacity-platform/mobile/icon/rejected.png',
+      value: '被谢绝'
     },
     {
       id: -1,
