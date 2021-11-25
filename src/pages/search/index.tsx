@@ -371,7 +371,7 @@ const Search = () => {
           </View>
         </View>
       )}
-      {dataSource.length > 0 ? (
+      {pageStatus === 2 && dataSource.length > 0 ? (
         <View className={isIOS ? styles.cardsIOSContent : styles.cardsContent}>
           {pageStatus === 2 &&
             dataSource.map((data, idx) => {
@@ -383,8 +383,8 @@ const Search = () => {
         </View>
       ) : null}
 
-      {!loading && !dataSource.length ? (
-        <View class={styles.emptyDisplay}>
+      {pageStatus === 2 && !loading && !dataSource.length ? (
+        <View iew class={styles.emptyDisplay}>
           <View className={styles.empty}>
             <Image className={styles.img} src={ORDER_EMPTY} alt="" />
           </View>
