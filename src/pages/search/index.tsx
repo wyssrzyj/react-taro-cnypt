@@ -256,7 +256,13 @@ const Search = () => {
   }
 
   return (
-    <View>
+    <View
+      className={
+        areaFlag || productFlag || materialFlag || effectiveFlag
+          ? styles.searchContainer
+          : ''
+      }
+    >
       <Navbar>
         <View className={styles.navbar}>
           <Image
