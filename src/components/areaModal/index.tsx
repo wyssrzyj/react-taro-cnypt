@@ -12,7 +12,7 @@ import { AtToast } from 'taro-ui'
 const BASE_URL =
   'https://capacity-platform.oss-cn-hangzhou.aliyuncs.com/capacity-platform/mobile'
 const BACK_ICON = BASE_URL + '/icon/black_back.png'
-const REMOVE_ICON = BASE_URL + '/icon/remove.png'
+const REMOVE_ICON = BASE_URL + '/icon/blueClose.png'
 
 const AreaModal = props => {
   const { onCancel, callback, value = [], title = '选择地区' } = props

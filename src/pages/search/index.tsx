@@ -109,6 +109,15 @@ const Search = () => {
   const [pageNum, setPageNum] = useState(1)
   const [init, setInit] = useState<boolean>(false)
   const [searchConfigs, setSearchConfigs] = useState<any[]>(initConfigs)
+  const [isIOS, setIsIOS] = useState<boolean>(false)
+
+  useEffect(() => {
+    Taro.getSystemInfo({
+      success: res => {
+        setIsIOS(res.system.includes('iOS'))
+      }
+    })
+  })
 
   useEffect(() => {
     setSearchConfigs(
@@ -356,7 +365,7 @@ const Search = () => {
         </View>
       )}
       {dataSource.length > 0 ? (
-        <View>
+        <View className={isIOS ? styles.cardsIOSContent : styles.cardsContent}>
           {pageStatus === 2 &&
             dataSource.map((data, idx) => {
               return <Card key={idx} data={data} type={activeTab}></Card>

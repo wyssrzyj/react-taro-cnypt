@@ -73,12 +73,14 @@ const TabBar = props => {
         </View>
 
         {isNil(userInformation.enterprise) ||
-          (+userInformation.enterprise === 1 && (
-            <View className={'tabAddBox'}>
-              <Image src={ADD} className={'tabAdd'} onClick={showAdd}></Image>
-              <Text></Text>
-            </View>
-          ))}
+        +userInformation.enterprise === 1 ? (
+          <View className={'tabAddBox'}>
+            <Image src={ADD} className={'tabAdd'} onClick={showAdd}></Image>
+            <Text></Text>
+          </View>
+        ) : (
+          ''
+        )}
 
         <View
           onClick={() => changeTab(2)}

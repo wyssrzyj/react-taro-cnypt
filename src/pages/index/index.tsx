@@ -35,6 +35,15 @@ const Home = () => {
   const [activeTab, setActiveTab] = useState<number>(0)
   const [total, setTotal] = useState<number>(0)
   const [init, setInit] = useState<boolean>(false)
+  const [isIOS, setIsIOS] = useState<boolean>(false)
+
+  useEffect(() => {
+    Taro.getSystemInfo({
+      success: res => {
+        setIsIOS(res.system.includes('iOS'))
+      }
+    })
+  })
 
   useEffect(() => {
     ;(async () => {
@@ -217,6 +226,8 @@ const Home = () => {
     setActiveTab(tab)
     setPageNum(1)
   }
+
+  //
   return (
     <View className={styles.container}>
       <Navbar>
@@ -242,7 +253,7 @@ const Home = () => {
         </View>
       </Navbar>
 
-      <View className={styles.content}>
+      <View className={isIOS ? styles.IOSContent : styles.content}>
         <Swiper
           indicatorColor="#999"
           indicatorActiveColor="#333"

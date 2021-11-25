@@ -10,7 +10,6 @@ import Management from './components/management'
 import Careful from './components/careful'
 import { useStores } from '@/store/mobx'
 import { TabBar } from '@/components'
-import { Navbar } from '@/components'
 
 const Personal = () => {
   Taro.setNavigationBarColor({
