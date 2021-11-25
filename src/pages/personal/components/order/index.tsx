@@ -14,11 +14,11 @@ const order = () => {
       url: '/pages/personal/orderManagement/index?tid=' + e.id
     })
   }
-  const whole = () => {
-    Taro.redirectTo({
-      url: '/pages/personal/orderReceiving/index?tid='
-    })
-  }
+  // const whole = () => {
+  //   Taro.redirectTo({
+  //     url: '/pages/personal/orderReceiving/index?tid='
+  //   })
+  // }
   const myOrder = () => {
     Taro.redirectTo({
       url: '/pages/personal/orderManagement/index?tid='
@@ -44,6 +44,12 @@ const order = () => {
       image:
         'https://capacity-platform.oss-cn-hangzhou.aliyuncs.com/capacity-platform/mobile/icon/declined.png',
       value: '已谢绝'
+    },
+    {
+      id: -1,
+      image:
+        'https://capacity-platform.oss-cn-hangzhou.aliyuncs.com/capacity-platform/mobile/icon/declined.png',
+      value: '被拒绝'
     }
   ]
   const data1 = [
@@ -83,11 +89,16 @@ const order = () => {
       <View className={styles.division}></View>
 
       <View className={styles.bottom}>
-        <View onClick={whole} className={styles.order}>
+        <View className={styles.order}>
           <Text className={styles.text}>接单管理</Text>
         </View>
         <View className={styles.orders}>
-          <AtGrid onClick={handleClick} hasBorder={false} data={data} />
+          <AtGrid
+            columnNum={4}
+            onClick={handleClick}
+            hasBorder={false}
+            data={data}
+          />
         </View>
       </View>
     </View>

@@ -213,12 +213,15 @@ export default class UserInterface {
 
   // 订单管理数据
   @action orderListData = async params => {
+    Taro.showLoading({
+      title: '加载中'
+    })
     try {
       const res: Partial<Response> = await HTTP.post(
         '/api/oms/inquiry-purchase/inquiry-list',
         params
       )
-
+      Taro.hideLoading()
       if (res.code === 200) {
         return res.data
       } else {

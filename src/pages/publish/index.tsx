@@ -54,7 +54,7 @@ const FactoryEntry = () => {
   } = router
 
   const { commonStore, factoryStore } = useStores()
-  const { publishOrder, orderDetail } = factoryStore
+  const { publishOrder, orderDetailOrder } = factoryStore
   const { productCategoryList, dictionary, district } = commonStore
 
   const {
@@ -80,7 +80,7 @@ const FactoryEntry = () => {
   useEffect(() => {
     ;(async () => {
       if (id) {
-        const detail = await orderDetail(id)
+        const detail = await orderDetailOrder(id)
         detail.goodsNum = [detail.goodsNumDictionary]
         detail.effectiveLocation = [detail.effectiveLocationDictionary]
         detail.inquiryEffectiveDate = detail.inquiryEffectiveDate
@@ -242,16 +242,7 @@ const FactoryEntry = () => {
           <View className={styles.navTitles}>发布订单</View>
         </View>
       </Navbar>
-      {/* <View className={styles.navBar} style={{ paddingTop: `${top}px` }}>
-        <View className={styles.navContent}>
-          <Image
-            src={BACK_ICON}
-            className={styles.back}
-            onClick={goBack}
-          ></Image>
-          <View>发布订单</View>
-        </View>
-      </View> */}
+
       <View className={styles.color}></View>
 
       <AtForm onSubmit={onSubmit} onReset={onReset} className={styles.form}>

@@ -45,16 +45,16 @@ const Verify = () => {
     if (Number(params.tid)) {
       // purchaserInquiryId: params.ids
       const tid = Number(params.tid)
-      if (tid === null) {
+      if (tid === 2) {
         setCurrent(0)
       }
-      if (tid === 2) {
+      if (tid === 3) {
         setCurrent(1)
       }
-      if (tid === 3) {
+      if (tid === -2) {
         setCurrent(2)
       }
-      if (tid === -2) {
+      if (tid === -1) {
         setCurrent(3)
       }
     }

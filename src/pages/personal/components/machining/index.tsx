@@ -35,18 +35,27 @@ const machining = () => {
       image:
         'https://capacity-platform.oss-cn-hangzhou.aliyuncs.com/capacity-platform/mobile/icon/declined.png',
       value: '已谢绝'
+    },
+    {
+      id: -1,
+      image:
+        'https://capacity-platform.oss-cn-hangzhou.aliyuncs.com/capacity-platform/mobile/icon/declined.png',
+      value: '已拒绝'
     }
   ]
 
   return (
     <View>
       <View className={styles.order}>
-        <Text className={styles.text} onClick={whole}>
-          接单管理
-        </Text>
+        <Text className={styles.text}>接单管理</Text>
       </View>
       <View className={styles.orders}>
-        <AtGrid onClick={handleClick} hasBorder={false} data={data} />
+        <AtGrid
+          columnNum={4}
+          onClick={handleClick}
+          hasBorder={false}
+          data={data}
+        />
       </View>
     </View>
   )

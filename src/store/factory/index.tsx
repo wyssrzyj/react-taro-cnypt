@@ -169,6 +169,33 @@ export default class FactoryStore {
     }
   }
 
+  //再来一单回显
+  @action orderDetailOrder = async id => {
+    Taro.showLoading({
+      title: '加载中'
+    })
+    try {
+      const res: Partial<Response> = await HTTP.get(
+        `/api/oms/inquiry-purchase/get-applets-another-order`,
+        { id }
+      )
+      Taro.hideLoading()
+      if (res.code === 200) {
+        const { data } = res
+        return data
+      } else {
+        Taro.hideLoading()
+        Taro.showToast({
+          title: '获取数据失败~',
+          icon: 'none',
+          duration: 1000
+        })
+      }
+    } catch (e) {
+      console.log(e)
+    }
+  }
+
   // /api/oms/inquiry-purchase/inquiry-list
   // 查询某个发单商的其他订单 POST
   @action getOtherOrder = async enterpriseId => {

@@ -26,6 +26,7 @@ const Verify = () => {
   const [totalPageNumber, setTotalPageNumber] = useState(2) //总页码
   const [pageNum, setPageNum] = useState(1)
   const [display, setDisplay] = useState(false)
+  const [loading, setLoading] = useState(true)
 
   // 2 3 -2
   // 接口数据
@@ -57,13 +58,16 @@ const Verify = () => {
   useEffect(() => {
     api()
   }, [list])
+
   const api = async () => {
+    setLoading(false)
     let res = await orderListData(list)
 
     if (Array.isArray(res.records)) {
       setReallyLists(res.records)
       setTotalPageNumber(res.pages)
     }
+    setLoading(true)
   }
 
   useEffect(() => {
@@ -200,7 +204,9 @@ const Verify = () => {
           </View>
           {display ? <View className={styles.notYet}>没有更多了~</View> : null}
         </View>
-      ) : (
+      ) : null}
+
+      {loading && !rallyists.length ? (
         <View class={styles.emptyDisplay}>
           <View className={styles.empty}>
             <Image className={styles.img} src={ORDER_EMPTY} alt="" />
@@ -209,7 +215,7 @@ const Verify = () => {
             <Text>您还没有订单~</Text>
           </View>
         </View>
-      )}
+      ) : null}
     </View>
   )
 }
