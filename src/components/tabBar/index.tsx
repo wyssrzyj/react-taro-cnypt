@@ -72,8 +72,8 @@ const TabBar = props => {
           <Text>首页</Text>
         </View>
 
-        {isNil(userInformation.enterprise) ||
-        +userInformation.enterprise === 1 ? (
+        {isNil(userInformation.enterpriseType) ||
+        +userInformation.enterpriseType === 1 ? (
           <View className={'tabAddBox'}>
             <Image src={ADD} className={'tabAdd'} onClick={showAdd}></Image>
             <Text></Text>
