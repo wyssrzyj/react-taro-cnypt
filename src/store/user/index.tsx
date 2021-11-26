@@ -333,6 +333,60 @@ export default class UserInterface {
       console.log(e)
     }
   }
+  // 加工厂接单管理订单数量
+  @action processingOrderQuantity = async () => {
+    try {
+      const res: Partial<Response> = await HTTP.get(
+        `/api/oms/inquiry-supplier/order-management-supplier-total`
+      )
+      const { msg = '' } = res
+      if (res.code !== 200) {
+        Taro.atMessage({
+          message: msg,
+          type: 'error'
+        })
+      }
+      return res
+    } catch (e) {
+      return e
+    }
+  }
+  // 发单商接单管理订单数量
+  @action IssuerOrderQuantity = async () => {
+    try {
+      const res: Partial<Response> = await HTTP.get(
+        `/api/oms/inquiry-purchase/order-management-purchase-total`
+      )
+      const { msg = '' } = res
+      if (res.code !== 200) {
+        Taro.atMessage({
+          message: msg,
+          type: 'error'
+        })
+      }
+      return res
+    } catch (e) {
+      return e
+    }
+  }
+  // 发单商我的订单数量
+  @action issuerMyOrderQuantity = async () => {
+    try {
+      const res: Partial<Response> = await HTTP.get(
+        `/api/oms/inquiry-purchase/my-order-purchase-total`
+      )
+      const { msg = '' } = res
+      if (res.code !== 200) {
+        Taro.atMessage({
+          message: msg,
+          type: 'error'
+        })
+      }
+      return res
+    } catch (e) {
+      return e
+    }
+  }
 
   // 加工厂 订单管理 删除记录
   @action factoryDelOrder = async params => {

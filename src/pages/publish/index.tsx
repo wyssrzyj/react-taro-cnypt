@@ -145,6 +145,8 @@ const FactoryEntry = () => {
       }
     }
 
+    // let arr = date - moment(nParams.inquiryEffectiveDate).valueOf()
+
     nParams.goodsNum = nParams.goodsNum.join('')
     nParams.effectiveLocation = nParams.effectiveLocation.join('')
     if (isArray(nParams.stylePicture)) {
@@ -159,7 +161,22 @@ const FactoryEntry = () => {
     nParams.deliveryDate = nParams.deliveryDate
       ? moment(nParams.deliveryDate).valueOf()
       : null
+    if (nParams.inquiryEffectiveDate) {
+      let date = Date.now() //当前时间
+      let arr = moment(date).format('YYYY-MM-DD') //转为时间不要时分秒
+      let time = moment(arr).valueOf() //转为时间戳，当前时间的时间戳
+      let termOfValidity = moment(nParams.inquiryEffectiveDate).valueOf()
+      console.log(termOfValidity - time) //选中减去今天
+      if (termOfValidity - time < 0) {
+        nParams.status = '-3'
+      } else {
+        nParams.status = '1'
+      }
+    }
+    console.log(nParams)
     let res = await publishOrder(nParams)
+    console.log(res)
+
     if (res.code === 200) {
       Taro.redirectTo({ url: '/pages/index/index' })
     }

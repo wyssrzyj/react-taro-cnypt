@@ -38,8 +38,6 @@ const Verify = () => {
   const [loading, setLoading] = useState(true)
   // 2 3 -2
   // 接口数据
-  console.log(params.tid)
-
   const [list, setList] = useState<any>({
     pageNum: 1,
     pageSize: defaultPageSize,
