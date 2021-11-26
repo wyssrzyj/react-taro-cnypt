@@ -38,7 +38,7 @@ const Verify = () => {
     pageNum: 1,
     pageSize: defaultPageSize,
     purchaserInquiryId: params.ids,
-    status: params.tid //状态
+    status: params.tid ? params.tid : 2 //状态
   })
 
   // 路由状态

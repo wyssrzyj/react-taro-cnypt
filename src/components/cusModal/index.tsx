@@ -69,7 +69,7 @@ const CusModal = props => {
           })}
         </View>
 
-        <AtButton type="primary" onClick={submit}>
+        <AtButton className={styles.btn} type="primary" onClick={submit}>
           确定
         </AtButton>
       </AtFloatLayout>

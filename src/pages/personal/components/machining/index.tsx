@@ -1,5 +1,5 @@
 import { View, Text } from '@tarojs/components'
-import { AtGrid } from 'taro-ui'
+import { AtGrid, AtBadge, AtButton } from 'taro-ui'
 import styles from './index.module.less'
 import Taro from '@tarojs/taro'
 

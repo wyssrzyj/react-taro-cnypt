@@ -165,7 +165,7 @@ const FactoryEntry = () => {
       type: 'number',
       placeholder: '请填写厂房面积',
       valueType: 'string',
-      addon: '平方'
+      addon: '平米'
     },
     {
       label: '有效车位',
