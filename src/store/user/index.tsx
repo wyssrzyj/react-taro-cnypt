@@ -200,20 +200,16 @@ export default class UserInterface {
         `/api/oms/inquiry-quote/active-application-inquiry-applet`,
         params
       )
-      if (res.code === 200) {
-        return res
-      }
+
       return res
     } catch (e) {
       Taro.hideLoading()
       Taro.showToast({
-        title: e.msg as string,
+        title: '请输入正确的数量',
         icon: 'none',
         duration: 1500
       })
-      if (e.code === 200) {
-        return e
-      }
+
       return e
     }
   }

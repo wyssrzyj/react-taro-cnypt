@@ -41,7 +41,7 @@ const OrderCard = props => {
         </View>
       </View>
 
-      {isArray(data.imgs) && data.imgs.length && (
+      {isArray(data.imgs) && data.imgs.length ? (
         <View className={styles.imgs}>
           {data.imgs.map((item, idx) => {
             return (
@@ -54,7 +54,7 @@ const OrderCard = props => {
             )
           })}
         </View>
-      )}
+      ) : null}
 
       {/* TODO: enterpriseId没返回 */}
       <View className={styles.enterprise} onClick={toOrderIssueDetail}>

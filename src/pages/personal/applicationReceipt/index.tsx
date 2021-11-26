@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import styles from './index.module.less'
 import { View, Text, Image } from '@tarojs/components'
-import { AtNavBar, AtInput } from 'taro-ui'
+import { AtToast, AtInput } from 'taro-ui'
 import { useRouter, redirectTo } from '@tarojs/taro'
 import { useStores, observer } from '@/store/mobx'
 import Taro from '@tarojs/taro'
@@ -117,10 +117,11 @@ const Verify = () => {
         }
       }
     } else {
+      // setIsOpened(true)
+      // setErrText('请输入产品数量')
       setToast(true)
     }
   }
-  console.log(quantityId)
 
   return (
     <View className={styles.phoneLogin}>
@@ -180,7 +181,7 @@ const Verify = () => {
               <AtInput
                 name="orderQuantity"
                 border={false}
-                type="text"
+                type="number"
                 placeholder="请填写可接产品数"
                 value={products}
                 onChange={orderQuantityMethod}

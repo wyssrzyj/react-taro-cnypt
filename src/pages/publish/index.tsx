@@ -147,7 +147,10 @@ const FactoryEntry = () => {
 
     nParams.goodsNum = nParams.goodsNum.join('')
     nParams.effectiveLocation = nParams.effectiveLocation.join('')
-    nParams.stylePicture = nParams.stylePicture.map(item => item.url)
+    if (isArray(nParams.stylePicture)) {
+      nParams.stylePicture = nParams.stylePicture.map(item => item.url)
+    }
+
     nParams.status = 1
 
     nParams.inquiryEffectiveDate = nParams.inquiryEffectiveDate
