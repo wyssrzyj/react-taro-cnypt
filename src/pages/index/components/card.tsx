@@ -1,7 +1,7 @@
 import { View, Text, Image } from '@tarojs/components'
 import styles from './card.module.less'
 import { isArray } from 'lodash'
-import { useStores, observer } from '@/store/mobx'
+import { useStores, observer, toJS } from '@/store/mobx'
 import { useEffect, useState } from 'react'
 import { matchTreeData } from '@/utils/tool'
 import moment from 'moment'
@@ -21,7 +21,7 @@ const Card = props => {
 
   const { commonStore } = useStores()
   const { dictionary, productCategoryList } = commonStore
-  const { processType = [] } = dictionary
+  const { processType = [], goodsNum = [] } = dictionary
 
   const [processTypes, setProcessTypes] = useState<string[]>([])
 
@@ -78,7 +78,9 @@ const Card = props => {
         url: `/pages/factoryDetail/index?id=${data.enterpriseId}`
       })
   }
-
+  const dingdong = v => {
+    return goodsNum.filter(item => item.value === v)[0].label
+  }
   return (
     <View className={styles.card} onClick={toDetail}>
       <Image
@@ -99,12 +101,13 @@ const Card = props => {
         ) : (
           <View>
             <Text className={styles.cusTag1}>
-              {data.goodsNum === '1000,100000000'
+              {dingdong(data.goodsNum)}
+              {/* {data.goodsNum === '1000,100000000'
                 ? '1000件以上'
                 : data.goodsNum
-                ? data.goodsNum.replace(',', '~')
-                : '--'}
-              &nbsp;{data.goodsNum !== '1000,100000000' ? '件' : ''}
+                ? data.goodsNum.replace(',', '')
+                : '--'} */}
+              {/* &nbsp;{data.goodsNum !== '1000,100000000' ? '件' : ''} */}
             </Text>
             <Text className={styles.cusTag2}>
               {data.inquiryEffectiveDate
