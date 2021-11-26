@@ -72,9 +72,6 @@ const Verify = () => {
   }
 
   useEffect(() => {
-    console.log('判断')
-
-    // 防止初始化之后重复掉接口
     drop()
     console.log(pageNum)
   }, [pageNum])
@@ -88,6 +85,7 @@ const Verify = () => {
         const { records = [] } = res
         const target = [...nData, ...records]
         setReallyLists(target)
+        setTotalPageNumber(res.pages)
       }
     } else {
       setDisplay(true)
@@ -99,6 +97,10 @@ const Verify = () => {
   }
   // tabs
   const AtTabsbind = e => {
+    console.log('重新计算')
+    setTotalPageNumber(1) //共有几页
+    setPageNum(1) //下拉当前是第几页
+
     let sum = '0'
     if (e === 0) {
       sum = ''
