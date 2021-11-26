@@ -71,7 +71,7 @@ const order = () => {
         {
           id: -2,
           image:
-            'https://capacity-platform.oss-cn-hangzhou.aliyuncs.com/capacity-platform/mobile/icon/auditFailed.png',
+            'https://capacity-platform.oss-cn-hangzhou.aliyuncs.com/capacity-platform/mobile/icon/declines.png',
           value: '审核失败',
           num: res1.data.auditFailureNum
         }
