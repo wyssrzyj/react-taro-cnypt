@@ -165,7 +165,7 @@ const FactoryEntry = () => {
       type: 'number',
       placeholder: '请填写厂房面积',
       valueType: 'string',
-      addon: '平方'
+      addon: '平米'
     },
     {
       label: '有效车位',
@@ -445,11 +445,17 @@ const FactoryEntry = () => {
   }
 
   const areaChange = areaInfo => {
+    console.log(areaInfo)
+
     const keys = Reflect.ownKeys(areaInfo)
+    console.log(keys)
+
     const nParams = cloneDeep(params)
     keys.forEach(item => {
       nParams[item] = areaInfo[item]
     })
+    console.log(nParams)
+
     setParams(nParams)
   }
 

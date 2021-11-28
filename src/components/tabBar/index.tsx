@@ -26,14 +26,17 @@ const TabBar = props => {
   const [modalFlag, setModalFlag] = useState<boolean>(false)
   const [isIOS, setIsIOS] = useState<boolean>(false)
   const [userInformation, setUserInformation] = useState<any>({})
+  const [loading, setLoading] = useState(false)
 
   useEffect(() => {
+    setLoading(true)
     setTimeout(() => {
       const info = Taro.getStorageSync('userInfo')
         ? JSON.parse(Taro.getStorageSync('userInfo'))
         : {}
       setUserInformation(info)
-    })
+      setLoading(false)
+    }, 300)
   }, [])
 
   useEffect(() => {
@@ -72,8 +75,9 @@ const TabBar = props => {
           <Text>首页</Text>
         </View>
 
-        {isNil(userInformation.enterpriseType) ||
-        +userInformation.enterpriseType === 1 ? (
+        {!loading &&
+        (isNil(userInformation.enterpriseType) ||
+          +userInformation.enterpriseType === 1) ? (
           <View className={'tabAddBox'}>
             <Image src={ADD} className={'tabAdd'} onClick={showAdd}></Image>
             <Text></Text>

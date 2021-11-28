@@ -62,6 +62,7 @@ const Verify = () => {
   const api = async () => {
     setLoading(false)
     let res = await orderListData(list)
+    console.log(res.pages)
 
     if (Array.isArray(res.records)) {
       setReallyLists(res.records)
@@ -71,20 +72,17 @@ const Verify = () => {
   }
 
   useEffect(() => {
+    console.log('判断')
+
     // 防止初始化之后重复掉接口
-    if (params.tid) {
-    } else {
-      drop()
-    }
+    drop()
+    console.log(pageNum)
   }, [pageNum])
 
   let drop = async () => {
     if (totalPageNumber >= pageNum) {
       setDisplay(false)
-      let res = await orderListData({
-        pageNum: pageNum,
-        pageSize: defaultPageSize
-      })
+      let res = await orderListData(list)
       if (res.records.length > 0) {
         const nData = cloneDeep(rallyists)
         const { records = [] } = res
@@ -159,6 +157,10 @@ const Verify = () => {
     let res = { ...list, name: value }
     setList(res)
   }
+  const onConfirm = () => {
+    let res = { ...list, name: value }
+    setList(res)
+  }
 
   return (
     <View className={styles.phoneLogin}>
@@ -176,9 +178,11 @@ const Verify = () => {
       {/* 搜索 */}
       <View className={styles.search}>
         <AtSearchBar
+          placeholder="搜索订单名称"
           value={value}
           onActionClick={searchConfirmation}
           onChange={bind}
+          onConfirm={onConfirm}
         />
       </View>
       {/* Tobs标签 */}
@@ -212,7 +216,7 @@ const Verify = () => {
             <Image className={styles.img} src={ORDER_EMPTY} alt="" />
           </View>
           <View className={styles.color}>
-            <Text>您还没有订单~</Text>
+            <Text>您还没有新的订单~</Text>
           </View>
         </View>
       ) : null}

@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { Picker } from '@tarojs/components'
 import { AtList, AtListItem } from 'taro-ui'
 import { useStores, observer } from '@/store/mobx'
-import { cloneDeep, throttle } from 'lodash'
+import { cloneDeep, isArray, throttle } from 'lodash'
 import styles from './index.module.less'
 import classNames from 'classnames'
 
@@ -14,7 +14,7 @@ const AreaPicker = props => {
 
   const [selectedArea, setSelectedArea] = useState<string>('')
 
-  const [provinceData, setProvinceData] = useState<any[]>([])
+  const [provinceData, setProvinceData] = useState<any[]>([]) //
   const [cityData, setCityData] = useState<any[]>([])
   const [areaData, setAreaData] = useState<any[]>([])
   const [provinceIdx, setProvinceIdx] = useState<number>(0)
@@ -27,8 +27,11 @@ const AreaPicker = props => {
     ;(async () => {
       const res = cloneDeep(district)
       setProvinceData(res)
-      const cData = [{ label: '不限', value: 0 }, ...res[0].children]
-      const aData = [{ label: '不限', value: 0 }]
+      // const cData = [{ label: '不限', value: 0 }, ...res[0].children]
+      const cData = [...res[0].children]
+
+      // const aData = [{ label: '不限', value: 0 }]
+      const aData = isArray(cData) ? cData[0].children : []
       setCityData(cData)
       setAreaData(aData)
     })()
@@ -39,7 +42,7 @@ const AreaPicker = props => {
       let pIdx
       const province =
         provinceData.find((item, idx) => {
-          if (+item.value === areaInfo.provinceId) {
+          if (+item.value === +areaInfo.provinceId) {
             pIdx = idx
             return true
           }
@@ -47,7 +50,8 @@ const AreaPicker = props => {
         }) || {}
 
       setProvinceIdx(pIdx)
-      const cData = [{ label: '不限', value: 0 }, ...province.children]
+      // const cData = [{ label: '不限', value: 0 }, ...province.children]
+      const cData = [...province.children]
       let cIdx
       const city =
         cData.find((item, idx) => {
@@ -57,11 +61,14 @@ const AreaPicker = props => {
           }
           return false
         }) || {}
+      city.children = city.children || []
 
       setCityIdx(cIdx)
       setCityData(cData)
 
-      const aData = [{ label: '不限', value: 0 }, ...city.children]
+      // const aData = [{ label: '不限', value: 0 }, ...city.children]
+      const aData = [...city.children]
+
       let aIdx = aData.findIndex(item => +item.value === areaInfo.districtId)
       setAreaData(aData)
       setAreaIdx(aIdx)
@@ -103,8 +110,8 @@ const AreaPicker = props => {
 
     if (callback) {
       const provinceId = provinceData[provinceIdx].value
-      const cityId = cityData[cityIdx] ? cityData[cityIdx].value : null
-      const districtId = areaData[areaIdx] ? areaData[areaIdx].value : null
+      const cityId = cityData[cityIdx] ? cityData[cityIdx].value : 0
+      const districtId = areaData[areaIdx] ? areaData[areaIdx].value : 0
       callback({
         provinceId,
         cityId,
@@ -123,8 +130,10 @@ const AreaPicker = props => {
       const province =
         provinceData.find(item => item.value === target.value) || {}
       province.children = province.children || []
-      const cData = [{ label: '不限', value: 0 }, ...province.children]
-      const aData = [{ label: '不限', value: 0 }]
+      // const cData = [{ label: '不限', value: 0 }, ...province.children]
+      const cData = [...province.children]
+      // const aData = [{ label: '不限', value: 0 }]
+      const aData = isArray(cData) ? cData[0].children : []
 
       setCityData(cData)
       setAreaData(aData)
@@ -135,11 +144,7 @@ const AreaPicker = props => {
       const target = cityData.find(item => item.value === cityData[value].value)
       setCityIdx(value)
 
-      setAreaData(
-        Array.isArray(target.children)
-          ? [{ label: '不限', value: 0 }, ...target.children]
-          : [{ label: '不限', value: 0 }]
-      )
+      setAreaData(Array.isArray(target.children) ? [...target.children] : [])
       setAreaValue([areaValue[0], value, 0])
     }
     if (column === 2) {

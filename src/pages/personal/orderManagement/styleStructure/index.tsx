@@ -7,6 +7,8 @@ import {
   AtModalContent,
   AtModalAction
 } from 'taro-ui'
+import moment from 'moment'
+
 import { View, Text, Image, Button } from '@tarojs/components'
 import Taro from '@tarojs/taro'
 
@@ -20,7 +22,6 @@ function index({ data, deleteMethod, earlyEnd }) {
   const { commonStore } = useStores()
   const { dictionary, district = [] } = commonStore
   const { processType, goodsNum = [] } = dictionary
-
   const [category, setCategory] = useState<any>(
     getTrees(data.processTypeList, toJS(processType), 'value', 'label')
   )
@@ -153,7 +154,11 @@ function index({ data, deleteMethod, earlyEnd }) {
                   {dingdong(data.goodsNum)}
                 </Text>
                 <Text className={styles.parking}> | </Text>
-                <Text className={styles.quantity}>长期有效</Text>
+                <Text className={styles.quantity}>
+                  {data.inquiryEffectiveDate
+                    ? moment(data.inquiryEffectiveDate).format('YYYY-MM-DD')
+                    : ''}
+                </Text>
               </Text>
             </View>
             <View className={styles.machining}>

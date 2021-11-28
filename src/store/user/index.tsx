@@ -113,19 +113,26 @@ export default class UserInterface {
 
   // 申请列表数据展示
   @action listData = async params => {
+    Taro.showLoading({
+      title: '加载中'
+    })
     try {
       const res: Partial<Response> = await HTTP.post(
         '/api/oms/inquiry-purchase/inquiry-application-list',
         params
       )
       if (res.code === 200) {
+        Taro.hideLoading()
         return res.data
       }
+
       return res.data
     } catch (e) {
       if (e.code === 200) {
+        Taro.hideLoading()
         return e
       }
+
       return e
     }
   }
@@ -193,20 +200,16 @@ export default class UserInterface {
         `/api/oms/inquiry-quote/active-application-inquiry-applet`,
         params
       )
-      if (res.code === 200) {
-        return res
-      }
+
       return res
     } catch (e) {
       Taro.hideLoading()
       Taro.showToast({
-        title: e.msg as string,
+        title: '请输入正确的数量',
         icon: 'none',
         duration: 1500
       })
-      if (e.code === 200) {
-        return e
-      }
+
       return e
     }
   }
@@ -249,19 +252,27 @@ export default class UserInterface {
 
   // 供应商需求单查询
   @action supplierGetOrders = async params => {
+    Taro.showLoading({
+      title: '加载中'
+    })
     try {
       const res: Partial<Response> = await HTTP.post(
         '/api/oms/inquiry-supplier/list',
         params
       )
+
       if (res.code === 200) {
+        Taro.hideLoading()
         return res.data
       }
+
       return res.data
     } catch (e) {
       if (e.code === 200) {
+        Taro.hideLoading()
         return e
       }
+
       return e
     }
   }
@@ -320,6 +331,60 @@ export default class UserInterface {
       return res
     } catch (e) {
       console.log(e)
+    }
+  }
+  // 加工厂接单管理订单数量
+  @action processingOrderQuantity = async () => {
+    try {
+      const res: Partial<Response> = await HTTP.get(
+        `/api/oms/inquiry-supplier/order-management-supplier-total`
+      )
+      const { msg = '' } = res
+      if (res.code !== 200) {
+        Taro.atMessage({
+          message: msg,
+          type: 'error'
+        })
+      }
+      return res
+    } catch (e) {
+      return e
+    }
+  }
+  // 发单商接单管理订单数量
+  @action IssuerOrderQuantity = async () => {
+    try {
+      const res: Partial<Response> = await HTTP.get(
+        `/api/oms/inquiry-purchase/order-management-purchase-total`
+      )
+      const { msg = '' } = res
+      if (res.code !== 200) {
+        Taro.atMessage({
+          message: msg,
+          type: 'error'
+        })
+      }
+      return res
+    } catch (e) {
+      return e
+    }
+  }
+  // 发单商我的订单数量
+  @action issuerMyOrderQuantity = async () => {
+    try {
+      const res: Partial<Response> = await HTTP.get(
+        `/api/oms/inquiry-purchase/my-order-purchase-total`
+      )
+      const { msg = '' } = res
+      if (res.code !== 200) {
+        Taro.atMessage({
+          message: msg,
+          type: 'error'
+        })
+      }
+      return res
+    } catch (e) {
+      return e
     }
   }
 

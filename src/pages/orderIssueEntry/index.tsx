@@ -233,14 +233,17 @@ const OrderIssueEntry = () => {
       productImagesList: params['productImagesList'],
       publicityImagesList: params['publicityImagesList']
     }
-    await enterpriseInfoSave(params)
-    await dealRefresh()
-    setTimeout(async () => {
-      await userInfo()
-      Taro.redirectTo({
-        url: '/pages/index/index'
-      })
-    }, 100)
+    try {
+      const code = await enterpriseInfoSave(params)
+      if (code !== 200) return
+      await dealRefresh()
+      setTimeout(async () => {
+        await userInfo()
+        Taro.redirectTo({
+          url: '/pages/index/index'
+        })
+      }, 100)
+    } catch (err) {}
   }
 
   const onReset = () => {}

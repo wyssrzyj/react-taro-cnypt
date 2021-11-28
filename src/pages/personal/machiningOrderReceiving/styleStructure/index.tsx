@@ -235,7 +235,7 @@ const styleStructure = ({
             <View>
               <View className={styles.telephone}>
                 <AtIcon value="phone" size="15" color="#333333"></AtIcon>
-                <Text>电话联系</Text>
+                <Text onClick={call}>电话联系</Text>
               </View>
               <View onClick={showModal} className={styles.cancel}>
                 删除记录

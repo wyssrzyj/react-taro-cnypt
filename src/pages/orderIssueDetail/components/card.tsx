@@ -1,12 +1,13 @@
 import { View, Text, Image } from '@tarojs/components'
 import styles from './card.module.less'
 import { isArray } from 'lodash'
-import { useStores, observer } from '@/store/mobx'
+import { useStores, observer, toJS } from '@/store/mobx'
 import { useEffect, useState } from 'react'
 import { matchTreeData } from '@/utils/tool'
 import moment from 'moment'
 import Taro from '@tarojs/taro'
 import classNames from 'classnames'
+import { getTrees } from '../components/method'
 
 const LOCATION_ICON =
   'https://capacity-platform.oss-cn-hangzhou.aliyuncs.com/capacity-platform/mobile/icon/diqu_bai.png'
@@ -16,14 +17,31 @@ const Card = props => {
   // type 0 订单 1 工厂
   const img = type === 0 ? data.stylePicture : data.pictureUrl
   const title = type === 0 ? data.name : data.factoryName
-  const area = type === 0 ? data.enterpriseAreaName : data.factoryDistrict
+  // const area = type === 0 ? data.factoryDistrict : null
+
+  // const area = type === 0 ? data.enterpriseAreaName : data.factoryDistrict
 
   const { commonStore } = useStores()
-  const { dictionary, productCategoryList } = commonStore
-  const { processType = [] } = dictionary
-
+  const { dictionary, productCategoryList, district = [] } = commonStore
+  const { processType = [], goodsNum = [] } = dictionary
+  const [region, setRegion] = useState('不限') //地区
   const [processTypes, setProcessTypes] = useState<string[]>([])
 
+  useEffect(() => {
+    // 地区
+    if (data.inquiryDistrictIds) {
+      setRegion(
+        getTrees(
+          data.inquiryDistrictIds,
+          toJS(district),
+          'value',
+          'label'
+        ).join('、')
+      )
+    } else {
+      setRegion('不限')
+    }
+  }, [])
   useEffect(() => {
     if (type === 0) {
       const types =
@@ -51,6 +69,9 @@ const Card = props => {
         url: `/pages/orderDetail/index?id=${data.id}`
       })
   }
+  const dingdong = v => {
+    return goodsNum.filter(item => item.value === v)[0].label
+  }
 
   return (
     <View className={styles.card} onClick={toOrderDetail}>
@@ -71,9 +92,7 @@ const Card = props => {
           </View>
         ) : (
           <View>
-            <Text className={styles.cusTag1}>
-              {data.goodsNum ? data.goodsNum.replace(',', '~') : '--'}&nbsp;件
-            </Text>
+            <Text className={styles.cusTag1}>{dingdong(data.goodsNum)}</Text>
             <Text className={styles.cusTag2}>
               {data.inquiryEffectiveDate
                 ? moment(data.inquiryEffectiveDate).format('YYYY-MM-DD')
@@ -95,9 +114,7 @@ const Card = props => {
             {+type === 1 && (
               <Image src={LOCATION_ICON} className={styles.icon}></Image>
             )}
-            <Text className={styles.cardAddress}>
-              {area ? area.replace(/,/g, ' ') : ''}
-            </Text>
+            <Text className={styles.cardAddress}>{region}</Text>
           </View>
         </View>
       </View>

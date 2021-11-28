@@ -69,15 +69,16 @@ export default class FactoryStore {
       title: '加载中'
     })
     try {
-      await HTTP.post(
+      const res: Partial<Response> = await HTTP.post(
         `/api/factory/enterprise/applets-enterprise-info-save`,
         params
       )
       Taro.hideLoading()
+      return res.code
     } catch (e) {
       Taro.hideLoading()
       Taro.showToast({
-        title: '获取数据失败~  enterpriseInfoSave',
+        title: e.msg,
         icon: 'none',
         duration: 1000
       })
