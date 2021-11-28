@@ -62,7 +62,6 @@ const Verify = () => {
   const api = async () => {
     setLoading(false)
     let res = await orderListData(list)
-    console.log(res.pages)
 
     if (Array.isArray(res.records)) {
       setReallyLists(res.records)
@@ -73,7 +72,6 @@ const Verify = () => {
 
   useEffect(() => {
     drop()
-    console.log(pageNum)
   }, [pageNum])
 
   let drop = async () => {
@@ -97,7 +95,6 @@ const Verify = () => {
   }
   // tabs
   const AtTabsbind = e => {
-    console.log('重新计算')
     setTotalPageNumber(1) //共有几页
     setPageNum(1) //下拉当前是第几页
 

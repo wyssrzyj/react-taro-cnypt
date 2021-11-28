@@ -24,9 +24,7 @@ export default class OrderStore {
       if (res.code === 200) {
         return res.data
       }
-    } catch (err) {
-      console.log(err)
-    }
+    } catch (err) {}
   }
 
   //  搜索页 需求单列表
@@ -40,9 +38,7 @@ export default class OrderStore {
       if (res.code === 200) {
         return res.data
       }
-    } catch (e) {
-      console.log(e)
-    }
+    } catch (e) {}
   }
 }
 

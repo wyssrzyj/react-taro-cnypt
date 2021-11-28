@@ -21,7 +21,6 @@ const Top = props => {
       ? JSON.parse(Taro.getStorageSync('userInfo'))
       : {}
     setUserInfo(user)
-    console.log(user)
   }, [])
 
   const toLogin = () => {

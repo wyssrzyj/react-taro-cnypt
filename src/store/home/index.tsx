@@ -28,9 +28,7 @@ export default class HomeStore {
       if (res.code === 200) {
         return res.data
       }
-    } catch (err) {
-      console.log(err)
-    }
+    } catch (err) {}
   }
 
   @action getNewFactory = async pageNum => {
@@ -52,9 +50,7 @@ export default class HomeStore {
       if (res.code === 200) {
         return res.data
       }
-    } catch (err) {
-      console.log(err)
-    }
+    } catch (err) {}
   }
 
   // 需求单列表查询
@@ -77,9 +73,7 @@ export default class HomeStore {
       if (res.code === 200) {
         return res.data
       }
-    } catch (e) {
-      console.log(e)
-    }
+    } catch (e) {}
   }
 }
 

@@ -96,9 +96,7 @@ const PhoneLogin = () => {
       const res = await sendVerifyCode(phone)
       res && setSending(true)
       res && timerRun()
-    } catch (err) {
-      console.log(err)
-    }
+    } catch (err) {}
   }
 
   useEffect(() => {
@@ -141,9 +139,7 @@ const PhoneLogin = () => {
       } else {
         setError(true)
       }
-    } catch (err) {
-      console.log(err)
-    }
+    } catch (err) {}
   }
 
   const goBack = () => {

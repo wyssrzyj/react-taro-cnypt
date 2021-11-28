@@ -22,7 +22,6 @@ const Login = () => {
           //发起网络请求
           await getSessionId({ code: res.code })
         } else {
-          console.log('登录失败！' + res.errMsg)
         }
       }
     })
@@ -35,7 +34,6 @@ const Login = () => {
 
     if (detail.errMsg.includes('getPhoneNumber:fail')) {
       //用户点击拒绝
-      console.log('拒绝授权')
     } else {
       //允许授权执行跳转
       try {
@@ -52,13 +50,9 @@ const Login = () => {
             } else {
               Taro.redirectTo({ url: '/pages/index/index' })
             }
-          } catch (error) {
-            console.log(error, 'error')
-          }
+          } catch (error) {}
         }
-      } catch (err) {
-        console.log(err, 'err')
-      }
+      } catch (err) {}
     }
   }
 

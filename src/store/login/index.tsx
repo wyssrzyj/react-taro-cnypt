@@ -48,9 +48,7 @@ export default class LoginStore {
       )
 
       return res.data
-    } catch (e) {
-      console.log(e)
-    }
+    } catch (e) {}
   }
 
   // 发送验证码
@@ -61,7 +59,6 @@ export default class LoginStore {
       )
       return res
     } catch (err) {
-      console.log(err)
       Taro.hideLoading()
       Taro.showToast({
         title: err.msg as string,
@@ -135,7 +132,6 @@ export default class LoginStore {
         message: e.msg as string,
         type: 'error'
       })
-      console.log(e)
     }
   }
 
@@ -148,9 +144,7 @@ export default class LoginStore {
       )
 
       return res.data
-    } catch (e) {
-      console.log(e)
-    }
+    } catch (e) {}
   }
 
   // 忘记密码
@@ -172,7 +166,6 @@ export default class LoginStore {
       }
       return res.data
     } catch (err) {
-      console.log(err)
       Taro.hideLoading()
       Taro.showToast({
         title: err.msg as string,
@@ -199,7 +192,6 @@ export default class LoginStore {
       }
       return res.data
     } catch (err) {
-      console.log(err)
       Taro.hideLoading()
       Taro.showToast({
         title: err.msg as string,
@@ -255,7 +247,6 @@ export default class LoginStore {
       }
       return res || {}
     } catch (err) {
-      console.log(err)
       Taro.hideLoading()
       Taro.showToast({
         title: err.msg as string,
@@ -285,7 +276,6 @@ export default class LoginStore {
 
       return res.data
     } catch (err) {
-      console.log(err)
       Taro.hideLoading()
       Taro.showToast({
         title: err.msg as string,
@@ -315,7 +305,6 @@ export default class LoginStore {
 
       return res.code
     } catch (err) {
-      console.log(err)
       Taro.hideLoading()
       Taro.showToast({
         title: err.msg as string,

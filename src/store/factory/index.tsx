@@ -31,9 +31,7 @@ export default class FactoryStore {
           duration: 1000
         })
       }
-    } catch (e) {
-      console.log(e)
-    }
+    } catch (e) {}
   }
 
   // '/api/factory/enterprise/get-enterprise-info'
@@ -57,9 +55,7 @@ export default class FactoryStore {
           duration: 1000
         })
       }
-    } catch (e) {
-      console.log(e)
-    }
+    } catch (e) {}
   }
 
   // /api/factory/enterprise/applets-enterprise-info-save
@@ -82,7 +78,6 @@ export default class FactoryStore {
         icon: 'none',
         duration: 1000
       })
-      console.log(e)
     }
   }
 
@@ -109,9 +104,7 @@ export default class FactoryStore {
           duration: 1000
         })
       }
-    } catch (e) {
-      console.log(e)
-    }
+    } catch (e) {}
   }
 
   // /api/factory/purchaser-info/get-applet-purchaser-details
@@ -137,9 +130,7 @@ export default class FactoryStore {
           duration: 1000
         })
       }
-    } catch (e) {
-      console.log(e)
-    }
+    } catch (e) {}
   }
 
   // /api/oms/inquiry-purchase/get-applets
@@ -165,9 +156,7 @@ export default class FactoryStore {
           duration: 1000
         })
       }
-    } catch (e) {
-      console.log(e)
-    }
+    } catch (e) {}
   }
 
   //再来一单回显
@@ -192,9 +181,7 @@ export default class FactoryStore {
           duration: 1000
         })
       }
-    } catch (e) {
-      console.log(e)
-    }
+    } catch (e) {}
   }
 
   // /api/oms/inquiry-purchase/inquiry-list.
@@ -217,9 +204,7 @@ export default class FactoryStore {
           duration: 1000
         })
       }
-    } catch (e) {
-      console.log(e)
-    }
+    } catch (e) {}
   }
 
   // /api/oms/inquiry-purchase/check-whether-send-inquiry
@@ -241,9 +226,7 @@ export default class FactoryStore {
         })
       }
       return res.data
-    } catch (e) {
-      console.log(e)
-    }
+    } catch (e) {}
   }
 
   // /api/factory/enterprise-contacts/get-by-enterprise-id
@@ -265,7 +248,6 @@ export default class FactoryStore {
         icon: 'none',
         duration: 1000
       })
-      console.log(e)
     }
   }
 
@@ -288,9 +270,7 @@ export default class FactoryStore {
         })
       }
       return res.data
-    } catch (e) {
-      console.log(e)
-    }
+    } catch (e) {}
   }
 
   // /api/oms/inquiry-purchase/save.
@@ -336,9 +316,7 @@ export default class FactoryStore {
         })
       }
       return res.data
-    } catch (e) {
-      console.log(e)
-    }
+    } catch (e) {}
   }
 
   // /api/factory/info/get-factory-images-info
@@ -360,9 +338,7 @@ export default class FactoryStore {
         })
       }
       return res.data
-    } catch (e) {
-      console.log(e)
-    }
+    } catch (e) {}
   }
 }
 

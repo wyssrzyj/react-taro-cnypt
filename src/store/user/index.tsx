@@ -329,9 +329,7 @@ export default class UserInterface {
         })
       }
       return res
-    } catch (e) {
-      console.log(e)
-    }
+    } catch (e) {}
   }
   // 加工厂接单管理订单数量
   @action processingOrderQuantity = async () => {
@@ -403,9 +401,7 @@ export default class UserInterface {
         })
       }
       return res
-    } catch (e) {
-      console.log(e)
-    }
+    } catch (e) {}
   }
 
   // 接单管理反馈信息
@@ -424,9 +420,7 @@ export default class UserInterface {
         })
       }
       return res
-    } catch (e) {
-      console.log(e)
-    }
+    } catch (e) {}
   }
   // 取消合作
   @action cancelCooperation = async params => {
@@ -536,9 +530,7 @@ export default class UserInterface {
         params
       )
       return res.data
-    } catch (e) {
-      console.log(e)
-    }
+    } catch (e) {}
   }
 
   @action userInfo = async () => {
@@ -564,9 +556,7 @@ export default class UserInterface {
         })
       }
       return res.data
-    } catch (e) {
-      console.log(e)
-    }
+    } catch (e) {}
   }
 
   // 验证码校验
@@ -578,9 +568,7 @@ export default class UserInterface {
       )
 
       return res.data
-    } catch (e) {
-      console.log(e)
-    }
+    } catch (e) {}
   }
 
   // 用户信息
@@ -592,9 +580,7 @@ export default class UserInterface {
       )
 
       return res.data
-    } catch (e) {
-      console.log(e)
-    }
+    } catch (e) {}
   }
   // 删除需求单
   @action deleteDemandDoc = async value => {
@@ -662,7 +648,6 @@ export default class UserInterface {
       }
       return res.data
     } catch (err) {
-      console.log(err)
       Taro.hideLoading()
       Taro.showToast({
         title: err.msg as string,

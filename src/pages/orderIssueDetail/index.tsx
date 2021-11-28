@@ -35,11 +35,9 @@ const FactoryDetail = () => {
   useEffect(() => {
     ;(async () => {
       const res = await getOtherOrder(id)
-      console.log(res)
 
       let { records } = res
       records = records || []
-      console.log(records)
 
       setDataSource(records)
     })()

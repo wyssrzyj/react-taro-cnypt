@@ -29,9 +29,7 @@ export default class RefreshStore {
         key: 'currentUser',
         data: JSON.stringify(updateUser)
       })
-    } catch (err) {
-      console.log(err.msg, 'dealRefresh')
-    }
+    } catch (err) {}
   }
 }
 

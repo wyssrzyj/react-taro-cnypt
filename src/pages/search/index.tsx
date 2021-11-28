@@ -43,7 +43,6 @@ const SORT_TYPE = new Map()
 SORT_TYPE.set(-1, null)
 SORT_TYPE.set(0, 'desc')
 SORT_TYPE.set(1, 'asc')
-console.log(1)
 
 const Search = () => {
   const router = useRouter()
@@ -207,8 +206,6 @@ const Search = () => {
   }
 
   const confirm = event => {
-    console.log('回车，confirm')
-
     const nParams = cloneDeep(params)
     const nSearch = cloneDeep(historySearch) || []
     const {
@@ -249,8 +246,6 @@ const Search = () => {
   }
 
   const searchFocus = () => {
-    console.log('回车searchFocus')
-
     setPageStatus(1)
   }
 

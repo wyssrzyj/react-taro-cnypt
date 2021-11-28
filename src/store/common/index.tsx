@@ -33,9 +33,7 @@ export default class CommonStore {
         })
         return res.data
       }
-    } catch (err) {
-      console.log(err)
-    }
+    } catch (err) {}
   }
 
   @action allDictionary = async (params?) => {
@@ -51,9 +49,7 @@ export default class CommonStore {
         return res.data || []
       } else {
       }
-    } catch (e) {
-      console.log(e)
-    }
+    } catch (e) {}
   }
 
   @action productCategory = async () => {
@@ -78,9 +74,7 @@ export default class CommonStore {
           duration: 1000
         })
       }
-    } catch (e) {
-      console.log(e)
-    }
+    } catch (e) {}
   }
 
   @action getProductGrade = async () => {
@@ -105,9 +99,7 @@ export default class CommonStore {
           duration: 1000
         })
       }
-    } catch (e) {
-      console.log(e)
-    }
+    } catch (e) {}
   }
 }
 export const commonStore = new CommonStore()

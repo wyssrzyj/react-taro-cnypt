@@ -77,9 +77,7 @@ const PwdLogin = () => {
       } else {
         setError(true)
       }
-    } catch (err) {
-      console.log(err)
-    }
+    } catch (err) {}
   }
 
   return (
