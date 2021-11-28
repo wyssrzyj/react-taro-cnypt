@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react'
 import { Picker } from '@tarojs/components'
 import { AtList, AtListItem } from 'taro-ui'
-import { useStores, observer } from '@/store/mobx'
 import { cloneDeep, isArray, throttle } from 'lodash'
+import { useStores, observer, toJS } from '@/store/mobx'
 import styles from './index.module.less'
 import classNames from 'classnames'
 
@@ -25,6 +25,7 @@ const AreaPicker = props => {
 
   useEffect(() => {
     ;(async () => {
+      if (!district.length) return
       const res = cloneDeep(district)
       setProvinceData(res)
       // const cData = [{ label: '不限', value: 0 }, ...res[0].children]

@@ -110,7 +110,6 @@ const FactoryEntry = () => {
       arrKeys.forEach(item => {
         enterpriseInfo[item] = enterpriseInfo[item] || []
       })
-
       setOldData(enterpriseInfo)
       setParams(enterpriseInfo)
     })()
@@ -445,16 +444,12 @@ const FactoryEntry = () => {
   }
 
   const areaChange = areaInfo => {
-    console.log(areaInfo)
-
     const keys = Reflect.ownKeys(areaInfo)
-    console.log(keys)
 
     const nParams = cloneDeep(params)
     keys.forEach(item => {
       nParams[item] = areaInfo[item]
     })
-    console.log(nParams)
 
     setParams(nParams)
   }

@@ -62,7 +62,6 @@ const Verify = () => {
   const api = async () => {
     setLoading(false)
     let res = await orderListData(list)
-    console.log(res.pages)
 
     if (Array.isArray(res.records)) {
       setReallyLists(res.records)
@@ -72,11 +71,8 @@ const Verify = () => {
   }
 
   useEffect(() => {
-    console.log('判断')
-
     // 防止初始化之后重复掉接口
     drop()
-    console.log(pageNum)
   }, [pageNum])
 
   let drop = async () => {

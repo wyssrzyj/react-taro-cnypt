@@ -55,13 +55,11 @@ const machining = () => {
     })
   }
   const handleClick = e => {
-    console.log(e)
     Taro.redirectTo({
       url: '/pages/personal/machiningOrderReceiving/index?tid=' + e.id
     })
     // Taro.redirectTo({ url: "/pages/index/index" });
   }
-  console.log(orderQuantity)
 
   return (
     <View>
