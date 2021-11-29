@@ -132,7 +132,7 @@ const Verify = () => {
   }
   // 触底更新
   useReachBottom(async () => {
-    // 判断当前页码是否大于最大页码
+    // 判断当前页码是否大于最大页码.
     setPageNum(n => n + 1)
   })
   const goBack = () => {
