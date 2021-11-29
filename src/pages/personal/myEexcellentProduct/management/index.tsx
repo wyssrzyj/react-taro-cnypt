@@ -14,7 +14,7 @@ const Management = () => {
     <View>
       <View class="order">
         <Text>当前版本</Text>
-        <Text class="icon">v1.1.27</Text>
+        <Text class="icon">v1.0.1</Text>
       </View>
       <View
         class="order"
