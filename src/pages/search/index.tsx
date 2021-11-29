@@ -388,7 +388,7 @@ const Search = () => {
             <Image className={styles.img} src={ORDER_EMPTY} alt="" />
           </View>
           <View>
-            <Text>{activeTab === 0 ? '没有对应订单' : '没有对应工厂'}</Text>
+            <Text>{activeTab === 0 ? '暂无订单' : '暂无工厂'}</Text>
           </View>
         </View>
       ) : null}
