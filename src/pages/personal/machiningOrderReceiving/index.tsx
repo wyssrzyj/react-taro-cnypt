@@ -19,6 +19,7 @@ const Verify = () => {
     declineRequisition,
     rejectSubmission,
     cancelCooperation,
+    processingOrderQuantity,
     factoryDelOrder
   } = userInterface
   const { params } = useRouter()
@@ -27,6 +28,7 @@ const Verify = () => {
   const [value, setValue] = useState('')
   const [current, setCurrent] = useState(0)
   const [rallyists, setReallyLists] = useState<any[]>([]) //数据
+  const [orderQuantity, setOrderQuantity] = useState<any>([]) //数据
 
   const [totalPageNumber, setTotalPageNumber] = useState(2) //总页码
   const [pageNum, setPageNum] = useState(1)
@@ -81,6 +83,11 @@ const Verify = () => {
       setTotalPageNumber(res.pages)
     }
     setLoading(true)
+    quantity()
+  }
+  const quantity = async () => {
+    const quantity = await processingOrderQuantity()
+    setOrderQuantity(quantity.data)
   }
   // 下拉加载更多.
   useEffect(() => {
@@ -155,10 +162,34 @@ const Verify = () => {
   }
 
   const tabList = [
-    { title: '待反馈' },
-    { title: '已确认' },
-    { title: '被谢绝' },
-    { title: '已拒绝' }
+    {
+      title: `待反馈 (${
+        orderQuantity.enterprisePendingFeedbackTotalNum
+          ? orderQuantity.enterprisePendingFeedbackTotalNum
+          : 0
+      })`
+    },
+    {
+      title: `已确认 (${
+        orderQuantity.enterpriseConfirmeTotalNum
+          ? orderQuantity.enterpriseConfirmeTotalNum
+          : 0
+      })`
+    },
+    {
+      title: `被谢绝 (${
+        orderQuantity.enterpriseDeclineTotalNum
+          ? orderQuantity.enterpriseDeclineTotalNum
+          : 0
+      })`
+    },
+    {
+      title: `已拒绝 (${
+        orderQuantity.enterpriseRefuseTotalNum
+          ? orderQuantity.enterpriseRefuseTotalNum
+          : 0
+      })`
+    }
   ]
   const deleteMethod = async id => {
     // 删除

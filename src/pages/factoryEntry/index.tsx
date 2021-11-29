@@ -110,7 +110,6 @@ const FactoryEntry = () => {
       arrKeys.forEach(item => {
         enterpriseInfo[item] = enterpriseInfo[item] || []
       })
-
       setOldData(enterpriseInfo)
       setParams(enterpriseInfo)
     })()

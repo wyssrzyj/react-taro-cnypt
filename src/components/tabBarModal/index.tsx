@@ -86,6 +86,7 @@ const TabBarModal = props => {
       isEmpty(userInformation) ||
       isNil(userInformation.enterpriseType)
     ) {
+      nConfigs = nConfigs.filter((_, idx) => idx !== 1)
     }
     if (
       userInformation &&
@@ -101,6 +102,7 @@ const TabBarModal = props => {
     ) {
       nConfigs = nConfigs.filter((_, idx) => idx === 1)
     }
+
     setConfigs(nConfigs)
   }, [])
 

@@ -16,8 +16,12 @@ export const ORDER_EMPTY =
 const Verify = () => {
   const defaultPageSize = 10
   const { userInterface } = useStores()
-  const { orderListData, endInterfaceInAdvance, deleteDemandDoc } =
-    userInterface
+  const {
+    orderListData,
+    endInterfaceInAdvance,
+    issuerMyOrderQuantity,
+    deleteDemandDoc
+  } = userInterface
   const { params } = useRouter()
   // 跳转的数据
   const [value, setValue] = useState('')
@@ -27,6 +31,7 @@ const Verify = () => {
   const [pageNum, setPageNum] = useState(1)
   const [display, setDisplay] = useState(false)
   const [loading, setLoading] = useState(true)
+  const [orderQuantity, setOrderQuantity] = useState<any>([]) //数据
 
   // 2 3 -2
   // 接口数据
@@ -54,6 +59,7 @@ const Verify = () => {
       }
     }
   }, [])
+
   // 获取数据
   useEffect(() => {
     api()
@@ -62,12 +68,16 @@ const Verify = () => {
   const api = async () => {
     setLoading(false)
     let res = await orderListData(list)
-
     if (Array.isArray(res.records)) {
       setReallyLists(res.records)
       setTotalPageNumber(res.pages)
     }
     setLoading(true)
+    quantity()
+  }
+  const quantity = async () => {
+    const quantity = await issuerMyOrderQuantity()
+    setOrderQuantity(quantity.data)
   }
 
   useEffect(() => {
@@ -132,10 +142,32 @@ const Verify = () => {
   }
 
   const tabList = [
-    { title: '全部' },
-    { title: '生效中' },
-    { title: '已结束' },
-    { title: '审核失败' }
+    {
+      title: `全部 (${
+        orderQuantity.inEffectNum +
+        orderQuantity.alreadyEndNum +
+        orderQuantity.auditFailureNum
+          ? orderQuantity.inEffectNum +
+            orderQuantity.alreadyEndNum +
+            orderQuantity.auditFailureNum
+          : 0
+      })`
+    },
+    {
+      title: `生效中 (${
+        orderQuantity.inEffectNum ? orderQuantity.inEffectNum : 0
+      })`
+    },
+    {
+      title: `已结束 (${
+        orderQuantity.alreadyEndNum ? orderQuantity.alreadyEndNum : 0
+      })`
+    },
+    {
+      title: `审核失败 (${
+        orderQuantity.auditFailureNum ? orderQuantity.auditFailureNum : 0
+      })`
+    }
   ]
   const deleteMethod = async value => {
     // 删除
