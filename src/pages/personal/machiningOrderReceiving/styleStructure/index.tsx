@@ -117,6 +117,18 @@ const styleStructure = ({
     }).then()
   }
 
+  const toOrderIssuerDetail = () => {
+    Taro.navigateTo({
+      url: `/pages/orderIssueDetail/index?id=${data.enterpriseId}`
+    })
+  }
+
+  const toOrderDetail = () => {
+    Taro.navigateTo({
+      url: `/pages/orderDetail/index?id=${data.purchaserInquiryId}`
+    })
+  }
+
   return (
     //   主体
     <View className={styles.external}>
@@ -124,7 +136,7 @@ const styleStructure = ({
         {/* 头部 */}
         <View className={styles.top}>
           <View className={styles.content}>
-            <View className={styles.factorys}>
+            <View className={styles.factorys} onClick={toOrderIssuerDetail}>
               {data.enterpriseName ? data.enterpriseName : '--'}
             </View>
             <AtIcon value="chevron-right" size="15" color="#999999"></AtIcon>
@@ -135,7 +147,7 @@ const styleStructure = ({
         </View>
         <View className={styles.line}></View>
         {/* 主体 */}
-        <View className={styles.subject}>
+        <View className={styles.subject} onClick={toOrderDetail}>
           {/* img */}
           <View
             className={data.stylePicture ? styles.img : styles.emptyCardImg}

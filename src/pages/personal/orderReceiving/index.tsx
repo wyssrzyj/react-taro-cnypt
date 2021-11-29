@@ -193,6 +193,8 @@ const Verify = () => {
     setList(res)
   }
   const onConfirm = () => {
+    console.log('1')
+
     let res = { ...list, name: value }
     setList(res)
   }

@@ -9,6 +9,7 @@ export const getTrees = (targetArr, data, key, name) => {
   // 把所有获取的数据都存到prev里面
   return targetArr.reduce((prev, item) => {
     const target = findTarget(item, data, key, name)
+
     prev.push(target)
     return prev
   }, [])
