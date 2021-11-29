@@ -15,7 +15,7 @@ const OrderCard = props => {
   const toOrderIssueDetail = () => {
     // enterpriseId
     Taro.navigateTo({
-      url: `/pages/orderIssueDetail/index?id=${data.tenantId}`
+      url: `/pages/orderIssueDetail/index?id=${data.tenantId}&ids=${data.id}`
     })
   }
 
