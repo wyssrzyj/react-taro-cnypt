@@ -145,11 +145,7 @@ export default class UserInterface {
         params
       )
       Taro.hideLoading()
-      Taro.showToast({
-        title: res.msg as string,
-        icon: 'none',
-        duration: 1500
-      })
+
       if (res.code === 200) {
         return res
       }
@@ -204,11 +200,6 @@ export default class UserInterface {
       return res
     } catch (e) {
       Taro.hideLoading()
-      Taro.showToast({
-        title: '请输入正确的数量',
-        icon: 'none',
-        duration: 1500
-      })
 
       return e
     }
@@ -349,6 +340,27 @@ export default class UserInterface {
       return e
     }
   }
+
+  // 检查加工厂是否申请接单
+  @action applyForReceipt = async params => {
+    try {
+      const res: Partial<Response> = await HTTP.get(
+        `/api/oms/inquiry-purchase/check-whether-application-inquiry`,
+        params
+      )
+      const { msg = '' } = res
+      if (res.code !== 200) {
+        Taro.atMessage({
+          message: msg,
+          type: 'error'
+        })
+      }
+      return res
+    } catch (e) {
+      return e
+    }
+  }
+
   // 发单商接单管理订单数量
   @action IssuerOrderQuantity = async () => {
     try {

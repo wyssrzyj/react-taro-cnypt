@@ -24,18 +24,18 @@ const FactoryDetail = () => {
 
   const router = useRouter()
   const { params } = router
-  const { id } = params
-
-  const { factoryStore } = useStores()
+  const { id, ids } = params
+  const { factoryStore, userInterface } = useStores()
   const { orderIssuerDetail, getOtherOrder } = factoryStore
+  const { applyForReceipt } = userInterface
 
   const [data, setData] = useState({})
   const [dataSource, setDataSource] = useState([]) // 其他订单
+  const [buttonDisplay, setButtonDisplay] = useState(false) // 其他订单
 
   useEffect(() => {
     ;(async () => {
       const res = await getOtherOrder(id)
-
       let { records } = res
       records = records || []
 
@@ -46,6 +46,8 @@ const FactoryDetail = () => {
   useEffect(() => {
     ;(async () => {
       const orderIssuer = await orderIssuerDetail(id)
+      const arr = await applyForReceipt({ inquiryId: ids }) //判断电话按钮是否显示
+      setButtonDisplay(arr.data)
       orderIssuer.establishedTime = orderIssuer.establishedTime
         ? moment(orderIssuer.establishedTime).format('YYYY')
         : null
@@ -158,8 +160,7 @@ const FactoryDetail = () => {
           </View>
         </View>
       </View>
-
-      {+userInfomation.enterpriseType !== 1 && (
+      {buttonDisplay ? (
         <View className={styles.phoneBtnBox}>
           <Button
             type={'primary'}
@@ -169,7 +170,7 @@ const FactoryDetail = () => {
             电话联系
           </Button>
         </View>
-      )}
+      ) : null}
     </View>
   )
 }

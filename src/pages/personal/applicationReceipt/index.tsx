@@ -24,7 +24,7 @@ const Verify = () => {
   } = userInterface
   const [offer, setOffer] = useState() //报价信息
   const [paymentMethod, setPaymentMethod] = useState() //收款方式
-  const [products, setProducts] = useState() //产品数
+  const [products, setProducts] = useState<any>() //产品数
   const [remarks, setRemarks] = useState('') //备注
   const [toast, setToast] = useState(false)
 
@@ -77,6 +77,8 @@ const Verify = () => {
           id: params.id
         })
         if (arr.code === 200) {
+          setToast(false)
+
           let value = {
             quoteInfo: offer,
             payDetails: paymentMethod,
@@ -98,7 +100,6 @@ const Verify = () => {
                 url: '/pages/personal/machiningOrderReceiving/index?tid='
               })
             }
-            setToast(false)
           } else {
             const submitRes = await submitApplication({
               ...value,
@@ -106,19 +107,32 @@ const Verify = () => {
               supplierInquiryId: quantityId,
               status: 2
             })
-            if (submitRes.code === 200) {
-              await applicationReceiptQuantity('')
-              Taro.redirectTo({
-                url: '/pages/personal/machiningOrderReceiving/index?tid='
+            if (submitRes.data.verifyMessage >= 0) {
+              Taro.showToast({
+                title: `今日申请剩余${submitRes.data.verifyMessage}次`,
+                icon: 'none',
+                duration: 1500
+              })
+              if (submitRes.code === 200) {
+                await applicationReceiptQuantity('')
+                //提示完成之后在跳转
+                setTimeout(() => {
+                  Taro.redirectTo({
+                    url: '/pages/personal/machiningOrderReceiving/index?tid='
+                  })
+                }, 1000)
+              }
+            } else {
+              Taro.showToast({
+                title: '今日申请已达上限',
+                icon: 'none',
+                duration: 1500
               })
             }
-            setToast(false)
           }
         }
       }
     } else {
-      // setIsOpened(true)
-      // setErrText('请输入产品数量')
       setToast(true)
     }
   }

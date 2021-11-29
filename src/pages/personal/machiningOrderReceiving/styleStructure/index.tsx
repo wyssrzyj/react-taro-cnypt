@@ -60,8 +60,8 @@ const styleStructure = ({
   sortColor.set(2, styles.red)
   sortColor.set(3, styles.green)
   sortColor.set(1, styles.yellow)
-  sortColor.set(-2, styles.blue)
-  sortColor.set(-1, styles.blue)
+  sortColor.set(-2, styles.black)
+  sortColor.set(-1, styles.black)
   let map = new Map()
 
   map.set(2, '待反馈') //设置
