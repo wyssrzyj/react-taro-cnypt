@@ -20,7 +20,8 @@ import {
   CusProductModal,
   CusModal,
   ImagePicker,
-  AreaPicker
+  AreaPicker,
+  Navbar
 } from '@/components'
 import { matchTreeData, phoneReg } from '@/utils/tool'
 import { upload } from '@/utils/upload'
@@ -64,7 +65,6 @@ const OrderIssueEntry = () => {
       if (enterpriseInfo && enterpriseInfo.purchaserId) {
         const photos = await getEnterprisePhotos(enterpriseInfo.purchaserId)
         const photoKeys = Reflect.ownKeys(photos)
-
         photoKeys.forEach(item => {
           if (item !== 'purchaserId') {
             enterpriseInfo[item] = photos[item] || []
@@ -78,7 +78,6 @@ const OrderIssueEntry = () => {
       enterpriseInfo['establishedTime'] = enterpriseInfo['establishedTime']
         ? moment(enterpriseInfo['establishedTime']).format('YYYY-MM-DD')
         : null
-
       if (enterpriseInfo['enterpriseLogoUrl']) {
         enterpriseInfo['logoImage'] = [
           {
@@ -87,7 +86,6 @@ const OrderIssueEntry = () => {
           }
         ]
       }
-
       setOldData(enterpriseInfo)
       setParams(enterpriseInfo)
     })()
@@ -307,17 +305,21 @@ const OrderIssueEntry = () => {
   }
 
   return (
-    <View>
-      <View className={styles.navBar} style={{ paddingTop: `${top}px` }}>
-        <View className={styles.navContent}>
+    <View className={styles.orderIssueEntryContainer}>
+      <Navbar background={'#3b80ff'} border={false}>
+        <View className={styles.navbars}>
           <Image
             src={BACK_ICON}
-            className={styles.back}
+            className={styles.backs}
             onClick={goBack}
           ></Image>
-          <View>{modify ? '企业管理' : '发单商入驻'}</View>
+          <View className={styles.navTitles}>
+            {modify ? '企业管理' : '发单商入驻'}
+          </View>
         </View>
-      </View>
+      </Navbar>
+
+      <View className={styles.color}></View>
 
       <AtForm onSubmit={onSubmit} onReset={onReset} className={styles.form}>
         <View className={styles.concatInfo}>

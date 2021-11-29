@@ -1,7 +1,10 @@
 .timeListItem {
+  // margin-left: 32px;
+  padding-left: 0 !important;
   display: flex;
   align-items: center;
   padding-right: 16px !important;
+  border-bottom: 2px solid #e9e9e9 !important;
 
   :global {
     .at-list__item-content {
@@ -26,12 +29,13 @@
 
   &::before {
     display: inline-block;
-    margin-right: 16px;
+    margin-right: 8px;
     color: #ff4949;
-    font-size: 28rpx;
+    font-size: 28px;
     font-family: SimSun, sans-serif;
     line-height: 1;
     content: '*';
+    font-weight: bold;
   }
 }
 

@@ -22,7 +22,8 @@ import {
   CusGradeModal,
   CusModal,
   ImagePicker,
-  AreaPicker
+  AreaPicker,
+  Navbar
 } from '@/components'
 import { matchTreeData, phoneReg } from '@/utils/tool'
 import { upload } from '@/utils/upload'
@@ -74,7 +75,6 @@ const FactoryEntry = () => {
       if (enterpriseInfo && enterpriseInfo.factoryId) {
         const photos = await getFactoryPhotos(enterpriseInfo.factoryId)
         const photoKeys = Reflect.ownKeys(photos)
-
         photoKeys.forEach(item => {
           if (item !== 'factoryId') {
             enterpriseInfo[item] = photos[item] || []
@@ -88,7 +88,6 @@ const FactoryEntry = () => {
       enterpriseInfo['establishedTime'] = enterpriseInfo['establishedTime']
         ? moment(enterpriseInfo['establishedTime']).format('YYYY-MM-DD')
         : null
-
       if (enterpriseInfo['enterpriseLogoUrl']) {
         enterpriseInfo['logoImage'] = [
           {
@@ -97,7 +96,6 @@ const FactoryEntry = () => {
           }
         ]
       }
-
       const arrKeys = [
         // 'clothesGrade',
         'materialTypeValues',
@@ -106,7 +104,6 @@ const FactoryEntry = () => {
         'productTypeValues',
         'productGradeValues'
       ]
-
       arrKeys.forEach(item => {
         enterpriseInfo[item] = enterpriseInfo[item] || []
       })
@@ -470,8 +467,8 @@ const FactoryEntry = () => {
   }
 
   return (
-    <View>
-      <View className={styles.navBar} style={{ paddingTop: `${top}px` }}>
+    <View className={styles.factoryEntryContainer}>
+      {/* <View className={styles.navBar} style={{ paddingTop: `${top}px` }}>
         <View className={styles.navContent}>
           <Image
             src={BACK_ICON}
@@ -480,7 +477,23 @@ const FactoryEntry = () => {
           ></Image>
           <View>{modify ? '工厂管理' : '工厂入驻'}</View>
         </View>
-      </View>
+      </View> */}
+
+      <Navbar background={'#3b80ff'} border={false}>
+        <View className={styles.navbars}>
+          <Image
+            src={BACK_ICON}
+            className={styles.backs}
+            onClick={goBack}
+          ></Image>
+          <View className={styles.navTitles}>
+            {modify ? '工厂管理' : '工厂入驻'}
+          </View>
+        </View>
+      </Navbar>
+
+      <View className={styles.color}></View>
+
       <AtForm onSubmit={onSubmit} onReset={onReset} className={styles.form}>
         <View className={styles.concatInfo}>
           <AtInput

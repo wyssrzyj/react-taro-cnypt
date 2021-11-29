@@ -10,6 +10,7 @@ import { Navbar } from '@/components'
 import classNames from 'classnames'
 import Taro from '@tarojs/taro'
 import { matchTreeData } from '@/utils/tool'
+import { Button } from '@tarojs/components'
 
 export const ORDER_EMPTY =
   'https://capacity-platform.oss-cn-hangzhou.aliyuncs.com/capacity-platform/platform/order_empty.png'
@@ -228,6 +229,22 @@ const Home = () => {
     setPageNum(1)
   }
 
+  const toEntry = () => {
+    Taro.navigateTo({
+      url: '/pages/orderIssueEntry/index'
+    })
+  }
+  const toEntry1 = () => {
+    Taro.navigateTo({
+      url: '/pages/factoryEntry/index'
+    })
+  }
+  const toEntry2 = () => {
+    Taro.navigateTo({
+      url: '/pages/publish/index'
+    })
+  }
+
   //
   return (
     <View className={styles.container}>
@@ -253,6 +270,10 @@ const Home = () => {
           </Text>
         </View>
       </Navbar>
+
+      <Button onClick={toEntry}>发单商入驻</Button>
+      <Button onClick={toEntry1}>加工厂入驻</Button>
+      <Button onClick={toEntry2}>发单</Button>
 
       <View className={isIOS ? styles.IOSContent : styles.content}>
         <Swiper

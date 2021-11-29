@@ -23,12 +23,17 @@ import { cloneDeep, isArray, isNil } from 'lodash'
 import moment from 'moment'
 import classNames from 'classnames'
 import { useStores, observer } from '@/store/mobx'
-import { CusProductModal, CusMaterialModal, CusModal } from '@/components'
+import {
+  CusProductModal,
+  CusMaterialModal,
+  CusModal,
+  Navbar
+} from '@/components'
 import { findTarget, matchTreeData, phoneReg } from '@/utils/tool'
 import { upload } from '@/utils/upload'
 import AreaModal from '@/components/areaModal'
 import { errorConfigs } from './errorConfig'
-import { Navbar } from './navBar/index'
+// import { Navbar } from './navBar/index'
 
 Taro.setNavigationBarColor({
   frontColor: '#ffffff',
@@ -248,8 +253,8 @@ const FactoryEntry = () => {
   }
 
   return (
-    <View>
-      <Navbar>
+    <View className={styles.publishContainer}>
+      <Navbar background={'#3b80ff'} border={false}>
         <View className={styles.navbars}>
           <Image
             src={BACK_ICON}
@@ -263,367 +268,375 @@ const FactoryEntry = () => {
       <View className={styles.color}></View>
 
       <AtForm onSubmit={onSubmit} onReset={onReset} className={styles.form}>
-        <View className={styles.concatInfo}>
-          <AtInput
-            required
-            className={styles.cusInput}
-            name="contactPerson"
-            title="联系人"
-            type="text"
-            placeholder="请填写真实姓名"
-            value={params['contactPerson']}
-            onChange={event => handleChange(event, 'contactPerson')}
-          />
-
-          <AtInput
-            required
-            className={styles.cusInput}
-            name="contactPersonMobile"
-            border={false}
-            title="手机号"
-            type="phone"
-            placeholder="请填写手机号"
-            value={params['contactPersonMobile']}
-            onChange={event => handleChange(event, 'contactPersonMobile')}
-          />
-
-          <View className={styles.cusItem}>
-            <View className={classNames(styles.cusLabel, styles.required)}>
-              联系信息
-            </View>
-            <RadioGroup
-              onChange={event =>
-                handleChange(event.detail.value, 'isContactPublic')
-              }
-            >
-              <Radio
-                value={1}
-                checked={+params['isContactPublic'] === 1}
-                className={styles.radioText}
-                style={{ transform: 'scale(0.8)' }}
-              >
-                公开
-              </Radio>
-              <Radio
-                value={3}
-                checked={+params['isContactPublic'] === 3}
-                className={styles.radioText}
-                style={{ transform: 'scale(0.8)', marginLeft: '20rpx' }}
-              >
-                不公开
-              </Radio>
-            </RadioGroup>
-          </View>
-
-          <View className={styles.cusItem}>
-            <View className={classNames(styles.cusLabel, styles.required)}>
-              企业信息
-            </View>
-            <RadioGroup
-              onChange={event =>
-                handleChange(event.detail.value, 'isEnterpriseInfoPublic')
-              }
-            >
-              <Radio
-                value={1}
-                checked={+params['isEnterpriseInfoPublic'] === 1}
-                className={styles.radioText}
-                style={{ transform: 'scale(0.8)' }}
-              >
-                公开
-              </Radio>
-              <Radio
-                value={0}
-                checked={+params['isEnterpriseInfoPublic'] === 0}
-                className={styles.radioText}
-                style={{ transform: 'scale(0.8)', marginLeft: '20rpx' }}
-              >
-                不公开
-              </Radio>
-            </RadioGroup>
-          </View>
-        </View>
-
-        <View className={styles.factoryInfo}>
-          <View className={styles.cusFormTextArea2}>
-            <Text className={classNames(styles.cusLabel, styles.required)}>
-              订单标题
-            </Text>
-
-            {areaFlag ||
-            effectiveFlag ||
-            productTypeFlag ||
-            goodsNumFlag ||
-            processTypeFlag ||
-            materialFlag ||
-            productFlag ? (
-              <View
-                className={
-                  params['name']
-                    ? styles.likeTextarea
-                    : styles.textareaPlaceholder
-                }
-              >
-                {params['name'] || '请填写订单标题'}
-              </View>
-            ) : (
-              <AtTextarea
-                className={styles.cusTextarea}
-                placeholder="请填写订单标题"
-                value={params['name']}
-                maxLength={99}
-                onChange={event => handleChange(event, 'name')}
-              />
-            )}
-          </View>
-
-          <View onClick={goodsNumModalShow} className={styles.cusFormItem}>
-            <Text className={classNames(styles.cusLabel, styles.required)}>
-              发单量
-            </Text>
-            <Text
-              className={classNames(
-                styles.cusValue,
-                !getLabels(goodsNum, 'goodsNum') ? styles.cusPlaceholder : ''
-              )}
-            >
-              {getLabels(goodsNum, 'goodsNum')
-                ? getLabels(goodsNum, 'goodsNum')
-                : '请选择发单量'}
-            </Text>
-          </View>
-
-          <AtInput
-            className={classNames(styles.unRequiredCusinput, styles.cusInput)}
-            name="goodsPrice"
-            title="目标单价"
-            type="number"
-            placeholder="请填写目标单价"
-            value={params['goodsPrice']}
-            onChange={event => handleChange(event, 'goodsPrice')}
-          >
-            <View className={styles.addon}>元</View>
-          </AtInput>
-
-          <View onClick={productModalShow} className={styles.cusFormItem}>
-            <Text className={classNames(styles.cusLabel, styles.required)}>
-              产品品类
-            </Text>
-            <Text
-              className={classNames(
-                styles.cusValue,
-                !getProducts ? styles.cusPlaceholder : ''
-              )}
-            >
-              {getProducts ? getProducts : '请选择产品品类'}
-            </Text>
-          </View>
-
-          <View onClick={materialModalShow} className={styles.cusFormItem}>
-            <Text className={classNames(styles.cusLabel, styles.required)}>
-              面料类型
-            </Text>
-            <Text
-              className={classNames(
-                styles.cusValue,
-                !getMaterial ? styles.cusPlaceholder : ''
-              )}
-            >
-              {getMaterial ? getMaterial : '请选择面料类型'}
-            </Text>
-          </View>
-        </View>
-
-        <View className={styles.photoInfo}>
-          <View onClick={processTypeModalShow} className={styles.cusFormItem}>
-            <Text className={classNames(styles.cusLabel, styles.required)}>
-              加工类型
-            </Text>
-            <Text
-              className={classNames(
-                styles.cusValue,
-                !getLabels(processType, 'processTypeList')
-                  ? styles.cusPlaceholder
-                  : ''
-              )}
-            >
-              {getLabels(processType, 'processTypeList')
-                ? getLabels(processType, 'processTypeList')
-                : '请选择加工类型'}
-            </Text>
-          </View>
-
-          <View onClick={productTypeModalShow} className={styles.cusFormItem}>
-            <Text className={classNames(styles.cusLabel, styles.required)}>
-              生产方式
-            </Text>
-            <Text
-              className={classNames(
-                styles.cusValue,
-                !getLabels(productType, 'productTypeList')
-                  ? styles.cusPlaceholder
-                  : ''
-              )}
-            >
-              {getLabels(productType, 'productTypeList')
-                ? getLabels(productType, 'productTypeList')
-                : '请选择生产方式'}
-            </Text>
-          </View>
-
-          <View onClick={areaModalShow} className={styles.cusFormItem}>
-            <Text className={classNames(styles.cusLabel, styles.required)}>
-              地区要求
-            </Text>
-            <Text
-              className={classNames(
-                styles.cusValue,
-                isArray(params['regionalIdList']) &&
-                  params['regionalIdList'].length
-                  ? ''
-                  : styles.cusPlaceholder
-              )}
-            >
-              {isArray(params['regionalIdList']) &&
-              params['regionalIdList'].length
-                ? params['regionalIdList'].map((item, idx) => {
-                    const target = findTarget(item, district, 'value') || {}
-                    return idx === params['regionalIdList'].length - 1
-                      ? target.label
-                      : `${target.label}、`
-                  })
-                : '请选择地区'}
-            </Text>
-          </View>
-
-          <Picker
-            mode="date"
-            onChange={event => handleChange(event.detail.value, 'deliveryDate')}
-          >
-            <AtList>
-              <AtListItem
-                title="交货日期"
-                className={classNames(
-                  styles.timeListItem,
-                  !params['deliveryDate']
-                    ? styles.placeholder
-                    : styles.selectDate
-                )}
-                extraText={
-                  params['deliveryDate']
-                    ? moment(params['deliveryDate']).format('YYYY-MM-DD')
-                    : '请选择交货日期'
-                }
-              />
-            </AtList>
-          </Picker>
-
-          <View onClick={effectiveeModalShow} className={styles.cusFormItem}>
-            <Text className={classNames(styles.cusLabel, styles.required)}>
-              车位要求
-            </Text>
-            <Text
-              className={classNames(
-                styles.cusValue,
-                !getLabels(effectiveLocation, 'effectiveLocation')
-                  ? styles.cusPlaceholder
-                  : ''
-              )}
-            >
-              {getLabels(effectiveLocation, 'effectiveLocation')
-                ? getLabels(effectiveLocation, 'effectiveLocation')
-                : '请选择车位要求'}
-            </Text>
-          </View>
-
-          <AtInput
-            required
-            className={styles.cusInput}
-            name="payDetails"
-            title="付款方式"
-            type="text"
-            placeholder="请填写付款方式"
-            value={params['payDetails']}
-            onChange={event => handleChange(event, 'payDetails')}
-          />
-
-          <Picker
-            mode="date"
-            onChange={event =>
-              handleChange(event.detail.value, 'inquiryEffectiveDate')
-            }
-          >
-            <AtList>
-              <AtListItem
-                title="订单有效期"
-                className={classNames(
-                  styles.timeListItem,
-                  !params['inquiryEffectiveDate']
-                    ? styles.placeholder
-                    : styles.selectDate
-                )}
-                extraText={
-                  params['inquiryEffectiveDate']
-                    ? moment(params['inquiryEffectiveDate']).format(
-                        'YYYY-MM-DD'
-                      )
-                    : '请选择订单有效期'
-                }
-              />
-            </AtList>
-          </Picker>
-        </View>
-
-        <View className={styles.photoInfo}>
-          <View className={styles.cusFormTextArea}>
-            <Text className={classNames(styles.cusLabel, styles.unRequired)}>
-              备注说明
-            </Text>
-
-            {areaFlag ||
-            effectiveFlag ||
-            productTypeFlag ||
-            goodsNumFlag ||
-            processTypeFlag ||
-            materialFlag ||
-            productFlag ? (
-              <View
-                className={
-                  params['goodsRemark']
-                    ? styles.likeTextarea
-                    : styles.textareaPlaceholder
-                }
-              >
-                {params['goodsRemark'] || '请填写备注说明'}
-              </View>
-            ) : (
-              <AtTextarea
-                className={styles.cusTextarea}
-                placeholder="请填写备注说明"
-                value={params['goodsRemark'] || ''}
-                maxLength={999}
-                onChange={event => handleChange(event, 'goodsRemark')}
-              />
-            )}
-          </View>
-
-          <View className={styles.photoTitle}>款图(最多可上传10张)</View>
-          <View className={styles.photoBox}>
-            <AtImagePicker
-              files={params['stylePicture']}
-              onChange={event => imgsChange(event, 'stylePicture', 10)}
-              count={10}
-              sizeType={['70']}
-              showAddBtn={
-                params['stylePicture'] && params['stylePicture'].length >= 10
-                  ? false
-                  : true
-              }
+        <View className={styles.formInner}>
+          <View className={styles.concatInfo}>
+            <AtInput
+              required
+              className={styles.cusInput}
+              name="contactPerson"
+              title="联系人"
+              type="text"
+              placeholder="请填写真实姓名"
+              value={params['contactPerson']}
+              onChange={event => handleChange(event, 'contactPerson')}
             />
+
+            <AtInput
+              required
+              className={styles.cusInput}
+              name="contactPersonMobile"
+              border={false}
+              title="手机号"
+              type="phone"
+              placeholder="请填写手机号"
+              value={params['contactPersonMobile']}
+              onChange={event => handleChange(event, 'contactPersonMobile')}
+            />
+
+            <View className={styles.cusItem}>
+              <View className={classNames(styles.cusLabel, styles.required)}>
+                联系信息
+              </View>
+              <RadioGroup
+                onChange={event =>
+                  handleChange(event.detail.value, 'isContactPublic')
+                }
+              >
+                <Radio
+                  value={1}
+                  checked={+params['isContactPublic'] === 1}
+                  className={styles.radioText}
+                  style={{ transform: 'scale(0.8)' }}
+                >
+                  公开
+                </Radio>
+                <Radio
+                  value={3}
+                  checked={+params['isContactPublic'] === 3}
+                  className={styles.radioText}
+                  style={{ transform: 'scale(0.8)', marginLeft: '20rpx' }}
+                >
+                  不公开
+                </Radio>
+              </RadioGroup>
+            </View>
+
+            <View className={styles.cusItem}>
+              <View className={classNames(styles.cusLabel, styles.required)}>
+                企业信息
+              </View>
+              <RadioGroup
+                onChange={event =>
+                  handleChange(event.detail.value, 'isEnterpriseInfoPublic')
+                }
+              >
+                <Radio
+                  value={1}
+                  checked={+params['isEnterpriseInfoPublic'] === 1}
+                  className={styles.radioText}
+                  style={{ transform: 'scale(0.8)' }}
+                >
+                  公开
+                </Radio>
+                <Radio
+                  value={0}
+                  checked={+params['isEnterpriseInfoPublic'] === 0}
+                  className={styles.radioText}
+                  style={{ transform: 'scale(0.8)', marginLeft: '20rpx' }}
+                >
+                  不公开
+                </Radio>
+              </RadioGroup>
+            </View>
           </View>
-          <AtButton onClick={onSubmit} type={'primary'} className={styles.btn}>
-            立即发布
-          </AtButton>
+
+          <View className={styles.factoryInfo}>
+            <View className={styles.cusFormTextArea2}>
+              <Text className={classNames(styles.cusLabel, styles.required)}>
+                订单标题
+              </Text>
+
+              {areaFlag ||
+              effectiveFlag ||
+              productTypeFlag ||
+              goodsNumFlag ||
+              processTypeFlag ||
+              materialFlag ||
+              productFlag ? (
+                <View
+                  className={
+                    params['name']
+                      ? styles.likeTextarea
+                      : styles.textareaPlaceholder
+                  }
+                >
+                  {params['name'] || '请填写订单标题'}
+                </View>
+              ) : (
+                <AtTextarea
+                  className={styles.cusTextarea}
+                  placeholder="请填写订单标题"
+                  value={params['name']}
+                  maxLength={99}
+                  onChange={event => handleChange(event, 'name')}
+                />
+              )}
+            </View>
+
+            <View onClick={goodsNumModalShow} className={styles.cusFormItem}>
+              <Text className={classNames(styles.cusLabel, styles.required)}>
+                发单量
+              </Text>
+              <Text
+                className={classNames(
+                  styles.cusValue,
+                  !getLabels(goodsNum, 'goodsNum') ? styles.cusPlaceholder : ''
+                )}
+              >
+                {getLabels(goodsNum, 'goodsNum')
+                  ? getLabels(goodsNum, 'goodsNum')
+                  : '请选择发单量'}
+              </Text>
+            </View>
+
+            <AtInput
+              className={classNames(styles.unRequiredCusinput, styles.cusInput)}
+              name="goodsPrice"
+              title="目标单价"
+              type="number"
+              placeholder="请填写目标单价"
+              value={params['goodsPrice']}
+              onChange={event => handleChange(event, 'goodsPrice')}
+            >
+              <View className={styles.addon}>元</View>
+            </AtInput>
+
+            <View onClick={productModalShow} className={styles.cusFormItem}>
+              <Text className={classNames(styles.cusLabel, styles.required)}>
+                产品品类
+              </Text>
+              <Text
+                className={classNames(
+                  styles.cusValue,
+                  !getProducts ? styles.cusPlaceholder : ''
+                )}
+              >
+                {getProducts ? getProducts : '请选择产品品类'}
+              </Text>
+            </View>
+
+            <View onClick={materialModalShow} className={styles.cusFormItem}>
+              <Text className={classNames(styles.cusLabel, styles.required)}>
+                面料类型
+              </Text>
+              <Text
+                className={classNames(
+                  styles.cusValue,
+                  !getMaterial ? styles.cusPlaceholder : ''
+                )}
+              >
+                {getMaterial ? getMaterial : '请选择面料类型'}
+              </Text>
+            </View>
+          </View>
+
+          <View className={styles.photoInfo}>
+            <View onClick={processTypeModalShow} className={styles.cusFormItem}>
+              <Text className={classNames(styles.cusLabel, styles.required)}>
+                加工类型
+              </Text>
+              <Text
+                className={classNames(
+                  styles.cusValue,
+                  !getLabels(processType, 'processTypeList')
+                    ? styles.cusPlaceholder
+                    : ''
+                )}
+              >
+                {getLabels(processType, 'processTypeList')
+                  ? getLabels(processType, 'processTypeList')
+                  : '请选择加工类型'}
+              </Text>
+            </View>
+
+            <View onClick={productTypeModalShow} className={styles.cusFormItem}>
+              <Text className={classNames(styles.cusLabel, styles.required)}>
+                生产方式
+              </Text>
+              <Text
+                className={classNames(
+                  styles.cusValue,
+                  !getLabels(productType, 'productTypeList')
+                    ? styles.cusPlaceholder
+                    : ''
+                )}
+              >
+                {getLabels(productType, 'productTypeList')
+                  ? getLabels(productType, 'productTypeList')
+                  : '请选择生产方式'}
+              </Text>
+            </View>
+
+            <View onClick={areaModalShow} className={styles.cusFormItem}>
+              <Text className={classNames(styles.cusLabel, styles.required)}>
+                地区要求
+              </Text>
+              <Text
+                className={classNames(
+                  styles.cusValue,
+                  isArray(params['regionalIdList']) &&
+                    params['regionalIdList'].length
+                    ? ''
+                    : styles.cusPlaceholder
+                )}
+              >
+                {isArray(params['regionalIdList']) &&
+                params['regionalIdList'].length
+                  ? params['regionalIdList'].map((item, idx) => {
+                      const target = findTarget(item, district, 'value') || {}
+                      return idx === params['regionalIdList'].length - 1
+                        ? target.label
+                        : `${target.label}、`
+                    })
+                  : '请选择地区'}
+              </Text>
+            </View>
+
+            <Picker
+              mode="date"
+              onChange={event =>
+                handleChange(event.detail.value, 'deliveryDate')
+              }
+            >
+              <AtList>
+                <AtListItem
+                  title="交货日期"
+                  className={classNames(
+                    styles.timeListItem,
+                    !params['deliveryDate']
+                      ? styles.placeholder
+                      : styles.selectDate
+                  )}
+                  extraText={
+                    params['deliveryDate']
+                      ? moment(params['deliveryDate']).format('YYYY-MM-DD')
+                      : '请选择交货日期'
+                  }
+                />
+              </AtList>
+            </Picker>
+
+            <View onClick={effectiveeModalShow} className={styles.cusFormItem}>
+              <Text className={classNames(styles.cusLabel, styles.required)}>
+                车位要求
+              </Text>
+              <Text
+                className={classNames(
+                  styles.cusValue,
+                  !getLabels(effectiveLocation, 'effectiveLocation')
+                    ? styles.cusPlaceholder
+                    : ''
+                )}
+              >
+                {getLabels(effectiveLocation, 'effectiveLocation')
+                  ? getLabels(effectiveLocation, 'effectiveLocation')
+                  : '请选择车位要求'}
+              </Text>
+            </View>
+
+            <AtInput
+              required
+              className={styles.cusInput}
+              name="payDetails"
+              title="付款方式"
+              type="text"
+              placeholder="请填写付款方式"
+              value={params['payDetails']}
+              onChange={event => handleChange(event, 'payDetails')}
+            />
+
+            <Picker
+              mode="date"
+              onChange={event =>
+                handleChange(event.detail.value, 'inquiryEffectiveDate')
+              }
+            >
+              <AtList>
+                <AtListItem
+                  title="订单有效期"
+                  className={classNames(
+                    styles.timeListItem,
+                    !params['inquiryEffectiveDate']
+                      ? styles.placeholder
+                      : styles.selectDate
+                  )}
+                  extraText={
+                    params['inquiryEffectiveDate']
+                      ? moment(params['inquiryEffectiveDate']).format(
+                          'YYYY-MM-DD'
+                        )
+                      : '请选择订单有效期'
+                  }
+                />
+              </AtList>
+            </Picker>
+          </View>
+
+          <View className={styles.photoInfo}>
+            <View className={styles.cusFormTextArea}>
+              <Text className={classNames(styles.cusLabel, styles.unRequired)}>
+                备注说明
+              </Text>
+
+              {areaFlag ||
+              effectiveFlag ||
+              productTypeFlag ||
+              goodsNumFlag ||
+              processTypeFlag ||
+              materialFlag ||
+              productFlag ? (
+                <View
+                  className={
+                    params['goodsRemark']
+                      ? styles.likeTextarea
+                      : styles.textareaPlaceholder
+                  }
+                >
+                  {params['goodsRemark'] || '请填写备注说明'}
+                </View>
+              ) : (
+                <AtTextarea
+                  className={styles.cusTextarea}
+                  placeholder="请填写备注说明"
+                  value={params['goodsRemark'] || ''}
+                  maxLength={999}
+                  onChange={event => handleChange(event, 'goodsRemark')}
+                />
+              )}
+            </View>
+
+            <View className={styles.photoTitle}>款图(最多可上传10张)</View>
+            <View className={styles.photoBox}>
+              <AtImagePicker
+                files={params['stylePicture']}
+                onChange={event => imgsChange(event, 'stylePicture', 10)}
+                count={10}
+                sizeType={['70']}
+                showAddBtn={
+                  params['stylePicture'] && params['stylePicture'].length >= 10
+                    ? false
+                    : true
+                }
+              />
+            </View>
+            <AtButton
+              onClick={onSubmit}
+              type={'primary'}
+              className={styles.btn}
+            >
+              立即发布
+            </AtButton>
+          </View>
         </View>
       </AtForm>
       <AtToast
