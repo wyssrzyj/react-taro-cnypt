@@ -4,7 +4,7 @@ import styles from './index.module.less'
 import classNames from 'classnames'
 
 export const Navbar = props => {
-  const { children, background = '#3b80ff', border = true, className } = props
+  const { children, background = '#fff', border = true, className } = props
 
   // 将状态栏的区域空余出来
   // 获取胶囊信息

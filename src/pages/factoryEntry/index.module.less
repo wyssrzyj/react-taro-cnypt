@@ -1,20 +1,56 @@
-.navBar {
-  position: relative;
-  height: 276px;
-  width: 100%;
-  background: url(https://capacity-platform.oss-cn-hangzhou.aliyuncs.com/capacity-platform/mobile/factoryEntry/headerBg.png)
-    no-repeat center center;
-  background-size: cover;
+.factoryEntryContainer {
+  :global {
+    .at-list::after {
+      border-bottom: none !important;
+    }
+
+    .at-input {
+      margin-bottom: 0px !important;
+      margin-left: 0px !important;
+    }
+
+    .at-list__item::after {
+      border-bottom: none !important;
+    }
+
+    .at-list__item {
+      padding-left: 0 !important;
+    }
+
+    .at-image-picker__flex-box {
+      padding-left: 0 !important;
+    }
+  }
 }
 
-.back {
+.navbars {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+.backs {
   padding: 12px 16px;
   position: absolute;
-  left: 16px;
   top: 50%;
+  left: 16px;
   transform: translateY(-50%);
-  width: 30px;
-  height: 32px;
+  width: 38rpx;
+  height: 32rpx;
+}
+
+.navTitles {
+  flex: 1;
+  font-size: 34px;
+  font-weight: bold;
+  color: #fff;
+  text-align: center;
+}
+
+.color {
+  width: 100%;
+  height: 117px;
+  background: #3b80ff;
 }
 
 .navContent {
@@ -51,6 +87,7 @@
 }
 
 .concatInfo {
+  padding-left: 32px;
   position: relative;
   z-index: 2;
   height: 200px;
@@ -63,9 +100,11 @@
 
 .cusInput {
   text-align: right;
+  border-bottom: 1px solid #e9e9e9 !important;
 }
 
 .factoryInfo {
+  padding-left: 32px;
   background: #ffffff;
   border-radius: 20px;
   overflow: hidden;
@@ -75,6 +114,8 @@
   display: flex;
   align-items: center;
   padding-right: 16px !important;
+  padding-left: 0 !important;
+  border-bottom: 1px solid #e9e9e9 !important;
 
   :global {
     .at-list__item-content {
@@ -99,11 +140,12 @@
 
   &::before {
     display: inline-block;
-    margin-right: 16px;
+    margin-right: 8px;
     color: #ff4949;
-    font-size: 28rpx;
+    font-size: 28px;
     font-family: SimSun, sans-serif;
     line-height: 1;
+    font-weight: bold;
     content: '*';
   }
 }
@@ -117,6 +159,7 @@
 }
 
 .processingInfo {
+  padding-left: 32px;
   background: #ffffff;
   border-radius: 20px;
   overflow: hidden;
@@ -132,6 +175,7 @@
   height: 96px;
   box-sizing: border-box;
   padding-right: 24px;
+  border-bottom: 1px solid #e9e9e9;
 
   &::after {
     content: '';
@@ -144,7 +188,7 @@
     right: 0;
     bottom: 0;
     transform: scaleY(0.5);
-    // border-bottom: 2px solid #d6e4ef;
+    // border-bottom:1px solid #e9e9e9;
   }
 }
 
@@ -158,21 +202,23 @@
   padding: 24px 24px 40px 0;
 
   &::after {
-    content: '';
-    position: absolute;
-    transform-origin: center;
-    box-sizing: border-box;
-    pointer-events: none;
-    top: auto;
-    left: 24rpx;
-    right: 0;
-    bottom: 0;
-    transform: scaleY(0.5);
-    border-bottom: 2px solid #d6e4ef;
+    // content: '';
+    // position: absolute;
+    // transform-origin: center;
+    // box-sizing: border-box;
+    // pointer-events: none;
+    // top: auto;
+    // left: 24rpx;
+    // right: 0;
+    // bottom: 0;
+    // transform: scaleY(0.5);
+    // border-bottom: 1px solid #e9e9e9;
   }
 }
 
 .cusFormTextArea2 {
+  margin-left: 32px;
+  // border-bottom:1px solid #e9e9e9;
   position: relative;
   display: flex;
   flex-direction: column;
@@ -183,7 +229,7 @@
 }
 
 .cusLabel {
-  margin-left: 32px;
+  // margin-left: 32px;
   min-width: 164px;
   margin-right: 16px;
   font-size: 30px;
@@ -194,9 +240,10 @@
 .required {
   &::before {
     display: inline-block;
-    margin-right: 16px;
+    margin-right: 8px;
     color: #ff4949;
-    font-size: 28rpx;
+    font-size: 28px;
+    font-weight: bold;
     font-family: SimSun, sans-serif;
     line-height: 1;
     content: '*';
@@ -206,9 +253,10 @@
 .unRequired {
   &::before {
     display: inline-block;
-    margin-right: 16px;
+    margin-right: 8px;
     color: transparent;
-    font-size: 28rpx;
+    font-size: 28px;
+    font-weight: bold;
     font-family: SimSun, sans-serif;
     line-height: 1;
     content: '*';
@@ -230,8 +278,9 @@
 
 .cusTextarea {
   // text-align: right;
-  margin: 24px 0 0 56px;
+  margin: 24px 0 0 32px;
   width: -webkit-fill-available;
+  border: 2px solid #e9e9e9 !important;
 }
 
 .btn {
@@ -316,7 +365,7 @@
   border-radius: 8px;
   background-color: #fff;
   box-sizing: border-box;
-  border: 2px #d6e4ef solid;
+  border: 1px #e9e9e9 solid;
   color: #333;
 }
 
@@ -328,7 +377,7 @@
   border-radius: 8px;
   background-color: #fff;
   box-sizing: border-box;
-  border: 2px #d6e4ef solid;
+  border: 1px #e9e9e9 solid;
   color: #cccccc;
   font-size: 30px;
 }

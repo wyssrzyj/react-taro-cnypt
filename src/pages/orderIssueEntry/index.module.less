@@ -1,3 +1,28 @@
+.orderIssueEntryContainer {
+  :global {
+    .at-list::after {
+      border-bottom: none !important;
+    }
+
+    .at-input {
+      margin-bottom: 0px !important;
+      margin-left: 0px !important;
+    }
+
+    .at-list__item::after {
+      border-bottom: none !important;
+    }
+
+    .at-list__item {
+      padding-left: 0 !important;
+    }
+
+    .at-image-picker__flex-box {
+      padding-left: 0 !important;
+    }
+  }
+}
+
 .navBar {
   position: relative;
   height: 276px;
@@ -15,6 +40,37 @@
   transform: translateY(-50%);
   width: 30px;
   height: 32px;
+}
+
+.navbars {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.backs {
+  padding: 12px 16px;
+  position: absolute;
+  top: 50%;
+  left: 16px;
+  transform: translateY(-50%);
+  width: 38rpx;
+  height: 32rpx;
+}
+
+.color {
+  width: 100%;
+  height: 117px;
+  background: #3b80ff;
+}
+
+.navTitles {
+  flex: 1;
+  font-size: 34px;
+  font-weight: bold;
+  color: #fff;
+  text-align: center;
 }
 
 .navContent {
@@ -51,6 +107,7 @@
 }
 
 .concatInfo {
+  padding-left: 32px;
   position: relative;
   z-index: 2;
   height: 200px;
@@ -63,9 +120,11 @@
 
 .cusInput {
   text-align: right;
+  border-bottom: 1px solid #e9e9e9 !important;
 }
 
 .factoryInfo {
+  padding-left: 32px;
   background: #ffffff;
   border-radius: 20px;
   overflow: hidden;
@@ -75,6 +134,7 @@
   display: flex;
   align-items: center;
   padding-right: 16px !important;
+  border-bottom: 1px solid #e9e9e9 !important;
 
   :global {
     .at-list__item-content {
@@ -99,9 +159,10 @@
 
   &::before {
     display: inline-block;
-    margin-right: 16px;
+    margin-right: 8px;
     color: #ff4949;
-    font-size: 28rpx;
+    font-size: 28px;
+    font-weight: bold;
     font-family: SimSun, sans-serif;
     line-height: 1;
     content: '*';
@@ -117,6 +178,7 @@
 }
 
 .processingInfo {
+  padding-left: 32px;
   background: #ffffff;
   border-radius: 20px;
   overflow: hidden;
@@ -132,19 +194,20 @@
   height: 96px;
   box-sizing: border-box;
   padding-right: 24px;
+  border-bottom: 1px solid #e9e9e9 !important;
 
   &::after {
-    content: '';
-    position: absolute;
-    transform-origin: center;
-    box-sizing: border-box;
-    pointer-events: none;
-    top: auto;
-    left: 24rpx;
-    right: 0;
-    bottom: 0;
-    transform: scaleY(0.5);
-    // border-bottom: 2px solid #d6e4ef;
+    // content: '';
+    // position: absolute;
+    // transform-origin: center;
+    // box-sizing: border-box;
+    // pointer-events: none;
+    // top: auto;
+    // left: 24rpx;
+    // right: 0;
+    // bottom: 0;
+    // transform: scaleY(0.5);
+    // border-bottom: 2px solid #e9e9e9;
   }
 }
 
@@ -158,21 +221,23 @@
   padding: 24px 24px 40px 0;
 
   &::after {
-    content: '';
-    position: absolute;
-    transform-origin: center;
-    box-sizing: border-box;
-    pointer-events: none;
-    top: auto;
-    left: 24rpx;
-    right: 0;
-    bottom: 0;
-    transform: scaleY(0.5);
-    border-bottom: 2px solid #d6e4ef;
+    // content: '';
+    // position: absolute;
+    // transform-origin: center;
+    // box-sizing: border-box;
+    // pointer-events: none;
+    // top: auto;
+    // left: 24rpx;
+    // right: 0;
+    // bottom: 0;
+    // transform: scaleY(0.5);
+    // border-bottom: 2px solid #e9e9e9;
   }
 }
 
 .cusFormTextArea2 {
+  margin-left: 32px;
+  // border-bottom: 2px solid #e9e9e9;
   position: relative;
   display: flex;
   flex-direction: column;
@@ -183,7 +248,6 @@
 }
 
 .cusLabel {
-  margin-left: 32px;
   min-width: 164px;
   margin-right: 16px;
   font-size: 30px;
@@ -194,9 +258,10 @@
 .required {
   &::before {
     display: inline-block;
-    margin-right: 16px;
+    margin-right: 8px;
     color: #ff4949;
-    font-size: 28rpx;
+    font-size: 28px;
+    font-weight: bold;
     font-family: SimSun, sans-serif;
     line-height: 1;
     content: '*';
@@ -206,9 +271,10 @@
 .unRequired {
   &::before {
     display: inline-block;
-    margin-right: 16px;
+    margin-right: 8px;
     color: transparent;
-    font-size: 28rpx;
+    font-size: 28px;
+    font-weight: bold;
     font-family: SimSun, sans-serif;
     line-height: 1;
     content: '*';
@@ -230,8 +296,9 @@
 
 .cusTextarea {
   // text-align: right;
-  margin: 24px 0 0 56px;
+  margin: 24px 0 0 32px;
   width: -webkit-fill-available;
+  border: 1px solid #e9e9e9 !important;
 }
 
 .btn {
@@ -266,30 +333,13 @@
   height: fit-content;
 
   :global {
-    .at-image-picker__flex-box {
-      // padding-left: 0 !important;
-      // display: grid !important;
-      // grid-template-columns: repeat(auto-fill, 25%);
-      // flex-direction: column;
-      // overflow: hidden;
-      // width: 140px;
-      // height: 140px;
-    }
-
-    .at-image-picker__flex-item {
-      // margin-left: 0 !important;
-      // box-sizing: border-box;
-      // border: 2px solid #e9e9e9;
-      // border-radius: 8px;
-    }
-
     .at-image-picker__choose-btn {
-      border: 2px solid #e9e9e9 !important;
+      border: 1px solid #e9e9e9 !important;
     }
 
     .at-image-picker__preview-img {
       box-sizing: border-box;
-      border: 2px solid #e9e9e9;
+      border: 1px solid #e9e9e9;
     }
   }
 }
@@ -323,7 +373,7 @@
   border-radius: 8px;
   background-color: #fff;
   box-sizing: border-box;
-  border: 2px #d6e4ef solid;
+  border: 2px #e9e9e9 solid;
   color: #333;
 }
 
@@ -335,7 +385,7 @@
   border-radius: 8px;
   background-color: #fff;
   box-sizing: border-box;
-  border: 2px #d6e4ef solid;
+  border: 2px #e9e9e9 solid;
   color: #cccccc;
   font-size: 30px;
 }
