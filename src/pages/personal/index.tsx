@@ -60,6 +60,7 @@ const Personal = () => {
           </View>
         </View>
       </View>
+
       <View className={styles.absolutes}>
         <View>
           <Top list={list} />

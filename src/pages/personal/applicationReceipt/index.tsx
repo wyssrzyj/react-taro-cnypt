@@ -68,66 +68,82 @@ const Verify = () => {
   const remarksMethod = e => {
     setRemarks(e)
   }
+  let timer
 
   const onSubmit = async () => {
     if (products) {
       if (params) {
-        let arr = await orderQuantity({
-          goodsNum: products,
-          id: params.id
-        })
-        if (arr.code === 200) {
-          setToast(false)
+        // 添加防抖，防止用户重复操作
+        clearTimeout(timer)
+        timer = setTimeout(() => {
+          quantityAntiShake()
+        }, 1000)
+        const quantityAntiShake = async () => {
+          let arr = await orderQuantity({
+            goodsNum: products,
+            id: params.id
+          })
+          if (arr.code === 200) {
+            setToast(false)
 
-          let value = {
-            quoteInfo: offer,
-            payDetails: paymentMethod,
-            receiveGoodsNum: products,
-            remark: remarks
-          }
-          //  申请接单一个
-          if (quantityId) {
-            // 修改一个
-            const submitRes = await submitRequisition({
-              ...value,
-              purchaserInquiryId: params.id,
-              supplierInquiryId: quantityId,
-              status: 2
-            })
-            if (submitRes.code === 200) {
-              await applicationReceiptQuantity('')
-              Taro.redirectTo({
-                url: '/pages/personal/machiningOrderReceiving/index?tid='
-              })
+            let value = {
+              quoteInfo: offer,
+              payDetails: paymentMethod,
+              receiveGoodsNum: products,
+              remark: remarks
             }
-          } else {
-            const submitRes = await submitApplication({
-              ...value,
-              purchaserInquiryId: params.id,
-              supplierInquiryId: quantityId,
-              status: 2
-            })
-            if (submitRes.data.verifyMessage >= 0) {
-              Taro.showToast({
-                title: `今日申请剩余${submitRes.data.verifyMessage}次`,
-                icon: 'none',
-                duration: 1500
+            //  申请接单一个
+            if (quantityId) {
+              // 修改一个
+              const submitRes = await submitRequisition({
+                ...value,
+                purchaserInquiryId: params.id,
+                supplierInquiryId: quantityId,
+                status: 2
               })
               if (submitRes.code === 200) {
                 await applicationReceiptQuantity('')
-                //提示完成之后在跳转
-                setTimeout(() => {
-                  Taro.redirectTo({
-                    url: '/pages/personal/machiningOrderReceiving/index?tid='
-                  })
-                }, 1000)
+                Taro.redirectTo({
+                  url: '/pages/personal/machiningOrderReceiving/index?tid='
+                })
               }
             } else {
-              Taro.showToast({
-                title: '今日申请已达上限',
-                icon: 'none',
-                duration: 1500
-              })
+              //防抖
+              clearTimeout(timer)
+              timer = setTimeout(() => {
+                console.log('测试防抖.')
+                api()
+              }, 1000)
+              let api = async () => {
+                const submitRes = await submitApplication({
+                  ...value,
+                  purchaserInquiryId: params.id,
+                  supplierInquiryId: quantityId,
+                  status: 2
+                })
+                if (submitRes.data.verifyMessage >= 0) {
+                  Taro.showToast({
+                    title: `今日申请剩余${submitRes.data.verifyMessage}次`,
+                    icon: 'none',
+                    duration: 1500
+                  })
+                  if (submitRes.code === 200) {
+                    await applicationReceiptQuantity('')
+                    //提示完成之后在跳转
+                    setTimeout(() => {
+                      Taro.redirectTo({
+                        url: '/pages/personal/machiningOrderReceiving/index?tid='
+                      })
+                    }, 1000)
+                  }
+                } else {
+                  Taro.showToast({
+                    title: '今日申请已达上限',
+                    icon: 'none',
+                    duration: 1500
+                  })
+                }
+              }
             }
           }
         }

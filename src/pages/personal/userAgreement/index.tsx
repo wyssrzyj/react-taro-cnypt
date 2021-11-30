@@ -8,7 +8,7 @@ const BACK_ICON =
 
 const userAgreement = () => {
   const handleClick = () => {
-    Taro.navigateBack()
+    Taro.redirectTo({ url: '/pages/personal/myEexcellentProduct/index' })
   }
   return (
     <View className={styles.phoneLogin}>
