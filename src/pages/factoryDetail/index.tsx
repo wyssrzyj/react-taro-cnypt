@@ -41,7 +41,8 @@ const FactoryDetail = () => {
         'overlockMachineImage',
         'hangImage',
         'cuttingBedImage',
-        'clothInspectingMachineImage'
+        'clothInspectingMachineImage',
+        'flatSeamingMachineImage'
       ]
 
       factory.imgs = imgKeys.reduce((prev: any[], item) => {
