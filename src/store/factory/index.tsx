@@ -61,18 +61,25 @@ export default class FactoryStore {
   // /api/factory/enterprise/applets-enterprise-info-save
   // 企业入驻
   @action enterpriseInfoSave = async params => {
-    Taro.showLoading({
-      title: '加载中'
-    })
+    // Taro.showLoading({
+    //   title: '加载中'
+    // })
     try {
       const res: Partial<Response> = await HTTP.post(
         `/api/factory/enterprise/applets-enterprise-info-save`,
         params
       )
-      Taro.hideLoading()
+      if (res.msg) {
+        Taro.showToast({
+          title: '提交成功',
+          icon: 'success',
+          duration: 1000
+        })
+      }
+      // Taro.hideLoading()
       return res.code
     } catch (e) {
-      Taro.hideLoading()
+      // Taro.hideLoading()
       Taro.showToast({
         title: e.msg,
         icon: 'none',

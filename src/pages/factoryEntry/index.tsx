@@ -378,7 +378,7 @@ const FactoryEntry = () => {
       Taro.redirectTo({
         url: '/pages/index/index'
       })
-    }, 100)
+    }, 1000)
   }
 
   const onReset = () => {}
