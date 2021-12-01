@@ -322,6 +322,27 @@ export default class UserInterface {
       return res
     } catch (e) {}
   }
+
+  // 获取用户提交申请的状态
+  @action getApprovalResult = async params => {
+    try {
+      const res: Partial<Response> = await HTTP.get(
+        `/api/factory/enterprise/get-enterprise-info-approval-result`,
+        params
+      )
+      const { msg = '' } = res
+      if (res.code !== 200) {
+        Taro.atMessage({
+          message: msg,
+          type: 'error'
+        })
+      }
+      return res
+    } catch (e) {
+      return e
+    }
+  }
+
   // 加工厂接单管理订单数量
   @action processingOrderQuantity = async () => {
     try {

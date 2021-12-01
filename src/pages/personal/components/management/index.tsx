@@ -22,12 +22,13 @@ let factory =
 const Managemenet = props => {
   // const { userInfo, list } = props
   const { userInterface } = useStores()
-  const { signOut } = userInterface
+  const { signOut, getApprovalResult } = userInterface
   // let type = userInfo //判断用户权限  // 企业类型 0 加工厂 1 发单商
   // let type = 2 //判断用户权限  // 企业类型 0 加工厂 1 发单商
   const [modal, setModal] = useState(false)
   const [userInfo, setUserInfo] = useState<any>({})
   const [currentUser, setCurrentuser] = useState<any>({})
+  const [userStatus, setUserStatus] = useState<any>()
 
   useEffect(() => {
     let information = Taro.getStorageSync('currentUser')
@@ -39,6 +40,19 @@ const Managemenet = props => {
       : {}
     setUserInfo(user)
   }, [])
+  useEffect(() => {
+    getUserStatus()
+  }, [userInfo])
+  const getUserStatus = async () => {
+    if (userInfo.enterpriseId) {
+      const res = await getApprovalResult({
+        enterpriseId: userInfo.enterpriseId
+      })
+      if (res.code === 200) {
+        setUserStatus(res.data.infoApprovalStatus)
+      }
+    }
+  }
 
   const retreat = async () => {
     setModal(true)
@@ -91,7 +105,11 @@ const Managemenet = props => {
             </View>
             <Text className={styles.txt}>工厂管理</Text>
           </View>
-
+          {!isNil(userStatus) && +userStatus === 0 ? (
+            <View className={styles.fail}>
+              <Text>审核失败</Text>
+            </View>
+          ) : null}
           <Text className={styles.iconmy}>
             <AtIcon value="chevron-right" size="15" color="#999999"></AtIcon>
           </Text>
@@ -110,6 +128,11 @@ const Managemenet = props => {
             </View>
             <Text className={styles.txt}>企业管理</Text>
           </View>
+          {!isNil(userStatus) && +userStatus === 0 ? (
+            <View className={styles.fail}>
+              <Text>审核失败</Text>
+            </View>
+          ) : null}
 
           <Text className={styles.iconmy}>
             <AtIcon value="chevron-right" size="15" color="#999999"></AtIcon>

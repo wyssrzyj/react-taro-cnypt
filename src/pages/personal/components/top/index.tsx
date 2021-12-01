@@ -1,8 +1,10 @@
 import { View, Image, Text } from '@tarojs/components'
+
 import styles from './index.module.less'
 import Taro from '@tarojs/taro'
 import { useEffect, useState } from 'react'
 import { isNil, isEmpty } from 'lodash'
+import { useStores } from '@/store/mobx'
 
 let ICON =
   'https://capacity-platform.oss-cn-hangzhou.aliyuncs.com/capacity-platform/mobile/icon/enterpriseName.png '
@@ -11,6 +13,9 @@ const Top = props => {
   const { list } = props
   const [userInfo, setUserInfo] = useState<any>({})
   const [currentUser, setCurrentuser] = useState<any>({})
+  const [userStatus, setUserStatus] = useState<any>()
+  const { userInterface } = useStores()
+  const { getApprovalResult } = userInterface
 
   useEffect(() => {
     let information = Taro.getStorageSync('currentUser')
@@ -22,10 +27,24 @@ const Top = props => {
       : {}
     setUserInfo(user)
   }, [])
+  useEffect(() => {
+    getUserStatus()
+  }, [userInfo])
+  const getUserStatus = async () => {
+    if (userInfo.enterpriseId) {
+      const res = await getApprovalResult({
+        enterpriseId: userInfo.enterpriseId
+      })
+      if (res.code === 200) {
+        setUserStatus(res.data.infoApprovalStatus)
+      }
+    }
+  }
 
   const toLogin = () => {
     Taro.redirectTo({ url: '/pages/login/index' })
   }
+  console.log(userStatus)
 
   return (
     <View className={styles.top}>
@@ -46,12 +65,19 @@ const Top = props => {
               <View className={styles.txts}>
                 <Text className={styles.txt}>{currentUser.username}</Text>
                 {!isNil(userInfo.enterpriseType) &&
+                !isNil(userStatus) &&
+                +userStatus === 1 &&
                 +userInfo.enterpriseType === 1 ? (
                   <View className={styles.customer}>发单商</View>
                 ) : null}
                 {!isNil(userInfo.enterpriseType) &&
+                !isNil(userStatus) &&
+                +userStatus === 1 &&
                 +userInfo.enterpriseType === 0 ? (
                   <View className={styles.customer}>加工厂</View>
+                ) : null}
+                {!isNil(userStatus) && +userStatus > 1 ? (
+                  <View className={styles.customer}>待审核</View>
                 ) : null}
               </View>
               <View className={styles.bottom}>
@@ -73,6 +99,12 @@ const Top = props => {
           )}
         </View>
       </View>
+      {!isNil(userStatus) && +userStatus === 0 ? (
+        <Image
+          className={styles.auditFailed}
+          src="https://capacity-platform.oss-cn-hangzhou.aliyuncs.com/capacity-platform/mobile/icon/auditFailed%20(2).png "
+        />
+      ) : null}
     </View>
   )
 }
