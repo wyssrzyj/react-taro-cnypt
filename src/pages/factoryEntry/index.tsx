@@ -1,4 +1,4 @@
-import { View, Image, Picker, Text } from '@tarojs/components'
+import { View, Image, Picker, Text, Navigator } from '@tarojs/components'
 import styles from './index.module.less'
 import Taro, { useRouter } from '@tarojs/taro'
 import {
@@ -465,9 +465,18 @@ const FactoryEntry = () => {
       }
     })
   }
-
+  console.log(
+    productTypeFlag ||
+      processTypeFlag ||
+      clothesGradeFlag ||
+      materialFlag ||
+      productFlag
+      ? true
+      : false
+  )
   return (
     <View className={styles.factoryEntryContainer}>
+      {/* //catchMove */}
       {/* <View className={styles.navBar} style={{ paddingTop: `${top}px` }}>
         <View className={styles.navContent}>
           <Image
@@ -478,7 +487,6 @@ const FactoryEntry = () => {
           <View>{modify ? '工厂管理' : '工厂入驻'}</View>
         </View>
       </View> */}
-
       <Navbar background={'#3b80ff'} border={false}>
         <View className={styles.navbars}>
           <Image
@@ -491,9 +499,7 @@ const FactoryEntry = () => {
           </View>
         </View>
       </Navbar>
-
       <View className={styles.color}></View>
-
       <AtForm onSubmit={onSubmit} onReset={onReset} className={styles.form}>
         <View className={styles.concatInfo}>
           <AtInput
@@ -694,37 +700,78 @@ const FactoryEntry = () => {
                 : '请选择加工类型'}
             </Text>
           </View>
-
-          <AtInput
-            required
-            className={styles.cusInput}
-            name="moq"
-            title="起订量"
-            type="number"
-            placeholder="请填写起订量"
-            value={params['moq'] || ''}
-            onChange={event => handleChange(event, 'moq')}
-          >
-            <View className={styles.addon}>件</View>
-          </AtInput>
-        </View>
-
-        <View className={styles.processingInfo}>
-          {infoConfigs.map(item => (
+          {productTypeFlag ||
+          processTypeFlag ||
+          clothesGradeFlag ||
+          materialFlag ||
+          productFlag ? (
+            <View className={styles.order}>
+              <View className={styles.orderText}>
+                <View className={styles.textRed}>*</View>
+                <View className={styles.orderTextStyle}>起订量</View>
+              </View>
+              <View className={styles.addons}>
+                <View className={styles.numText}>
+                  {params['moq'] || '请填写起订量'}
+                </View>
+                件
+              </View>
+            </View>
+          ) : (
             <AtInput
               required
               className={styles.cusInput}
-              name={item.field}
-              title={item.label}
-              type={item.type as any}
-              placeholder={item.placeholder}
-              value={params[item.field]}
-              onChange={event => handleChange(event, item.field)}
+              name="moq"
+              title="起订量"
+              type="number"
+              placeholder="请填写起订量"
+              value={params['moq'] || ''}
+              onChange={event => handleChange(event, 'moq')}
             >
-              <View className={styles.addon}>{item.addon}</View>
+              <View className={styles.addon}>件</View>
             </AtInput>
-          ))}
+          )}
         </View>
+        {productTypeFlag ||
+        processTypeFlag ||
+        clothesGradeFlag ||
+        materialFlag ||
+        productFlag ? (
+          <View className={styles.processingInfo}>
+            {infoConfigs.map(item => (
+              <View className={styles.order}>
+                <View className={styles.orderText}>
+                  <View className={styles.textRed}>*</View>
+                  <View className={styles.orderTextStyle}>{item.label}</View>
+                </View>
+                <View className={styles.addons}>
+                  <View className={styles.numText}>
+                    {params[item.field] || item.placeholder}
+                  </View>
+                  {item.addon}
+                </View>
+              </View>
+            ))}
+          </View>
+        ) : (
+          <View className={styles.processingInfo} cursor-spacing="100">
+            {infoConfigs.map(item => (
+              <AtInput
+                adjust-position="{{ false }}"
+                required
+                className={styles.cusInput}
+                name={item.field}
+                title={item.label}
+                type={item.type as any}
+                placeholder={item.placeholder}
+                value={params[item.field]}
+                onChange={event => handleChange(event, item.field)}
+              >
+                <View className={styles.addon}>{item.addon}</View>
+              </AtInput>
+            ))}
+          </View>
+        )}
 
         <View className={styles.photoInfo}>
           <View className={styles.cusFormTextArea2}>

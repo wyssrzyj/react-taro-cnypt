@@ -44,7 +44,6 @@ const Top = props => {
   const toLogin = () => {
     Taro.redirectTo({ url: '/pages/login/index' })
   }
-  console.log(userStatus)
 
   return (
     <View className={styles.top}>

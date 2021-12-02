@@ -111,7 +111,6 @@ const Verify = () => {
               //防抖
               clearTimeout(timer)
               timer = setTimeout(() => {
-                console.log('测试防抖.')
                 api()
               }, 1000)
               let api = async () => {

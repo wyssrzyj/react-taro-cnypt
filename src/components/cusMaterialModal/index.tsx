@@ -32,7 +32,6 @@ const CusMaterialModal = props => {
     }
     setSelectValues(selectCopyValues)
   }
-
   return (
     <AtFloatLayout
       className={styles.box}
@@ -51,7 +50,7 @@ const CusMaterialModal = props => {
               onClick={() => materialClick(item.value)}
             >
               <Image
-                src={''}
+                src={item.fileUrl}
                 className={classNames(
                   styles.img,
                   selectValues.includes(item.value) ? styles.activeImg : '',

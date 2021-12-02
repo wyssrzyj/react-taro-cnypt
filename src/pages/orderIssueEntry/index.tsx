@@ -129,7 +129,7 @@ const OrderIssueEntry = () => {
       name: imgUrl.replace(host, '')
     }
   }
-
+  let timer
   const onSubmit = async () => {
     if (!params['contactsName']) {
       setIsOpened(true)
@@ -231,17 +231,21 @@ const OrderIssueEntry = () => {
       productImagesList: params['productImagesList'],
       publicityImagesList: params['publicityImagesList']
     }
-    try {
-      const code = await enterpriseInfoSave(params)
-      if (code !== 200) return
-      await dealRefresh()
-      setTimeout(async () => {
-        await userInfo()
-        Taro.redirectTo({
-          url: '/pages/index/index'
-        })
-      }, 1000)
-    } catch (err) {}
+
+    clearTimeout(timer)
+    timer = setTimeout(async () => {
+      try {
+        const code = await enterpriseInfoSave(params)
+        if (code !== 200) return
+        await dealRefresh()
+        setTimeout(async () => {
+          await userInfo()
+          Taro.redirectTo({
+            url: '/pages/index/index'
+          })
+        }, 1000)
+      } catch (err) {}
+    }, 1000)
   }
 
   const onReset = () => {}
@@ -467,28 +471,54 @@ const OrderIssueEntry = () => {
             )}
           </View>
 
-          <AtInput
-            required
-            className={styles.cusInput}
-            name="yearOrderTransaction"
-            title="年发单量"
-            type="number"
-            placeholder="请填写年发单量"
-            value={params['yearOrderTransaction'] || ''}
-            onChange={event => handleChange(event, 'yearOrderTransaction')}
-          >
-            <View className={styles.addon}>万件</View>
-          </AtInput>
-
-          <AtInput
-            required
-            className={styles.cusInput}
-            name="orderBrand"
-            title="订单品牌"
-            placeholder="请填写订单品牌"
-            value={params['orderBrand'] || ''}
-            onChange={event => handleChange(event, 'orderBrand')}
-          ></AtInput>
+          {productFlag || rolesFlag ? (
+            <View className={styles.order}>
+              <View className={styles.orderText}>
+                <View className={styles.textRed}>*</View>
+                <View className={styles.orderTextStyle}>年发单量</View>
+              </View>
+              <View className={styles.addons}>
+                <View className={styles.numText}>
+                  {params['yearOrderTransaction'] || '请填写年发单量'}
+                </View>
+                万件
+              </View>
+            </View>
+          ) : (
+            <AtInput
+              required
+              className={styles.cusInput}
+              name="yearOrderTransaction"
+              title="年发单量"
+              type="number"
+              placeholder="请填写年发单量"
+              value={params['yearOrderTransaction'] || ''}
+              onChange={event => handleChange(event, 'yearOrderTransaction')}
+            >
+              <View className={styles.addon}>万件</View>
+            </AtInput>
+          )}
+          {productFlag || rolesFlag ? (
+            <View className={styles.order}>
+              <View className={styles.orderText}>
+                <View className={styles.textRed}>*</View>
+                <View className={styles.orderTextStyle}>订单品牌</View>
+              </View>
+              <View className={styles.addends}>
+                <View>{params['orderBrand'] || '请填写订单品牌'}</View>
+              </View>
+            </View>
+          ) : (
+            <AtInput
+              required
+              className={styles.cusInput}
+              name="orderBrand"
+              title="订单品牌"
+              placeholder="请填写订单品牌"
+              value={params['orderBrand'] || ''}
+              onChange={event => handleChange(event, 'orderBrand')}
+            ></AtInput>
+          )}
         </View>
 
         <View className={styles.photoInfo}>

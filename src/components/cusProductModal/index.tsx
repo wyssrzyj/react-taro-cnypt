@@ -25,8 +25,8 @@ const CusProductModal = props => {
   const [childValue, setChildValue] = useState<string>(
     value.mainCategoryChildId
   )
-
   useEffect(() => {
+    arrImg(cloneDeep(productCategoryList))
     setProductList(
       cloneDeep(productCategoryList).map((item: any) => {
         item.title = item.name
@@ -35,7 +35,11 @@ const CusProductModal = props => {
     )
   }, [productCategoryList])
 
+  let arrImg = data => {}
+
   const productTabChange = tab => {
+    console.log(tab)
+
     setActiveTab(tab)
   }
 
@@ -74,6 +78,11 @@ const CusProductModal = props => {
 
     onClose()
   }
+  let mapImg = new Map()
+  mapImg.set(0, [{ name: 0 }, { name: 0 - 1 }])
+  mapImg.set(1, [{ name: 1 }])
+  mapImg.set(2, [{ name: 2 }])
+  mapImg.set(3, [{ name: 3 }])
 
   return (
     <AtFloatLayout
@@ -116,7 +125,7 @@ const CusProductModal = props => {
                       onClick={() => tagClick(i[keyName])}
                     >
                       <Image
-                        src={''}
+                        src={i.fileUrl}
                         className={classNames(
                           styles.img,
                           type === 'multiple' &&

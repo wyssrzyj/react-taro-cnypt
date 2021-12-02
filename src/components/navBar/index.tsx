@@ -12,6 +12,7 @@ const Navbar = props => {
 
   return (
     <View
+      // catchMove
       id={'navbar'}
       style={{
         // padding: `${top + 'px'} 0 ${top - Taro['$navBarMarginTop'] + 'px'}`,

@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import styles from './index.module.less'
-import { View } from '@tarojs/components'
+import { View, ScrollView } from '@tarojs/components'
 import Taro from '@tarojs/taro'
 import Top from './components/top'
 import Order from './components/order'
