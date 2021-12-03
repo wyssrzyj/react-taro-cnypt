@@ -474,31 +474,19 @@ const FactoryEntry = () => {
       ? true
       : false
   )
+  Taro.setNavigationBarColor({
+    frontColor: '#ffffff',
+    backgroundColor: '#3b80ff',
+    animation: {
+      duration: 400,
+      timingFunc: 'easeIn'
+    }
+  })
+  Taro.setNavigationBarTitle({
+    title: modify ? '工厂管理' : '工厂入驻'
+  })
   return (
     <View className={styles.factoryEntryContainer}>
-      {/* //catchMove */}
-      {/* <View className={styles.navBar} style={{ paddingTop: `${top}px` }}>
-        <View className={styles.navContent}>
-          <Image
-            src={BACK_ICON}
-            className={styles.back}
-            onClick={goBack}
-          ></Image>
-          <View>{modify ? '工厂管理' : '工厂入驻'}</View>
-        </View>
-      </View> */}
-      <Navbar background={'#3b80ff'} border={false}>
-        <View className={styles.navbars}>
-          <Image
-            src={BACK_ICON}
-            className={styles.backs}
-            onClick={goBack}
-          ></Image>
-          <View className={styles.navTitles}>
-            {modify ? '工厂管理' : '工厂入驻'}
-          </View>
-        </View>
-      </Navbar>
       <View className={styles.color}></View>
       <AtForm onSubmit={onSubmit} onReset={onReset} className={styles.form}>
         <View className={styles.concatInfo}>

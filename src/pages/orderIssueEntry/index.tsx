@@ -307,22 +307,20 @@ const OrderIssueEntry = () => {
       }
     })
   }
+  Taro.setNavigationBarColor({
+    frontColor: '#ffffff',
+    backgroundColor: '#3b80ff',
+    animation: {
+      duration: 400,
+      timingFunc: 'easeIn'
+    }
+  })
+  Taro.setNavigationBarTitle({
+    title: modify ? '企业管理' : '发单商入驻'
+  })
 
   return (
     <View className={styles.orderIssueEntryContainer}>
-      <Navbar background={'#3b80ff'} border={false}>
-        <View className={styles.navbars}>
-          <Image
-            src={BACK_ICON}
-            className={styles.backs}
-            onClick={goBack}
-          ></Image>
-          <View className={styles.navTitles}>
-            {modify ? '企业管理' : '发单商入驻'}
-          </View>
-        </View>
-      </Navbar>
-
       <View className={styles.color}></View>
 
       <AtForm onSubmit={onSubmit} onReset={onReset} className={styles.form}>

@@ -2,11 +2,11 @@ import { useState, useEffect } from 'react'
 import styles from './index.module.less'
 import { View, Image, Text } from '@tarojs/components'
 import { AtSearchBar, AtTabs } from 'taro-ui'
-import { useReachBottom, useRouter, redirectTo } from '@tarojs/taro'
+import Taro, { useReachBottom, useRouter } from '@tarojs/taro'
 import StyleStructure from './styleStructure/index'
 import { useStores, observer } from '@/store/mobx'
 import { cloneDeep } from 'lodash'
-import { Navbar } from '@/components'
+
 const BACK_ICON =
   'https://capacity-platform.oss-cn-hangzhou.aliyuncs.com/capacity-platform/mobile/icon/black_back.png'
 
@@ -135,12 +135,6 @@ const Verify = () => {
     // 判断当前页码是否大于最大页码.
     setPageNum(n => n + 1)
   })
-  const goBack = () => {
-    redirectTo({
-      url: '/pages/personal/index'
-    })
-  }
-
   const tabList = [
     {
       title: `全部 (${
@@ -192,20 +186,20 @@ const Verify = () => {
     let res = { ...list, name: value }
     setList(res)
   }
+  Taro.setNavigationBarColor({
+    frontColor: '#000000',
+    backgroundColor: '#ffffff',
+    animation: {
+      duration: 400,
+      timingFunc: 'easeIn'
+    }
+  })
+  Taro.setNavigationBarTitle({
+    title: '订单管理'
+  })
 
   return (
     <View className={styles.phoneLogin}>
-      {/* 导航 */}
-      <Navbar>
-        <View className={styles.navbars}>
-          <Image
-            src={BACK_ICON}
-            className={styles.backs}
-            onClick={goBack}
-          ></Image>
-          <View className={styles.navTitles}>订单管理</View>
-        </View>
-      </Navbar>
       {/* 搜索 */}
       <View className={styles.search}>
         <AtSearchBar

@@ -143,19 +143,9 @@ const OrderDetail = () => {
 
   return (
     <View className={styles.container}>
-      <Navbar>
-        <View className={styles.navbar}>
-          <Image
-            src={BACK_ICON}
-            className={styles.back}
-            onClick={goBack}
-          ></Image>
-          <View className={styles.navTitle}>订单详情</View>
-        </View>
-      </Navbar>
-
-      <OrderCard data={data}></OrderCard>
-      <Line></Line>
+      <View className={styles.top}>
+        <OrderCard data={data}></OrderCard>
+      </View>
       <View className={styles.content}>
         <View className={styles.part}>
           <Title title={'订单信息'}></Title>

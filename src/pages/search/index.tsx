@@ -253,6 +253,9 @@ const Search = () => {
     Taro.setStorageSync('search', [])
     setHistorySearch([])
   }
+  Taro.setNavigationBarTitle({
+    title: activeTab === 0 ? '搜索订单' : '搜索工厂'
+  })
 
   return (
     <View
@@ -262,28 +265,20 @@ const Search = () => {
           : ''
       }
     >
-      <Navbar>
-        <View className={styles.navbar}>
-          <Image
-            src={BACK_ICON}
-            className={styles.back}
-            onClick={goBack}
-          ></Image>
-
-          <View className={styles.searchBox}>
-            <Image src={SEARCH_ICON} className={styles.searchIcon}></Image>
-            <Input
-              className={styles.search}
-              placeholder={activeTab === 0 ? '搜索订单名称' : '搜索工厂名称'}
-              placeholderStyle={'fontSize: 30px; color: #999'}
-              confirmType={'search'}
-              onConfirm={confirm}
-              onFocus={searchFocus}
-              focus={pageStatus === 1}
-            ></Input>
-          </View>
+      <View className={styles.navbar}>
+        <View className={styles.searchBox}>
+          <Image src={SEARCH_ICON} className={styles.searchIcon}></Image>
+          <Input
+            className={styles.search}
+            placeholder={activeTab === 0 ? '搜索订单名称' : '搜索工厂名称'}
+            placeholderStyle={'fontSize: 30px; color: #999'}
+            confirmType={'search'}
+            onConfirm={confirm}
+            onFocus={searchFocus}
+            focus={pageStatus === 1}
+          ></Input>
         </View>
-      </Navbar>
+      </View>
 
       {pageStatus === 1 && (
         <View className={styles.searchHistory}>

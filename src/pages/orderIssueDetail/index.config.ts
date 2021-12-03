@@ -1,3 +1,3 @@
 export default {
-  navigationBarTitleText: '企业详情'
+  navigationBarTitleText: '企业主页'
 }

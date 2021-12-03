@@ -87,16 +87,6 @@ const modifyMobilePhoneNumber = () => {
 
   return (
     <View className={styles.subjects}>
-      <Navbar>
-        <View className={styles.navbars}>
-          <Image
-            src={BACK_ICON}
-            className={styles.backs}
-            onClick={handleClick}
-          ></Image>
-          <View className={styles.navTitles}>修改手机号</View>
-        </View>
-      </Navbar>
       {/* 主体 */}
       <View className={styles.contain}>
         <View>

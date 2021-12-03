@@ -232,17 +232,6 @@ const Verify = () => {
   return (
     <View className={styles.phoneLogin}>
       {/* 导航 */}
-      <Navbar>
-        <View className={styles.navbars}>
-          <Image
-            src={BACK_ICON}
-            className={styles.backs}
-            onClick={goBack}
-          ></Image>
-          <View className={styles.navTitles}>接单管理</View>
-        </View>
-      </Navbar>
-
       {/* 搜索 */}
       <View className={styles.search}>
         <AtSearchBar

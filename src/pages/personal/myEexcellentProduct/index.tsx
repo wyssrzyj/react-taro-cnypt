@@ -11,18 +11,6 @@ const myEexcellentProduct = () => {
   }
   return (
     <View>
-      <View className={styles.navbar}>
-        <Navbar>
-          <View className={styles.navbars}>
-            <Image
-              src={BACK_ICON}
-              className={styles.backs}
-              onClick={handleClick}
-            ></Image>
-            <View className={styles.navTitles}>关于优产</View>
-          </View>
-        </Navbar>
-      </View>
       <View className={styles.imgFather}>
         <Image
           className={styles.img}

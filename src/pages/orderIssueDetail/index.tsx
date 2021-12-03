@@ -120,17 +120,6 @@ const FactoryDetail = () => {
 
   return (
     <View className={styles.container}>
-      <Navbar>
-        <View className={styles.navbars}>
-          <Image
-            src={BACK_ICON}
-            className={styles.backs}
-            onClick={goBack}
-          ></Image>
-          <View className={styles.navTitles}>企业主页</View>
-        </View>
-      </Navbar>
-
       <OrderIssueCard data={data}></OrderIssueCard>
       <Line></Line>
       <View className={styles.content}>

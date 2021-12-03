@@ -251,20 +251,20 @@ const FactoryEntry = () => {
       }, '')
     }
   }
+  Taro.setNavigationBarColor({
+    frontColor: '#ffffff',
+    backgroundColor: '#3b80ff',
+    animation: {
+      duration: 400,
+      timingFunc: 'easeIn'
+    }
+  })
+  Taro.setNavigationBarTitle({
+    title: '发布订单'
+  })
 
   return (
     <View className={styles.publishContainer}>
-      <Navbar background={'#3b80ff'} border={false}>
-        <View className={styles.navbars}>
-          <Image
-            src={BACK_ICON}
-            className={styles.backs}
-            onClick={goBack}
-          ></Image>
-          <View className={styles.navTitles}>发布订单</View>
-        </View>
-      </Navbar>
-
       <View className={styles.color}></View>
 
       <AtForm onSubmit={onSubmit} onReset={onReset} className={styles.form}>

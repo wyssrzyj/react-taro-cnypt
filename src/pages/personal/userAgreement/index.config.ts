@@ -1,3 +1,3 @@
 export default {
-  navigationBarTitleText: '关于优产'
+  navigationBarTitleText: '用户协议'
 }

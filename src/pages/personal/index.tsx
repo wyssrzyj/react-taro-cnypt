@@ -14,11 +14,14 @@ import { TabBar } from '@/components'
 const Personal = () => {
   Taro.setNavigationBarColor({
     frontColor: '#ffffff',
-    backgroundColor: '',
+    backgroundColor: '#3b80ff',
     animation: {
       duration: 400,
       timingFunc: 'easeIn'
     }
+  })
+  Taro.setNavigationBarTitle({
+    title: '我的'
   })
   const { top } = Taro.getMenuButtonBoundingClientRect()
 
@@ -53,16 +56,8 @@ const Personal = () => {
 
   return (
     <View className={styles.containers}>
-      <View className={styles.father}>
-        <View className={styles.navBar} style={{ paddingTop: `${top}px` }}>
-          <View className={styles.navContent}>
-            <View>我的</View>
-          </View>
-        </View>
-      </View>
-
       <View className={styles.absolutes}>
-        <View>
+        <View className={styles.absolutesColor}>
           <Top list={list} />
           <View>
             {/* 主体 */}

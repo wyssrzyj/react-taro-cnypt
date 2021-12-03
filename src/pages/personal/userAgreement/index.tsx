@@ -12,20 +12,10 @@ const userAgreement = () => {
   }
   return (
     <View className={styles.phoneLogin}>
-      <Navbar>
-        <View className={styles.navbars}>
-          <Image
-            src={BACK_ICON}
-            className={styles.backs}
-            onClick={handleClick}
-          ></Image>
-          <View className={styles.navTitles}>用户协议</View>
-        </View>
-      </Navbar>
       {/* 内容 */}
       <View className={styles.container}>
         <View className={styles.top}>
-          <Text>《优产用户协议》</Text>
+          <Text>《用户协议》</Text>
         </View>
         <View className={styles.top}>
           <Text>【本协议于2021年10月21日最新修订】</Text>
@@ -37,12 +27,12 @@ const userAgreement = () => {
         </View>
         <View className={styles.content}>
           <Text>
-            　《优产用户协议》（以下简称“本用户协议”或“本协议”）是您与优产之间就注册优产账号及使用优产各项服务等相关事宜订立的协议。
+            　《用户协议》（以下简称“本用户协议”或“本协议”）是您与优产之间就注册优产账号及使用优产各项服务等相关事宜订立的协议。
           </Text>
         </View>
         <View className={styles.content}>
           <Text>
-            　当您在进行用户注册、使用优产的服务前，请认真阅读《优产用户协议》，当您按照注册页面提示填写信息、阅读并同意本协议且完成全部注册程序后，即表示您已充分阅读、理解并接受本协议的全部内容，并与优产达成一致，成为优产的用户;
+            　当您在进行用户注册、使用优产的服务前，请认真阅读《用户协议》，当您按照注册页面提示填写信息、阅读并同意本协议且完成全部注册程序后，即表示您已充分阅读、理解并接受本协议的全部内容，并与优产达成一致，成为优产的用户;
           </Text>
         </View>
         <View className={styles.content}>
@@ -81,7 +71,7 @@ const userAgreement = () => {
         <View className={styles.content}>
           <Text>
             　
-            （1）《优产隐私政策》：优产严格保护您的信息安全与隐私，对您个人信息的收集、使用和共享严格遵守《优产隐私政策》；
+            （1）《隐私政策》：优产严格保护您的信息安全与隐私，对您个人信息的收集、使用和共享严格遵守《优产隐私政策》；
           </Text>
         </View>
         <View className={styles.content}>

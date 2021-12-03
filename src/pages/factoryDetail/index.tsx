@@ -128,17 +128,6 @@ const FactoryDetail = () => {
 
   return (
     <View className={styles.container}>
-      <Navbar>
-        <View className={styles.navbar}>
-          <Image
-            src={BACK_ICON}
-            className={styles.back}
-            onClick={goBack}
-          ></Image>
-          <View className={styles.navTitle}>工厂详情</View>
-        </View>
-      </Navbar>
-
       <EnterpriseCard data={data}></EnterpriseCard>
       <Line></Line>
       <View className={styles.content}>

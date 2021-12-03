@@ -151,22 +151,11 @@ const Verify = () => {
       setToast(true)
     }
   }
-
+  Taro.setNavigationBarTitle({
+    title: quantityId ? '修改回复' : '申请接单'
+  })
   return (
     <View className={styles.phoneLogin}>
-      {/* 导航 */}
-      <Navbar>
-        <View className={styles.navbars}>
-          <Image
-            src={BACK_ICON}
-            className={styles.backs}
-            onClick={goBack}
-          ></Image>
-          <View className={styles.navTitles}>
-            {quantityId ? '修改回复' : '申请接单'}
-          </View>
-        </View>
-      </Navbar>
       <View className={styles.outerLayer}>
         <View className={styles.external}>
           <View className={styles.container}>

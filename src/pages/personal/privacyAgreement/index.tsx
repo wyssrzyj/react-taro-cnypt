@@ -15,20 +15,10 @@ const privacyAgreement = () => {
   }
   return (
     <View className={styles.phoneLogin}>
-      <Navbar>
-        <View className={styles.navbars}>
-          <Image
-            src={BACK_ICON}
-            className={styles.backs}
-            onClick={handleClick}
-          ></Image>
-          <View className={styles.navTitles}>隐私协议</View>
-        </View>
-      </Navbar>
       {/* 内容 */}
       <View className={styles.container}>
         <View className={styles.top}>
-          <Text>《优产隐私政策》</Text>
+          <Text>《隐私政策》</Text>
           <View className={styles.top}>
             <Text>【本协议于2021年10月21日最新修订】</Text>
           </View>
@@ -965,8 +955,7 @@ const privacyAgreement = () => {
         </View>
         <View className={styles.content}>
           <Text>
-            　
-            我们将在15天内做出答复。如您不满意，还可以通过1688服务中心发起投诉。
+            　 我们将在15天内做出答复。如您不满意，还可以通过服务中心发起投诉。
           </Text>
         </View>
         <View className={styles.content}>
@@ -1102,7 +1091,7 @@ const privacyAgreement = () => {
         <View className={styles.content}>
           <Text>
             　
-            1、如对本政策内容有任何疑问、意见或建议，您可通过1688服务中心（请点击）与我们联系；
+            1、如对本政策内容有任何疑问、意见或建议，您可通过服务中心（请点击）与我们联系；
           </Text>
         </View>
         <View className={styles.content}>

@@ -51,10 +51,6 @@ const PwdLogin = () => {
 
   return (
     <View className={styles.phoneLogin}>
-      <Navbar>
-        <Image src={BACK_ICON} className={styles.back} onClick={goBack}></Image>
-      </Navbar>
-
       <View className={styles.content}>
         <LoginHeader></LoginHeader>
 

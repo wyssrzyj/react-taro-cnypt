@@ -35,7 +35,8 @@ export default {
         'machiningOrderReceiving/index', //加工接单管理
         'orderReceiving/index', //接单管理
         'privacyAgreement/index', //隐私
-        'userAgreement/index' //用户协议
+        'userAgreement/index', //用户协议
+        'personalInformation/index' //个人信息
       ]
     },
     {
@@ -72,7 +73,7 @@ export default {
     navigationBarBackgroundColor: '#fff',
     navigationBarTitleText: 'WeChat',
     navigationBarTextStyle: 'black',
-    navigationStyle: 'custom' //接受两个参数 ['default', 'custom']: ['系统导航栏， 默认值', '隐藏系统导航栏']
+    navigationStyle: 'default' //接受两个参数 ['default', 'custom']: ['系统导航栏， 默认值', '隐藏系统导航栏']
   },
   permission: {
     'scope.userLocation': {

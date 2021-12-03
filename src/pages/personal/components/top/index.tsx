@@ -44,9 +44,21 @@ const Top = props => {
   const toLogin = () => {
     Taro.redirectTo({ url: '/pages/login/index' })
   }
+  const myOrder = () => {
+    Taro.redirectTo({
+      url: '/pages/personal/personalInformation/index'
+    })
+  }
+  const jump = () => {
+    if (!isEmpty(currentUser)) {
+      myOrder()
+    } else {
+      toLogin()
+    }
+  }
 
   return (
-    <View className={styles.top}>
+    <View className={styles.top} onClick={jump}>
       <View className={styles.tops}>
         <View className={styles.imgs}>
           {!isEmpty(currentUser) ? (
@@ -87,7 +99,7 @@ const Top = props => {
               </View>
             </>
           ) : (
-            <View onClick={toLogin}>
+            <View>
               <View className={styles.txts}>
                 <View className={styles.txt}>登录 / 注册</View>
               </View>

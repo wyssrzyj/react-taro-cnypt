@@ -67,17 +67,6 @@ const Login = () => {
 
   return (
     <View>
-      {/* top */}
-      <Navbar>
-        <View className={styles.navbar}>
-          <Image
-            src={BLCAK_BACK_ICON}
-            className={styles.back}
-            onClick={goBack}
-          ></Image>
-          <View className={styles.navTitle}>登录</View>
-        </View>
-      </Navbar>
       {/* img  */}
       <View className={styles.imgFather}>
         <Image

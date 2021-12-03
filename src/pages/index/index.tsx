@@ -45,6 +45,17 @@ const Home = () => {
       }
     })
   })
+  Taro.setNavigationBarTitle({
+    title: '首页'
+  })
+  Taro.setNavigationBarColor({
+    frontColor: '#000000',
+    backgroundColor: '#f4f7fd',
+    animation: {
+      duration: 400,
+      timingFunc: 'easeIn'
+    }
+  })
 
   useEffect(() => {
     ;(async () => {
@@ -231,29 +242,26 @@ const Home = () => {
 
   return (
     <View className={styles.container}>
-      <Navbar>
-        <View className={styles.tabs}>
-          <Text
-            onClick={() => tabClick(0)}
-            className={classNames(
-              styles.tab,
-              activeTab === 0 ? styles.activeTab : ''
-            )}
-          >
-            找订单
-          </Text>
-          <Text
-            onClick={() => tabClick(1)}
-            className={classNames(
-              styles.tab,
-              activeTab === 1 ? styles.activeTab : ''
-            )}
-          >
-            找工厂
-          </Text>
-        </View>
-      </Navbar>
-
+      <View className={styles.tabs}>
+        <Text
+          onClick={() => tabClick(0)}
+          className={classNames(
+            styles.tab,
+            activeTab === 0 ? styles.activeTab : ''
+          )}
+        >
+          找订单
+        </Text>
+        <Text
+          onClick={() => tabClick(1)}
+          className={classNames(
+            styles.tab,
+            activeTab === 1 ? styles.activeTab : ''
+          )}
+        >
+          找工厂
+        </Text>
+      </View>
       <View className={isIOS ? styles.IOSContent : styles.content}>
         <Swiper
           indicatorColor="#999"

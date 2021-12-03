@@ -149,9 +149,6 @@ const PhoneLogin = () => {
 
   return (
     <View className={styles.phoneLogin}>
-      <Navbar background={'transparent'} border={false}>
-        <Image src={BACK_ICON} className={styles.back} onClick={goBack}></Image>
-      </Navbar>
       <LoginHeader></LoginHeader>
 
       <View className={styles.content} ref={contentRef}>
@@ -212,7 +209,7 @@ const PhoneLogin = () => {
             }}
             className={styles.agreeTag}
           >
-            《优产用户协议》
+            《用户协议》
           </Text>
           <Text
             onClick={() => {

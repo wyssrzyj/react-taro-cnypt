@@ -137,6 +137,20 @@ export default class UserInterface {
     }
   }
 
+  @action changeUserInfo = async params => {
+    try {
+      const res: Partial<Response> = await HTTP.post(
+        '/api/user/saveBasicUserInfo',
+        params
+      )
+      if (res.code === 200) {
+        return res
+      }
+    } catch (e) {
+      return e
+    }
+  }
+
   // 判断是否超过发单商最大订单
   @action orderQuantity = async params => {
     try {
