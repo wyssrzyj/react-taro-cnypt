@@ -37,7 +37,13 @@ const AreaModal = props => {
 
   useEffect(() => {
     if (isArray(district) && district.length) {
-      setProvinceData(district)
+      console.log(cloneDeep(district))
+      //只要前两个字
+      let sum = cloneDeep(district).map(item => {
+        item.label = item.mergerName.substring(0, 2)
+        return item
+      })
+      setProvinceData(sum)
       const cData = [...district[0].children]
       setCityData(cData)
       setProvinceSelect(district[0].value)
@@ -90,16 +96,7 @@ const AreaModal = props => {
 
   return (
     <View className={styles.container}>
-      <Navbar>
-        <View className={styles.navbars}>
-          <Image
-            src={BACK_ICON}
-            className={styles.backs}
-            onClick={onClose}
-          ></Image>
-          <View className={styles.navTitles}>{title}</View>
-        </View>
-      </Navbar>
+      <Navbar></Navbar>
 
       <View className={styles.content} ref={contentRef}>
         <View className={styles.province}>

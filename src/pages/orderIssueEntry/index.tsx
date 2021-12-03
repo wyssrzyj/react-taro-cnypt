@@ -303,6 +303,7 @@ const OrderIssueEntry = () => {
         nParams['address'] = res.address
         nParams['latitude'] = res.latitude
         nParams['longitude'] = res.longitude
+
         setParams(nParams)
       }
     })
