@@ -7,9 +7,6 @@ import StyleStructure from './styleStructure/index'
 import { useStores, observer } from '@/store/mobx'
 import { cloneDeep } from 'lodash'
 
-const BACK_ICON =
-  'https://capacity-platform.oss-cn-hangzhou.aliyuncs.com/capacity-platform/mobile/icon/black_back.png'
-
 export const ORDER_EMPTY =
   'https://capacity-platform.oss-cn-hangzhou.aliyuncs.com/capacity-platform/platform/order_empty.png'
 
@@ -33,7 +30,6 @@ const Verify = () => {
   const [loading, setLoading] = useState(true)
   const [orderQuantity, setOrderQuantity] = useState<any>([]) //数据
 
-  // 2 3 -2
   // 接口数据
   const [list, setList] = useState<any>({
     pageNum: pageNum,

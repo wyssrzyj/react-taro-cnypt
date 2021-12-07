@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react'
 import { View, Text, Image } from '@tarojs/components'
-import { AtGrid } from 'taro-ui'
 import styles from './index.module.less'
 import Taro from '@tarojs/taro'
 import { useStores } from '@/store/mobx'

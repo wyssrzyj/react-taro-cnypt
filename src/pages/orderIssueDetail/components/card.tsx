@@ -44,6 +44,14 @@ const Card = props => {
   }, [])
   useEffect(() => {
     if (type === 0) {
+      const list =
+        (isArray(data.processTypeValues) &&
+          data.processTypeValues.map(item => {
+            const arr = processType.find(i => +i.value === +item) || {}
+            return arr.label
+          })) ||
+        []
+
       const types =
         (isArray(data.processTypeValues) &&
           data.processTypeValues.map(item => {

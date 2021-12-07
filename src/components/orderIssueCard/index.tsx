@@ -2,6 +2,7 @@ import { View, Image } from '@tarojs/components'
 import classNames from 'classnames'
 import { isArray } from 'lodash'
 import styles from './index.module.less'
+import Taro from '@tarojs/taro'
 
 const OrderIssueCard = props => {
   const { data } = props

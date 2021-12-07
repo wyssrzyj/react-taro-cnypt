@@ -1,13 +1,9 @@
 import { useState, useEffect, useRef } from 'react'
-import { View, Text, Image } from '@tarojs/components'
+import { View, Text } from '@tarojs/components'
 import Taro from '@tarojs/taro'
-import { AtInput, AtButton } from 'taro-ui'
+import { AtInput } from 'taro-ui'
 import styles from './index.module.less'
-import { redirectTo } from '@tarojs/taro'
 import { useStores, observer } from '@/store/mobx'
-import { Navbar } from '@/components'
-const BACK_ICON =
-  'https://capacity-platform.oss-cn-hangzhou.aliyuncs.com/capacity-platform/mobile/icon/black_back.png'
 
 const modifyMobilePhoneNumber = () => {
   const { loginStore, userInterface } = useStores()
@@ -63,9 +59,7 @@ const modifyMobilePhoneNumber = () => {
   const handle = e => {
     setVerification(e)
   }
-  const handleClick = () => {
-    Taro.navigateBack()
-  }
+
   const btn = async () => {
     if (regularJudge) {
       setJudge(false)

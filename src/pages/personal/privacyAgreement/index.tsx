@@ -1,18 +1,6 @@
-import { Image, View, Text } from '@tarojs/components'
+import { View, Text } from '@tarojs/components'
 import styles from './index.module.less'
-import Taro from '@tarojs/taro'
-import { Navbar } from '@/components'
-// import Navbar from './navBar/index'
-
-const BACK_ICON =
-  'https://capacity-platform.oss-cn-hangzhou.aliyuncs.com/capacity-platform/mobile/icon/black_back.png'
-
 const privacyAgreement = () => {
-  const { top } = Taro.getMenuButtonBoundingClientRect()
-  const tops = top + 40 + 30
-  const handleClick = () => {
-    Taro.navigateBack()
-  }
   return (
     <View className={styles.phoneLogin}>
       {/* 内容 */}

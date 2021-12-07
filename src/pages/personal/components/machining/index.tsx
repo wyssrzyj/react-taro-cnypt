@@ -49,16 +49,11 @@ const machining = () => {
       setOrderQuantity(data)
     }
   }
-  const whole = () => {
-    Taro.redirectTo({
-      url: '/pages/personal/machiningOrderReceiving/index?tid='
-    })
-  }
+
   const handleClick = e => {
     Taro.redirectTo({
       url: '/pages/personal/machiningOrderReceiving/index?tid=' + e.id
     })
-    // Taro.redirectTo({ url: "/pages/index/index" });
   }
 
   return (

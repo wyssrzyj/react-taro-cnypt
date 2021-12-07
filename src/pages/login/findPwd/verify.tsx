@@ -1,12 +1,8 @@
 import styles from './index.module.less'
-import { View, Text, Input, Image } from '@tarojs/components'
+import { View, Text, Input } from '@tarojs/components'
 import { useState, useEffect, useRef } from 'react'
 import Taro, { useRouter } from '@tarojs/taro'
-import { Navbar } from '@/components'
 import { useStores } from '@/store/mobx'
-
-const BACK_ICON =
-  'https://capacity-platform.oss-cn-hangzhou.aliyuncs.com/capacity-platform/mobile/icon/black_back.png'
 
 const LoginHeader = props => {
   const { phone } = props
@@ -18,8 +14,6 @@ const LoginHeader = props => {
   )
 }
 
-const verifyTime = 60
-
 const Verify = () => {
   const router = useRouter()
   const { params } = router
@@ -28,16 +22,34 @@ const Verify = () => {
   const { checkVerifyCode, sendVerifyCode } = loginStore
 
   const verifyCodeRef = useRef<any>(null)
+  const [count, changeCount] = useState(0)
 
   const [verify, setVerify] = useState('')
   const [verifyArr, setVerifyArr] = useState<any[]>([])
-  const [timer, setTimer] = useState<any>()
-  const [lastTime, setLastTime] = useState<number>(verifyTime)
   const [sending, setSending] = useState<boolean>(false)
+  const intervalRef = useRef<any>(null)
+
+  useEffect(() => {
+    clearInterval(intervalRef.current)
+  }, [])
 
   useEffect(() => {
     sendCode()
+    onGetCaptcha()
   }, [])
+  useEffect(() => {
+    if (count === 59) {
+      intervalRef.current = setInterval(() => {
+        changeCount(item => item - 1)
+      }, 1000)
+    } else if (count === 0) {
+      clearInterval(intervalRef.current)
+    }
+  }, [count])
+
+  const onGetCaptcha = () => {
+    changeCount(59)
+  }
 
   const verifyChange = event => {
     const {
@@ -53,31 +65,10 @@ const Verify = () => {
   }
 
   const sendCode = async () => {
-    clearInterval(timer)
+    onGetCaptcha()
     const res = await sendVerifyCode(params.phone as string)
     res && setSending(true)
-    res && timerRun()
   }
-
-  const timerRun = () => {
-    const t = setTimeout(() => {
-      setLastTime(n => n - 1)
-    }, 1000)
-    setTimer(t)
-  }
-
-  const goBack = () => {
-    Taro.navigateBack()
-  }
-
-  useEffect(() => {
-    if (lastTime <= 0) {
-      setSending(false)
-      clearInterval(timer)
-      setTimer(null)
-      setLastTime(verifyTime)
-    }
-  }, [lastTime])
 
   useEffect(() => {
     ;(async () => {
@@ -95,12 +86,20 @@ const Verify = () => {
     })()
   }, [verify])
 
+  Taro.setNavigationBarColor({
+    frontColor: '#000',
+    backgroundColor: '#ffffff',
+    animation: {
+      duration: 400,
+      timingFunc: 'easeIn'
+    }
+  })
+  Taro.setNavigationBarTitle({
+    title: '找回密码'
+  })
+
   return (
     <View className={styles.phoneLogin}>
-      <Navbar>
-        <Image src={BACK_ICON} className={styles.back} onClick={goBack}></Image>
-      </Navbar>
-
       <View className={styles.content}>
         <Input
           name={'verify'}
@@ -133,16 +132,16 @@ const Verify = () => {
             })}
           </View>
           <View className={styles.countdown}>
-            {sending ? (
+            {count ? (
               <View>
-                <Text className={styles.countdownCount}>{lastTime}</Text>
+                <Text className={styles.countdownCount}>{count}</Text>
                 <Text className={styles.countdownText}>
                   &nbsp;秒后重新发送验证码
                 </Text>
               </View>
             ) : null}
 
-            {!sending ? (
+            {!count ? (
               <Text className={styles.resend} onClick={sendCode}>
                 重新发送
               </Text>

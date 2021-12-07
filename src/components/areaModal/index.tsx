@@ -17,8 +17,9 @@ const REMOVE_ICON = BASE_URL + '/icon/blueClose.png'
 const AreaModal = props => {
   const { onCancel, callback, value = [], title = '选择地区' } = props
 
-  const { commonStore } = useStores()
+  const { commonStore, userInterface } = useStores()
   const { district = [] } = commonStore
+  const { regionalSorting } = userInterface
   const contentRef = useRef<any>(null)
 
   const [isOpened, setIsOpened] = useState(false)
@@ -36,19 +37,22 @@ const AreaModal = props => {
   }, [])
 
   useEffect(() => {
-    if (isArray(district) && district.length) {
-      console.log(cloneDeep(district))
-      //只要前两个字
-      let sum = cloneDeep(district).map(item => {
+    api()
+  }, [])
+  let api = async () => {
+    let arr = await regionalSorting()
+    console.log(arr)
+    if (arr.code === 200) {
+      let sum = cloneDeep(arr.data).map(item => {
         item.label = item.mergerName.substring(0, 2)
         return item
       })
       setProvinceData(sum)
-      const cData = [...district[0].children]
+      const cData = [...arr.data[0].children]
       setCityData(cData)
-      setProvinceSelect(district[0].value)
+      setProvinceSelect(arr.data[0].value)
     }
-  }, [district])
+  }
 
   const onClose = () => {
     onCancel && onCancel()

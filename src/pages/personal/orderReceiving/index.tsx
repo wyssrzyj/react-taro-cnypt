@@ -78,6 +78,8 @@ const Verify = () => {
     }
   }
   const api = async () => {
+    console.log(123456)
+
     setLoading(false)
     let res = await listData(list)
     if (Array.isArray(res.records)) {
@@ -163,32 +165,41 @@ const Verify = () => {
       url: '/pages/personal/index'
     })
   }
+  console.log(params)
 
   const tabList = [
     {
       title: `待反馈 (${
-        orderQuantity.enterprisePendingFeedbackTotalNum
+        params.feedback
+          ? params.feedback
+          : orderQuantity.enterprisePendingFeedbackTotalNum
           ? orderQuantity.enterprisePendingFeedbackTotalNum
           : 0
       })`
     },
     {
       title: `已确认 (${
-        orderQuantity.enterpriseConfirmeTotalNum
+        params.confirm
+          ? params.confirm
+          : orderQuantity.enterpriseConfirmeTotalNum
           ? orderQuantity.enterpriseConfirmeTotalNum
           : 0
       })`
     },
     {
       title: `已谢绝 (${
-        orderQuantity.enterpriseDeclineTotalNum
+        params.refuse
+          ? params.refuse
+          : orderQuantity.enterpriseDeclineTotalNum
           ? orderQuantity.enterpriseDeclineTotalNum
           : 0
       })`
     },
     {
       title: `被拒绝 (${
-        orderQuantity.enterpriseRefuseTotalNum
+        params.decline
+          ? params.decline
+          : orderQuantity.enterpriseRefuseTotalNum
           ? orderQuantity.enterpriseRefuseTotalNum
           : 0
       })`

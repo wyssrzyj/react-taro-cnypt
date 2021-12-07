@@ -80,6 +80,26 @@ export default class UserInterface {
     }
   }
 
+  // 获取用户提交申请的状态
+  @action getApprovalResult = async params => {
+    try {
+      const res: Partial<Response> = await HTTP.get(
+        `/api/factory/enterprise/get-enterprise-info-approval-result`,
+        params
+      )
+      const { msg = '' } = res
+      if (res.code !== 200) {
+        Taro.atMessage({
+          message: msg,
+          type: 'error'
+        })
+      }
+      return res
+    } catch (e) {
+      return e
+    }
+  }
+
   // 账号安全 原密码修改密码
   @action changePassword = async params => {
     try {
@@ -337,12 +357,11 @@ export default class UserInterface {
     } catch (e) {}
   }
 
-  // 获取用户提交申请的状态
-  @action getApprovalResult = async params => {
+  //排序获取地区信息树
+  @action regionalSorting = async () => {
     try {
       const res: Partial<Response> = await HTTP.get(
-        `/api/factory/enterprise/get-enterprise-info-approval-result`,
-        params
+        `/api/factory/district/list-tree-by-sort`
       )
       const { msg = '' } = res
       if (res.code !== 200) {

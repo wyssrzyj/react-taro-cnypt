@@ -95,7 +95,7 @@ function index({ data, deleteMethod, earlyEnd }) {
   // 再来一单
   const oneMoreOrder = id => {
     Taro.navigateTo({
-      url: `/pages/publish/index?id=${id}`
+      url: `/pages/publish/index?id=${id}&&ids=${data.id}`
     })
   }
   //查看原因
@@ -105,9 +105,13 @@ function index({ data, deleteMethod, earlyEnd }) {
       data.enterprisePendingNum +
       data.enterpriseConfirmeNum +
       data.enterpriseRefuseTotalNum
+    let feedback = data.enterprisePendingNum || 0
+    let confirm = data.enterpriseConfirmeNum || 0
+    let refuse = data.enterpriseRefuseTotalNum || 0
+    let decline = 0
     if (sum !== 0) {
       Taro.navigateTo({
-        url: `/pages/personal/orderReceiving/index?ids=${e}`
+        url: `/pages/personal/orderReceiving/index?ids=${e}&feedback=${feedback}&confirm=${confirm}&refuse=${refuse}&decline=${decline}&tid=${2}`
       })
     }
   }
