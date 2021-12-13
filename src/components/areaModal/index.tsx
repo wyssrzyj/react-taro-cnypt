@@ -60,6 +60,7 @@ const AreaModal = props => {
 
   const submit = () => {
     callback && callback(selectedValues)
+
     onClose()
   }
 

@@ -47,7 +47,6 @@ const Personal = () => {
   // 用户信息
   const pickUpInformation = async e => {
     let res = await userInformation(e)
-
     if (res) {
       setList(res)
     }

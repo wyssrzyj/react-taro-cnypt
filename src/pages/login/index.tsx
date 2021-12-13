@@ -1,7 +1,7 @@
 import styles from './index.module.less'
 import { View, Image, Text, Button } from '@tarojs/components'
 import Taro from '@tarojs/taro'
-import { Icon, Navbar } from '@/components/index'
+import { Icon } from '@/components/index'
 import { useEffect } from 'react'
 import { useStores, observer } from '@/store/mobx'
 
@@ -11,9 +11,6 @@ export const BLCAK_BACK_ICON =
 const Login = () => {
   const { loginStore } = useStores()
   const { getSessionId, wxLogin, setWxInfo, checkPwdExist } = loginStore
-  // const router = useRouter()
-  // const { params } = router
-  // const { source, id } = params
 
   useEffect(() => {
     Taro.login({
@@ -58,11 +55,6 @@ const Login = () => {
 
   const toPhoneLogin = () => {
     Taro.navigateTo({ url: '/pages/login/phoneLogin/index' })
-  }
-
-  const goBack = () => {
-    // Taro.navigateBack()
-    Taro.redirectTo({ url: '/pages/personal/index' })
   }
 
   return (
