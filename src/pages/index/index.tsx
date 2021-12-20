@@ -183,11 +183,13 @@ const Home = () => {
 
   const banners = [
     {
-      img: 'https://capacity-platform.oss-cn-hangzhou.aliyuncs.com/capacity-platform/mobile/banner/banner1.jpg',
+      img: 'https://capacity-platform.oss-cn-hangzhou.aliyuncs.com/capacity-platform/mobile/images/307e604da5016255797e9bb0a0608b8.jpg',
+      // img: 'https://capacity-platform.oss-cn-hangzhou.aliyuncs.com/capacity-platform/mobile/banner/banner1.jpg',
       url: '/pages/index/index'
     },
     {
-      img: 'https://capacity-platform.oss-cn-hangzhou.aliyuncs.com/capacity-platform/mobile/banner/banner2.jpg',
+      img: 'https://capacity-platform.oss-cn-hangzhou.aliyuncs.com/capacity-platform/mobile/images/56b72c3b03dbb14c197e92d3bb8a039.jpg',
+      // img: 'https://capacity-platform.oss-cn-hangzhou.aliyuncs.com/capacity-platform/mobile/banner/banner2.jpg',
       url: '/pages/index/index'
     }
   ]
