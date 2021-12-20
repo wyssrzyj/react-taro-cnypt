@@ -3,8 +3,8 @@ import { View, Swiper, SwiperItem, Image } from '@tarojs/components'
 import CusTabs from '@/components/cusTabs'
 import Taro from '@tarojs/taro'
 
-const BANNER_1 =
-  'https://capacity-platform.oss-cn-hangzhou.aliyuncs.com/capacity-platform/mobile/banner/banner1.jpg'
+const BANNER_1 = +''
+;('https://capacity-platform.oss-cn-hangzhou.aliyuncs.com/capacity-platform/mobile/banner/banner1.jpg')
 const BANNER_2 =
   'https://capacity-platform.oss-cn-hangzhou.aliyuncs.com/capacity-platform/mobile/banner/banner2.jpg'
 

@@ -233,6 +233,9 @@ const Search = () => {
   }
 
   const handleChange = (value, field) => {
+    console.log(value)
+    console.log(field)
+
     const nParams = cloneDeep(params)
     nParams[field] = value
     setPageNum(1)

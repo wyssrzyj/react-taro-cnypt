@@ -46,8 +46,9 @@ const FactoryDetail = () => {
   useEffect(() => {
     ;(async () => {
       const orderIssuer = await orderIssuerDetail(id)
-      const arr = await applyForReceipt({ inquiryId: ids }) //判断电话按钮是否显示
-      setButtonDisplay(arr.data)
+      const res = await applyForReceipt({ inquiryId: ids }) //判断电话按钮是否显示
+
+      setButtonDisplay(res.data)
       orderIssuer.establishedTime = orderIssuer.establishedTime
         ? moment(orderIssuer.establishedTime).format('YYYY')
         : null
