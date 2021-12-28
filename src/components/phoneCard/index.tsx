@@ -2,10 +2,14 @@ import { useStores, observer } from '@/store/mobx'
 import { View, Text, Image } from '@tarojs/components'
 import styles from './index.module.less'
 import { isEmpty } from 'lodash'
-import Taro from '@tarojs/taro'
+
 import { useEffect, useState } from 'react'
 import classNames from 'classnames'
-
+import Taro, {
+  useReachBottom,
+  useRouter,
+  getCurrentInstance
+} from '@tarojs/taro'
 const ICON =
   'https://capacity-platform.oss-cn-hangzhou.aliyuncs.com/capacity-platform/mobile/icon/prompt.png'
 const PHONE_ICON =
@@ -23,6 +27,7 @@ const PHONE_ICON =
  * @returns
  */
 const PhoneCard = props => {
+  const { params } = useRouter()
   const {
     data,
     person = 'contactsName',

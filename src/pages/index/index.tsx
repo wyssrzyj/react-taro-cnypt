@@ -65,6 +65,9 @@ const Home = () => {
       await getDistrict()
     })()
   }, [])
+  useEffect(() => {
+    Taro.removeStorageSync('viewPhone')
+  }, [])
 
   useEffect(() => {
     ;(async () => {

@@ -60,6 +60,7 @@ const PwdLogin = () => {
   }
 
   const submit = async () => {
+    console.log('密码登录')
     if (loginDisabled) return
     try {
       const values = {
@@ -72,8 +73,15 @@ const PwdLogin = () => {
 
       if (res && res.success) {
         setError(false)
-
-        Taro.redirectTo({ url: '/pages/index/index' })
+        if (Taro.getStorageSync('viewPhone')) {
+          console.log('有值')
+          Taro.redirectTo({ url: Taro.getStorageSync('viewPhone') })
+        } else {
+          console.log('没值')
+          Taro.redirectTo({ url: '/pages/index/index' })
+        }
+        // console.log('密码登录')
+        // console.log('取地址', Taro.getStorageSync('viewPhone'))
       } else {
         setError(true)
       }

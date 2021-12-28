@@ -45,7 +45,13 @@ const Login = () => {
                 url: `/pages/login/phoneLogin/setPwd?id=${res.data.userId}`
               })
             } else {
-              Taro.redirectTo({ url: '/pages/index/index' })
+              if (Taro.getStorageSync('viewPhone')) {
+                console.log('有值')
+                Taro.redirectTo({ url: Taro.getStorageSync('viewPhone') })
+              } else {
+                console.log('没值')
+                Taro.redirectTo({ url: '/pages/index/index' })
+              }
             }
           } catch (error) {}
         }
