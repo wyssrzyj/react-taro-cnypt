@@ -66,7 +66,7 @@ const Home = () => {
     })()
   }, [])
   useEffect(() => {
-    Taro.removeStorageSync('viewPhone')
+    Taro.removeStorageSync('pathUrl')
   }, [])
 
   useEffect(() => {

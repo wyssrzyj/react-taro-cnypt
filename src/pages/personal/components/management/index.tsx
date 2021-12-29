@@ -50,7 +50,7 @@ const Managemenet = () => {
         enterpriseId: userInfo.enterpriseId
       })
       if (res.code === 200) {
-        setUserStatus(res.data.infoApprovalStatus)
+        setUserStatus(res.data.approvalStatus)
       }
     }
   }

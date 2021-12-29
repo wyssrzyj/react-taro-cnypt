@@ -79,10 +79,10 @@ const Card = props => {
       })
     // 用于未登录用户查看电话 登录后跳转值详情页
     type === 0 &&
-      Taro.setStorageSync('viewPhone', `/pages/orderDetail/index?id=${data.id}`)
+      Taro.setStorageSync('pathUrl', `/pages/orderDetail/index?id=${data.id}`)
     type === 1 &&
       Taro.setStorageSync(
-        'viewPhone',
+        'pathUrl',
         `/pages/factoryDetail/index?id=${data.enterpriseId}`
       )
   }

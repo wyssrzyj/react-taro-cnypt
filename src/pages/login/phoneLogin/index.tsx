@@ -114,7 +114,7 @@ const PhoneLogin = () => {
 
   const submit = async () => {
     console.log('手机号登录')
-    console.log('取地址', Taro.getStorageSync('viewPhone'))
+    console.log('取地址', Taro.getStorageSync('pathUrl'))
 
     if (loginDisabled) return
     try {
@@ -137,11 +137,9 @@ const PhoneLogin = () => {
             url: `/pages/login/phoneLogin/setPwd?id=${res.data.userId}`
           })
         } else {
-          if (Taro.getStorageSync('viewPhone')) {
-            console.log('有值')
-            Taro.redirectTo({ url: Taro.getStorageSync('viewPhone') })
+          if (Taro.getStorageSync('pathUrl')) {
+            Taro.redirectTo({ url: Taro.getStorageSync('pathUrl') })
           } else {
-            console.log('没值')
             Taro.redirectTo({ url: '/pages/index/index' })
           }
         }
