@@ -72,6 +72,7 @@ const FactoryEntry = () => {
   useEffect(() => {
     ;(async () => {
       const enterpriseInfo = await getEnterpriseInfo()
+
       if (enterpriseInfo && enterpriseInfo.factoryId) {
         const photos = await getFactoryPhotos(enterpriseInfo.factoryId)
         const photoKeys = Reflect.ownKeys(photos)

@@ -18,8 +18,6 @@ let signOuts =
 
 let factory =
   'https://capacity-platform.oss-cn-hangzhou.aliyuncs.com/capacity-platform/mobile/icon/factory.png'
-console.log(343 / 150)
-
 const Managemenet = () => {
   // const { userInfo, list } = props
   const { userInterface } = useStores()

@@ -86,6 +86,9 @@ const OrderIssueEntry = () => {
           }
         ]
       }
+      enterpriseInfo['districtId'] = Number(enterpriseInfo['districtId'])
+      enterpriseInfo['provinceId'] = Number(enterpriseInfo['provinceId'])
+      enterpriseInfo['cityId'] = Number(enterpriseInfo['cityId'])
       setOldData(enterpriseInfo)
       setParams(enterpriseInfo)
     })()
@@ -317,7 +320,7 @@ const OrderIssueEntry = () => {
     }
   })
   Taro.setNavigationBarTitle({
-    title: modify ? '企业管理' : '发单商入驻'
+    title: modify ? '企业管理666' : '发单商入驻'
   })
 
   return (
