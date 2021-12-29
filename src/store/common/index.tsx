@@ -27,7 +27,10 @@ export default class CommonStore {
       const res: Partial<Response> = await HTTP.get(
         '/api/factory/district/list-tree'
       )
+
       if (res.code === 200) {
+        console.log(res.data)
+
         runInAction(() => {
           this.district = res.data
         })

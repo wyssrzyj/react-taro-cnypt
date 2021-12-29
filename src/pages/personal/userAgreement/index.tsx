@@ -71,7 +71,7 @@ const userAgreement = () => {
         <View className={styles.content}>
           <Text>
             　
-            （1）《隐私政策》：优产严格保护您的信息安全与隐私，对您个人信息的收集、使用和共享严格遵守《优产隐私政策》；
+            （1）《隐私政策》：优产严格保护您的信息安全与隐私，对您个人信息的收集、使用和共享严格遵守《隐私政策》；
           </Text>
         </View>
         <View className={styles.content}>

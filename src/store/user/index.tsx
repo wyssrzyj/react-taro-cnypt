@@ -361,7 +361,7 @@ export default class UserInterface {
   @action regionalSorting = async () => {
     try {
       const res: Partial<Response> = await HTTP.get(
-        `/api/factory/district/list-tree-by-sort`
+        `/api/factory/district/list-tree`
       )
       const { msg = '' } = res
       if (res.code !== 200) {
