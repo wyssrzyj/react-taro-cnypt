@@ -320,7 +320,7 @@ const OrderIssueEntry = () => {
     }
   })
   Taro.setNavigationBarTitle({
-    title: modify ? '企业管理666' : '发单商入驻'
+    title: modify ? '企业管理' : '发单商入驻'
   })
 
   return (
