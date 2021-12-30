@@ -108,6 +108,9 @@ const FactoryEntry = () => {
       arrKeys.forEach(item => {
         enterpriseInfo[item] = enterpriseInfo[item] || []
       })
+      enterpriseInfo['districtId'] = Number(enterpriseInfo['districtId'])
+      enterpriseInfo['provinceId'] = Number(enterpriseInfo['provinceId'])
+      enterpriseInfo['cityId'] = Number(enterpriseInfo['cityId'])
       setOldData(enterpriseInfo)
       setParams(enterpriseInfo)
     })()
