@@ -122,7 +122,7 @@ const FactoryDetail = () => {
 
   const phoneCall = () => {
     Taro.makePhoneCall({
-      phoneNumber: data['mobilePhone'] //仅为示例，并非真实的电话号码
+      phoneNumber: data['mobilePhone'] //.仅为示例，并非真实的电话号码
     })
   }
 
