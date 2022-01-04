@@ -15,6 +15,7 @@ const OrderDetail = () => {
   const router = useRouter()
   const { params } = router
   const { id } = params
+  Taro.setStorageSync('pathUrl', `${router.path}?id=${id}`)
 
   const userInfomation = Taro.getStorageSync('userInfo')
     ? JSON.parse(Taro.getStorageSync('userInfo'))

@@ -15,7 +15,7 @@ const FactoryDetail = () => {
   const router = useRouter()
   const { params } = router
   const { id } = params
-
+  Taro.setStorageSync('pathUrl', `${router.path}?id=${id}`)
   const { factoryStore } = useStores()
   const { factoryDetail } = factoryStore
   const userInfomation = Taro.getStorageSync('userInfo')
