@@ -15,7 +15,7 @@ const Card = props => {
   const { data, type = 0 } = props
   // type 0 订单 1 工厂
   const img = type === 0 ? data.stylePicture : data.pictureUrl
-  // ('🚀 ~ file: card.tsx ~ line 17 ~ img', img)
+  // ('🚀 ~ file: card.tsx ~ line 17 ~ img', img)。
   const title = type === 0 ? data.name : data.factoryName
   const area = type === 0 ? data.area.join(',') : data.factoryDistrict
   const { commonStore } = useStores()
