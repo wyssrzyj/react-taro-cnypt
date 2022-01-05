@@ -77,14 +77,6 @@ const Card = props => {
       Taro.navigateTo({
         url: `/pages/factoryDetail/index?id=${data.enterpriseId}`
       })
-    // 用于未登录用户查看电话 登录后跳转值详情页
-    type === 0 &&
-      Taro.setStorageSync('pathUrl', `/pages/orderDetail/index?id=${data.id}`)
-    type === 1 &&
-      Taro.setStorageSync(
-        'pathUrl',
-        `/pages/factoryDetail/index?id=${data.enterpriseId}`
-      )
   }
   const dingdong = v => {
     return goodsNum.filter(item => item.value === v)[0].label
