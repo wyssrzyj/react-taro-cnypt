@@ -36,7 +36,12 @@ export default {
         'orderReceiving/index', //接单管理
         'privacyAgreement/index', //隐私
         'userAgreement/index', //用户协议
-        'personalInformation/index' //个人信息
+        'personalInformation/index', //个人信息
+        'newQualification/index', //新增资质
+        'qualificationCertification/index', //资质认证
+        'certificateManagement/index', //证件管理
+        'enterpriseCertificate/index' //企业证件
+        // 'findingsOfAudit/index' //审批结果
       ]
     },
     {

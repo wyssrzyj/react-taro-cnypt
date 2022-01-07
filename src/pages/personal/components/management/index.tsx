@@ -87,6 +87,16 @@ const Managemenet = () => {
       url: '/pages/orderIssueEntry/index?modify=1'
     })
   }
+  const qualification = () => {
+    Taro.navigateTo({
+      url: '/pages/personal/qualificationCertification/index?id'
+    })
+  }
+  const management = () => {
+    Taro.navigateTo({
+      url: '/pages/personal/certificateManagement/index'
+    })
+  }
 
   return (
     <View>
@@ -145,6 +155,28 @@ const Managemenet = () => {
             <Image className={styles.removeIcon} src={account}></Image>
           </View>
           <Text className={styles.txt}>账号管理</Text>
+        </View>
+        <Text className={styles.iconmy}>
+          <AtIcon value="chevron-right" size="15" color="#999999"></AtIcon>
+        </Text>
+      </View>
+      <View className={styles.order} onClick={management}>
+        <View className={styles.content}>
+          <View className={styles.remove}>
+            <Image className={styles.removeIcon} src={account}></Image>
+          </View>
+          <Text className={styles.txt}>企业证件</Text>
+        </View>
+        <Text className={styles.iconmy}>
+          <AtIcon value="chevron-right" size="15" color="#999999"></AtIcon>
+        </Text>
+      </View>
+      <View className={styles.order} onClick={qualification}>
+        <View className={styles.content}>
+          <View className={styles.remove}>
+            <Image className={styles.removeIcon} src={account}></Image>
+          </View>
+          <Text className={styles.txt}>资质认证</Text>
         </View>
         <Text className={styles.iconmy}>
           <AtIcon value="chevron-right" size="15" color="#999999"></AtIcon>
