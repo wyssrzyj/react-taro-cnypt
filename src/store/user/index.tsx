@@ -115,6 +115,21 @@ export default class UserInterface {
     }
   }
 
+  // 企业证件审批结果
+  @action enterpriseCertificateApprovalResults = async params => {
+    try {
+      const res: Partial<Response> = await HTTP.get(
+        `/api/factory/enterprise/get-enterprise-certificate-approval-result`,
+        params
+      )
+      if (res.code !== 200) {
+      }
+      return res.data
+    } catch (e) {
+      return e
+    }
+  }
+
   // 账号安全 原密码修改密码
   @action changePassword = async params => {
     try {
@@ -701,6 +716,7 @@ export default class UserInterface {
       return res.data
     } catch (e) {}
   }
+  data
 
   // 验证码校验
   @action checkVerifyCode = async params => {

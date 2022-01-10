@@ -4,12 +4,16 @@ import { View, Image, Text } from '@tarojs/components'
 import { AtTabs } from 'taro-ui'
 import Taro, { useReachBottom } from '@tarojs/taro'
 import StyleStructure from './styleStructure/index'
-import { useStores, observer } from '@/store/mobx'
+import { useStores, observer, toJS } from '@/store/mobx'
 
 export const ORDER_EMPTY =
   'https://capacity-platform.oss-cn-hangzhou.aliyuncs.com/capacity-platform/platform/order_empty.png'
 
 const Verify = () => {
+  const { commonStore } = useStores()
+  const { dictionary } = commonStore
+  const { factoryCertificate = [] } = dictionary
+
   const defaultPageSize = 10
   const { userInterface } = useStores()
   const {
@@ -39,6 +43,13 @@ const Verify = () => {
   const api = async () => {
     setLoading(false)
     let res = await approvalListOfBackgroundQualificationStatus(list)
+    if (res.records) {
+      res.records.map(item => {
+        item.certification = factoryCertificate.filter(
+          v => v.value === item.certificationName[0].certificationLabel
+        )
+      })
+    }
     setReallyLists(res.records)
     setDisplay(false)
   }

@@ -65,9 +65,9 @@ const Verify = () => {
     ).enterpriseId
     totalData.id = params.id ? params.id : null
     // 判断 选择的时间是否大于现在的时间  大于传 1 反之传3
-    totalData.status = totalData.expiryDate > date ? 1 : 3
+    totalData.status =
+      totalData.expiryDate === null ? 1 : totalData.expiryDate > date ? 1 : 3
     let res = await saveUpdate(totalData)
-
     setSubmit(true)
     if (res.code === 200) {
       Taro.navigateTo({

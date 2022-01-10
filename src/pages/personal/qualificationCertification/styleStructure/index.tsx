@@ -84,7 +84,7 @@ function index({ data, deleteMethod }) {
             </View>
           </View>
           <View>
-            <View className={styles.factory}>授权证书</View>
+            <View className={styles.factory}>{data.certificationLabel}</View>
             <View className={styles.factory}>
               证书编号: {data.certificationCode}
             </View>

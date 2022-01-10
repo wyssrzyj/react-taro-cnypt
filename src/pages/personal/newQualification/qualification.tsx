@@ -1,9 +1,8 @@
-import React, { useState, useEffect } from 'react'
-import Taro, { Component } from '@tarojs/taro'
-import { View, Text, Picker } from '@tarojs/components'
+import { useState, useEffect } from 'react'
+import { View, Picker } from '@tarojs/components'
 import { AtList, AtListItem } from 'taro-ui'
 import { useStores, toJS } from '@/store/mobx'
-import { isEmpty, isNil } from 'lodash'
+import { isEmpty } from 'lodash'
 import styles from './index.module.less'
 const qualification = props => {
   const { onChanges, value } = props

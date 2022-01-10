@@ -40,8 +40,8 @@ export default {
         'newQualification/index', //新增资质
         'qualificationCertification/index', //资质认证
         'certificateManagement/index', //证件管理
-        'enterpriseCertificate/index' //企业证件
-        // 'findingsOfAudit/index' //审批结果
+        'enterpriseCertificate/index', //企业证件
+        'findingsOfAudit/index' //审批结果
       ]
     },
     {
