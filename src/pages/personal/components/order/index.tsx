@@ -7,8 +7,8 @@ import { useStores } from '@/store/mobx'
 const order = () => {
   const { userInterface } = useStores()
   const { IssuerOrderQuantity, issuerMyOrderQuantity } = userInterface
-  const [orderQuantity, setOrderQuantity] = useState<any>([])
-  const [myOrderQuantity, setMyOrderQuantity] = useState<any>([])
+  const [orderQuantity, setOrderQuantity] = useState<any[]>([])
+  const [myOrderQuantity, setMyOrderQuantity] = useState<any[]>([])
 
   useEffect(() => {
     api()
@@ -16,6 +16,7 @@ const order = () => {
   const api = async () => {
     const res = await IssuerOrderQuantity()
     const res1 = await issuerMyOrderQuantity()
+    console.log(res1)
 
     if (res.code === 200) {
       const data = [
@@ -112,21 +113,23 @@ const order = () => {
                   order(item)
                 }}
               >
-                {item.num > 0 ? (
-                  <View
-                    className={
-                      item.num < 10
-                        ? styles.tips
-                        : item.num < 100
-                        ? styles.tip
-                        : styles.tipPlus
-                    }
-                  >
-                    {item.num <= 99 ? item.num : '99+'}
-                  </View>
-                ) : null}
+                <View className={styles.imgContent}>
+                  {item.num > 0 ? (
+                    <View
+                      className={
+                        item.num < 10
+                          ? styles.topTips
+                          : item.num < 100
+                          ? styles.topTip
+                          : styles.tipPlus
+                      }
+                    >
+                      {item.num <= 99 ? item.num : '99+'}
+                    </View>
+                  ) : null}
+                  <Image className={styles.imgs} src={item.image} />
+                </View>
 
-                <Image className={styles.imgs} src={item.image} />
                 <View className={styles.test}>
                   <Text>{item.value}</Text>
                 </View>
