@@ -41,23 +41,12 @@ function index({ data, deleteMethod }) {
   }
   //查看原因
 
-  const details = data => {
-    Taro.navigateTo({
-      url: '/pages/orderDetail/index?id=' + data.id
-    })
-  }
-
   return (
     //   主体
     <View className={styles.external}>
       <View className={styles.major}>
         {/* 主体 */}
-        <View
-          className={styles.subject}
-          onClick={() => {
-            details(data)
-          }}
-        >
+        <View className={styles.subject}>
           <View>
             {+data.status === 0 ? (
               <View className={styles.state}>生效中</View>
