@@ -100,6 +100,36 @@ export default class UserInterface {
     }
   }
 
+  // 查询单个资质认证
+  @action querySingleQualification = async params => {
+    try {
+      const res: Partial<Response> = await HTTP.get(
+        `/api/factory/enterprise-qualification-certificate/get`,
+        params
+      )
+      if (res.code !== 200) {
+      }
+      return res.data
+    } catch (e) {
+      return e
+    }
+  }
+
+  // 企业证件审批结果
+  @action enterpriseCertificateApprovalResults = async params => {
+    try {
+      const res: Partial<Response> = await HTTP.get(
+        `/api/factory/enterprise/get-enterprise-certificate-approval-result`,
+        params
+      )
+      if (res.code !== 200) {
+      }
+      return res.data
+    } catch (e) {
+      return e
+    }
+  }
+
   // 账号安全 原密码修改密码
   @action changePassword = async params => {
     try {
@@ -161,6 +191,34 @@ export default class UserInterface {
     try {
       const res: Partial<Response> = await HTTP.post(
         '/api/user/saveBasicUserInfo',
+        params
+      )
+      if (res.code === 200) {
+        return res
+      }
+    } catch (e) {
+      return e
+    }
+  }
+  // 企业证件提交
+  @action enterpriseCertificateSubmission = async params => {
+    try {
+      const res: Partial<Response> = await HTTP.post(
+        '/api/factory/enterprise/submit-enterprise-credential',
+        params
+      )
+      if (res.code === 200) {
+        return res
+      }
+    } catch (e) {
+      return e
+    }
+  }
+  // 保存更新
+  @action saveUpdate = async params => {
+    try {
+      const res: Partial<Response> = await HTTP.post(
+        '/api/factory/enterprise-qualification-certificate/save',
         params
       )
       if (res.code === 200) {
@@ -232,6 +290,22 @@ export default class UserInterface {
       )
 
       return res
+    } catch (e) {
+      Taro.hideLoading()
+
+      return e
+    }
+  }
+
+  // 获取后台资质状态审批列表
+  @action approvalListOfBackgroundQualificationStatus = async params => {
+    try {
+      const res: Partial<Response> = await HTTP.post(
+        `/api/factory/enterprise-qualification-certificate/list`,
+        params
+      )
+
+      return res.data
     } catch (e) {
       Taro.hideLoading()
 
@@ -354,6 +428,24 @@ export default class UserInterface {
         })
       }
       return res
+    } catch (e) {}
+  }
+
+  // 获取企业证件信息
+  @action obtainEnterpriseCertificateInformation = async params => {
+    try {
+      const res: Partial<Response> = await HTTP.get(
+        `/api/factory/enterprise/get-enterprise-credential`,
+        params
+      )
+      const { msg = '' } = res
+      if (res.code !== 200) {
+        Taro.atMessage({
+          message: msg,
+          type: 'error'
+        })
+      }
+      return res.data
     } catch (e) {}
   }
 
@@ -624,6 +716,7 @@ export default class UserInterface {
       return res.data
     } catch (e) {}
   }
+  data
 
   // 验证码校验
   @action checkVerifyCode = async params => {
@@ -668,6 +761,18 @@ export default class UserInterface {
         icon: 'none',
         duration: 1500
       })
+      return e
+    }
+  }
+
+  // 删除资质证件
+  @action deleteQualificationCertificate = async value => {
+    try {
+      const res: Partial<Response> = await HTTP.delete(
+        `/api/factory/enterprise-qualification-certificate/delete?id=${value}`
+      )
+      return res
+    } catch (e) {
       return e
     }
   }

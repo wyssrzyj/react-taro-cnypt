@@ -18,6 +18,11 @@ let signOuts =
 
 let factory =
   'https://capacity-platform.oss-cn-hangzhou.aliyuncs.com/capacity-platform/mobile/icon/factory.png'
+
+let authentication =
+  'https://capacity-platform.oss-cn-hangzhou.aliyuncs.com/capacity-platform/mobile/icon/authentication.png'
+let certificates =
+  'https://capacity-platform.oss-cn-hangzhou.aliyuncs.com/capacity-platform/mobile/icon/certificates.png'
 const Managemenet = () => {
   // const { userInfo, list } = props
   const { userInterface } = useStores()
@@ -87,6 +92,16 @@ const Managemenet = () => {
       url: '/pages/orderIssueEntry/index?modify=1'
     })
   }
+  const qualification = () => {
+    Taro.navigateTo({
+      url: '/pages/personal/qualificationCertification/index?id'
+    })
+  }
+  const management = () => {
+    Taro.navigateTo({
+      url: '/pages/personal/certificateManagement/index'
+    })
+  }
 
   return (
     <View>
@@ -150,6 +165,35 @@ const Managemenet = () => {
           <AtIcon value="chevron-right" size="15" color="#999999"></AtIcon>
         </Text>
       </View>
+      {!isNil(userInfo.enterpriseType) ? (
+        <>
+          <View className={styles.order} onClick={management}>
+            <View className={styles.content}>
+              <View className={styles.remove}>
+                <Image className={styles.removeIcon} src={certificates}></Image>
+              </View>
+              <Text className={styles.txt}>企业证件</Text>
+            </View>
+            <Text className={styles.iconmy}>
+              <AtIcon value="chevron-right" size="15" color="#999999"></AtIcon>
+            </Text>
+          </View>
+          <View className={styles.order} onClick={qualification}>
+            <View className={styles.content}>
+              <View className={styles.remove}>
+                <Image
+                  className={styles.removeIcon}
+                  src={authentication}
+                ></Image>
+              </View>
+              <Text className={styles.txt}>资质认证</Text>
+            </View>
+            <Text className={styles.iconmy}>
+              <AtIcon value="chevron-right" size="15" color="#999999"></AtIcon>
+            </Text>
+          </View>
+        </>
+      ) : null}
 
       <View className={styles.order} onClick={about}>
         <View className={styles.content}>
