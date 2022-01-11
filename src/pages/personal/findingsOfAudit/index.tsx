@@ -38,7 +38,7 @@ const FindingsOfAudit = () => {
   return (
     <View className={styles.content}>
       <View className={styles.container}>
-        {/* 提交成功 .*/}
+        {/* 提交成功 */}
         {data.approvalStatus === '2' ? (
           <>
             <View className={styles.top}>
