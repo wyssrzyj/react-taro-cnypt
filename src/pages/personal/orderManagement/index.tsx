@@ -63,6 +63,7 @@ const Verify = () => {
 
   const api = async () => {
     setLoading(false)
+    list.manualApprovalStatus = list.status === '-2' ? 0 : null
     let res = await orderListData(list)
     if (Array.isArray(res.records)) {
       setReallyLists(res.records)
