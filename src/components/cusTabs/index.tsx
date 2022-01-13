@@ -1,6 +1,5 @@
 import { View } from '@tarojs/components'
 import Taro from '@tarojs/taro'
-import { useEffect } from 'react'
 import styles from './index.module.less'
 
 const CusTabs = () => {

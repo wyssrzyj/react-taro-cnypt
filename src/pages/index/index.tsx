@@ -33,7 +33,7 @@ const Home = () => {
   const [pageNum, setPageNum] = useState(1)
   const [dataSource, setDataSource] = useState<any[]>([])
   const [loading, setLoading] = useState<boolean>(false)
-  const [activeTab, setActiveTab] = useState<number>(0)
+  const [activeTab, setActiveTab] = useState<number>(1)
   const [total, setTotal] = useState<number>(0)
   const [init, setInit] = useState<boolean>(false)
   const [isIOS, setIsIOS] = useState<boolean>(false)
@@ -249,15 +249,6 @@ const Home = () => {
     <View className={styles.container}>
       <View className={styles.tabs}>
         <Text
-          onClick={() => tabClick(0)}
-          className={classNames(
-            styles.tab,
-            activeTab === 0 ? styles.activeTab : ''
-          )}
-        >
-          找订单
-        </Text>
-        <Text
           onClick={() => tabClick(1)}
           className={classNames(
             styles.tab,
@@ -265,6 +256,15 @@ const Home = () => {
           )}
         >
           找工厂
+        </Text>
+        <Text
+          onClick={() => tabClick(0)}
+          className={classNames(
+            styles.tab,
+            activeTab === 0 ? styles.activeTab : ''
+          )}
+        >
+          找订单
         </Text>
       </View>
       <View className={isIOS ? styles.IOSContent : styles.content}>
