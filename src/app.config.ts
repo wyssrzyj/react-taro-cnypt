@@ -41,7 +41,7 @@ export default {
         'qualificationCertification/index', //资质认证
         'certificateManagement/index', //证件管理
         'enterpriseCertificate/index', //企业证件
-        'findingsOfAudit/index' //审批结果
+        'findingsOfAudit/index' //审批结果.
       ]
     },
     {
