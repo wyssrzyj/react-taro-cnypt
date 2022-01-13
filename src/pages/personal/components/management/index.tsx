@@ -99,7 +99,7 @@ const Managemenet = () => {
   }
   const management = () => {
     Taro.navigateTo({
-      url: '/pages/personal/certificateManagement/index'
+      url: '/pages/personal/findingsOfAudit/index'
     })
   }
 
@@ -172,7 +172,7 @@ const Managemenet = () => {
               <View className={styles.remove}>
                 <Image className={styles.removeIcon} src={certificates}></Image>
               </View>
-              <Text className={styles.txt}>企业证件</Text>
+              <Text className={styles.txt}>企业证件管理</Text>
             </View>
             <Text className={styles.iconmy}>
               <AtIcon value="chevron-right" size="15" color="#999999"></AtIcon>

@@ -27,13 +27,17 @@ const FindingsOfAudit = () => {
   }
 
   const accountNumber = () => {
-    Taro.navigateTo({ url: '/pages/personal/enterpriseCertificate/index' })
+    Taro.redirectTo({ url: '/pages/personal/enterpriseCertificate/index' })
   }
-  const confirm = () => {
-    Taro.navigateTo({ url: '/pages/personal/certificateManagement/index' })
+  const confirm = type => {
+    if (type === 'return') {
+      Taro.redirectTo({ url: '/pages/personal/index' })
+    } else {
+      Taro.redirectTo({ url: '/pages/personal/enterpriseCertificate/index' })
+    }
   }
   Taro.setNavigationBarTitle({
-    title: '审核结果'
+    title: '企业证件管理'
   })
   return (
     <View className={styles.content}>
@@ -57,13 +61,24 @@ const FindingsOfAudit = () => {
               </View>
             </View>
 
-            <AtButton
-              onClick={accountNumber}
-              className={styles.btn}
-              type="primary"
-            >
-              返回修改
-            </AtButton>
+            <View className={styles.btnModify}>
+              <View
+                className={styles.return}
+                onClick={() => {
+                  confirm('return')
+                }}
+              >
+                确认
+              </View>
+              <View
+                className={styles.modify}
+                onClick={() => {
+                  confirm('modify')
+                }}
+              >
+                返回修改
+              </View>
+            </View>
           </>
         ) : null}
 
@@ -77,9 +92,24 @@ const FindingsOfAudit = () => {
             <View>
               <View>恭喜您，企业证件审核通过，已为您开通企业相关企业权限</View>
             </View>
-            <AtButton onClick={confirm} className={styles.btn} type="primary">
-              确认
-            </AtButton>
+            <View className={styles.btnModify}>
+              <View
+                className={styles.return}
+                onClick={() => {
+                  confirm('modify')
+                }}
+              >
+                前往修改
+              </View>
+              <View
+                className={styles.modify}
+                onClick={() => {
+                  confirm('return')
+                }}
+              >
+                返回
+              </View>
+            </View>
           </>
         ) : null}
         {data.approvalStatus === '0' ? (
