@@ -3,9 +3,9 @@ import styles from './index.module.less'
 import { View, Text } from '@tarojs/components'
 import { AtInput } from 'taro-ui'
 import { useStores, observer } from '@/store/mobx'
-import { cloneDeep } from 'lodash'
+import { cloneDeep, isEmpty } from 'lodash'
 import Taro from '@tarojs/taro'
-import { ImagePicker } from '@/components'
+import ImagePicker from './imagePicker'
 import { upload } from '@/utils/upload'
 
 const host =
@@ -48,6 +48,7 @@ const Verify = () => {
   }
   // 确认事件
   const onSubmit = async () => {
+    setSubmit(true)
     // 图片处理
     const enterpriseCredentialList = [
       {
@@ -71,10 +72,9 @@ const Verify = () => {
       Taro.getStorageSync('userInfo')
     ).enterpriseId
     let arr = await enterpriseCertificateSubmission(totalData)
-    setSubmit(true)
     if (arr.code === 200) {
       Taro.navigateTo({
-        url: '/pages/personal/certificateManagement/index'
+        url: '/pages/personal/findingsOfAudit/index'
       })
     }
   }
@@ -181,7 +181,7 @@ const Verify = () => {
               </View>
               <View className={styles.txt}>
                 <ImagePicker
-                  addTitle={'logo'}
+                  addTitle={'营业执照'}
                   files={totalData['enterpriseAdjunct'] || []}
                   callback={event => imgsChange(event, 'enterpriseAdjunct')}
                   count={1}
@@ -194,12 +194,17 @@ const Verify = () => {
                 ></ImagePicker>
               </View>
             </View>
+            {console.log(
+              '判断是否有值',
+              isEmpty(totalData['enterpriseAdjunct'])
+            )}
             <View className={styles.division}></View>
-            {submit && !totalData['enterpriseAdjunct'] ? (
+
+            {submit && isEmpty(totalData['enterpriseAdjunct']) ? (
               <View className={styles.tips}>
                 <View className={styles.requiredColor}>
                   <Text className={styles.color}>
-                    <Text className={styles.text}>请上营业执照</Text>
+                    <Text className={styles.text}>请上传营业执照</Text>
                   </Text>
                 </View>
               </View>
@@ -212,12 +217,12 @@ const Verify = () => {
               <View className={styles.title}>
                 <Text className={styles.textImg}>
                   {' '}
-                  <Text className={styles.required}>*</Text>身份证正面
+                  <Text className={styles.required}>*</Text>身份证人像面
                 </Text>
               </View>
               <View className={styles.txt}>
                 <ImagePicker
-                  addTitle={'logo'}
+                  addTitle={'人像面'}
                   files={totalData['positive'] || []}
                   callback={event => imgsChange(event, 'positive')}
                   count={1}
@@ -230,7 +235,7 @@ const Verify = () => {
               </View>
             </View>
             <View className={styles.division}></View>
-            {submit && !totalData['positive'] ? (
+            {submit && isEmpty(totalData['positive']) ? (
               <View className={styles.tips}>
                 <View className={styles.requiredColor}>
                   <Text className={styles.color}>
@@ -251,7 +256,7 @@ const Verify = () => {
               </View>
               <View className={styles.txt}>
                 <ImagePicker
-                  addTitle={'logo'}
+                  addTitle={'国徽面'}
                   files={totalData['reverse'] || []}
                   callback={event => imgsChange(event, 'reverse')}
                   count={1}
@@ -264,7 +269,7 @@ const Verify = () => {
               </View>
             </View>
             <View className={styles.division}></View>
-            {submit && !totalData['reverse'] ? (
+            {submit && isEmpty(totalData['reverse']) ? (
               <View className={styles.tips}>
                 <View className={styles.requiredColor}>
                   <Text className={styles.color}>
@@ -279,10 +284,7 @@ const Verify = () => {
 
       <View className={styles.btn}>
         <View className={styles.onOk} onClick={onSubmit}>
-          确认
-        </View>
-        <View className={styles.cancel} onClick={qualification}>
-          取消
+          提交审核
         </View>
       </View>
     </View>
