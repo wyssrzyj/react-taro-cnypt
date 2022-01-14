@@ -73,17 +73,12 @@ const Verify = () => {
     ).enterpriseId
     let arr = await enterpriseCertificateSubmission(totalData)
     if (arr.code === 200) {
-      Taro.navigateTo({
+      Taro.redirectTo({
         url: '/pages/personal/findingsOfAudit/index'
       })
     }
   }
-  // 取消
-  const qualification = () => {
-    Taro.navigateTo({
-      url: '/pages/personal/certificateManagement/index'
-    })
-  }
+
   Taro.setNavigationBarTitle({
     title: '企业证件管理'
   })
@@ -121,6 +116,7 @@ const Verify = () => {
               </View>
               <View className={styles.txt}>
                 <AtInput
+                  editable={false}
                   name="enterpriseName"
                   border={false}
                   type="text"
