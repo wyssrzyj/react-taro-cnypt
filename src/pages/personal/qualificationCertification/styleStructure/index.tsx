@@ -88,14 +88,13 @@ function index({ data, deleteMethod }) {
         {/* 操作 */}
         <View className={styles.operation}>
           <View>
-            <View className={styles.telephone}>
-              <Text
-                onClick={() => {
-                  oneMoreOrder(data.id)
-                }}
-              >
-                编辑
-              </Text>
+            <View
+              className={styles.telephone}
+              onClick={() => {
+                oneMoreOrder(data.id)
+              }}
+            >
+              <Text>编辑</Text>
             </View>
             <View onClick={showModal} className={styles.cancel}>
               删除记录
@@ -116,7 +115,7 @@ function index({ data, deleteMethod }) {
           <AtModalContent>
             {windowType.type === 'mov' ? (
               <View className={styles.delContent}>
-                <View className={styles.delText}>确定删除订单吗？</View>
+                <View className={styles.delText}>确定删除该资质吗？</View>
               </View>
             ) : null}
             {windowType.type === 'CancelConfirmation' ? (

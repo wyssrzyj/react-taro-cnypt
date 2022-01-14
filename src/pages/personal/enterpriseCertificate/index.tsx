@@ -76,7 +76,7 @@ const Verify = () => {
       Taro.getStorageSync('userInfo')
     ).enterpriseId
 
-    if (!arr.test(totalData.legalPersonName)) {
+    if (!arr.test(totalData.legalPersonName) && totalData['legalPersonName']) {
       let arr = await enterpriseCertificateSubmission(totalData)
       if (arr.code === 200) {
         Taro.redirectTo({

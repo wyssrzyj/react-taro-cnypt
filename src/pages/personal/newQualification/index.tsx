@@ -22,7 +22,7 @@ const Verify = () => {
   const { userInterface } = useStores()
   const { querySingleQualification, saveUpdate } = userInterface
 
-  const [radioDate, setRadioDate] = useState(true) //单选
+  const [radioDate, setRadioDate] = useState(false) //单选
   const [totalData, setTotalData] = useState<any>({}) //总数据
   const [submit, setSubmit] = useState<any>(false) //确认
   const { params } = useRouter() //url数据
@@ -51,14 +51,18 @@ const Verify = () => {
   }
   // 确认事件
   const onSubmit = async () => {
+    setSubmit(true)
     // 数据处理
     const date = Date.now() //获取当前时间
+    const arr = moment(date).format('YYYY-MM-DD')
+    const processingTime = moment(arr).valueOf()
+
     totalData.expiryDate = radioDate
       ? moment(totalData.expiryDate).valueOf()
       : null
-    totalData.certificateImageURI = totalData.certificateImageURI
-      ? totalData.certificateImageURI[0].url
-      : null
+    if (!isEmpty(totalData.certificateImageURI)) {
+      totalData.certificateImageURI = totalData.certificateImageURI[0].url
+    }
     totalData.neverExpire = radioDate ? 0 : 1
     totalData.enterpriseId = JSON.parse(
       Taro.getStorageSync('userInfo')
@@ -66,13 +70,19 @@ const Verify = () => {
     totalData.id = params.id ? params.id : null
     // 判断 选择的时间是否大于现在的时间  大于传 1 反之传3
     totalData.status =
-      totalData.expiryDate === null ? 1 : totalData.expiryDate > date ? 1 : 3
-    let res = await saveUpdate(totalData)
-    setSubmit(true)
-    if (res.code === 200) {
-      Taro.redirectTo({
-        url: '/pages/personal/qualificationCertification/index?id'
-      })
+      totalData.expiryDate === null
+        ? 1
+        : totalData.expiryDate >= processingTime
+        ? 1
+        : 3
+    // 选中图片才可以掉接口
+    if (!isEmpty(totalData['certificateImageURI'])) {
+      let res = await saveUpdate(totalData)
+      if (res.code === 200) {
+        Taro.redirectTo({
+          url: '/pages/personal/qualificationCertification/index?id'
+        })
+      }
     }
   }
   // 取消
@@ -181,21 +191,21 @@ const Verify = () => {
                 <Radio
                   onClick={radioEvent}
                   value={1}
-                  checked={radioDate}
-                  className={styles.radioText}
-                  style={{ transform: 'scale(0.8)' }}
-                >
-                  选择截止时间
-                </Radio>
-
-                <Radio
-                  onClick={radioEvent}
-                  value={1}
                   checked={!radioDate}
                   className={styles.radioText}
                   style={{ transform: 'scale(0.8)' }}
                 >
                   长期有效
+                </Radio>
+
+                <Radio
+                  onClick={radioEvent}
+                  value={1}
+                  checked={radioDate}
+                  className={styles.radioText}
+                  style={{ transform: 'scale(0.8)' }}
+                >
+                  选择截止时间
                 </Radio>
               </View>
             </View>
@@ -272,7 +282,7 @@ const Verify = () => {
               </View>
             </View>
             <View className={styles.division}></View>
-            {submit && !totalData['certificateImageURI'] ? (
+            {submit && isEmpty(totalData['certificateImageURI']) ? (
               <View className={styles.tips}>
                 <View className={styles.requiredColor}>
                   <Text className={styles.color}>
