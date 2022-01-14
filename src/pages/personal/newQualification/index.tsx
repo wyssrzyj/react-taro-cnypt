@@ -258,7 +258,7 @@ const Verify = () => {
               </View>
               <View className={styles.txt}>
                 <ImagePicker
-                  addTitle={'logo'}
+                  addTitle={'资质上传'}
                   files={totalData['certificateImageURI'] || []}
                   callback={event => imgsChange(event, 'certificateImageURI')}
                   count={1}
