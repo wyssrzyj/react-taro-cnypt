@@ -35,7 +35,7 @@ function index({ data, deleteMethod }) {
   }
   // 编辑
   const oneMoreOrder = id => {
-    Taro.navigateTo({
+    Taro.redirectTo({
       url: `/pages/personal/newQualification/index?id=${id}`
     })
   }

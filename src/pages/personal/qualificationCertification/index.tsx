@@ -132,7 +132,7 @@ const Verify = () => {
         </View>
 
         <View className={styles.tobButton} onClick={newQualification}>
-          新增资质
+          新增按钮
         </View>
       </View>
       {/* 主体 */}

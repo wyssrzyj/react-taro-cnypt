@@ -70,14 +70,14 @@ const Verify = () => {
     let res = await saveUpdate(totalData)
     setSubmit(true)
     if (res.code === 200) {
-      Taro.navigateTo({
+      Taro.redirectTo({
         url: '/pages/personal/qualificationCertification/index?id'
       })
     }
   }
   // 取消
   const qualification = () => {
-    Taro.navigateTo({
+    Taro.redirectTo({
       url: '/pages/personal/qualificationCertification/index?id'
     })
   }
