@@ -71,9 +71,9 @@ const Verify = () => {
     // 判断 选择的时间是否大于现在的时间  大于传 1 反之传3
     totalData.status =
       totalData.expiryDate === null
-        ? 1
+        ? 2
         : totalData.expiryDate >= processingTime
-        ? 1
+        ? 2
         : 3
     // 选中图片才可以掉接口
     if (!isEmpty(totalData['certificateImageURI'])) {

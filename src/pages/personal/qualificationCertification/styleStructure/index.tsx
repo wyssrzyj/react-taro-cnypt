@@ -48,13 +48,13 @@ function index({ data, deleteMethod }) {
         {/* 主体 */}
         <View className={styles.subject}>
           <View>
-            {+data.status === 0 ? (
+            {+data.status === 1 ? (
               <View className={styles.state}>生效中</View>
             ) : null}
-            {+data.status === 1 ? (
+            {+data.status === 2 ? (
               <View className={styles.ended}>审核中</View>
             ) : null}
-            {+data.status === 2 ? (
+            {+data.status === 0 ? (
               <View className={styles.fail}>审核失败</View>
             ) : null}
             {+data.status === 3 ? (

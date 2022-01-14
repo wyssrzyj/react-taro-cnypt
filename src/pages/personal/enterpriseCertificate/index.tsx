@@ -121,7 +121,10 @@ const Verify = () => {
                 </Text>
               </View>
               <View className={styles.txt}>
-                <AtInput
+                <View className={styles.written}>
+                  {totalData['enterpriseName'] || ''}
+                </View>
+                {/* <AtInput
                   editable={false}
                   name="enterpriseName"
                   border={false}
@@ -129,10 +132,10 @@ const Verify = () => {
                   placeholder="请填写资质名称"
                   value={totalData['enterpriseName'] || ''}
                   onChange={event => valuesChange('enterpriseName', event)}
-                />
+                /> */}
               </View>
             </View>
-            {submit && !totalData['enterpriseName'] ? (
+            {/* {submit && !totalData['enterpriseName'] ? (
               <View className={styles.tips}>
                 <View className={styles.requiredColor}>
                   <Text className={styles.color}>
@@ -140,7 +143,7 @@ const Verify = () => {
                   </Text>
                 </View>
               </View>
-            ) : null}
+            ) : null} */}
           </>
           {/* 法人姓名 */}
           <>

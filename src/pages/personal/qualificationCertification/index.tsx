@@ -33,7 +33,7 @@ const Verify = () => {
     enterpriseId: JSON.parse(Taro.getStorageSync('userInfo')).enterpriseId, //企业id
     pageNum: pageNum,
     pageSize: defaultPageSize,
-    status: 1 //状态
+    status: 2 //状态
   })
   // 获取数据
   useEffect(() => {
@@ -56,9 +56,24 @@ const Verify = () => {
 
   // tabs
   const AtTabsbind = e => {
+    if (e === 0) {
+      setList({ ...list, status: 1 })
+    }
+    if (e === 1) {
+      setList({ ...list, status: 2 })
+    }
+
+    if (e === 2) {
+      setList({ ...list, status: 0 })
+    }
+
+    if (e === 3) {
+      setList({ ...list, status: 3 })
+    }
+
     // setTotalPageNumber(1) //共有几页
     // setPageNum(1) //下拉当前是第几页
-    setList({ ...list, status: e })
+    // setList({ ...list, status: e })
     setCurrent(e)
   }
   // 触底更新
