@@ -23,6 +23,7 @@ const Verify = () => {
 
   const [totalData, setTotalData] = useState<any>({}) //总数据
   const [submit, setSubmit] = useState<any>(false) //确认
+  const [chinese, setChinese] = useState<any>(false) //正则中文判断
 
   // 跳转的数据
   useEffect(() => {
@@ -48,6 +49,9 @@ const Verify = () => {
   }
   // 确认事件
   const onSubmit = async () => {
+    //名称只能输入中文正则判断
+    let arr = /[^\u4E00-\u9FA5]/g
+    setChinese(arr.test(totalData.legalPersonName))
     setSubmit(true)
     // 图片处理
     const enterpriseCredentialList = [
@@ -71,14 +75,16 @@ const Verify = () => {
     totalData.enterpriseId = JSON.parse(
       Taro.getStorageSync('userInfo')
     ).enterpriseId
-    let arr = await enterpriseCertificateSubmission(totalData)
-    if (arr.code === 200) {
-      Taro.redirectTo({
-        url: '/pages/personal/findingsOfAudit/index'
-      })
+
+    if (!arr.test(totalData.legalPersonName)) {
+      let arr = await enterpriseCertificateSubmission(totalData)
+      if (arr.code === 200) {
+        Taro.redirectTo({
+          url: '/pages/personal/findingsOfAudit/index'
+        })
+      }
     }
   }
-
   Taro.setNavigationBarTitle({
     title: '企业证件管理'
   })
@@ -166,6 +172,15 @@ const Verify = () => {
                 </View>
               </View>
             ) : null}
+            {submit && chinese ? (
+              <View className={styles.tips}>
+                <View className={styles.requiredColor}>
+                  <Text className={styles.color}>
+                    <Text className={styles.text}>请填写中文</Text>
+                  </Text>
+                </View>
+              </View>
+            ) : null}
           </>
           {/* 营业执照 */}
           <>
@@ -177,7 +192,7 @@ const Verify = () => {
               </View>
               <View className={styles.txt}>
                 <ImagePicker
-                  addTitle={'营业执照'}
+                  addTitle={'business'}
                   files={totalData['enterpriseAdjunct'] || []}
                   callback={event => imgsChange(event, 'enterpriseAdjunct')}
                   count={1}
@@ -218,7 +233,7 @@ const Verify = () => {
               </View>
               <View className={styles.txt}>
                 <ImagePicker
-                  addTitle={'人像面'}
+                  addTitle={'portrait'}
                   files={totalData['positive'] || []}
                   callback={event => imgsChange(event, 'positive')}
                   count={1}
@@ -246,13 +261,12 @@ const Verify = () => {
             <View className={styles.containerImg}>
               <View className={styles.title}>
                 <Text className={styles.textImg}>
-                  {' '}
                   <Text className={styles.required}>*</Text>身份证国徽面
                 </Text>
               </View>
               <View className={styles.txt}>
                 <ImagePicker
-                  addTitle={'国徽面'}
+                  addTitle={'national'}
                   files={totalData['reverse'] || []}
                   callback={event => imgsChange(event, 'reverse')}
                   count={1}
