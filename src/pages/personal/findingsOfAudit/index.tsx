@@ -43,7 +43,7 @@ const FindingsOfAudit = () => {
     <View className={styles.content}>
       <View className={styles.container}>
         {/* 提交成功 */}
-        {data.approvalStatus === '2' ? (
+        {data.approvalStatus === '2' || data.approvalStatus === '3' ? (
           <>
             <View className={styles.top}>
               <Image src={SUCCESS_ICON} className={styles.icon}></Image>{' '}

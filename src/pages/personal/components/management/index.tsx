@@ -98,6 +98,8 @@ const Managemenet = () => {
     })
   }
   const management = () => {
+    console.log(123)
+
     Taro.navigateTo({
       url: '/pages/personal/findingsOfAudit/index'
     })
