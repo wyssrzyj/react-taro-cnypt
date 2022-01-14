@@ -103,7 +103,7 @@ function index({ data, deleteMethod }) {
         </View>
       </View>
 
-      {/* 弹窗 */}
+      {/* 弹窗. */}
       <View className={styles.popup}>
         <AtModal isOpened={popup}>
           <AtModalHeader>
