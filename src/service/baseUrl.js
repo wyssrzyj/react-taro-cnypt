@@ -6,8 +6,10 @@ const getBaseUrl = url => {
     BASE_URL = 'http://192.168.69.130:8888'
   } else if (process.env.NODE_ENV === 'production') {
     // 生产环境
-    BASE_URL = 'https://cn.uchat.com.cn/test/gateway'
+    // BASE_URL = 'https://cn.uchat.com.cn/test/gateway'
+    BASE_URL = 'https://8.136.224.113:8888' //测试新数据库
     // BASE_URL = 'http://192.168.69.130:8888'
+    // BASE_URL = 'http://192.168.69.88:8888'//本地新数据库
     // BASE_URL = 'https://cn.uchat.com.cn/gateway'
   } else {
     // 测试环境
