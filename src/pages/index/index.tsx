@@ -247,6 +247,8 @@ const Home = () => {
     setPageNum(1)
   }
   const btn = type => {
+    console.log()
+
     if (type === '1') {
       Taro.navigateToMiniProgram({
         appId: 'wx7e11519f5b973cd9'
