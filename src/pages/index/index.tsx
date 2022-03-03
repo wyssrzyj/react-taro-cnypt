@@ -8,7 +8,7 @@ import Card from './components/card'
 import { cloneDeep, isNil, isEmpty, isArray } from 'lodash'
 import { Navbar } from '@/components'
 import classNames from 'classnames'
-import Taro from '@tarojs/taro'
+import Taro, { navigateToMiniProgram } from '@tarojs/taro'
 import { matchTreeData } from '@/utils/tool'
 import { Button } from '@tarojs/components'
 
@@ -188,12 +188,14 @@ const Home = () => {
     {
       img: 'https://capacity-platform.oss-cn-hangzhou.aliyuncs.com/capacity-platform/mobile/images/307e604da5016255797e9bb0a0608b8.jpg',
       // img: 'https://capacity-platform.oss-cn-hangzhou.aliyuncs.com/capacity-platform/mobile/banner/banner1.jpg',
-      url: '/pages/index/index'
+      url: '/pages/index/index',
+      type: '1'
     },
     {
       img: 'https://capacity-platform.oss-cn-hangzhou.aliyuncs.com/capacity-platform/mobile/images/56b72c3b03dbb14c197e92d3bb8a039.jpg',
       // img: 'https://capacity-platform.oss-cn-hangzhou.aliyuncs.com/capacity-platform/mobile/banner/banner2.jpg',
-      url: '/pages/index/index'
+      url: '/pages/index/index',
+      type: '2'
     }
   ]
 
@@ -244,6 +246,13 @@ const Home = () => {
     setActiveTab(tab)
     setPageNum(1)
   }
+  const btn = type => {
+    if (type === '1') {
+      Taro.navigateToMiniProgram({
+        appId: 'wx7e11519f5b973cd9'
+      })
+    }
+  }
 
   return (
     <View className={styles.container}>
@@ -281,7 +290,13 @@ const Home = () => {
         >
           {banners.map((item, idx) => (
             <SwiperItem key={idx} className={styles.swiperItem}>
-              <Image src={item.img} className={styles.banner}></Image>
+              <Image
+                src={item.img}
+                className={styles.banner}
+                onClick={() => {
+                  btn(item.type)
+                }}
+              ></Image>
             </SwiperItem>
           ))}
         </Swiper>
