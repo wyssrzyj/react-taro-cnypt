@@ -206,6 +206,8 @@ const Search = () => {
   }
 
   const confirm = event => {
+    console.log(132)
+
     const nParams = cloneDeep(params)
     const nSearch = cloneDeep(historySearch) || []
     const {
@@ -273,7 +275,9 @@ const Search = () => {
           <Image src={SEARCH_ICON} className={styles.searchIcon}></Image>
           <Input
             className={styles.search}
-            placeholder={activeTab === 0 ? '搜索订单名称' : '搜索工厂名称'}
+            placeholder={
+              activeTab === 0 ? '搜索订单名称111' : '搜索工厂名称222'
+            }
             placeholderStyle={'fontSize: 30px; color: #999'}
             confirmType={'search'}
             onConfirm={confirm}

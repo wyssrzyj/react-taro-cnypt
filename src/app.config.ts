@@ -22,6 +22,10 @@ export default {
       pages: ['index']
     },
     {
+      root: 'pages/sorkTicket', // 优产工票
+      pages: ['index']
+    },
+    {
       root: 'pages/personal', // 我的
       pages: [
         'index',
