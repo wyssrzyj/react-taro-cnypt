@@ -256,6 +256,7 @@ const Home = () => {
 
   return (
     <View className={styles.container}>
+      <View>888</View>
       <View className={styles.tabs}>
         <Text
           onClick={() => tabClick(1)}
@@ -276,6 +277,7 @@ const Home = () => {
           找订单
         </Text>
       </View>
+
       <View className={isIOS ? styles.IOSContent : styles.content}>
         <Swiper
           indicatorColor="#999"
