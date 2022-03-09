@@ -23,6 +23,7 @@ const Home = () => {
     productCategory,
     getProductGrade,
     getDistrict,
+    latestSettledEnterpriseInformation,
     district
   } = commonStore
   const { userInfo } = loginStore
@@ -65,8 +66,19 @@ const Home = () => {
       await getDistrict()
     })()
   }, [])
+
+  const text = async () => {
+    console.log('8888888888888888')
+
+    let res = await latestSettledEnterpriseInformation({
+      pageNum: 1,
+      pageSize: 10
+    })
+    console.log(res)
+  }
   useEffect(() => {
     Taro.removeStorageSync('pathUrl')
+    text()
   }, [])
 
   useEffect(() => {
