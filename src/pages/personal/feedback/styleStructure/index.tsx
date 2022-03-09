@@ -23,7 +23,7 @@ const styleStructure = ({
 }) => {
   const { commonStore } = useStores()
   const { dictionary } = commonStore
-  const { processType } = dictionary
+  const { processType = [] } = dictionary
   const [category, setCategory] = useState<any>([])
   const [windowType, setWindowType] = useState<any>({}) //弹窗类型
   const [popup, setPopup] = useState(false) //弹窗类型

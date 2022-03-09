@@ -46,7 +46,7 @@ const OrderIssueEntry = () => {
     productCategoryList,
     dictionary
   } = commonStore
-  const { purchaserRole } = dictionary
+  const { purchaserRole = [] } = dictionary
   const { getEnterpriseInfo, enterpriseInfoSave, getEnterprisePhotos } =
     factoryStore
   const { userInfo } = loginStore

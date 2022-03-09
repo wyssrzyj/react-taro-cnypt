@@ -21,7 +21,7 @@ let imgs =
 function index({ data, deleteMethod, earlyEnd }) {
   const { commonStore } = useStores()
   const { dictionary, district = [] } = commonStore
-  const { processType, goodsNum = [] } = dictionary
+  const { processType = [], goodsNum = [] } = dictionary
   const [category, setCategory] = useState<any>(
     getTrees(data.processTypeList, toJS(processType), 'value', 'label')
   )
