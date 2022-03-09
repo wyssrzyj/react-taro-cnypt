@@ -68,8 +68,6 @@ const Home = () => {
   }, [])
 
   const text = async () => {
-    console.log('8888888888888888')
-
     let res = await latestSettledEnterpriseInformation({
       pageNum: 1,
       pageSize: 10
