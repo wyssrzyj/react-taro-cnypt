@@ -55,14 +55,14 @@ export default class CommonStore {
     } catch (e) {}
   }
   //最新入驻企业信息
-  @action latestSettledEnterpriseInformation = async (params?) => {
+  @action latestSettledEnterpriseInformation = async params => {
     try {
       const res: Partial<Response> = await HTTP.post(
         `/api/factory/enterprise/applets-latest-enter-enterprise-info`,
         params
       )
       if (res) {
-        return res.data || []
+        return res
       } else {
       }
     } catch (e) {}

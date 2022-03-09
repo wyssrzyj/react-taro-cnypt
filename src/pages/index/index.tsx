@@ -74,7 +74,7 @@ const Home = () => {
       pageNum: 1,
       pageSize: 10
     })
-    console.log(res)
+    console.log('新街口', res)
   }
   useEffect(() => {
     Taro.removeStorageSync('pathUrl')
