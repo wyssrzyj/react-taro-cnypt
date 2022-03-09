@@ -11,7 +11,7 @@ import classNames from 'classnames'
 import Taro, { navigateToMiniProgram } from '@tarojs/taro'
 import { matchTreeData } from '@/utils/tool'
 import { Button } from '@tarojs/components'
-
+import { AtNoticebar } from 'taro-ui'
 export const ORDER_EMPTY =
   'https://capacity-platform.oss-cn-hangzhou.aliyuncs.com/capacity-platform/platform/order_empty.png'
 
@@ -256,7 +256,11 @@ const Home = () => {
 
   return (
     <View className={styles.container}>
-      <View>888</View>
+      <View>
+        <AtNoticebar close={true} marquee>
+          恭喜***入驻
+        </AtNoticebar>
+      </View>
       <View className={styles.tabs}>
         <Text
           onClick={() => tabClick(1)}
