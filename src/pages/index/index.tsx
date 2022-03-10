@@ -38,6 +38,7 @@ const Home = () => {
   const [total, setTotal] = useState<number>(0)
   const [init, setInit] = useState<boolean>(false)
   const [isIOS, setIsIOS] = useState<boolean>(false)
+  const [list, setList] = useState<any>([])
 
   useEffect(() => {
     Taro.getSystemInfo({
@@ -68,13 +69,17 @@ const Home = () => {
   }, [])
 
   const text = async () => {
-    console.log('8888888888888888')
-
     let res = await latestSettledEnterpriseInformation({
       pageNum: 1,
       pageSize: 10
     })
-    console.log('新街口', res)
+    if (res) {
+      let sum: any = []
+      res?.data.records.map(item => {
+        sum.push(item.enterpriseName)
+      })
+      setList(sum)
+    }
   }
   useEffect(() => {
     Taro.removeStorageSync('pathUrl')
@@ -270,7 +275,10 @@ const Home = () => {
     <View className={styles.container}>
       <View>
         <AtNoticebar close={true} marquee>
-          恭喜***入驻
+          {/* 恭喜{list.join(',')}入驻 */}
+          {list.map(item => {
+            return `　　　恭喜　${item}　入驻　　　`
+          })}
         </AtNoticebar>
       </View>
       <View className={styles.tabs}>
