@@ -39,11 +39,11 @@ const styleStructure = ({
         getTrees(data.categoryCodes, toJS(productCategoryList), 'code', 'name')
       )
     }
-    if (data.goodsNum) {
+    if (data.goodsNum && Array.isArray(data.goodsNum)) {
+      const target =
+        dictionary.goodsNum.filter(item => item.value == data.goodsNum)[0] || {}
       // 订单量
-      setGoodsNum(
-        dictionary.goodsNum.filter(item => item.value == data.goodsNum)[0].label
-      )
+      setGoodsNum(target.label)
     }
     // 地区
     if (data.regionalIdList.length > 0) {
