@@ -1,11 +1,12 @@
 import { View, Button, Image, Text, CoverView } from '@tarojs/components'
 import styles from './index.module.less'
 import { AtButton, AtFloatLayout, AtTabs, AtTabsPane } from 'taro-ui'
-import { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
+
 import { cloneDeep } from 'lodash'
 import classNames from 'classnames'
-import { useStores, observer } from '@/store/mobx'
-
+import { useStores, observer, toJS } from '@/store/mobx'
+import { isEmpty } from 'lodash'
 const CusProductModal = props => {
   const {
     onCancel,
@@ -27,19 +28,15 @@ const CusProductModal = props => {
   )
   useEffect(() => {
     arrImg(cloneDeep(productCategoryList))
-    setProductList(
-      cloneDeep(productCategoryList).map((item: any) => {
-        item.title = item.name
-        return item
-      })
-    )
+    const arr = cloneDeep(productCategoryList).map((item: any) => {
+      item.title = item.name
+      return item
+    })
+    setProductList([...arr])
   }, [productCategoryList])
-
   let arrImg = data => {}
 
   const productTabChange = tab => {
-    console.log(tab)
-
     setActiveTab(tab)
   }
 
@@ -109,39 +106,42 @@ const CusProductModal = props => {
               className={styles.tabsPane}
             >
               <View className={styles.tabContent}>
-                {item.children.map((i, t) => {
-                  return (
-                    <View
-                      key={t}
-                      className={classNames(
-                        styles.tag,
-                        type === 'multiple' && selectValues.includes(i[keyName])
-                          ? styles.activeTag
-                          : '',
-                        type === 'single' && childValue === i[keyName]
-                          ? styles.activeTag
-                          : ''
-                      )}
-                      onClick={() => tagClick(i[keyName])}
-                    >
-                      <Image
-                        src={i.fileUrl}
-                        className={classNames(
-                          styles.img,
-                          type === 'multiple' &&
-                            selectValues.includes(i[keyName])
-                            ? styles.activeImg
-                            : '',
-                          type === 'single' && childValue === i[keyName]
-                            ? styles.activeImg
-                            : '',
-                          !'' ? styles.emptyImg : ''
-                        )}
-                      ></Image>
-                      <Text className={styles.tagText}>{i.name}</Text>
-                    </View>
-                  )
-                })}
+                {!isEmpty(item.children)
+                  ? item.children.map((i, t) => {
+                      return (
+                        <View
+                          key={t}
+                          className={classNames(
+                            styles.tag,
+                            type === 'multiple' &&
+                              selectValues.includes(i[keyName])
+                              ? styles.activeTag
+                              : '',
+                            type === 'single' && childValue === i[keyName]
+                              ? styles.activeTag
+                              : ''
+                          )}
+                          onClick={() => tagClick(i[keyName])}
+                        >
+                          <Image
+                            src={i.fileUrl}
+                            className={classNames(
+                              styles.img,
+                              type === 'multiple' &&
+                                selectValues.includes(i[keyName])
+                                ? styles.activeImg
+                                : '',
+                              type === 'single' && childValue === i[keyName]
+                                ? styles.activeImg
+                                : '',
+                              !'' ? styles.emptyImg : ''
+                            )}
+                          ></Image>
+                          <Text className={styles.tagText}>{i.name}</Text>
+                        </View>
+                      )
+                    })
+                  : null}
               </View>
             </AtTabsPane>
           )

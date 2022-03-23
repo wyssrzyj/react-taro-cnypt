@@ -22,7 +22,7 @@ import { useEffect, useState, useMemo } from 'react'
 import { cloneDeep, isArray, isNil } from 'lodash'
 import moment from 'moment'
 import classNames from 'classnames'
-import { useStores, observer } from '@/store/mobx'
+import { useStores, observer, toJS } from '@/store/mobx'
 import {
   CusProductModal,
   CusMaterialModal,
@@ -32,6 +32,7 @@ import {
 import { findTarget, matchTreeData, phoneReg } from '@/utils/tool'
 import { upload } from '@/utils/upload'
 import AreaModal from '@/components/areaModal'
+import Designated from '@/components/designated'
 import { errorConfigs } from './errorConfig'
 // import { Navbar } from './navBar/index'
 
@@ -49,7 +50,8 @@ const BACK_ICON =
 
 const initParams = {
   isContactPublic: 1,
-  isEnterpriseInfoPublic: 1
+  isEnterpriseInfoPublic: 1,
+  isPointSend: 0
 }
 
 const FactoryEntry = () => {
@@ -58,8 +60,10 @@ const FactoryEntry = () => {
     params: { id }
   } = router
 
-  const { commonStore, factoryStore } = useStores()
+  const { commonStore, factoryStore, userInterface } = useStores()
   const { publishOrder, orderDetailOrder } = factoryStore
+  const { sendRequisition } = userInterface
+
   const { productCategoryList, dictionary, district } = commonStore
 
   const {
@@ -81,6 +85,7 @@ const FactoryEntry = () => {
   const [goodsNumFlag, setGoodsNumFlag] = useState<boolean>(false)
   const [effectiveFlag, setEffectiveFlag] = useState<boolean>(false)
   const [areaFlag, setAreaFlag] = useState<boolean>(false)
+  const [searchFactory, setSearchFactory] = useState<boolean>(false)
 
   useEffect(() => {
     ;(async () => {
@@ -114,6 +119,11 @@ const FactoryEntry = () => {
   const handleChange = (value, field) => {
     const nParams = cloneDeep(params)
     nParams[field] = value
+
+    console.log(value)
+    console.log(field)
+    console.log('为啥时空', nParams)
+
     setParams(nParams)
   }
 
@@ -177,10 +187,27 @@ const FactoryEntry = () => {
         nParams.status = '1'
       }
     }
-    let res = await publishOrder(nParams)
 
-    if (res.code === 200) {
-      Taro.redirectTo({ url: '/pages/index/index' })
+    if (Number(params['isPointSend']) === 0) {
+      let res = await publishOrder(nParams)
+      if (res.code === 200) {
+        Taro.redirectTo({ url: '/pages/index/index' })
+      }
+    } else {
+      if (params['designated'] !== undefined) {
+        let res = await publishOrder(nParams)
+        if (res.code === 200) {
+          await sendRequisition({
+            supplierTenantId: params['designated'].id,
+            status: 1,
+            purchaseInquiryId: res.data
+          })
+          Taro.redirectTo({ url: '/pages/index/index' })
+        }
+      } else {
+        setIsOpened(true)
+        setErrText('请选择指定工厂')
+      }
     }
   }
 
@@ -217,6 +244,9 @@ const FactoryEntry = () => {
   const areaModalShow = () => {
     setAreaFlag(f => !f)
   }
+  const searchFactoryShow = () => {
+    setSearchFactory(f => !f)
+  }
 
   const getProducts = useMemo(() => {
     const target = params['categoryCodes'] || []
@@ -251,6 +281,12 @@ const FactoryEntry = () => {
       }, '')
     }
   }
+
+  // const designatedFactory = () => {
+  //   console.log(123)
+  //   Taro.redirectTo({ url: '/pages/personal/searchFactory/index' })
+  //   console.log('跳转至别的页面')
+  // }
   Taro.setNavigationBarColor({
     frontColor: '#ffffff',
     backgroundColor: '#3b80ff',
@@ -348,6 +384,50 @@ const FactoryEntry = () => {
                 </Radio>
               </RadioGroup>
             </View>
+            <View className={styles.cusItem}>
+              <View className={classNames(styles.cusLabel, styles.required)}>
+                指向发送
+              </View>
+              <RadioGroup
+                onChange={event =>
+                  handleChange(event.detail.value, 'isPointSend')
+                }
+              >
+                <Radio
+                  value={1}
+                  checked={+params['isPointSend'] === 1}
+                  className={styles.radioText}
+                  style={{ transform: 'scale(0.8)' }}
+                >
+                  公开
+                </Radio>
+                <Radio
+                  value={0}
+                  checked={+params['isPointSend'] === 0}
+                  className={styles.radioText}
+                  style={{ transform: 'scale(0.8)', marginLeft: '20rpx' }}
+                >
+                  不公开
+                </Radio>
+              </RadioGroup>
+            </View>
+            {+params['isPointSend'] === 1 ? (
+              <View onClick={searchFactoryShow} className={styles.cusFormItem}>
+                <Text className={classNames(styles.cusLabel, styles.required)}>
+                  指定工厂
+                </Text>
+                <Text
+                  className={classNames(
+                    styles.cusValue,
+                    !params['designated'] ? styles.cusPlaceholder : ''
+                  )}
+                >
+                  {params['designated']
+                    ? params['designated'].factoryName
+                    : '请选择指定工厂'}
+                </Text>
+              </View>
+            ) : null}
           </View>
 
           <View className={styles.factoryInfo}>
@@ -720,6 +800,16 @@ const FactoryEntry = () => {
           title={'地区要求'}
           callback={event => handleChange(event, 'regionalIdList')}
           value={params['regionalIdList'] || []}
+        />
+      )}
+
+      {searchFactory && (
+        <Designated
+          visible={searchFactory}
+          onCancel={searchFactoryShow}
+          title={'指定工厂'}
+          callback={event => handleChange(event, 'designated')}
+          value={params['designated'] || []}
         />
       )}
     </View>

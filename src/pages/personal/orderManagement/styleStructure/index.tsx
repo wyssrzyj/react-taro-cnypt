@@ -22,9 +22,7 @@ function index({ data, deleteMethod, earlyEnd }) {
   const { commonStore } = useStores()
   const { dictionary, district = [] } = commonStore
   const { processType, goodsNum = [] } = dictionary
-  const [category, setCategory] = useState<any>(
-    getTrees(data.processTypeList, toJS(processType), 'value', 'label')
-  )
+  const [category, setCategory] = useState<any>([])
   const [windowType, setWindowType] = useState<any>({}) //弹窗类型
   const [popup, setPopup] = useState(false) //弹窗类型
   const [region, setRegion] = useState('不限') //地区

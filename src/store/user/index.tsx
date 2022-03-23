@@ -28,7 +28,16 @@ export default class UserInterface {
   @observable modi = '' //修改成功
   @observable quantityId = '' //申请接单的数量数据
   @observable feedbackInformations = [] //反馈信息回显
+  @observable factory = {} //指定工厂的数据
 
+  // 指定工厂的数据
+  @action stateFactory = async params => {
+    try {
+      runInAction(() => {
+        this.factory = params
+      })
+    } catch (e) {}
+  }
   // 申请接单的数量数据
   @action applicationReceiptQuantity = async params => {
     try {
@@ -169,6 +178,32 @@ export default class UserInterface {
     try {
       const res: Partial<Response> = await HTTP.post(
         '/api/oms/inquiry-purchase/inquiry-application-list',
+        params
+      )
+      if (res.code === 200) {
+        Taro.hideLoading()
+        return res.data
+      }
+
+      return res.data
+    } catch (e) {
+      if (e.code === 200) {
+        Taro.hideLoading()
+        return e
+      }
+
+      return e
+    }
+  }
+
+  // 申请列表数据展示
+  @action sendRequisition = async params => {
+    Taro.showLoading({
+      title: '加载中'
+    })
+    try {
+      const res: Partial<Response> = await HTTP.post(
+        '/api/oms/inquiry-quote/point-to-send',
         params
       )
       if (res.code === 200) {
@@ -349,6 +384,41 @@ export default class UserInterface {
     }
   }
 
+  // 订单管理数据
+  @action queryFactoryName = async params => {
+    Taro.showLoading({
+      title: '加载中'
+    })
+    try {
+      const res: Partial<Response> = await HTTP.post(
+        '/api/factory/info/search-factory-name',
+        params
+      )
+      Taro.hideLoading()
+      if (res.code === 200) {
+        return res.data
+      } else {
+        Taro.hideLoading()
+        Taro.showToast({
+          title: res.msg as string,
+          icon: 'none',
+          duration: 1500
+        })
+      }
+      return res.data
+    } catch (e) {
+      Taro.hideLoading()
+      Taro.showToast({
+        title: e.msg as string,
+        icon: 'none',
+        duration: 1500
+      })
+      if (e.code === 200) {
+        return e
+      }
+      return e
+    }
+  }
   // 供应商需求单查询
   @action supplierGetOrders = async params => {
     Taro.showLoading({

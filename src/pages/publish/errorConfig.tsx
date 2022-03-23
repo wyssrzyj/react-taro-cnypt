@@ -34,8 +34,13 @@ export const errorConfigs = [
     errorText: '请选择联系信息公开方式'
   },
   {
+    field: 'isPointSend',
+    errorText: '请选择指向发送'
+  },
+
+  {
     field: 'isEnterpriseInfoPublic',
-    errorText: '请选择联系信息公开方式'
+    errorText: '请选择指向发送'
   },
   {
     field: 'name',
