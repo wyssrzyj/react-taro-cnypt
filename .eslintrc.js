@@ -26,6 +26,7 @@ module.exports = {
     'no-irregular-whitespace': 0, //不规则的空白不允许
     'no-underscore-dangle': 0,
     'array-bracket-spacing': [2, 'never'], // 指定数组的元素之间要以空格隔开(,后面)
+    // withShareTicket: true,
     'prettier/prettier': 'error'
   }
 }

@@ -399,7 +399,7 @@ const FactoryEntry = () => {
                   className={styles.radioText}
                   style={{ transform: 'scale(0.8)' }}
                 >
-                  公开
+                  是　
                 </Radio>
                 <Radio
                   value={0}
@@ -407,7 +407,7 @@ const FactoryEntry = () => {
                   className={styles.radioText}
                   style={{ transform: 'scale(0.8)', marginLeft: '20rpx' }}
                 >
-                  不公开
+                  否　　
                 </Radio>
               </RadioGroup>
             </View>

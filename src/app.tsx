@@ -11,6 +11,10 @@ const App = props => {
     Taro['$navBarMarginTop'] = res.statusBarHeight || 0
   })
   // 将状态栏高度挂载全局
+
+  Taro.showShareMenu({
+    withShareTicket: true
+  })
   return <Provider {...stores}>{props.children}</Provider>
 }
 
