@@ -68,24 +68,6 @@ const Home = () => {
     })()
   }, [])
 
-  const text = async () => {
-    let res = await latestSettledEnterpriseInformation({
-      pageNum: 1,
-      pageSize: 10
-    })
-    if (res) {
-      let sum: any = []
-      res?.data.records.map(item => {
-        sum.push(item.enterpriseName)
-      })
-      setList(sum)
-    }
-  }
-  useEffect(() => {
-    Taro.removeStorageSync('pathUrl')
-    text()
-  }, [])
-
   useEffect(() => {
     ;(async () => {
       const user = Taro.getStorageSync('currentUser')
@@ -227,6 +209,20 @@ const Home = () => {
     setPageNum(n => n + 1)
   })
 
+  const text = async () => {
+    let res = await getNewFactory(pageNum)
+    if (res) {
+      let sum: any = []
+      res?.records.map(item => {
+        sum.push(item.factoryName)
+      })
+      setList(sum)
+    }
+  }
+  useEffect(() => {
+    Taro.removeStorageSync('pathUrl')
+    text()
+  }, [])
   useEffect(() => {
     ;(async () => {
       setLoading(true)
